@@ -1,7 +1,7 @@
 FROM golang:latest
 RUN mkdir /app 
-ADD . /app/
-WORKDIR /app 
+COPY . /app/src
+WORKDIR /app/src
 ENV GOPATH=/app
 # ENV GOBIN=/app/bin
 RUN go get go.mongodb.org/mongo-driver/mongo
