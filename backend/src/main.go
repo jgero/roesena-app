@@ -22,15 +22,6 @@ func main() {
 
 }
 
-// func handleIndex(w http.ResponseWriter, req *http.Request, client *mongo.Client) {
-// 	data, err := ioutil.ReadFile("../README.md")
-// 	if err != nil {
-// 		fmt.Println("README.md was not found")
-// 	} else {
-// 	}
-// 	markdown.markdown(data)
-// }
-
 func handlePerson(w http.ResponseWriter, req *http.Request, client *mongo.Client) {
 	// the response is always a json string
 	w.Header().Set("Content-Type", "application/json")
@@ -47,17 +38,17 @@ func handlePerson(w http.ResponseWriter, req *http.Request, client *mongo.Client
 				// respond with 500 when error in database happens
 				w.WriteHeader(http.StatusInternalServerError)
 				json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("error when reading %v from databse", p[3])})
-			} else {
-				if len(person) == 0 {
-					// return 404 if there were no persons
-					w.WriteHeader(http.StatusNotFound)
-					json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("no person found with name %v", p[3])})
-				} else {
-					// send person, the status code 200 will be set automatically
-					json.NewEncoder(w).Encode(person)
-				}
+				return
 			}
-			break
+			if len(person) == 0 {
+				// return 404 if there were no persons
+				w.WriteHeader(http.StatusNotFound)
+				json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("no person found with name %v", p[3])})
+				return
+			}
+			// send person, the status code 200 will be set automatically
+			json.NewEncoder(w).Encode(person)
+			return
 		case 3:
 		case 2:
 		case 1:
@@ -65,24 +56,48 @@ func handlePerson(w http.ResponseWriter, req *http.Request, client *mongo.Client
 			// these path part lengths are too short, that means a wrong route was passed somewhere internally
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("{\"error\": \"faulty URI in the handlePerson handler\"}"))
-			break
+			return
 		default:
 			// this is the more likely error case: here the route has too many parts
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("{\"error\": \"too many route parts\"}"))
+			return
 		}
 		break
 	case "POST":
-		// err := mongodriver.AddPersons(
-		// 	[]interface{}{mongodriver.Person{Name: "Ash"}, mongodriver.Person{Name: "Misty"}, mongodriver.Person{Name: "Brock"}}, client)
-		// if err != nil {
-		// 	fmt.Println("saving failed")
-		// }
+		p := strings.Split(req.URL.Path, "/")
+		// check if there is nothing after the "/" after "person"
+		if (len(p) == 4) && (p[3] == "") {
+			var person mongodriver.Person
+			// try to read a Person from the request body
+			err := json.NewDecoder(req.Body).Decode(&person)
+			if err != nil {
+				// request is bad if it's not a Person
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("body could not be read as Person type")})
+				return
+			}
+			err = mongodriver.AddPerson(person, client)
+			if err != nil {
+				// internal error when adding person fails
+				w.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("error when reading %v from databse", p[3])})
+				return
+			}
+			// no errors, just return the body again
+			json.NewEncoder(w).Encode(person)
+			return
+		}
+		// bad request, there are too many subPaths or a name provided
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("URI does not match a POST to /api/person/")})
+		return
 	case "PUT":
 	case "DELETE":
 	default:
 		// all unused HTTP methods arrive here
 		w.WriteHeader(http.StatusNotImplemented)
 		w.Write([]byte("{\"error\": \"unused HTTP method\"}"))
+		return
 	}
 }

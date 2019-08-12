@@ -2,8 +2,6 @@ package mongodriver
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -42,24 +40,25 @@ func Connect() (*mongo.Client, error) {
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		return nil, errors.New(("connection to database failed"))
+		return nil, err
 	}
 	// Check the connection
 	err = client.Ping(context.TODO(), nil)
 	if err != nil {
-		return nil, errors.New(("ping to database failed"))
+		return nil, err
 	}
 	return client, nil
 }
 
-// AddPersons saves persons to the MongoDB
-func AddPersons(persons []interface{}, client *mongo.Client) error {
+// AddPerson saves persons to the MongoDB
+func AddPerson(person Person, client *mongo.Client) error {
 	collection := client.Database("test").Collection("persons")
-	insertResult, err := collection.InsertMany(context.TODO(), persons)
+	// for now ignore the insert result element, the id of that element is not needed
+	_, err := collection.InsertOne(context.TODO(), person)
+	// just return the error if one occurs
 	if err != nil {
-		return errors.New("could not add to collection")
+		return err
 	}
-	fmt.Println(insertResult)
 	return nil
 }
 
@@ -84,21 +83,3 @@ func GetPersonWithName(name string, client *mongo.Client) ([]Person, error) {
 	}
 	return result, nil
 }
-
-// trainers := []interface{}{misty, brock}
-
-// insertManyResult, err := collection.InsertMany(context.TODO(), trainers)
-// if err != nil {
-// 	log.Fatal(err)
-// }
-
-// fmt.Println("Inserted multiple documents: ", insertManyResult.InsertedIDs)
-
-// err = client.Disconnect(context.TODO())
-
-// if err != nil {
-// 	log.Fatal(err)
-// }
-// fmt.Println("Connection to MongoDB closed.")
-
-// }
