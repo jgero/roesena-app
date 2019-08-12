@@ -92,8 +92,25 @@ func handlePerson(w http.ResponseWriter, req *http.Request, client *mongo.Client
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("URI does not match a POST to /api/person/")})
 		return
-	case "PUT":
 	case "DELETE":
+		p := strings.Split(req.URL.Path, "/")
+		if (len(p) == 4) && (p[3] != "") {
+			err := mongodriver.DeletePersonWithName(p[3], client)
+			if err != nil {
+				// internal error when deleting person fails
+				w.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("error when deleting %v from databse", p[3])})
+				return
+			}
+			// the element was deleted
+			json.NewEncoder(w).Encode(map[string]interface{}{"status": fmt.Sprintf("person %v was deleted", p[3])})
+			return
+		}
+		// bad request, there are too many subPaths or no name is provided
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("URI does not match a DELETE to /api/person/name")})
+		return
+	case "PUT":
 	default:
 		// all unused HTTP methods arrive here
 		w.WriteHeader(http.StatusNotImplemented)

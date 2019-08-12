@@ -83,3 +83,16 @@ func GetPersonWithName(name string, client *mongo.Client) ([]Person, error) {
 	}
 	return result, nil
 }
+
+// DeletePersonWithName deletes the person with a specific name
+func DeletePersonWithName(name string, client *mongo.Client) error {
+	collection := client.Database("test").Collection("persons")
+	// create a filter that matches the given name
+	filter := bson.M{"name": name}
+	// delete ONE element in the collection
+	_, err := collection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
