@@ -64,16 +64,24 @@ func AddPersons(persons []interface{}, client *mongo.Client) error {
 }
 
 // GetPersonWithName returns the person with the provided name
-func GetPersonWithName(name string, client *mongo.Client) (Person, error) {
+func GetPersonWithName(name string, client *mongo.Client) ([]Person, error) {
 	collection := client.Database("test").Collection("persons")
-	filter := bson.D{{"name", name}}
-	// create a value into which the result can be decoded
-	var result Person
-	err := collection.FindOne(context.TODO(), filter).Decode(&result)
-	if err != nil {
-		return Person{"failed"}, errors.New("failed searching for person")
+	// get the persons with the given name
+	filter := bson.M{"name": name}
+	// if no name is there, get all the persons
+	if name == "" {
+		filter = bson.M{}
 	}
-
+	// create a value into which the result can be decoded
+	var result []Person
+	res, err := collection.Find(context.TODO(), filter)
+	if err != nil {
+		return []Person{}, err
+	}
+	err = res.All(context.TODO(), &result)
+	if err != nil {
+		return []Person{}, err
+	}
 	return result, nil
 }
 

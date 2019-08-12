@@ -1,8 +1,9 @@
 # API-doc
 
-## /api/appointments
+## /api/appointment
 
 - GET
+  - 
 - PUT
 - POST
 - DELETE
