@@ -2,7 +2,16 @@ POST http://localhost/api/person/ HTTP/1.1
 content-type: application/json
 
 {
-    "Name": "Bob"
+    "name": "John"
+}
+
+###
+
+PUT http://localhost/api/person/John HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "foo"
 }
 
 ###
@@ -11,4 +20,4 @@ GET http://localhost/api/person/ HTTP/1.1
 
 ###
 
-DELETE  http://localhost/api/person/Ash HTTP/1.1
+DELETE  http://localhost/api/person/John HTTP/1.1
