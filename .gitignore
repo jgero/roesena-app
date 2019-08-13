@@ -10,7 +10,9 @@ frontend/out-tsc
 *.PNG
 
 # dependencies
-node_modules/
+.DS_Store
+node_modules
+public/bundle.*
 
 # database content
 storage/
