@@ -1,4 +1,6 @@
 <script>
+  import DayDetails from "./DayDetails.svelte";
+
   const weekdayStrings = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   export let date = new Date();
@@ -49,12 +51,26 @@
         return "Dezember";
     }
   }
+
+  function getEventsForDay(day) {
+    if (day === 3 || day === 12 || day === 28) {
+      return {
+        date: day,
+        events: ["event1", "event number 2", "and yet another thing"]
+      };
+    }
+    return {
+      date: day,
+      events: []
+    };
+  }
 </script>
 
 <style>
   main {
     height: 100%;
     width: 100%;
+    color: darkslategray;
     display: grid;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
@@ -73,9 +89,41 @@
   h1 {
     grid-area: month-header;
   }
+  h2 {
+    color: lightcoral;
+    font-size: 2rem;
+  }
   h1,
   h2 {
     margin: auto;
+  }
+  .arrow {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+    clip-path: polygon(50% 0, 30% 50%, 50% 100%, 60% 100%, 40% 50%, 60% 0);
+    transition: all ease-out 0.2s;
+    cursor: pointer;
+  }
+  .arrow:hover {
+    transform: scale(1.05);
+    background-color: lightcoral;
+  }
+  .left {
+    grid-area: arrow-left;
+  }
+  .arrow:hover.right {
+    transform: rotate(180deg) scale(1.05);
+  }
+  .right {
+    grid-area: arrow-right;
+    transform: rotate(180deg);
+  }
+  .day {
+    border: 2px solid lightgray;
+    padding: 2px;
+    min-height: 0;
   }
 </style>
 
@@ -86,6 +134,11 @@
   {/each}
 
   {#each new Array(daysInMonth()) as _, i}
-    <span style="grid-area: {getGridArea(i)};">{i + 1}</span>
+    <div class="day" style="grid-area: {getGridArea(i)};">
+      <DayDetails day={getEventsForDay(i + 1)} />
+    </div>
   {/each}
+
+  <span class="arrow left" />
+  <span class="arrow right" />
 </main>
