@@ -12,7 +12,7 @@ frontend/out-tsc
 # dependencies
 .DS_Store
 node_modules
-public/bundle.*
+bundle.*
 
 # database content
 storage/
