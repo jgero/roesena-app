@@ -33,7 +33,7 @@
     {
       route: "/",
       component: Startpage,
-      props: ["ROUTER_ANIMATION_DURATION"]
+      props: ["ROUTER_ANIMATION_DURATION", "navigate"]
     },
     {
       route: "/calendar",
@@ -87,17 +87,17 @@
 <style>
   div {
     height: 100%;
-    width: 100%;
     display: flex;
     flex-direction: column;
   }
 
   header,
   footer {
-    flex: 1;
+    flex: 0.5;
   }
   main {
     flex: 10;
+    min-height: 0;
   }
 </style>
 

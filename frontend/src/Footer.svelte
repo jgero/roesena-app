@@ -1,13 +1,28 @@
 <script>
-  // your script goes here
+  export let navigate;
 </script>
 
 <style>
-  nav {
-    color: purple;
-    position: relative;
+  * {
+    user-select: none;
   }
-  nav::after {
+  .root {
+    border-top: 3px solid lightcoral;
+  }
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+  span {
+    color: darkslategray;
+    position: relative;
+    height: min-content;
+    margin: 0 1rem;
+    cursor: pointer;
+  }
+  span::after {
     content: "";
     display: block;
     position: absolute;
@@ -15,17 +30,19 @@
     left: 50%;
     height: 2px;
     width: 0;
-    background-color: red;
+    background-color: lightcoral;
     transition: all ease-out 0.2s;
   }
-  nav:hover::after {
+  span:hover::after {
     width: 100%;
     left: 0;
   }
 </style>
 
-<!-- <footer> -->
-<div>breadcrumbs</div>
-<nav>Impressum</nav>
-<nav>Links</nav>
-<!-- </footer> -->
+<div class="root">
+  <div>breadcrumbs</div>
+  <div>
+    <span on:click={() => navigate('/about')}>Impressum</span>
+    <span on:click={() => navigate('/references')}>Links</span>
+  </div>
+</div>
