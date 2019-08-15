@@ -4,6 +4,7 @@
   import Calendar from "./calendar/Calendar.svelte";
   import NotFound from "./errorpage/NotFound.svelte";
   import Startpage from "./startpage/Startpage.svelte";
+  import EventOverview from "./events/EventOverview.svelte";
 
   // get the route and add the route params back on
   let route =
@@ -39,6 +40,11 @@
     {
       route: "/calendar",
       component: Calendar,
+      props: ["ROUTER_ANIMATION_DURATION", "navigate"]
+    },
+    {
+      route: "/events",
+      component: EventOverview,
       props: ["ROUTER_ANIMATION_DURATION", "navigate"]
     },
     {
