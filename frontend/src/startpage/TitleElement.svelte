@@ -27,7 +27,7 @@
     width: 50%;
     height: 100%;
     opacity: 0.5;
-    transform: rotate(-10deg) scale(1.5);
+    transform: rotate(-10deg) scale(1.5) translateY(-2rem);
   }
 </style>
 

@@ -1,68 +1,80 @@
 <script>
   import DayDetails from "./DayDetails.svelte";
+  import { getMonthName, makeMondayFirst } from "./calendarLib.js";
+
+  import { fly } from "svelte/transition";
+
+  export let ROUTER_ANIMATION_DURATION;
+  export let navigate;
 
   const weekdayStrings = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
-  export let date = new Date();
-  // save date as ISO string
-
+  let date;
   let month;
   let year;
-  $: {
-    month = date.getMonth();
-    year = date.getFullYear();
+  let days = [];
+
+  try {
+    // try to set the calendar month to the date in the URL params, if not just use the current month
+    let param = new URL(location.href).searchParams.get("date");
+    date = param ? new Date(param) : new Date();
+    // update the url so it works on reload
+    navigate("/calendar?date=" + date.toISOString());
+  } catch (e) {
+    // just use "today" as selected date on error
+    date = new Date();
+    navigate("/calendar?date=" + date.toISOString());
   }
 
-  function daysInMonth() {
-    return new Date(year, month, 0).getDate();
+  $: {
+    // this all gets updated when the date changes
+    month = date.getMonth();
+    year = date.getFullYear();
+    days = new Array(new Date(year, month, 0).getDate())
+      .fill(undefined)
+      .map((day, ind) => ({
+        gridArea: getGridArea(ind),
+        events: getEventsForDay(ind),
+        date: ind + 1
+      }));
   }
 
   function getGridArea(ind) {
-    const row = Math.round((new Date(month, year, 0).getDay() + ind) / 7) + 3;
+    const row =
+      Math.floor(
+        (makeMondayFirst(new Date(year, month, 1).getDay()) + ind) / 7
+      ) + 3;
     const column = new Date(year, month, ind).getDay() + 2;
     return `${row} / ${column} / ${row} / ${column}`;
   }
 
-  function getMonthName() {
-    switch (month) {
-      case 0:
-        return "Januar";
-      case 1:
-        return "Februar";
-      case 2:
-        return "März";
-      case 3:
-        return "April";
-      case 4:
-        return "Mai";
-      case 5:
-        return "Juni";
-      case 6:
-        return "Juli";
-      case 7:
-        return "August";
-      case 8:
-        return "September";
-      case 9:
-        return "Oktober";
-      case 10:
-        return "November";
-      case 11:
-        return "Dezember";
-    }
-  }
-
   function getEventsForDay(day) {
     if (day === 3 || day === 12 || day === 28) {
-      return {
-        date: day,
-        events: ["event1", "event number 2", "and yet another thing"]
-      };
+      return ["event1", "event number 2", "and yet another thing"];
     }
-    return {
-      date: day,
-      events: []
-    };
+    return [];
+  }
+
+  function goNextMonth() {
+    if (date.getMonth() < 11) {
+      var newMonth = date.getMonth() + 1;
+      date = new Date(date.getFullYear(), newMonth);
+    } else {
+      let newYear = date.getFullYear() + 1;
+      date = new Date(newYear, 0);
+    }
+    navigate("/calendar?date=" + date.toISOString());
+  }
+
+  function goPreviousMonth() {
+    if (date.getMonth() > 0) {
+      var newMonth = date.getMonth() - 1;
+      date = new Date(date.getFullYear(), newMonth);
+    } else {
+      let newYear = date.getFullYear() - 1;
+      date = new Date(newYear, 11);
+    }
+    navigate("/calendar?date=" + date.toISOString());
   }
 </script>
 
@@ -127,18 +139,20 @@
   }
 </style>
 
-<main>
-  <h1>{getMonthName()} {year}</h1>
+<main
+  in:fly={{ x: -100, delay: ROUTER_ANIMATION_DURATION, duration: ROUTER_ANIMATION_DURATION }}
+  out:fly={{ x: 100, duration: ROUTER_ANIMATION_DURATION }}>
+  <h1>{getMonthName(month)} {year}</h1>
   {#each weekdayStrings as weekday}
     <h2 style="grid-area: {weekday};">{weekday}</h2>
   {/each}
 
-  {#each new Array(daysInMonth()) as _, i}
-    <div class="day" style="grid-area: {getGridArea(i)};">
-      <DayDetails day={getEventsForDay(i + 1)} />
+  {#each days as day}
+    <div class="day" style="grid-area: {day.gridArea};">
+      <DayDetails {day} />
     </div>
   {/each}
 
-  <span class="arrow left" />
-  <span class="arrow right" />
+  <span on:click={() => goPreviousMonth()} class="arrow left" />
+  <span on:click={() => goNextMonth()} class="arrow right" />
 </main>

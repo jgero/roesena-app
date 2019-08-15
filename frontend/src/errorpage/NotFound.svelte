@@ -1,5 +1,6 @@
 <script>
   export let navigate;
+  // export let ROUTER_ANIMATION_DURATION;
 </script>
 
 <style>

@@ -3,7 +3,10 @@
   import SearchField from "./SearchField.svelte";
   import TitleElement from "./TitleElement.svelte";
 
+  import { fly } from "svelte/transition";
+
   export let navigate;
+  export let ROUTER_ANIMATION_DURATION;
 
   let articles = [
     {
@@ -44,7 +47,10 @@
   }
 </style>
 
-<div class="wrapper">
+<div
+  class="wrapper"
+  in:fly={{ x: -100, delay: ROUTER_ANIMATION_DURATION, duration: ROUTER_ANIMATION_DURATION }}
+  out:fly={{ x: 100, duration: ROUTER_ANIMATION_DURATION }}>
   <SearchField />
   <TitleElement />
   <div class="articleWrapper">

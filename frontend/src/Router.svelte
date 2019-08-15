@@ -5,11 +5,12 @@
   import NotFound from "./errorpage/NotFound.svelte";
   import Startpage from "./startpage/Startpage.svelte";
 
-  // get the route
-  let route = location.pathname;
-
-  // if you would want to access the url params you would have to do it like that
-  // let param = new URL(location.pathname).searchParams.get("test");
+  // get the route and add the route params back on
+  let route =
+    location.pathname +
+    (location.href.split("?").length > 1
+      ? "?" + location.href.split("?")[1]
+      : "");
 
   // react when an entry of the browser history is accessed
   window.addEventListener("popstate", e => {
@@ -38,7 +39,7 @@
     {
       route: "/calendar",
       component: Calendar,
-      props: ["ROUTER_ANIMATION_DURATION"]
+      props: ["ROUTER_ANIMATION_DURATION", "navigate"]
     },
     {
       route: "*",
@@ -51,6 +52,7 @@
   let component;
 
   function prepareAndSwitch() {
+    params = {};
     // find the route that matches (starts with) the locations pathname
     let matchingRoute = routes.find(el => {
       if (el.route === "/") {
@@ -105,7 +107,7 @@
   <header>
     <Header navigate={injectables.navigate} />
   </header>
-  <main>
+  <main id="targ">
     <svelte:component this={component} {...params} />
   </main>
   <footer>
