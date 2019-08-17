@@ -2,13 +2,13 @@
   import { get, post } from "../http.js";
 
   let persons = [];
-
   let name = "";
 
+  // get all the persons from the database
   get("/api/person/")
-    .then(el => {
-      persons = JSON.parse(el);
-    })
+    // if request works display the persons
+    .then(el => (persons = JSON.parse(el)))
+    // if not just log the error for now
     .catch(err => {
       console.log(err.code);
     });
@@ -26,7 +26,10 @@
       JSON.stringify(person)
     )
       .then(el => {
-        persons.push(JSON.parse(el));
+        // add new person to the array
+        persons = [...persons, JSON.parse(el)];
+        // reset the value of the input field
+        name = "";
       })
       .catch(el => console.log(el));
   }
@@ -75,10 +78,11 @@
     right: calc(50% - 1rem);
     opacity: 0;
     transition: all ease-out 0.2s;
-    transform: translateY(-100px);
+    transform: translateY(-20px);
+    pointer-events: none;
   }
   .personBox .plus::before {
-    transform: translateY(-100px) rotate(90deg);
+    transform: translateY(-20px) rotate(90deg);
   }
   .personBox input:focus + .plus::before,
   .personBox input + .plus:hover::before,
@@ -87,6 +91,7 @@
     opacity: 1;
     pointer-events: all;
     transform: translateY(0);
+    pointer-events: all;
   }
   .personBox input:focus + .plus::before,
   .personBox input + .plus:hover::before {

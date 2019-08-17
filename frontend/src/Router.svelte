@@ -1,10 +1,13 @@
 <script>
+  import { fly } from "svelte/transition";
+
   import Header from "./Header.svelte";
   import Footer from "./Footer.svelte";
   import Calendar from "./calendar/Calendar.svelte";
   import NotFound from "./errorpage/NotFound.svelte";
   import Startpage from "./startpage/Startpage.svelte";
   import EventOverview from "./events/EventOverview.svelte";
+  import Login from "./login/Login.svelte";
 
   // get the route and add the route params back on
   let route =
@@ -28,8 +31,16 @@
     navigate: nav => {
       route = nav;
     },
-    ROUTER_ANIMATION_DURATION: 250
+    ROUTER_ANIMATION_DURATION: 250,
+    setUsername: name => {
+      username = name;
+    },
+    getUsername: () => {
+      return username;
+    }
   };
+
+  let username;
 
   const routes = [
     {
@@ -46,6 +57,16 @@
       route: "/events",
       component: EventOverview,
       props: ["ROUTER_ANIMATION_DURATION", "navigate"]
+    },
+    {
+      route: "/login",
+      component: Login,
+      props: [
+        "ROUTER_ANIMATION_DURATION",
+        "navigate",
+        "getUsername",
+        "setUsername"
+      ]
     },
     {
       route: "*",
@@ -82,8 +103,6 @@
       matchingRoute.props.forEach(prop => {
         if (injectables[prop]) {
           params[prop] = injectables[prop];
-        } else {
-          throw new Error("broken prop: " + prop);
         }
       });
     }
