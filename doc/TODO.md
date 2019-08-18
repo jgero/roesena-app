@@ -1,5 +1,13 @@
 # TODO
 
+## Database
+
+- don't use only one connection
+- create multiple connections
+- create easy way to open and close connections
+  - interface which implements the connect and disconnect stuff
+  - types which access the database implement this interface
+
 ## Login
 
 - implement login page in web-app

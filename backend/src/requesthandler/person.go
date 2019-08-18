@@ -1,11 +1,14 @@
 package requesthandler
 
 import (
+	"db"
 	"encoding/json"
 	"fmt"
 	"mongodriver"
 	"net/http"
 	"strings"
+
+	"go.mongodb.org/mongo-driver/bson"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -39,39 +42,28 @@ func handleGet(w http.ResponseWriter, req *http.Request, client *mongo.Client) {
 	// take URL like: (/api/person/john) and split it
 	p := strings.Split(req.URL.Path, "/")
 	// if the URL has a trailing "/" the length is 4 and the route is valid
-	switch len(p) {
-	case 4:
-		// get the persons with a given name, also works with the empty name
-		person, err := mongodriver.GetPersonWithName(p[3], client)
+	if len(p) == 4 {
+		var get db.GetElement
+		if p[3] != "" {
+			// get the element with the given name
+			get = db.GetElement{Collection: "persons", Filter: bson.M{"name": p[3]}}
+		} else {
+			// get all elements
+			get = db.GetElement{Collection: "persons", Filter: bson.M{}}
+		}
+		res, err := get.Run()
 		if err != nil {
-			// respond with 500 when error in database happens
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("error when reading %v from databse", p[3])})
 			return
 		}
-		if len(person) == 0 {
-			// return 404 if there were no persons
-			w.WriteHeader(http.StatusNotFound)
-			json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("no person found with name %v", p[3])})
-			return
-		}
-		// send person, the status code 200 will be set automatically
-		json.NewEncoder(w).Encode(person)
-		return
-	case 3:
-	case 2:
-	case 1:
-	case 0:
-		// these path part lengths are too short, that means a wrong route was passed somewhere internally
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("faulty URI in person handler: %v", req.URL.Path)})
-		return
-	default:
-		// this is the more likely error case: here the route has too many parts
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("faulty URI path provided: %v", req.URL.Path)})
+		// no error means result can be returned, status will be 200 automatically
+		json.NewEncoder(w).Encode(res)
 		return
 	}
+	// route has wrong amount of parts
+	w.WriteHeader(http.StatusBadRequest)
+	json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("faulty URI path provided: %v", req.URL.Path)})
 }
 
 func handlePost(w http.ResponseWriter, req *http.Request, client *mongo.Client) {

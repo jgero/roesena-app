@@ -2,6 +2,7 @@ package requesthandler
 
 import (
 	"context"
+	"db"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,23 +14,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-type unauthorizedError struct {
-	deniedAction string
-}
-
-func (e *unauthorizedError) Error() string {
-	return fmt.Sprintf("not allowed to do: %v", e.deniedAction)
-}
-
-type noMatchesError struct {
-	field string
-	value string
-}
-
-func (e *noMatchesError) Error() string {
-	return fmt.Sprintf("no matches for for field '%v' with value '%v'", e.field, e.value)
-}
 
 // LoginDetails contains the data needed for logging in
 type LoginDetails struct {
@@ -53,7 +37,7 @@ func createSession(details LoginDetails, client *mongo.Client) (string, error) {
 	// try to decode the result, if there were no matches this will create an error
 	err := res.Decode(&result)
 	if err != nil {
-		return "", &noMatchesError{field: "name", value: details.Username}
+		return "", &db.NoMatchesError{Field: "name", Value: details.Username}
 	}
 	// check if passwords match
 	if checkPassword(details, result) {
@@ -70,12 +54,12 @@ func createSession(details LoginDetails, client *mongo.Client) (string, error) {
 		}
 		if updateResult.MatchedCount == 0 {
 			// no matches for given name
-			return "", &noMatchesError{field: "name", value: details.Username}
+			return "", &db.NoMatchesError{Field: "name", Value: details.Username}
 		}
 		// if session id is set in database return it
 		return sessionTokenString, nil
 	}
-	return "", &unauthorizedError{deniedAction: "login with wrong password"}
+	return "", &db.UnauthorizedError{DeniedAction: "login with wrong password"}
 }
 
 func checkPassword(requestDetails LoginDetails, databaseEntry map[string]interface{}) bool {
@@ -110,10 +94,10 @@ func HandleLogin(w http.ResponseWriter, req *http.Request, client *mongo.Client)
 		sessionID, sessErr := createSession(details, client)
 		if sessErr != nil {
 			switch sessErr.(type) {
-			case *noMatchesError:
+			case *db.NoMatchesError:
 				w.WriteHeader(http.StatusNotFound)
 				break
-			case *unauthorizedError:
+			case *db.UnauthorizedError:
 				w.WriteHeader(http.StatusUnauthorized)
 				break
 			default:
@@ -136,6 +120,7 @@ func HandleLogin(w http.ResponseWriter, req *http.Request, client *mongo.Client)
 	json.NewEncoder(w).Encode(map[string]interface{}{"Error": "Use POST when trying to authenticate"})
 }
 
+// HandleRestore computes, if a cookie is still valid and returns the username
 func HandleRestore(w http.ResponseWriter, req *http.Request, client *mongo.Client) {
 	// the response will always be json
 	w.Header().Set("Content-Type", "application/json")
