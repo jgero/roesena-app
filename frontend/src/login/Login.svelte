@@ -1,5 +1,6 @@
 <script>
-  import { post } from "../http.js";
+  import Logout from "./Logout.svelte";
+  import { post } from "../libs/http.js";
 
   import { fly } from "svelte/transition";
 
@@ -7,35 +8,35 @@
   export let navigate;
   export let getUsername;
   export let setUsername;
+  export let onUsernameChange;
 
-  let loginDetails = {
-    username: getUsername() ? getUsername() : "",
-    password: ""
-  };
+  let username = getUsername() ? getUsername() : "";
+  let usernameInput = "";
+  let password = "";
+
+  onUsernameChange("login", function(el) {
+    username = el;
+  });
 
   function tryLogin() {
-    // getSessionCookie();
-    console.log(document.cookie);
     // post login details to the backend
+    let details = {
+      username: usernameInput,
+      password: password
+    };
     post(
       "/api/login",
       { "Content-Type": "application/json" },
-      JSON.stringify(loginDetails)
+      JSON.stringify(details)
     )
       .then(res => {
         // save the name of the currently logged-in user by setting it in the global injectable
-        setUsername(loginDetails.username);
+        setUsername(usernameInput);
       })
       .catch(err => {
         // diplay that login details were wrong or that server failed
         console.log(err);
       });
-  }
-
-  function getSessionCookie() {
-    // decode URI to support special chars like $
-    let cookieParts = decodeURIComponent(document.cookie).split(";");
-    console.log(cookieParts);
   }
 </script>
 
@@ -46,7 +47,7 @@
     align-items: center;
     justify-content: center;
   }
-  .loginFields {
+  .loginBox {
     color: darkslategray;
     display: flex;
     flex-direction: column;
@@ -89,22 +90,26 @@
   out:fly={{ x: 100, duration: ROUTER_ANIMATION_DURATION }}
   class="wrapper">
 
-  <div class="loginFields">
-    <h1>Anmeldung</h1>
-    <input
-      bind:value={loginDetails.username}
-      type="text"
-      placeholder="Benutzername"
-      spellcheck="false" />
-    <input
-      bind:value={loginDetails.password}
-      type="password"
-      placeholder="Passwort"
-      spellcheck="false" />
-    <input on:click={() => tryLogin()} type="button" value="Anmelden" />
-    <p>
-      Sie haben kein Konto oder Ihr Passwort vergessen?
-      <span on:click={() => navigate('/')}>hier klicken</span>
-    </p>
-  </div>
+  {#if username}
+    <Logout {username} {setUsername} />
+  {:else}
+    <div class="loginBox">
+      <h1>Anmeldung</h1>
+      <input
+        bind:value={usernameInput}
+        type="text"
+        placeholder="Benutzername"
+        spellcheck="false" />
+      <input
+        bind:value={password}
+        type="password"
+        placeholder="Passwort"
+        spellcheck="false" />
+      <input on:click={() => tryLogin()} type="button" value="Anmelden" />
+      <p>
+        Sie haben kein Konto oder Ihr Passwort vergessen?
+        <span on:click={() => navigate('/')}>hier klicken</span>
+      </p>
+    </div>
+  {/if}
 </div>

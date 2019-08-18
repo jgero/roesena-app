@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -176,4 +177,49 @@ func HandleRestore(w http.ResponseWriter, req *http.Request, client *mongo.Clien
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]interface{}{"username": result["name"]})
 	}
+}
+
+// HandleLogout deletes the session for a user and
+func HandleLogout(w http.ResponseWriter, req *http.Request, client *mongo.Client) {
+	// the response is always a json string
+	w.Header().Set("Content-Type", "application/json")
+	// only accept posts
+	if req.Method == "POST" {
+		p := strings.Split(req.URL.Path, "/")
+		// check if there is something after the "/" after "logout"
+		if (len(p) == 4) && (len(p[3]) > 0) {
+			// delete cookie
+			http.SetCookie(w, &http.Cookie{
+				Name:   "session_token",
+				Value:  "",
+				MaxAge: -1,
+			})
+			// unset sessionId in db
+			collection := client.Database("roesena").Collection("persons")
+			filter := bson.M{"name": p[3]}
+			updateResult, updateErr := collection.UpdateOne(context.TODO(), filter, bson.D{{"$unset", bson.M{"sessionId": ""}}})
+			if updateErr != nil {
+				// internal server error
+				w.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(w).Encode(map[string]interface{}{"Error": "connection to db failed"})
+				return
+			}
+			if updateResult.MatchedCount == 0 {
+				// person did not match
+				w.WriteHeader(http.StatusNotFound)
+				json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("person %v not found", p[3])})
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(map[string]interface{}{"status": fmt.Sprintf("%v is logged out", p[3])})
+			return
+		}
+		// bad request (no user provided)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{"Error": "no username provided"})
+		return
+	}
+	// bad request (wrong method)
+	w.WriteHeader(http.StatusBadRequest)
+	json.NewEncoder(w).Encode(map[string]interface{}{"Error": "wrong HTTP method"})
 }

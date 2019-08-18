@@ -1,5 +1,11 @@
 <script>
   export let navigate;
+  export let onUsernameChange;
+  let username;
+
+  onUsernameChange("header", function(el) {
+    username = el;
+  });
 </script>
 
 <style>
@@ -52,8 +58,21 @@
     align-items: center;
     color: darkslategray;
   }
-  .linkBox * {
+  .linkBox span,
+  .linkBox svg {
     margin: 1rem;
+  }
+  .profile {
+    font-size: 2rem;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: lightskyblue;
+    margin: 0 1rem;
+    border-radius: 1.5rem;
   }
 </style>
 
@@ -74,8 +93,14 @@
     <svg on:click={() => navigate('/events')}>
       <use href="svg/tasks-solid.svg#tasks" />
     </svg>
-    <svg on:click={() => navigate('/login')}>
-      <use href="svg/sign-in-alt-solid.svg#sign-in" />
-    </svg>
+    {#if username}
+      <div class="profile" on:click={() => navigate('/login')}>
+        <span>{username.charAt(0)}</span>
+      </div>
+    {:else}
+      <svg on:click={() => navigate('/login')}>
+        <use href="svg/sign-in-alt-solid.svg#sign-in" />
+      </svg>
+    {/if}
   </div>
 </nav>

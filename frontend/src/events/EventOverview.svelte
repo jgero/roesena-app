@@ -1,5 +1,5 @@
 <script>
-  import { get, post } from "../http.js";
+  import { get, post } from "../libs/http.js";
 
   let persons = [];
   let name = "";

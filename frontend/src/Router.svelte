@@ -1,6 +1,8 @@
 <script>
   import { fly } from "svelte/transition";
 
+  import { get } from "./libs/http";
+
   import Header from "./Header.svelte";
   import Footer from "./Footer.svelte";
   import Calendar from "./calendar/Calendar.svelte";
@@ -26,6 +28,11 @@
     prepareAndSwitch();
   }
 
+  // the callbacks are stored in an object on a property that matches the name of the
+  // component so that one component can't accidentally register multiple callbacks
+  let nameCallbacks = {};
+  let username;
+
   // the injectable functions and values are defined here
   let injectables = {
     navigate: nav => {
@@ -37,10 +44,27 @@
     },
     getUsername: () => {
       return username;
+    },
+    onUsernameChange: (compName, callback) => {
+      nameCallbacks[compName] = callback;
     }
   };
 
-  let username;
+  $: {
+    // this reactive block calls all the registered callback for the username
+    for (const key in nameCallbacks) {
+      if (nameCallbacks.hasOwnProperty(key)) {
+        const cb = nameCallbacks[key];
+        cb(username);
+      }
+    }
+  }
+
+  get("/api/restore")
+    .then(el => {
+      username = JSON.parse(el).username;
+    })
+    .catch(el => console.log(el));
 
   const routes = [
     {
@@ -65,7 +89,8 @@
         "ROUTER_ANIMATION_DURATION",
         "navigate",
         "getUsername",
-        "setUsername"
+        "setUsername",
+        "onUsernameChange"
       ]
     },
     {
@@ -130,7 +155,9 @@
 
 <div>
   <header>
-    <Header navigate={injectables.navigate} />
+    <Header
+      navigate={injectables.navigate}
+      onUsernameChange={injectables.onUsernameChange} />
   </header>
   <main id="targ">
     <svelte:component this={component} {...params} />

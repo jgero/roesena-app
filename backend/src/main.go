@@ -18,6 +18,9 @@ func main() {
 	http.HandleFunc("/api/login", func(w http.ResponseWriter, req *http.Request) {
 		requesthandler.HandleLogin(w, req, client)
 	})
+	http.HandleFunc("/api/logout/", func(w http.ResponseWriter, req *http.Request) {
+		requesthandler.HandleLogout(w, req, client)
+	})
 	http.HandleFunc("/api/upgradeUser", func(w http.ResponseWriter, req *http.Request) {
 		requesthandler.HandleNewUser(w, req, client)
 	})
