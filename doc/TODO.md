@@ -36,6 +36,9 @@
 - change the login icon to something else when a user is logged in, so you can actually see if you are logged in or not
 - improve on the "inject-able" way of sharing the name of the user (make it reactive)
 
+- think of good way to check authentication
+- especially for adding elements
+
 ### Ideas
 
 - separate user into "authority groups"

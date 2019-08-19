@@ -2,17 +2,14 @@ package db
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
-	"io"
 )
 
-// InsertOneElement collects all the needed fields to insert an element into the database
-type InsertOneElement struct {
+// DeleteOneElement collects all the needed fields to insert an element into the database
+type DeleteOneElement struct {
 	// the name of the collection on the database
 	Collection string
-	// the element that should be inserted
-	Element io.ReadCloser
+	// the filter for the element to delete
+	Filter interface{}
 	// session id to check if the user is allowed to do this action
 	Session string
 	// "extend" the client type
@@ -22,7 +19,7 @@ type InsertOneElement struct {
 }
 
 // Run then executes the query on the database, including the authority check
-func (elem *InsertOneElement) Run() []map[string]interface{} {
+func (elem *DeleteOneElement) Run() []map[string]interface{} {
 	client := elem.connect()
 	collection := client.Database("roesena").Collection(elem.Collection)
 	auth, err := getAuthority(elem.Session, client)
@@ -33,26 +30,19 @@ func (elem *InsertOneElement) Run() []map[string]interface{} {
 	}
 	// TODO: do some actual checkin, not just set it to 4
 	if auth >= 4 {
-		var insertEl interface{}
-		err = json.NewDecoder(elem.Element).Decode(&insertEl)
-		if err != nil {
-			elem.HTTPResponder.respondError(err)
-			return nil
-		}
-		// insert one result is just the id, so not necessary to check it
-		res, er := collection.InsertOne(context.TODO(), insertEl)
+		res, er := collection.DeleteOne(context.TODO(), elem.Filter)
 		if er != nil {
 			elem.disconnect(client)
 			elem.HTTPResponder.respondError(err)
 			return nil
 		}
-		if res.InsertedID == nil {
+		if res.DeletedCount == 0 {
 			elem.disconnect(client)
-			elem.HTTPResponder.respondError(errors.New("noting was inserted"))
+			elem.HTTPResponder.respondError(&NoMatchesError{Collection: elem.Collection})
 			return nil
 		}
 		elem.disconnect(client)
-		return []map[string]interface{}{{"id": res.InsertedID}}
+		return []map[string]interface{}{{"delCount": res.DeletedCount}}
 	}
 	elem.disconnect(client)
 	elem.respondError(&UnauthorizedError{DeniedAction: "inserting element"})

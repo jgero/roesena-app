@@ -1,31 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"mongodriver"
 	"net/http"
 	"requesthandler"
 )
 
 func main() {
-	client, err := mongodriver.Connect()
-	if err != nil {
-		fmt.Println(err)
-	}
-	http.HandleFunc("/api/person/", func(w http.ResponseWriter, req *http.Request) {
-		requesthandler.HandlePerson(w, req, client)
-	})
-	http.HandleFunc("/api/login", func(w http.ResponseWriter, req *http.Request) {
-		requesthandler.HandleLogin(w, req, client)
-	})
-	http.HandleFunc("/api/logout/", func(w http.ResponseWriter, req *http.Request) {
-		requesthandler.HandleLogout(w, req, client)
-	})
-	http.HandleFunc("/api/upgradeUser", func(w http.ResponseWriter, req *http.Request) {
-		requesthandler.HandleNewUser(w, req, client)
-	})
-	http.HandleFunc("/api/restore", func(w http.ResponseWriter, req *http.Request) {
-		requesthandler.HandleRestore(w, req, client)
-	})
+	http.HandleFunc("/api/person/", requesthandler.HandlePerson)
+	http.HandleFunc("/api/login", requesthandler.CreateSession)
+	http.HandleFunc("/api/logout/", requesthandler.CloseSession)
+	http.HandleFunc("/api/restore", requesthandler.RestoreSession)
+	http.HandleFunc("/api/upgradeUser", requesthandler.UpgradeUser)
 	http.ListenAndServe(":8080", nil)
 }

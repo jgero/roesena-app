@@ -3,16 +3,17 @@ package db
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 )
 
-// InsertOneElement collects all the needed fields to insert an element into the database
-type InsertOneElement struct {
+// ReplaceOneElement collects all the needed fields to replace an element into the database
+type ReplaceOneElement struct {
 	// the name of the collection on the database
 	Collection string
-	// the element that should be inserted
+	// the data with which the filter target should be replaced with
 	Element io.ReadCloser
+	// the filter for searching the elements, the autority group check has to be already in this filter!!
+	Filter interface{}
 	// session id to check if the user is allowed to do this action
 	Session string
 	// "extend" the client type
@@ -22,7 +23,7 @@ type InsertOneElement struct {
 }
 
 // Run then executes the query on the database, including the authority check
-func (elem *InsertOneElement) Run() []map[string]interface{} {
+func (elem *ReplaceOneElement) Run() []map[string]interface{} {
 	client := elem.connect()
 	collection := client.Database("roesena").Collection(elem.Collection)
 	auth, err := getAuthority(elem.Session, client)
@@ -33,26 +34,26 @@ func (elem *InsertOneElement) Run() []map[string]interface{} {
 	}
 	// TODO: do some actual checkin, not just set it to 4
 	if auth >= 4 {
-		var insertEl interface{}
+		var insertEl map[string]interface{}
 		err = json.NewDecoder(elem.Element).Decode(&insertEl)
 		if err != nil {
 			elem.HTTPResponder.respondError(err)
 			return nil
 		}
 		// insert one result is just the id, so not necessary to check it
-		res, er := collection.InsertOne(context.TODO(), insertEl)
+		res, er := collection.ReplaceOne(context.TODO(), elem.Filter, insertEl)
 		if er != nil {
 			elem.disconnect(client)
 			elem.HTTPResponder.respondError(err)
 			return nil
 		}
-		if res.InsertedID == nil {
+		if res.ModifiedCount == 0 {
 			elem.disconnect(client)
-			elem.HTTPResponder.respondError(errors.New("noting was inserted"))
+			elem.HTTPResponder.respondError(&NoMatchesError{Collection: elem.Collection})
 			return nil
 		}
 		elem.disconnect(client)
-		return []map[string]interface{}{{"id": res.InsertedID}}
+		return []map[string]interface{}{insertEl}
 	}
 	elem.disconnect(client)
 	elem.respondError(&UnauthorizedError{DeniedAction: "inserting element"})

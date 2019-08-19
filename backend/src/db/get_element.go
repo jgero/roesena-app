@@ -12,10 +12,12 @@ type GetElement struct {
 	Filter interface{}
 	// "extend" the client type
 	dbClient
+	// "extend" the responder type
+	HTTPResponder
 }
 
 // Run then executes the query on the database, including the authority check
-func (elem *GetElement) Run() ([]map[string]interface{}, error) {
+func (elem *GetElement) Run() []map[string]interface{} {
 	// get the collection that is specified in the struct
 	client := elem.connect()
 	collection := client.Database("roesena").Collection(elem.Collection)
@@ -24,7 +26,8 @@ func (elem *GetElement) Run() ([]map[string]interface{}, error) {
 	// return the original error and empty []map
 	if err != nil {
 		elem.disconnect(client)
-		return []map[string]interface{}{}, err
+		elem.HTTPResponder.respondError(err)
+		return nil
 	}
 	// try to parse the result
 	var result []map[string]interface{}
@@ -32,8 +35,15 @@ func (elem *GetElement) Run() ([]map[string]interface{}, error) {
 	// return the original error and empty []map
 	if err != nil {
 		elem.disconnect(client)
-		return []map[string]interface{}{}, err
+		elem.HTTPResponder.respondError(err)
+		return nil
+	}
+	if len(result) == 0 {
+		// respod with error when nothing matched
+		elem.disconnect(client)
+		elem.HTTPResponder.respondError(&NoMatchesError{Collection: elem.Collection})
+		return nil
 	}
 	elem.disconnect(client)
-	return result, nil
+	return result
 }

@@ -15,10 +15,9 @@ func (e *UnauthorizedError) Error() string {
 
 // NoMatchesError is used, when a database query does not carry any results
 type NoMatchesError struct {
-	Field string
-	Value string
+	Collection string
 }
 
 func (e *NoMatchesError) Error() string {
-	return fmt.Sprintf("no matches for for field '%v' with value '%v'", e.Field, e.Value)
+	return fmt.Sprintf("no matches in collection '%v'", e.Collection)
 }

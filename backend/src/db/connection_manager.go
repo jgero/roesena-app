@@ -31,3 +31,8 @@ func (dbClient) connect() *mongo.Client {
 func (dbClient) disconnect(client *mongo.Client) {
 	client.Disconnect(context.TODO())
 }
+
+// QueryElement defines the interface for executing the querys which the types define
+type QueryElement interface {
+	Run() []map[string]interface{}
+}
