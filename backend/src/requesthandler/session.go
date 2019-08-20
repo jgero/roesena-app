@@ -96,13 +96,6 @@ func RestoreSession(w http.ResponseWriter, req *http.Request) {
 			json.NewEncoder(w).Encode(map[string]interface{}{"Error": "no cookie left over from previous sessions"})
 			return
 		}
-		// something went wrong, delete cookie
-		// this is done by setting max age to -1
-		http.SetCookie(w, &http.Cookie{
-			Name:   "session_token",
-			Value:  "",
-			MaxAge: -1,
-		})
 		// check which user the cookie belongs to
 		responder := db.HTTPResponder{W: w}
 		qElem := db.GetElement{
@@ -112,6 +105,13 @@ func RestoreSession(w http.ResponseWriter, req *http.Request) {
 		}
 		res := qElem.Run()
 		if res == nil {
+			// something went wrong, delete cookie
+			// this is done by setting max age to -1
+			http.SetCookie(w, &http.Cookie{
+				Name:   "session_token",
+				Value:  "",
+				MaxAge: -1,
+			})
 			return
 		}
 		// arriving here means the session_id of the cookie was still valid

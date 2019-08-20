@@ -1,5 +1,9 @@
 <script>
   export let day;
+  // export let events;
+  // let evs;
+
+  // $: evs = getEvents(day, events);
 </script>
 
 <style>

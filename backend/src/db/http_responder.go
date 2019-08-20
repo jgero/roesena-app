@@ -12,16 +12,16 @@ type HTTPResponder struct {
 
 // respondError creates a response for an error
 func (res *HTTPResponder) respondError(e error) {
-	json.NewEncoder(res.W).Encode(map[string]interface{}{"Error": e.Error()})
 	switch e.(type) {
 	case *NoMatchesError:
 		res.W.WriteHeader(http.StatusNotFound)
-		return
+		break
 	case *UnauthorizedError:
 		res.W.WriteHeader(http.StatusUnauthorized)
-		return
+		break
 	default:
 		res.W.WriteHeader(http.StatusInternalServerError)
-		return
+		break
 	}
+	json.NewEncoder(res.W).Encode(map[string]interface{}{"Error": e.Error()})
 }

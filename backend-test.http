@@ -41,3 +41,7 @@ GET http://localhost:5000/api/person/asdf HTTP/1.1
 ###
 
 DELETE  http://localhost:5000/api/person/foo HTTP/1.1
+
+###
+
+GET http://localhost:5000/api/event?start=2018-08-30T22:00:00.000Z&end=2020-09-02T22:00:00.000Z HTTP/1.1

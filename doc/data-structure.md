@@ -12,7 +12,7 @@
 ```json
 {
   "name": "john",
-  "authLevel": 4,
+  "authorityGroup": 4,
   "groups": [
     "9827d34023fa50230408",
     "23049daf8230957dt3n40"
@@ -21,7 +21,7 @@
 ```
 
 - `name` contains the name string of the person
-- `authLevel` is a number which defines what content this person can access
+- `authorityGroup` is a number which defines what content this person can access
 - `groups` is an array of the unique ids of the groups this person belongs to
 
 ### articles

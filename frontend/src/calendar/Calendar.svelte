@@ -1,6 +1,10 @@
 <script>
   import DayDetails from "./DayDetails.svelte";
-  import { getMonthName, makeMondayFirst } from "./calendarLib.js";
+  import {
+    getMonthName,
+    makeMondayFirst,
+    getEvents
+  } from "../libs/calendarLib.js";
 
   import { fly } from "svelte/transition";
 
@@ -13,6 +17,7 @@
   let month;
   let year;
   let days = [];
+  let events = [];
 
   try {
     // try to set the calendar month to the date in the URL params, if not just use the current month
@@ -30,13 +35,42 @@
     // this all gets updated when the date changes
     month = date.getMonth();
     year = date.getFullYear();
+    getEvents(date)
+      .then(evs => {
+        // take the events and map them to date objects
+        events = [...evs].map(el => {
+          el["startDate"] = new Date(el["startDate"]);
+          el["endDate"] = new Date(el["endDate"]);
+          return el;
+        });
+        updateDays();
+      })
+      .catch(err => {
+        events = [];
+        updateDays();
+      });
+  }
+
+  function updateDays() {
     days = new Array(new Date(year, month, 0).getDate())
       .fill(undefined)
       .map((day, ind) => ({
         gridArea: getGridArea(ind),
-        events: getEventsForDay(ind),
+        events: getEventsForDay(ind + 1),
         date: ind + 1
       }));
+  }
+
+  function getEventsForDay(day) {
+    if (events) {
+      return events
+        .filter(
+          ev => ev.startDate.getDay() >= day || ev.endDate.getDay() <= day
+        )
+        .map(ev => ev.title);
+    } else {
+      return [];
+    }
   }
 
   function getGridArea(ind) {
@@ -46,13 +80,6 @@
       ) + 3;
     const column = new Date(year, month, ind).getDay() + 2;
     return `${row} / ${column} / ${row} / ${column}`;
-  }
-
-  function getEventsForDay(day) {
-    if (day === 3 || day === 12 || day === 28) {
-      return ["event1", "event number 2", "and yet another thing"];
-    }
-    return [];
   }
 
   function goNextMonth() {
