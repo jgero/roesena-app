@@ -22,6 +22,7 @@
 
 ## Date display
 
+- just get rid of ISO date shit
 - fix up the ISODate stuff
   - date is wrong in browser URL for month selection (off by one month)
   - check number of days in month again, probably wrong when dates are broken

@@ -4,29 +4,29 @@ import {
 
 export function getMonthName(month) {
   switch (month) {
-    case 0:
-      return "Januar";
     case 1:
-      return "Februar";
+      return "Januar";
     case 2:
-      return "März";
+      return "Februar";
     case 3:
-      return "April";
+      return "März";
     case 4:
-      return "Mai";
+      return "April";
     case 5:
-      return "Juni";
+      return "Mai";
     case 6:
-      return "Juli";
+      return "Juni";
     case 7:
-      return "August";
+      return "Juli";
     case 8:
-      return "September";
+      return "August";
     case 9:
-      return "Oktober";
+      return "September";
     case 10:
-      return "November";
+      return "Oktober";
     case 11:
+      return "November";
+    case 12:
       return "Dezember";
   }
 }
@@ -43,10 +43,7 @@ export function makeMondayFirst(day) {
 
 export function getEvents(date) {
   return new Promise((resolve, reject) => {
-    // hour has to be set to 0 - timezone offset, because otherwise wrong day would be used
-    const startString = new Date(date.getFullYear(), date.getMonth(), 1, 0 - date.getTimezoneOffset() / 60).toISOString();
-    const endString = new Date(date.getFullYear(), date.getMonth(), 0, 0 - date.getTimezoneOffset() / 60).toISOString();
-    let uri = `/api/event?start=${startString}&end=${endString}`;
+    let uri = `/api/event?start=${date.year}-${date.month}-1&end=${date.year}-${date.month}-${new Date(date.year, date.month, 0).getDate()}`;
     get(uri).then(res => {
       const result = JSON.parse(res);
       if (result.length > 0) {

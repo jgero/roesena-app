@@ -3,7 +3,9 @@
   import {
     getMonthName,
     makeMondayFirst,
-    getEvents
+    getEvents,
+    getNextMonth,
+    getPreviousMonth
   } from "../libs/calendarLib.js";
 
   import { fly } from "svelte/transition";
@@ -13,28 +15,12 @@
 
   const weekdayStrings = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
-  let date;
-  let month;
-  let year;
+  let date = getDateFromParams(new URL(location.href).searchParams.get("date"));
   let days = [];
   let events = [];
 
-  try {
-    // try to set the calendar month to the date in the URL params, if not just use the current month
-    let param = new URL(location.href).searchParams.get("date");
-    date = param ? new Date(param) : new Date();
-    // update the url so it works on reload
-    navigate("/calendar?date=" + date.toISOString());
-  } catch (e) {
-    // just use "today" as selected date on error
-    date = new Date();
-    navigate("/calendar?date=" + date.toISOString());
-  }
-
   $: {
     // this all gets updated when the date changes
-    month = date.getMonth();
-    year = date.getFullYear();
     getEvents(date)
       .then(evs => {
         // take the events and map them to date objects
@@ -49,10 +35,47 @@
         events = [];
         updateDays();
       });
+    // update the url so it works on reload
+    navigate(`/calendar?date=${date.year}-${date.month}`);
+  }
+
+  // try to set the calendar month to the date in the URL params, if not just use the current month
+  function getDateFromParams(param) {
+    if (param) {
+      let parts = param.split("/");
+      if (parts.length == 2) {
+        return {
+          year: param.split("/")[0],
+          month: param.split("/")[1]
+        };
+      }
+    }
+    return {
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1
+    };
+  }
+
+  function goNextMonth() {
+    if (date.month < 12) {
+      date.month += 1;
+    } else {
+      date.year += 1;
+      date.month = 1;
+    }
+  }
+
+  function goPreviousMonth() {
+    if (date.month > 1) {
+      date.month -= 1;
+    } else {
+      date.year -= 1;
+      date.month = 12;
+    }
   }
 
   function updateDays() {
-    days = new Array(new Date(year, month, 0).getDate())
+    days = new Array(new Date(date.year, date.month, 0).getDate())
       .fill(undefined)
       .map((day, ind) => ({
         gridArea: getGridArea(ind),
@@ -76,32 +99,10 @@
   function getGridArea(ind) {
     const row =
       Math.floor(
-        (makeMondayFirst(new Date(year, month, 1).getDay()) + ind) / 7
+        (makeMondayFirst(new Date(date.year, date.month, 1).getDay()) + ind) / 7
       ) + 3;
-    const column = new Date(year, month, ind).getDay() + 2;
+    const column = new Date(date.year, date.month, ind).getDay() + 2;
     return `${row} / ${column} / ${row} / ${column}`;
-  }
-
-  function goNextMonth() {
-    if (date.getMonth() < 11) {
-      var newMonth = date.getMonth() + 1;
-      date = new Date(date.getFullYear(), newMonth);
-    } else {
-      let newYear = date.getFullYear() + 1;
-      date = new Date(newYear, 0);
-    }
-    navigate("/calendar?date=" + date.toISOString());
-  }
-
-  function goPreviousMonth() {
-    if (date.getMonth() > 0) {
-      var newMonth = date.getMonth() - 1;
-      date = new Date(date.getFullYear(), newMonth);
-    } else {
-      let newYear = date.getFullYear() - 1;
-      date = new Date(newYear, 11);
-    }
-    navigate("/calendar?date=" + date.toISOString());
   }
 </script>
 
@@ -169,7 +170,7 @@
 <main
   in:fly={{ x: -100, delay: ROUTER_ANIMATION_DURATION, duration: ROUTER_ANIMATION_DURATION }}
   out:fly={{ x: 100, duration: ROUTER_ANIMATION_DURATION }}>
-  <h1>{getMonthName(month)} {year}</h1>
+  <h1>{getMonthName(date.month)} {date.year}</h1>
   {#each weekdayStrings as weekday}
     <h2 style="grid-area: {weekday};">{weekday}</h2>
   {/each}
