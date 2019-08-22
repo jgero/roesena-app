@@ -4,8 +4,8 @@ import (
 	"db"
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"strings"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -20,9 +20,11 @@ func HandleEvent(w http.ResponseWriter, req *http.Request) {
 	start, isStart := req.URL.Query()["start"]
 	end, isEnd := req.URL.Query()["end"]
 	if len(p) == 3 && isStart && isEnd && req.Method == "GET" {
-		startTime, serr := time.Parse(time.RFC3339, start[0])
-		endTime, eerr := time.Parse(time.RFC3339, end[0])
-		if serr != nil || eerr != nil {
+		// convert all the start parts to ints
+		startDate, syok := strconv.Atoi(start[0])
+		// convert all the end parts to ints
+		endDate, eyok := strconv.Atoi(end[0])
+		if syok != nil || eyok != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(map[string]string{"Error": "bad time parameters"})
 			return
@@ -32,28 +34,17 @@ func HandleEvent(w http.ResponseWriter, req *http.Request) {
 			Collection: "events",
 			// start date or end date have to be in the timeframe
 			Filter: bson.M{
-				"$or": bson.A{bson.M{
-					"$and": bson.A{bson.M{
+				"$and": bson.A{
+					// startDate is in the filter timespan
+					bson.M{
 						"startDate": bson.M{
-							"$gte": startTime,
+							"$lte": endDate,
 						},
 					},
-						bson.M{
-							"startDate": bson.M{
-								"$lte": endTime,
-							},
-						}},
-				},
 					bson.M{
-						"$and": bson.A{bson.M{
-							"endDate": bson.M{
-								"$gte": startTime,
-							},
-						}, bson.M{
-							"endDate": bson.M{
-								"$lte": endTime,
-							},
-						}},
+						"endDate": bson.M{
+							"$gte": startDate,
+						},
 					},
 				},
 			},

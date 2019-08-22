@@ -43,7 +43,7 @@ export function makeMondayFirst(day) {
 
 export function getEvents(date) {
   return new Promise((resolve, reject) => {
-    let uri = `/api/event?start=${date.year}-${date.month}-1&end=${date.year}-${date.month}-${new Date(date.year, date.month, 0).getDate()}`;
+    let uri = `/api/event?start=${toDBDateString({year: date.year, month: date.month, day: 1})}&end=${toDBDateString({year: date.year, month: date.month, day: new Date(date.year, date.month, 0).getDate()})}`;
     get(uri).then(res => {
       const result = JSON.parse(res);
       if (result.length > 0) {
@@ -56,4 +56,10 @@ export function getEvents(date) {
       reject(err);
     });
   });
+}
+
+export function toDBDateString(date) {
+  let m = date.month > 9 ? date.month : '0' + date.month;
+  let d = date.day > 9 ? date.day : '0' + date.day;
+  return `${date.year}${m}${d}`;
 }

@@ -3,9 +3,7 @@
   import {
     getMonthName,
     makeMondayFirst,
-    getEvents,
-    getNextMonth,
-    getPreviousMonth
+    getEvents
   } from "../libs/calendarLib.js";
 
   import { fly } from "svelte/transition";
@@ -24,6 +22,7 @@
     getEvents(date)
       .then(evs => {
         // take the events and map them to date objects
+        console.log(evs);
         events = [...evs].map(el => {
           el["startDate"] = new Date(el["startDate"]);
           el["endDate"] = new Date(el["endDate"]);
