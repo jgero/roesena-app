@@ -63,3 +63,17 @@ export function toDBDateString(date) {
   let d = date.day > 9 ? date.day : '0' + date.day;
   return `${date.year}${m}${d}`;
 }
+
+export function fromDBDateString(datenum) {
+  let dateString = datenum.toString();
+  let year = parseInt(dateString.slice(0, 4));
+  let month = parseInt(dateString.slice(4, 6));
+  let day = parseInt(dateString.slice(6, 8));
+  let date = {
+    year: year,
+    month: month,
+    day: day
+  };
+  return date;
+
+}

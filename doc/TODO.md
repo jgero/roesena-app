@@ -2,11 +2,7 @@
 
 ## Database
 
-- don't use only one connection
-- create multiple connections
-- create easy way to open and close connections
-  - interface which implements the connect and disconnect stuff
-  - types which access the database implement this interface
+- change db collection names? persons may not fit very well
 
 ## Login
 
@@ -14,19 +10,8 @@
 - add "this site uses cookies" popup
 - automatically re-route the user to login page when access to something gets denied
 - then after login directly navigate back to the page he came from
-- change the login icon to something else when a user is logged in, so you can actually see if you are logged in or not
-- improve on the "inject-able" way of sharing the name of the user (make it reactive)
 - think of good way to check authentication
 - especially for adding elements
-- change db collection names? persons may not fit very well
-
-## Date display
-
-- just get rid of ISO date shit
-- fix up the ISODate stuff
-  - date is wrong in browser URL for month selection (off by one month)
-  - check number of days in month again, probably wrong when dates are broken
-  - matching and displaying dates is not working properly
 
 ### Ideas
 

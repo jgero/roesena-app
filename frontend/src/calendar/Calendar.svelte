@@ -3,7 +3,9 @@
   import {
     getMonthName,
     makeMondayFirst,
-    getEvents
+    getEvents,
+    toDBDateString,
+    fromDBDateString
   } from "../libs/calendarLib.js";
 
   import { fly } from "svelte/transition";
@@ -21,13 +23,7 @@
     // this all gets updated when the date changes
     getEvents(date)
       .then(evs => {
-        // take the events and map them to date objects
-        console.log(evs);
-        events = [...evs].map(el => {
-          el["startDate"] = new Date(el["startDate"]);
-          el["endDate"] = new Date(el["endDate"]);
-          return el;
-        });
+        events = evs;
         updateDays();
       })
       .catch(err => {
@@ -84,15 +80,16 @@
   }
 
   function getEventsForDay(day) {
-    if (events) {
-      return events
-        .filter(
-          ev => ev.startDate.getDay() >= day || ev.endDate.getDay() <= day
-        )
-        .map(ev => ev.title);
-    } else {
-      return [];
-    }
+    return events
+      .filter(ev => {
+        return (
+          ev.startDate <=
+            toDBDateString({ year: date.year, month: date.month, day: day }) &&
+          ev.endDate >=
+            toDBDateString({ year: date.year, month: date.month, day: day })
+        );
+      })
+      .map(ev => ev.title);
   }
 
   function getGridArea(ind) {
