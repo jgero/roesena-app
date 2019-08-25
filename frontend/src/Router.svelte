@@ -2,6 +2,7 @@
   import { fly } from "svelte/transition";
 
   import { get } from "./libs/http";
+  import { routes } from "./config.js";
 
   import Header from "./Header.svelte";
   import Footer from "./Footer.svelte";
@@ -66,40 +67,6 @@
     })
     .catch(el => console.log(el));
 
-  const routes = [
-    {
-      route: "/",
-      component: Startpage,
-      props: ["ROUTER_ANIMATION_DURATION", "navigate"]
-    },
-    {
-      route: "/calendar",
-      component: Calendar,
-      props: ["ROUTER_ANIMATION_DURATION", "navigate"]
-    },
-    {
-      route: "/events",
-      component: EventOverview,
-      props: ["ROUTER_ANIMATION_DURATION", "navigate"]
-    },
-    {
-      route: "/login",
-      component: Login,
-      props: [
-        "ROUTER_ANIMATION_DURATION",
-        "navigate",
-        "getUsername",
-        "setUsername",
-        "onUsernameChange"
-      ]
-    },
-    {
-      route: "*",
-      component: NotFound,
-      props: ["navigate"]
-    }
-  ];
-
   let params = {};
   let component;
 
@@ -163,6 +130,6 @@
     <svelte:component this={component} {...params} />
   </main>
   <footer>
-    <Footer navigate={injectables.navigate} />
+    <Footer navigate={injectables.navigate} {route} />
   </footer>
 </div>
