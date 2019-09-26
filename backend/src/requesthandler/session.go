@@ -38,7 +38,7 @@ func CreateSession(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// check if password is a string
-		if checkPassword(password, res[0]["password"]) {
+		if !checkPassword(password, res[0]["password"]) {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]interface{}{"Error": fmt.Sprintf("wrong password")})
 			return
@@ -61,7 +61,11 @@ func CreateSession(w http.ResponseWriter, req *http.Request) {
 			Name:  "session_token",
 			Value: sessionID,
 		})
-		json.NewEncoder(w).Encode(map[string]interface{}{"status": "authenticated"})
+		// delete private properties
+		delete(res[0], "password")
+		delete(res[0], "sessionId")
+		// send data of authenticated user back
+		json.NewEncoder(w).Encode(res[0])
 		return
 	}
 	// all unused HTTP methods arrive here
@@ -72,7 +76,7 @@ func CreateSession(w http.ResponseWriter, req *http.Request) {
 func checkPassword(pwone string, pwtwo interface{}) bool {
 	if reqPW, okay := pwtwo.(string); okay {
 		// compare the password from the db with the password from the user input
-		err := bcrypt.CompareHashAndPassword([]byte(pwone), []byte(reqPW))
+		err := bcrypt.CompareHashAndPassword([]byte(reqPW), []byte(pwone))
 		if err == nil {
 			return true
 		}
@@ -115,8 +119,11 @@ func RestoreSession(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// arriving here means the session_id of the cookie was still valid
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(map[string]interface{}{"username": res[0]["name"]})
+		// delete private properties
+		delete(res[0], "password")
+		delete(res[0], "sessionId")
+		// send data of authenticated user back
+		json.NewEncoder(w).Encode(res[0])
 	}
 }
 

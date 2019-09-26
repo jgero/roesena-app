@@ -1,0 +1,25 @@
+@import './colors.scss';
+
+input.underlined {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid $secondary;
+  font-size: 1rem;
+}
+
+textarea.box {
+  outline: none;
+  border: 1px solid $secondary;
+  resize: none;
+  font-size: 1rem;
+  font-family: Roboto;
+}
+
+input.underlined,
+textarea.box {
+  transition: border-color ease-out .2s;
+
+  &:focus {
+    border-color: $primary;
+  }
+}

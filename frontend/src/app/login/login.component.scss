@@ -1,0 +1,31 @@
+@import '../shared/partials/colors.scss';
+@import '../shared/partials/button.scss';
+
+:host {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginBox {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+input[type="text"],
+input[type="password"] {
+  margin: 1rem;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid $primary;
+}
+
+p>span {
+  color: $secondary;
+  text-decoration-line: underline;
+  cursor: pointer;
+}

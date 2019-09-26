@@ -37,6 +37,7 @@ func (elem *ReplaceOneElement) Run() []map[string]interface{} {
 		var insertEl map[string]interface{}
 		err = json.NewDecoder(elem.Element).Decode(&insertEl)
 		if err != nil {
+			elem.disconnect(client)
 			elem.HTTPResponder.respondError(err)
 			return nil
 		}
@@ -44,7 +45,7 @@ func (elem *ReplaceOneElement) Run() []map[string]interface{} {
 		res, er := collection.ReplaceOne(context.TODO(), elem.Filter, insertEl)
 		if er != nil {
 			elem.disconnect(client)
-			elem.HTTPResponder.respondError(err)
+			elem.HTTPResponder.respondError(er)
 			return nil
 		}
 		if res.ModifiedCount == 0 {

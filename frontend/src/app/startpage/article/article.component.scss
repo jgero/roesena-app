@@ -1,0 +1,38 @@
+@import '../../shared/partials/colors.scss';
+
+:host {
+  width: 50rem;
+  height: 17rem;
+  border: 2px solid $inactive;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  margin: 10px;
+  transition: transform ease-out 0.2s;
+  cursor: pointer;
+  z-index: 2;
+  background-color: $font-secondary;
+
+  img {
+    height: 100%;
+    margin-right: 10px;
+  }
+
+  .textContent {
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      height: 2rem;
+      width: 100%;
+      top: calc(100% - 2rem);
+      background: linear-gradient(0deg,
+          rgba($font-secondary, 1) 0%,
+          rgba(255, 0, 0, 0) 100%);
+    }
+  }
+}

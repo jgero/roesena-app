@@ -28,6 +28,8 @@
 
 ```json
 {
+  "_id": "aasdfa234023asdf",
+  "date": "20190804",
   "title": "article title",
   "content": "this is the text content of the article",
   "images": [
@@ -37,6 +39,8 @@
 }
 ```
 
+- `_id` is the unique id in the database for the article
+- `date` stores the date when the article was created
 - `title` contains the title of the article
 - `content` is the text content of the article
 - `images` contains the array of image ids that belong to this article
@@ -45,8 +49,9 @@
 
 ```json
 {
+  "_id": "2903847509278345",
   "description": "this picture shows a dog",
-  "URL": "https://link.to.a.webpage.com/dog",
+  "image": "data of the image",
   "tags": [
     "dog",
     "having fun",

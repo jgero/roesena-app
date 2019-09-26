@@ -1,0 +1,5 @@
+<div *ngFor="let image of images | async; let i = index" class="imageContainer" (click)="onSelect(i)"
+  [ngClass]="{'active': this.artServ.selectedArticle.getValue().images.includes(image._id, 0)}">
+  <img [src]="image.image | safeURL">
+  <span> {{image.description}} </span>
+</div>

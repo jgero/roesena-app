@@ -1,0 +1,53 @@
+@import '../../shared/partials/colors.scss';
+@import '../../shared/partials/button.scss';
+@import '../../shared/partials/input.scss';
+
+:host {
+  flex: 1;
+
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 15vh auto;
+  grid-template-areas:
+    "search search"
+    "list edit";
+
+  app-search {
+    grid-area: search;
+    margin: auto;
+  }
+
+  .articleList {
+    grid-area: list;
+    height: max-content;
+    padding-right: 5rem;
+    border-right: 2px solid $inactive;
+
+    &>li {
+      list-style-type: none;
+      padding: .2rem .5rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $secondary;
+        color: $font-secondary;
+      }
+    }
+
+
+  }
+
+  .article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &>* {
+      width: 70%;
+    }
+
+    h1 {
+      color: $font-accent;
+    }
+  }
+}

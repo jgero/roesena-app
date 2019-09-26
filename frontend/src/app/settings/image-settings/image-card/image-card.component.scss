@@ -1,0 +1,78 @@
+// @import '../../shared/partials/input.scss';
+// @import '../../shared/partials/button.scss';
+@import '../../../shared/partials/colors.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: .5rem;
+  border: 1px solid $inactive;
+  margin: 1rem;
+  position: relative;
+  height: max-content;
+
+  .description {
+    font-weight: bold;
+  }
+
+  .tags {
+    display: flex;
+    flex: 1;
+  }
+
+  img {
+    max-width: 10rem;
+    max-height: 10rem;
+  }
+
+  img,
+  img+* {
+    margin-bottom: .5rem;
+  }
+
+  &:hover .overlay {
+    opacity: 1;
+  }
+
+  .overlay {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity ease-out .2s;
+
+    div {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all ease-out .2s;
+      cursor: pointer;
+      background-color: rgba($primary, .8);
+      opacity: .4;
+      font-weight: bold;
+      font-size: 2rem;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: $font;
+    }
+
+    svg+svg {
+      right: 2rem;
+    }
+  }
+}

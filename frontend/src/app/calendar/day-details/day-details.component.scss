@@ -1,0 +1,24 @@
+@import '../../shared/partials/colors.scss';
+
+:host {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.events {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.event {
+  background-color: $secondary;
+  color: $font-secondary;
+  display: block;
+  margin: 2px 0;
+  width: 100%;
+  text-align: center;
+}

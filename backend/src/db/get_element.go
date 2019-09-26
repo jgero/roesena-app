@@ -2,6 +2,8 @@ package db
 
 import (
 	"context"
+
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // GetElement collects all the needed fields to insert an element into the database
@@ -10,6 +12,8 @@ type GetElement struct {
 	Collection string
 	// the filter for searching the elements, the autority group check has to be already in this filter!!
 	Filter interface{}
+	// the fields that should be returned
+	Projection interface{}
 	// "extend" the client type
 	dbClient
 	// "extend" the responder type
@@ -22,7 +26,7 @@ func (elem *GetElement) Run() []map[string]interface{} {
 	client := elem.connect()
 	collection := client.Database("roesena").Collection(elem.Collection)
 	// find all the elements that match this filter
-	res, err := collection.Find(context.TODO(), elem.Filter)
+	res, err := collection.Find(context.TODO(), elem.Filter, options.Find().SetProjection(elem.Projection))
 	// return the original error and empty []map
 	if err != nil {
 		elem.disconnect(client)

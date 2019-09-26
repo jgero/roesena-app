@@ -1,34 +1,32 @@
-version: '3.5'
-
+version: "3.5"
 services:
   go:
     build:
       context: ./backend/
-      dockerfile: Dockerfile
+      dockerfile: $PWD/Docker/dev.backend.Dockerfile
     links:
       - mongo
-  svelte:
-    build: 
+  angular:
+    build:
       context: ./frontend/
-      dockerfile: Dockerfile
+      dockerfile: $PWD/Docker/dev.frontend.Dockerfile
     volumes:
-      - './frontend/:/usr/src/app'
-      # this anonymous volume prevents the node_modules from being overwritten
-      - '/usr/src/app/node_modules'
-    ports:
-      - 35729:35729
+      - "./frontend/:/app"
+      - "/app/node_modules"
   mongo:
-    image: mongo:latest
+    build:
+      context: ./database/
+      dockerfile: $PWD/Docker/database.Dockerfile
     ports:
       - 27017:27017
     volumes:
       - ./database/storage:/data/db
   nginx:
-      build:
-        context: ./nginx/
-        dockerfile: Dockerfile
-      ports:
-        - 5000:80
-      links:
+    build:
+      context: ./proxy/
+      dockerfile: $PWD/Docker/proxy.Dockerfile
+    ports:
+      - 5000:80
+    links:
       - go
-      - svelte
+      - angular

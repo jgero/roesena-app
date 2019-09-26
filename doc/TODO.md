@@ -1,5 +1,11 @@
 # TODO
 
+## Help-Page
+
+- add how to contact someone when:
+  - a page is missing or a link is broken
+- what to do when you forgot your password
+
 ## Database
 
 - change db collection names? persons may not fit very well
@@ -8,7 +14,6 @@
 
 - check cookies on API requests
 - add "this site uses cookies" popup
-- automatically re-route the user to login page when access to something gets denied
 - then after login directly navigate back to the page he came from
 - think of good way to check authentication
 - especially for adding elements

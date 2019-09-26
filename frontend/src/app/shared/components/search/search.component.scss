@@ -1,0 +1,36 @@
+@import '../../partials/colors.scss';
+
+:host {
+  position: relative;
+  display: inline-block;
+
+  input {
+    outline: none;
+    font-size: 3rem;
+    border: solid $inactive 2px;
+    padding: 5px 4rem 5px 2rem;
+    border-radius: 3rem;
+    transition: border-color ease-out 0.2s;
+    color: $inactive;
+
+    &:focus {
+      border-color: $primary;
+      color: $font-accent;
+    }
+
+    &:focus+svg {
+      color: $primary;
+    }
+  }
+
+  svg {
+    position: absolute;
+    top: 10px;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    color: $inactive;
+    transition: color ease-out 0.2s;
+
+  }
+}

@@ -1,0 +1,70 @@
+@import '../shared/partials/colors.scss';
+
+:host {
+  height: 100%;
+  width: 100%;
+  color: $font-accent;
+  display: grid;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    ". . . month-header month-header month-header . . ."
+    ". Mo Di Mi Do Fr Sa So ."
+    ". . . . . . . . ."
+    "arrow-left . . . . . . . arrow-right"
+    "arrow-left . . . . . . . arrow-right"
+    ". . . . . . . . ."
+    ". . . . . . . . ."
+    ". . . . . . . . .";
+  padding-bottom: 1rem;
+}
+
+h1 {
+  grid-area: month-header;
+}
+
+h2 {
+  color: $primary;
+  font-size: 2rem;
+}
+
+h1,
+h2 {
+  margin: auto;
+}
+
+.arrow {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-color: $inactive;
+  clip-path: polygon(50% 0, 30% 50%, 50% 100%, 60% 100%, 40% 50%, 60% 0);
+  transition: all ease-out 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: $primary;
+  }
+}
+
+.left {
+  grid-area: arrow-left;
+}
+
+.arrow:hover.right {
+  transform: rotate(180deg) scale(1.05);
+}
+
+.right {
+  grid-area: arrow-right;
+  transform: rotate(180deg);
+}
+
+.day {
+  border: 2px solid $inactive;
+  padding: 2px;
+  min-height: 0;
+}

@@ -3,24 +3,29 @@ package db
 import (
 	"context"
 
-	"errors"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func getAuthority(sessionId string, client *mongo.Client) (int, error) {
+func getAuthority(sessionID string, client *mongo.Client) (int, error) {
 	collection := client.Database("roesena").Collection("persons")
-	filter := bson.M{"sessionId": sessionId}
-	res := collection.FindOne(context.TODO(), filter)
-	var result map[string]interface{}
-	decodeerr := res.Decode(&result)
-	if decodeerr != nil {
-		return -1, decodeerr
+	filter := bson.M{"sessionId": sessionID}
+	res, err := collection.Find(context.TODO(), filter)
+	// error when requesting on db
+	if err != nil {
+		return 0, err
 	}
-	authGrp, ok := result["authorityGroup"].(int)
-	if !ok {
-		return -1, errors.New("authorityGroup is not an int")
+	// try to parse the result
+	var result []map[string]interface{}
+	err = res.All(context.TODO(), &result)
+	// return the original error and empty []map
+	if err != nil {
+		return 0, err
 	}
-	return authGrp, nil
+	// respod with error when nothing matched
+	if len(result) == 0 {
+		return 0, err
+	}
+	authLvl := int(result[0]["authorityLevel"].(float64))
+	return authLvl, nil
 }

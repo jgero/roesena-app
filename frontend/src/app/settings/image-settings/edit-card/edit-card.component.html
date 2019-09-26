@@ -1,0 +1,22 @@
+<label [for]="hash">
+  <ng-container *ngIf="imageData;then image else default"></ng-container>
+  <ng-template #image>
+    <img [src]="imageData | safeURL">
+  </ng-template>
+  <ng-template #default>
+    <div class="placeholderImage"></div>
+  </ng-template>
+</label>
+<input type="file" [id]="hash" accept="image/*" (change)="onSelectFile($event)">
+
+<input type="text" placeholder="Beschreibung" class="underlined" [(ngModel)]="description">
+
+<div class="tags">
+  <app-tag *ngFor="let tag of tags | async; let i = index" [tag]="tag" (click)="removeTag(i)"></app-tag>
+</div>
+
+<input type="text" placeholder="Tags" class="underlined" [(ngModel)]="tagInput" (keyup)="onTagInput($event)">
+
+<svg (click)="onSave()">
+  <use href="assets/svg/save-solid.svg#save-solid" />
+</svg>

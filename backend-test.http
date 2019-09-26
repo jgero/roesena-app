@@ -36,7 +36,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5000/api/person/asdf HTTP/1.1
+GET http://localhost:5000/api/article/ HTTP/1.1
 
 ###
 

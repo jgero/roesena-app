@@ -33,9 +33,11 @@ func (elem *InsertOneElement) Run() []map[string]interface{} {
 	}
 	// TODO: do some actual checkin, not just set it to 4
 	if auth >= 4 {
+		// if true {
 		var insertEl interface{}
-		err = json.NewDecoder(elem.Element).Decode(&insertEl)
+		err := json.NewDecoder(elem.Element).Decode(&insertEl)
 		if err != nil {
+			elem.disconnect(client)
 			elem.HTTPResponder.respondError(err)
 			return nil
 		}
