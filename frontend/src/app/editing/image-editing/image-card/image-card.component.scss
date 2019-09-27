@@ -21,13 +21,12 @@
     flex: 1;
   }
 
-  img {
-    max-width: 10rem;
-    max-height: 10rem;
+  app-image {
+    height: 10rem;
   }
 
-  img,
-  img+* {
+  app-image,
+  app-image+* {
     margin-bottom: .5rem;
   }
 

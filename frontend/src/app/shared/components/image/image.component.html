@@ -1,0 +1,9 @@
+<ng-container *ngIf="src | async then image; else loading"></ng-container>
+
+<ng-template #image>
+  <img [src]="src | async | safeURL" />
+</ng-template>
+
+<ng-template #loading>
+  <div class="spinner"></div>
+</ng-template>

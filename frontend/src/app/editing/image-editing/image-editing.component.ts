@@ -3,11 +3,11 @@ import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-image-settings',
-  templateUrl: './image-settings.component.html',
-  styleUrls: ['./image-settings.component.scss']
+  selector: 'app-image-editing',
+  templateUrl: './image-editing.component.html',
+  styleUrls: ['./image-editing.component.scss']
 })
-export class ImageSettingsComponent implements OnInit {
+export class ImageEditingComponent implements OnInit {
 
   public dbImages = new BehaviorSubject<{ image: string, description: string, tags: string[], _id: string, isEditing: boolean }[]>([]);
 

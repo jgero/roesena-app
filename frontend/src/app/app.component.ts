@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './shared/services/auth.guard';
 import { trigger, transition, style, query, animateChild, group, animate } from '@angular/animations';
 
 @Component({

@@ -5,11 +5,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ArticleService } from './article.service';
 
 @Component({
-  selector: 'app-article-settings',
-  templateUrl: './article-settings.component.html',
-  styleUrls: ['./article-settings.component.scss']
+  selector: 'app-article-editing',
+  templateUrl: './article-editing.component.html',
+  styleUrls: ['./article-editing.component.scss']
 })
-export class ArticleSettingsComponent implements OnInit {
+export class ArticleEditingComponent implements OnInit {
 
   constructor(private http: HttpClient, public artServ: ArticleService) { }
 
