@@ -25,27 +25,20 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.init.pipe(
-      map(user => {
-        if (user) {
-          // logged in
-          if (next.routeConfig.path === 'settings') {
-            // when going to settings check for level 5 too
-            return this.user.getValue().authorityLevel && (this.user.getValue().authorityLevel >= 5);
-          } else {
-            // if route is not to settings, being logged in is enough
-            return true;
-          }
-        } else {
-          // not logged in
-          return this.router.createUrlTree(['login']);
-        }
-      }),
-      // redirect to login if error happened on login
-      catchError(() => of(this.router.createUrlTree(['login'])))
-    );
+    if (this.user.getValue()) {
+      // logged in
+      if (next.routeConfig.path === 'settings') {
+        // when going to settings check for level 5 too
+        return this.user.getValue().authorityLevel && (this.user.getValue().authorityLevel >= 5);
+      } else {
+        // if route is not to settings, being logged in is enough
+        return true;
+      }
+    } else {
+      // not logged in
+      return this.router.createUrlTree(['login']);
+    }
   }
-
 
   constructor(private http: HttpClient, private router: Router) {
     // restore previous sessions

@@ -1,6 +1,5 @@
 <div class="images">
-
-  <ng-container *ngFor="let image of dbImages | async; let i = index">
+  <ng-container *ngFor="let image of images | async; let i = index">
     <ng-container *ngIf="image.isEditing === false;then static else edit"></ng-container>
 
     <ng-template #static>
@@ -11,7 +10,6 @@
       <app-edit-card [image]="image" (saved)="onSave($event)"></app-edit-card>
     </ng-template>
   </ng-container>
-
 
   <app-edit-card [image]="{ image: '', description: '', tags: [], _id: undefined }" (saved)="onSave($event)">
   </app-edit-card>

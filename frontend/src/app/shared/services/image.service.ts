@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { tap, catchError, map } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +25,46 @@ export class ImageService {
       // request image from db
       return this.http.get<{ image: string, description: string, tags: string[], _id: string }[]>(`/api/image?id=${id}`)
         .pipe(
-          tap(images => this.loadedImages = [...this.loadedImages, ...images]),
+          tap({ next: images => this.loadedImages = [...this.loadedImages, ...images] }),
           map(images => images[0])
         );
     }
+  }
+
+  // add a new image to the database
+  public postImage(data: { image: string, description: string, tags: string[] }) {
+    return this.http.post('/api/image', data).pipe(
+      tap({
+        next: (result) => {
+          const withId: any = data;
+          withId._id = result[0].id;
+          this.loadedImages.push(withId);
+          console.log(this.loadedImages);
+        }
+      })
+    );
+  }
+
+  // update an image
+  public putImage(data: { image: string, description: string, tags: string[], _id: string }) {
+    // when updating the id has to be deleted before sending the data
+    const id = data._id;
+    delete data._id;
+    return this.http.put(`/api/image?id=${id}`, data).pipe(
+      tap({
+        next: () => {
+          // after sending id can be added again
+          data._id = id;
+          this.loadedImages[this.loadedImages.findIndex(el => el._id === id)] = data;
+        }
+      })
+    );
+  }
+
+  // delete an image
+  public deleteImage(id: string) {
+    return this.http.delete(`/api/image?id=${id}`).pipe(
+      tap({ next: () => this.loadedImages.splice(this.loadedImages.findIndex(el => el._id === id), 1) })
+    );
   }
 }

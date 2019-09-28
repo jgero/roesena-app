@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { ImageService } from 'src/app/shared/services/image.service';
 
 @Component({
   selector: 'app-image-editing',
@@ -9,20 +10,19 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ImageEditingComponent implements OnInit {
 
-  public dbImages = new BehaviorSubject<{ image: string, description: string, tags: string[], _id: string, isEditing: boolean }[]>([]);
+  public images = new BehaviorSubject<{ description: string, tags: string[], _id: string, isEditing: boolean }[]>([]);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private imgServ: ImageService) {
     this.loadImages();
   }
 
   ngOnInit() { }
 
   private loadImages() {
-    this.http.get<{ image: string, description: string, tags: string[], _id: string }[]>('/api/image?id=*').subscribe({
+    this.http.get<{ description: string, tags: string[], _id: string }[]>('/api/image?id=*').subscribe({
       next: data => {
-        this.dbImages.next(data.map(value => {
+        this.images.next(data.map(value => {
           return ({
-            image: value.image,
             description: value.description,
             tags: value.tags,
             _id: value._id,
@@ -35,15 +35,14 @@ export class ImageEditingComponent implements OnInit {
 
   public onSave(data) {
     if (data._id) {
-      // when updating the id has to be deleted before sending the data
-      const id = data._id;
-      delete data._id;
-      this.http.put(`/api/image?id=${id}`, data).subscribe({
+      // update existing image
+      this.imgServ.putImage(data).subscribe({
         complete: () => this.loadImages(),
         error: (err) => console.log(err)
       });
     } else {
-      this.http.post('/api/image', data).subscribe({
+      // add new image
+      this.imgServ.postImage(data).subscribe({
         complete: () => this.loadImages(),
         error: (err) => console.log(err)
       });
@@ -51,13 +50,13 @@ export class ImageEditingComponent implements OnInit {
   }
 
   public onEdit(index) {
-    const updatedImages = this.dbImages.getValue();
+    const updatedImages = this.images.getValue();
     updatedImages[index].isEditing = true;
-    this.dbImages.next(updatedImages);
+    this.images.next(updatedImages);
   }
 
   public onDelete(id) {
-    this.http.delete(`/api/image?id=${id}`).subscribe({
+    this.imgServ.deleteImage(id).subscribe({
       complete: () => this.loadImages(),
       error: (err) => console.log(err)
     });
