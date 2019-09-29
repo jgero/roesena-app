@@ -1,7 +1,17 @@
-<div class="navBar">
-  <div (click)="router.navigate(['settings', 'persons'])">Personen</div>
-  <div (click)="router.navigate(['settings', 'events'])">Events</div>
-  <div (click)="router.navigate(['settings', 'articles'])">Artikel</div>
-  <div (click)="router.navigate(['settings', 'images'])">Bilder</div>
+<!-- <nav>
+  <div [ngClass]="{'active': activeTab === 'persons'}">
+    <span appHoverable hoverColor="font" routerLink="persons">Personen</span>
+  </div>
+  <div [ngClass]="{'active': activeTab === 'events'}">
+    <span appHoverable hoverColor="font" routerLink="events">Events</span>
+  </div>
+  <div [ngClass]="{'active': activeTab === 'articles'}">
+    <span appHoverable hoverColor="font" routerLink="articles">Artikel</span>
+  </div>
+  <div [ngClass]="{'active': activeTab === 'images'}">
+    <span appHoverable hoverColor="font" routerLink="images">Bilder</span>
+  </div>
+</nav> -->
+<div class="editors">
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>

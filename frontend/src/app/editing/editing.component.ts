@@ -1,16 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-editing',
   templateUrl: './editing.component.html',
   styleUrls: ['./editing.component.scss']
 })
-export class EditingComponent implements OnInit {
+export class EditingComponent implements OnDestroy {
 
-  constructor(public router: Router) { }
+  private routerSub: Subscription;
+  public activeTab: string;
 
-  ngOnInit() {
+  constructor(public router: Router) {
+    this.routerSub = router.events
+      .pipe(filter(routerEvent => routerEvent instanceof NavigationEnd))
+      .subscribe({
+        next: (routerEvent: NavigationEnd) => {
+          this.activeTab = routerEvent.urlAfterRedirects.split('/')[2];
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.routerSub.unsubscribe();
   }
 
 }

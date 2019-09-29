@@ -1,0 +1,39 @@
+@import '../shared/partials/colors.scss';
+
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  header {
+    display: flex;
+
+    .logo {
+      display: flex;
+      height: 3.5rem;
+      border-bottom: 3px solid $primary;
+      cursor: pointer;
+
+      svg {
+        width: 6rem;
+        height: 3rem;
+      }
+
+      span {
+        font-size: 3rem;
+        color: $font-accent;
+
+      }
+
+    }
+
+
+  }
+
+
+  main {
+    flex: 1 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

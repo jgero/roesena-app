@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { StartpageComponent } from './startpage/startpage.component';
 import { ArticleComponent } from './startpage/article/article.component';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
@@ -18,10 +17,14 @@ import { MonthNamePipe } from './calendar/month-name.pipe';
 import { ProfileComponent } from './profile/profile.component';
 import { HelpComponent } from './help/help.component';
 import { SharedModule } from './shared/shared.module';
+import { NavBarComponent } from './main/nav-bar/nav-bar.component';
+import { MainComponent } from './main/main.component';
+import { FooterComponent } from './main/footer/footer.component';
+import { NavBarNavigatorsComponent } from './main/nav-bar/nav-bar-navigators/nav-bar-navigators.component';
+import { NavBarMiscComponent } from './main/nav-bar/nav-bar-misc/nav-bar-misc.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
     StartpageComponent,
     ArticleComponent,
     ErrorpageComponent,
@@ -32,7 +35,12 @@ import { SharedModule } from './shared/shared.module';
     DayDetailsComponent,
     MonthNamePipe,
     ProfileComponent,
-    HelpComponent
+    HelpComponent,
+    NavBarComponent,
+    FooterComponent,
+    MainComponent,
+    NavBarNavigatorsComponent,
+    NavBarMiscComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +51,6 @@ import { SharedModule } from './shared/shared.module';
     SharedModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [MainComponent]
 })
 export class AppModule { }

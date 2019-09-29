@@ -1,0 +1,35 @@
+@import './colors.scss';
+
+.hoverable {
+  position: relative;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    height: 2px;
+    width: 0;
+    background-color: $primary;
+    transition: all ease-out 0.2s;
+  }
+
+  &:hover::after,
+  &.active::after {
+    width: 100%;
+    left: 0;
+  }
+
+  &.font::after {
+    background-color: $font;
+  }
+
+  &.font-secondary::after {
+    background-color: $font-secondary;
+  }
+
+  &.secondary::after {
+    background-color: $secondary;
+  }
+}

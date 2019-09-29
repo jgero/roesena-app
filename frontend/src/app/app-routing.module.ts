@@ -17,18 +17,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { animation: 'LoginPage' } },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: { animation: 'ProfilePage' } },
   {
-    path: 'settings', canActivate: [AuthGuard], data: { animation: 'SettingsPage' },
+    path: 'edit', canActivate: [AuthGuard], data: { animation: 'SettingsPage' },
     loadChildren: () => import('./editing/editing.module').then(m => m.EditingModule)
   },
-  // {
-  //   path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], data: { animation: 'SettingsPage' }, children: [
-  //     { path: 'persons', component: PersonSettingsComponent },
-  //     { path: 'events', component: EventSettingsComponent },
-  //     { path: 'articles', component: ArticleSettingsComponent },
-  //     { path: 'images', component: ImageSettingsComponent },
-  //     { path: '**', redirectTo: 'persons', pathMatch: 'full' }
-  //   ]
-  // },
   { path: 'help', component: HelpComponent, data: { animation: 'HelpPage' } },
   { path: '**', component: ErrorpageComponent, data: { animation: 'ErrorPage' } }
 ];

@@ -1,0 +1,35 @@
+@import '../../shared/partials/colors.scss';
+
+:host {
+  width: 100%;
+
+  // all nav layers
+  nav {
+    display: flex;
+    height: 3.5rem;
+    border-bottom: 3px solid $primary;
+
+    .textItem {
+      cursor: pointer;
+      display: flex;
+      height: 100%;
+      padding: 0 1rem;
+      align-items: center;
+      font-size: 1.1rem;
+
+      &.active {
+        background-color: $primary;
+      }
+    }
+  }
+
+  .layer-one {
+    justify-content: space-between;
+
+    .left,
+    .right {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

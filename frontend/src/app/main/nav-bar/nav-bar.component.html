@@ -1,0 +1,14 @@
+<!-- root navigation level -->
+<nav class="layer-one">
+  <app-nav-bar-navigators [routeParts]="routeParts"></app-nav-bar-navigators>
+
+  <app-nav-bar-misc [routeParts]="routeParts"></app-nav-bar-misc>
+</nav>
+
+<nav class="layer-two" [@barAnimation]="routeParts" *ngIf="routeParts.length > 1">
+  <ng-container *ngFor="let child of getSecondLayer()">
+    <div class="textItem" [routerLink]="child.path" [ngClass]="{'active': routeParts[1] === child.path.split('/')[1]}">
+      <span appHoverable>{{child.title}}</span>
+    </div>
+  </ng-container>
+</nav>

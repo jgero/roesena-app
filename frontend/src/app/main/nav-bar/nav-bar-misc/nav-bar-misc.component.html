@@ -1,0 +1,19 @@
+<input type="text" placeholder="Seite durchsuchen">
+<div class="svgItem">
+  <svg>
+    <use href="assets/svg/facebook-square-brands.svg#facebook-square-brands" />
+  </svg>
+</div>
+<ng-container *ngIf="auth.username | async; then profile else login"></ng-container>
+<ng-template #login>
+  <div [ngClass]="{'active': routeParts[0] === 'login'}" class="svgItem" routerLink="login">
+    <svg>
+      <use href="assets/svg/sign-in-alt-solid.svg#sign-in" />
+    </svg>
+  </div>
+</ng-template>
+<ng-template #profile>
+  <div class="profile" routerLink="profile">
+    <span>{{(auth.username | async).charAt(0)}}</span>
+  </div>
+</ng-template>

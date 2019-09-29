@@ -1,4 +1,4 @@
-@import '../../partials/colors.scss';
+@import '../../shared/partials/colors.scss';
 
 :host {
   margin-top: 5%;
@@ -47,29 +47,16 @@
 
     &>div {
       display: flex;
-      flex-direction: column
-    }
+      flex-direction: column;
 
-    .clickable {
-      position: relative;
-      margin: .3rem;
-      width: max-content;
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        height: 2px;
-        width: 0;
-        background-color: $font-secondary;
-        transition: all ease-out 0.2s;
+      a,
+      span {
+        text-decoration: none;
+        color: $font-secondary;
+        margin: .3rem;
+        width: max-content;
       }
 
-      &:hover::after {
-        width: 100%;
-        left: 0;
-      }
     }
   }
 

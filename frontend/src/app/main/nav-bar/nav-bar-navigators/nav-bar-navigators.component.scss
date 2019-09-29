@@ -1,0 +1,37 @@
+@import '../../../shared/partials/colors.scss';
+
+:host {
+  display: flex;
+  align-items: center;
+
+  .textItem,
+  .svgItem {
+    cursor: pointer;
+    display: flex;
+    height: 100%;
+    padding: 0 1rem;
+    align-items: center;
+    font-size: 1.1rem;
+
+    &.active {
+      background-color: $primary;
+    }
+  }
+
+  .svgItem {
+
+    svg {
+      height: 3rem;
+      width: 3rem;
+      padding: .5rem;
+      transition: color ease-out 0.2s;
+      cursor: pointer;
+      color: $font;
+    }
+
+    &:hover:not(.active) svg,
+    &:not(.active) svg:hover {
+      color: $primary;
+    }
+  }
+}

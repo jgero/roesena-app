@@ -1,26 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+
 import { SearchComponent } from './components/search/search.component';
-import { SafeURLPipe } from './safe-url.pipe';
 import { TagComponent } from './components/tag/tag.component';
 import { ImageComponent } from './components/image/image.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { CommonModule } from '@angular/common';
+import { SafeURLPipe } from './safe-url.pipe';
+import { HoverableDirective } from './hoverable.directive';
 
-const components = [
+const exports = [
+  SafeURLPipe,
+  HoverableDirective,
   SearchComponent,
   TagComponent,
-  ImageComponent,
-  FooterComponent
+  ImageComponent
 ];
 
 @NgModule({
   declarations: [
-    SafeURLPipe,
-    ...components
+    ...exports
   ],
   imports: [
     CommonModule,
@@ -28,8 +27,7 @@ const components = [
     HttpClientModule
   ],
   exports: [
-    SafeURLPipe,
-    ...components
+    ...exports
   ],
   providers: []
 })

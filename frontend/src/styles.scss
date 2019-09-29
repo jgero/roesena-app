@@ -1,3 +1,5 @@
+@import './app/shared/partials/hoverable.scss';
+
 html,
 body {
   width: 100%;
@@ -12,4 +14,5 @@ body {
 
 * {
   box-sizing: inherit;
+  outline: none;
 }
