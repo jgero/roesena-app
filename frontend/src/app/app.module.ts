@@ -22,6 +22,7 @@ import { MainComponent } from './main/main.component';
 import { FooterComponent } from './main/footer/footer.component';
 import { NavBarNavigatorsComponent } from './main/nav-bar/nav-bar-navigators/nav-bar-navigators.component';
 import { NavBarMiscComponent } from './main/nav-bar/nav-bar-misc/nav-bar-misc.component';
+import { ImagePageComponent } from './image-page/image-page.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { NavBarMiscComponent } from './main/nav-bar/nav-bar-misc/nav-bar-misc.co
     FooterComponent,
     MainComponent,
     NavBarNavigatorsComponent,
-    NavBarMiscComponent
+    NavBarMiscComponent,
+    ImagePageComponent
   ],
   imports: [
     BrowserModule,

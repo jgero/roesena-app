@@ -8,6 +8,7 @@ import { tap, map } from 'rxjs/operators';
 })
 export class ImageService {
 
+  // limit the amount of loaded images at some point
   private loadedImages: { image: string, description: string, tags: string[], _id: string }[] = [];
 
   constructor(private http: HttpClient) { }
@@ -66,5 +67,9 @@ export class ImageService {
     return this.http.delete(`/api/image?id=${id}`).pipe(
       tap({ next: () => this.loadedImages.splice(this.loadedImages.findIndex(el => el._id === id), 1) })
     );
+  }
+
+  public getImageIds() {
+    return this.http.get<{ description: string, tags: string[], _id: string }[]>(`/api/image?id=*`);
   }
 }

@@ -8,6 +8,7 @@ import { ErrorpageComponent } from './errorpage/errorpage.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HelpComponent } from './help/help.component';
 import { AuthGuard } from './shared/services/auth.guard';
+import { ImagePageComponent } from './image-page/image-page.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
     loadChildren: () => import('./editing/editing.module').then(m => m.EditingModule)
   },
   { path: 'help', component: HelpComponent, data: { animation: 'HelpPage' } },
+  { path: 'images', component: ImagePageComponent, data: { animation: 'ImagePage' } },
   { path: '**', component: ErrorpageComponent, data: { animation: 'ErrorPage' } }
 ];
 

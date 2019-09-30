@@ -1,0 +1,56 @@
+@import '../shared/partials/colors.scss';
+
+:host {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-around;
+
+  .arrow {
+    display: block;
+    background-color: $inactive;
+    height: 30vh;
+    flex: 0 1 10vh;
+    clip-path: polygon(70% 0, 0 50%, 70% 100%, 100% 100%, 30% 50%, 100% 0);
+    transition: all ease-out 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+      background-color: $secondary;
+    }
+
+    &.right {
+      transform: rotate(180deg);
+
+      &:hover {
+        transform: rotate(180deg) scale(1.05);
+      }
+    }
+  }
+
+  .image-card {
+    height: 80%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .image {
+      flex: 1 1;
+      min-height: 0;
+      max-width: 100%;
+
+      app-image {
+        height: 100%;
+      }
+    }
+
+    .description {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1rem;
+    }
+  }
+
+}

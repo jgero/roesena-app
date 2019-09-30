@@ -1,0 +1,11 @@
+<span class="arrow left" (click)="prevImg()"></span>
+<div class="image-card" *ngIf="images">
+  <div class="image">
+    <app-image [dynamicId]="activeId"></app-image>
+  </div>
+  <div class="description">{{images[activeImage | async].description}}</div>
+  <div class="tags">
+    <app-tag *ngFor="let tag of images[activeImage | async].tags" [tag]="tag"></app-tag>
+  </div>
+</div>
+<span class="arrow right" (click)="nextImg()"></span>
