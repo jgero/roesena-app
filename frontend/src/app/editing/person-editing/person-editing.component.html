@@ -1,1 +1,12 @@
-<p>person-settings works!</p>
+<div *ngFor="let person of persons" class="person">
+  <span>{{person.name}}</span>
+  <svg (click)="onReset(person._id)">
+    <use href="assets/svg/redo-alt-solid.svg#redo-alt-solid" />
+  </svg>
+  <svg (click)="onDelete(person._id)">
+    <use href="assets/svg/trash-alt-regular.svg#trash-alt-regular" />
+  </svg>
+</div>
+
+<input #box type="text" placeholder="neue Person" class="person" (keyup.enter)="onEnter(box.value)"
+  (blur)="box.value = ''">

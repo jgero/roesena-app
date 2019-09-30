@@ -8,12 +8,12 @@ content-type: application/json
 
 ###
 
-POST http://localhost:5000/api/upgradeUser HTTP/1.1
+POST http://localhost:5000/api/changePW HTTP/1.1
 content-type: application/json
 
 {
-    "username": "Mary",
-    "password": "iammary"
+    "_id": "5d5859149331efdfecc84e33",
+    "password": "iamjohn"
 }
 
 ###

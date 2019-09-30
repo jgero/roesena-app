@@ -12,7 +12,7 @@ func main() {
 	http.HandleFunc("/api/login", requesthandler.CreateSession)
 	http.HandleFunc("/api/logout/", requesthandler.CloseSession)
 	http.HandleFunc("/api/restore", requesthandler.RestoreSession)
-	http.HandleFunc("/api/upgradeUser", requesthandler.UpgradeUser)
+	http.HandleFunc("/api/changePW", requesthandler.UpgradeUser)
 	http.HandleFunc("/api/event", requesthandler.HandleEvent)
 	http.ListenAndServe(":8080", nil)
 }

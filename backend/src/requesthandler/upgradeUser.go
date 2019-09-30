@@ -10,6 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // UpgradeUser adds an encrypted password to an already existing person in the database
@@ -17,7 +18,7 @@ func UpgradeUser(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" {
 		// try to read the login details from the request body
-		var details map[string]interface{}
+		var details map[string]string
 		err := json.NewDecoder(req.Body).Decode(&details)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -32,10 +33,11 @@ func UpgradeUser(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		responder := db.HTTPResponder{W: w}
+		objID, _ := primitive.ObjectIDFromHex(details["_id"])
 		qElem := db.UpdateOneElement{
 			Collection:    "persons",
 			Element:       bson.D{{"$set", bson.M{"password": encpw}}},
-			Filter:        bson.M{"name": details["username"]},
+			Filter:        bson.M{"_id": objID},
 			IgnoreSession: true,
 			HTTPResponder: responder,
 		}
