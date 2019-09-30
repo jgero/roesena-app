@@ -8,17 +8,19 @@ import (
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// HandlePerson acts on all http requests concerning persons
+// HandlePerson acts on all http requests concerning articles
 func HandlePerson(w http.ResponseWriter, req *http.Request) {
 	// the response is always a json string
 	w.Header().Set("Content-Type", "application/json")
-	// take URL like: (/api/person/john) and split it
+	// take URL like: (/api/article/asdf) and split it
 	p := strings.Split(req.URL.Path, "/")
-	// if the URL has a trailing "/" the length is 4 and the route is valid
-	// if it's a GET the last segment is allowed to be an empty string, otherwise not
-	if len(p) == 4 && (req.Method == "GET" || ((req.Method == "POST" || req.Method == "PUT" || req.Method == "DELETE") && p[3] != "")) {
+	// get the id parameter
+	id, hasId := req.URL.Query()["id"]
+	// if it's a POST the id is not needed
+	if len(p) == 3 && (req.Method == "POST" || ((req.Method == "GET" || req.Method == "PUT" || req.Method == "DELETE") && hasId)) {
 		// get the session_token cookie
 		cookie, err := req.Cookie("session_token")
 		if err != nil && req.Method != "GET" {
@@ -33,22 +35,25 @@ func HandlePerson(w http.ResponseWriter, req *http.Request) {
 		var qElem db.QueryElement
 		switch req.Method {
 		case "GET":
-			if p[3] != "" {
-				// get the element with the given name
-				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{"name": p[3]}, HTTPResponder: responder}
+			if id[0] != "*" {
+				// get the element with the given id
+				objID, _ := primitive.ObjectIDFromHex(id[0])
+				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{"_id": objID}, HTTPResponder: responder, Projection: bson.D{{"_id", 1}, {"name", 1}}}
 			} else {
 				// get all elements
-				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{}, HTTPResponder: responder}
+				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{}, HTTPResponder: responder, Projection: bson.D{{"_id", 1}, {"name", 1}}}
 			}
 			break
 		case "POST":
-			qElem = &db.InsertOneElement{Collection: "persons", Element: req.Body, Session: cookie.String(), HTTPResponder: responder}
+			qElem = &db.InsertOneElement{Collection: "persons", Element: req.Body, Session: cookie.Value, HTTPResponder: responder}
 			break
 		case "PUT":
-			qElem = &db.ReplaceOneElement{Collection: "persons", Filter: bson.M{"name": p[3]}, Element: req.Body, Session: cookie.String(), HTTPResponder: responder}
+			objID, _ := primitive.ObjectIDFromHex(id[0])
+			qElem = &db.ReplaceOneElement{Collection: "persons", Filter: bson.M{"_id": objID}, Element: req.Body, Session: cookie.Value, HTTPResponder: responder}
 			break
 		case "DELETE":
-			qElem = &db.DeleteOneElement{Collection: "persons", Filter: bson.M{"name": p[3]}, Session: cookie.String()}
+			objID, _ := primitive.ObjectIDFromHex(id[0])
+			qElem = &db.DeleteOneElement{Collection: "persons", Filter: bson.M{"_id": objID}, Session: cookie.Value, HTTPResponder: responder}
 			break
 		}
 		// Run() automatically responds on error and returns nil

@@ -13,6 +13,8 @@
 {
   "name": "john",
   "authorityGroup": 4,
+  "password": "asdfasdfasd09ß0pasd0jf",
+  "sessionId": "1234521345-1235-14235-12435",
   "groups": [
     "9827d34023fa50230408",
     "23049daf8230957dt3n40"
@@ -23,6 +25,8 @@
 - `name` contains the name string of the person
 - `authorityGroup` is a number which defines what content this person can access
 - `groups` is an array of the unique ids of the groups this person belongs to
+- `password` secure password string
+- `sessionId` session id if the user is logged in
 
 ### articles
 
@@ -70,28 +74,15 @@
 {
   "title": "this is an event title",
   "description": "this text is an description of the event. in here detailed informations about it can be found",
-  "startDate": ISODate("2019-08-31T22:00:00.000Z"),
-  "endDate": ISODate("2019-09-30T22:00:00.000Z"),
+  "startDate": "20190904",
+  "endDate": "20191015",
   "participants": [
-    "John",
-    "Tiffany",
-    "Mary",
-    "sports council"
+    "234523452345",
+    "2345234523452345",
+    "2345234523452345",
+    "sadfasdfasdfasd"
   ],
   "authorityGroup": "3"
-},
-{
-  "title": "using ISO",
-  "description": "this text is an description of the event. in here detailed informations about it can be found",
-  "startDate": ISODate("2019-08-31T22:00:00.000Z"),
-  "endDate": ISODate("2019-09-02T22:00:00.000Z"),
-  "participants": [
-    "John",
-    "Tiffany",
-    "Mary",
-    "sports council"
-  ],
-  "authorityGroup": "0"
 }
 ```
 
@@ -99,5 +90,5 @@
 - `description` contains the text description of the event
 - `startDate` is an ISO string of the point in time when the event starts
 - `endDate` is an ISO string of the point in time when the event ends
-- `participants` lists persons or groups, that are specifically invited to the event
+- `participants` ids of the persons that are invited to the event
 - `authorityGroup` contains the authority level you need at least to access the event
