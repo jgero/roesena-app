@@ -1,11 +1,10 @@
 @import '../../../shared/partials/input.scss';
-@import '../../../shared/partials/colors.scss';
 
 :host {
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-  border: 1px solid $inactive;
+  border: 1px solid var(--inactive);
   margin: 1rem;
   height: max-content;
   position: relative;
@@ -28,7 +27,7 @@
     top: .5rem;
     right: .5rem;
     cursor: pointer;
-    color: $primary;
+    color: var(--primary);
     opacity: .4;
     transition: opacity ease-out .2s;
 
@@ -45,7 +44,7 @@
   .placeholderImage {
     width: 10rem;
     height: 10rem;
-    background-color: $inactive;
+    background-color: var(--inactive);
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -59,7 +58,7 @@
       height: 100%;
       top: 0;
       left: 0;
-      background-color: $primary;
+      background-color: var(--primary);
       clip-path: polygon(45% 15%, 55% 15%, 55% 45%, 85% 45%, 85% 55%, 55% 55%, 55% 85%, 45% 85%, 45% 55%, 15% 55%, 15% 45%, 45% 45%);
     }
   }

@@ -1,13 +1,9 @@
-// @import '../../shared/partials/input.scss';
-// @import '../../shared/partials/button.scss';
-@import '../../../shared/partials/colors.scss';
-
 :host {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: .5rem;
-  border: 1px solid $inactive;
+  border: 1px solid var(--inactive);
   margin: 1rem;
   position: relative;
   height: max-content;
@@ -54,7 +50,7 @@
       justify-content: center;
       transition: all ease-out .2s;
       cursor: pointer;
-      background-color: rgba($primary, .8);
+      background-color: rgba(var(--primary), .8);
       opacity: .4;
       font-weight: bold;
       font-size: 2rem;
@@ -67,7 +63,7 @@
     svg {
       width: 1.5rem;
       height: 1.5rem;
-      color: $font;
+      color: var(--font);
     }
 
     svg+svg {

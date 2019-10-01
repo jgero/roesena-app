@@ -1,5 +1,3 @@
-@import './colors.scss';
-
 .hoverable {
   position: relative;
   cursor: pointer;
@@ -11,7 +9,7 @@
     left: 50%;
     height: 2px;
     width: 0;
-    background-color: $primary;
+    background-color: var(--primary);
     transition: all ease-out 0.2s;
   }
 
@@ -22,14 +20,14 @@
   }
 
   &.font::after {
-    background-color: $font;
+    background-color: var(--font);
   }
 
   &.font-secondary::after {
-    background-color: $font-secondary;
+    background-color: var(--font-secondary);
   }
 
   &.secondary::after {
-    background-color: $secondary;
+    background-color: var(--secondary);
   }
 }

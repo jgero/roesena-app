@@ -1,32 +1,19 @@
-@import '../../shared/partials/colors.scss';
-
 :host {
-  margin-top: 5%;
+  margin-top: 5vh;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  background-color: rgba($secondary, .7);
-  color: $font-secondary;
+  background-color: var(--background);
+  color: var(--font-secondary);
   position: relative;
-  padding: 15vh 25% 3rem 25%;
+  padding: 10% 25% 3rem 25%;
   clip-path: polygon(0 10%, 50% 0, 100% 10%, 100% 100%, 0 100%);
 
   &>* {
     z-index: 1;
   }
 
-  &::before {
-    top: 0;
-    left: 0;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba($secondary, .7);
-    clip-path: polygon(0 30%, 50% 20%, 100% 30%, 100% 100%, 0 100%);
-  }
-
+  &::before,
   &::after {
     top: 0;
     left: 0;
@@ -34,29 +21,32 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba($secondary, .7);
+    background-color: var(--secondary);
+  }
+
+  &::before {
+    opacity: 1;
+    clip-path: polygon(0 30%, 50% 20%, 100% 30%, 100% 100%, 0 100%);
+  }
+
+  &::after {
+    opacity: .7;
     clip-path: polygon(0 20%, 50% 10%, 100% 20%, 100% 100%, 0 100%);
   }
 
-  .links {
+  .external,
+  .site {
     display: flex;
-    justify-content: space-evenly;
-    font-weight: bold;
+    flex-direction: column;
     font-size: 1.2rem;
-    cursor: pointer;
+    font-weight: bold;
 
-    &>div {
-      display: flex;
-      flex-direction: column;
-
-      a,
-      span {
-        text-decoration: none;
-        color: $font-secondary;
-        margin: .3rem;
-        width: max-content;
-      }
-
+    a,
+    span {
+      text-decoration: none;
+      color: var(--font-secondary);
+      margin: .3rem;
+      width: max-content;
     }
   }
 

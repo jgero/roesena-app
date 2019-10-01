@@ -1,9 +1,7 @@
-@import '../shared/partials/colors.scss';
-
 :host {
   height: 100%;
   width: 100%;
-  color: $font-accent;
+  color: var(--font-accent);
   display: grid;
   grid-row-gap: 10px;
   grid-column-gap: 10px;
@@ -26,7 +24,7 @@ h1 {
 }
 
 h2 {
-  color: $primary;
+  color: var(--primary);
   font-size: 2rem;
 }
 
@@ -39,14 +37,14 @@ h2 {
   display: block;
   height: 100%;
   width: 100%;
-  background-color: $inactive;
+  background-color: var(--inactive);
   clip-path: polygon(50% 0, 30% 50%, 50% 100%, 60% 100%, 40% 50%, 60% 0);
   transition: all ease-out 0.2s;
   cursor: pointer;
 
   &:hover {
     transform: scale(1.05);
-    background-color: $primary;
+    background-color: var(--primary);
   }
 }
 
@@ -64,7 +62,7 @@ h2 {
 }
 
 .day {
-  border: 2px solid $inactive;
+  border: 2px solid var(--inactive);
   padding: 2px;
   min-height: 0;
 }

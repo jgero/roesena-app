@@ -1,4 +1,3 @@
-@import '../shared/partials/colors.scss';
 @import '../shared/partials/button.scss';
 
 :host {
@@ -21,11 +20,11 @@ input[type="password"] {
   margin: 1rem;
   outline: none;
   border: none;
-  border-bottom: 1px solid $primary;
+  border-bottom: 1px solid var(--primary);
 }
 
 p>span {
-  color: $secondary;
+  color: var(--secondary);
   text-decoration-line: underline;
   cursor: pointer;
 }

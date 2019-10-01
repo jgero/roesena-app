@@ -1,5 +1,3 @@
-@import '../../partials/colors.scss';
-
 :host {
   position: relative;
   display: inline-block;
@@ -7,19 +5,19 @@
   input {
     outline: none;
     font-size: 3rem;
-    border: solid $inactive 2px;
+    border: solid var(--inactive) 2px;
     padding: 5px 4rem 5px 2rem;
     border-radius: 3rem;
     transition: border-color ease-out 0.2s;
-    color: $inactive;
+    color: var(--inactive);
 
     &:focus {
-      border-color: $primary;
-      color: $font-accent;
+      border-color: var(--primary);
+      color: var(--font-accent);
     }
 
     &:focus+svg {
-      color: $primary;
+      color: var(--primary);
     }
   }
 
@@ -29,7 +27,7 @@
     right: 1rem;
     width: 3rem;
     height: 3rem;
-    color: $inactive;
+    color: var(--inactive);
     transition: color ease-out 0.2s;
 
   }

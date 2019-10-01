@@ -1,8 +1,6 @@
-@import './colors.scss';
-
 .rsn-button {
   margin: 1rem;
-  background-color: $primary;
+  background-color: var(--primary);
   border: none;
   outline: none;
   box-shadow: none;
@@ -12,7 +10,7 @@
   border-radius: 0.5rem;
   transition: all ease-out 0.1s;
   cursor: pointer;
-  color: $font;
+  color: var(--font);
 }
 
 .rsn-button:active {

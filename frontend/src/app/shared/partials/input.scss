@@ -1,15 +1,13 @@
-@import './colors.scss';
-
 input.underlined {
   outline: none;
   border: none;
-  border-bottom: 1px solid $secondary;
+  border-bottom: 1px solid var(--secondary);
   font-size: 1rem;
 }
 
 textarea.box {
   outline: none;
-  border: 1px solid $secondary;
+  border: 1px solid var(--secondary);
   resize: none;
   font-size: 1rem;
   font-family: Roboto;
@@ -20,6 +18,6 @@ textarea.box {
   transition: border-color ease-out .2s;
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }

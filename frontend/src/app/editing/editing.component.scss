@@ -1,13 +1,12 @@
-@import '../shared/partials/colors.scss';
-
 :host {
   display: flex;
   flex-direction: column;
+  min-height: 100%;
 
   nav {
     display: flex;
     width: 100%;
-    background-color: $primary;
+    background-color: var(--primary);
     // justify-content: center;
 
     div {
@@ -15,19 +14,19 @@
       max-width: 200px;
       font-size: 2rem;
       text-align: center;
-      color: $font;
+      color: var(--font);
       padding: .2rem;
 
       &.active {
-        background-color: $font-secondary;
+        background-color: var(--font-secondary);
       }
     }
   }
 
 
   .editors {
-    // background-color: $inactive;
-    // border: 2px solid $inactive;
+    // background-color: var(--inactive);
+    // border: 2px solid var(--inactive);
     // border-top: none;
   }
 }

@@ -1,6 +1,5 @@
 @import '../../shared/partials/input.scss';
 @import '../../shared/partials/button.scss';
-@import '../../shared/partials/colors.scss';
 
 :host {
   input[type="file"] {
@@ -23,7 +22,7 @@
     flex-direction: column;
     align-items: center;
     padding: .5rem;
-    border: 1px solid $inactive;
+    border: 1px solid var(--inactive);
     margin: 1rem;
 
     img {
