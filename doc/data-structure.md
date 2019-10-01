@@ -12,7 +12,7 @@
 ```json
 {
   "name": "john",
-  "authorityGroup": 4,
+  "authorityLevel": 4,
   "password": "asdfasdfasd09ß0pasd0jf",
   "sessionId": "1234521345-1235-14235-12435",
   "groups": [
@@ -23,7 +23,7 @@
 ```
 
 - `name` contains the name string of the person
-- `authorityGroup` is a number which defines what content this person can access
+- `authorityLevel` is a number which defines what content this person can access
 - `groups` is an array of the unique ids of the groups this person belongs to
 - `password` secure password string
 - `sessionId` session id if the user is logged in

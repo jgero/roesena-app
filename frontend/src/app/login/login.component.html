@@ -1,4 +1,4 @@
-<ng-container *ngIf="!(auth.username | async);then login else logout"></ng-container>
+<ng-container *ngIf="!(auth.user | async).name;then login else logout"></ng-container>
 
 <ng-template #login>
   <div class="loginBox">
@@ -14,7 +14,7 @@
 </ng-template>
 
 <ng-template #logout>
-  <h1>Hello, {{auth.username | async}}!</h1>
+  <h1>Hello, {{(auth.user | async).name}}!</h1>
   <br />
   <input type="button" value="Abmelden" class="rsn-button" (click)="tryLogout()" />
 </ng-template>

@@ -4,7 +4,7 @@
     <use href="assets/svg/facebook-square-brands.svg#facebook-square-brands" />
   </svg>
 </div>
-<ng-container *ngIf="auth.username | async; then profile else login"></ng-container>
+<ng-container *ngIf="(auth.user | async); then profile else login"></ng-container>
 <ng-template #login>
   <div [ngClass]="{'active': routeParts[0] === 'login'}" class="svgItem" routerLink="login">
     <svg>
@@ -14,6 +14,6 @@
 </ng-template>
 <ng-template #profile>
   <div class="profile" routerLink="profile">
-    <span>{{(auth.username | async).charAt(0)}}</span>
+    <span>{{(auth.user | async).name.charAt(0)}}</span>
   </div>
 </ng-template>

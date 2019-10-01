@@ -38,10 +38,10 @@ func HandlePerson(w http.ResponseWriter, req *http.Request) {
 			if id[0] != "*" {
 				// get the element with the given id
 				objID, _ := primitive.ObjectIDFromHex(id[0])
-				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{"_id": objID}, HTTPResponder: responder, Projection: bson.D{{"_id", 1}, {"name", 1}}}
+				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{"_id": objID}, HTTPResponder: responder, Projection: bson.D{{"_id", 1}, {"name", 1}, {"authorityLevel", 1}}}
 			} else {
 				// get all elements
-				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{}, HTTPResponder: responder, Projection: bson.D{{"_id", 1}, {"name", 1}}}
+				qElem = &db.GetElement{Collection: "persons", Filter: bson.M{}, HTTPResponder: responder, Projection: bson.D{{"_id", 1}, {"name", 1}, {"authorityLevel", 1}}}
 			}
 			break
 		case "POST":

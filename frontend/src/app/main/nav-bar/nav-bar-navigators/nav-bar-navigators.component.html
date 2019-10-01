@@ -17,7 +17,7 @@
     <use href="assets/svg/images-regular.svg#images" />
   </svg>
 </div>
-<div [ngClass]="{'active': routeParts[0] === 'edit'}" class="svgItem" routerLink="edit" *ngIf="auth.username | async">
+<div [ngClass]="{'active': routeParts[0] === 'edit'}" class="svgItem" routerLink="edit" *ngIf="(auth.user | async)">
   <svg>
     <use href="assets/svg/edit-solid.svg#edit-solid" />
   </svg>

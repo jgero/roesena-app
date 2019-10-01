@@ -1,5 +1,6 @@
 :host {
   display: flex;
+  flex-wrap: wrap;
   padding: 5%;
 
   .person {
@@ -10,6 +11,23 @@
     margin: 1rem;
     border-radius: 1rem;
     border: none;
+
+    input {
+      outline: none;
+      border: none;
+      font-size: inherit;
+      font-family: inherit;
+      background-color: transparent;
+      color: inherit;
+
+      &.name {
+        width: 10rem;
+      }
+
+      &.auth {
+        width: 2rem;
+      }
+    }
 
     svg {
       height: 1.5rem;
