@@ -12,7 +12,9 @@ export class LoginComponent implements OnInit {
   public password = '';
 
   constructor(public auth: AuthGuard) {
-    this.username = this.auth.user.getValue().name;
+    if (this.auth.user.getValue()) {
+      this.username = this.auth.user.getValue().name;
+    }
   }
 
   ngOnInit() { }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="!(auth.user | async).name;then login else logout"></ng-container>
+<ng-container *ngIf="!(auth.user | async);then login else logout"></ng-container>
 
 <ng-template #login>
   <div class="loginBox">

@@ -10,6 +10,8 @@ import (
 type GetElement struct {
 	// the name of the collection on the database
 	Collection string
+	// the session id
+	Session string
 	// the filter for searching the elements, the autority group check has to be already in this filter!!
 	Filter interface{}
 	// the fields that should be returned
@@ -42,6 +44,24 @@ func (elem *GetElement) Run() []map[string]interface{} {
 		elem.HTTPResponder.respondError(err)
 		return nil
 	}
+
+	// if collection is events get authority here and filter result to only contain elements that have equal or lower authorityLevel
+	if elem.Collection == "events" {
+		auth, err := getAuthority(elem.Session, client)
+		if err != nil {
+			elem.disconnect(client)
+			elem.HTTPResponder.respondError(err)
+			return nil
+		}
+		var filtered []map[string]interface{}
+		for _, elem := range result {
+			if int(elem["authorityGroup"].(float64)) <= auth {
+				filtered = append(filtered, elem)
+			}
+		}
+		result = filtered
+	}
+
 	if len(result) == 0 {
 		// respod with error when nothing matched
 		elem.disconnect(client)
