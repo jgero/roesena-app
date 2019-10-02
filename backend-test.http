@@ -2,8 +2,8 @@ POST http://localhost:5000/api/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "John",
-    "password": "iamjohn"
+    "username": "Mary",
+    "password": "1234asdf5"
 }
 
 ###
@@ -18,7 +18,7 @@ content-type: application/json
 
 ###
 
-GET http://aspire:5000/api/person?id=* HTTP/1.1
+GET http://aspire:5000/api/person?id=5d59beb5eba8d72e3e56808a HTTP/1.1
 content-type: application/json
 
 ###
