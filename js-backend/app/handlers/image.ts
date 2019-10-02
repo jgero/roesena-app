@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { getClient } from "../clientProvider";
-import { MongoClient, ObjectID } from "mongodb";
+import { MongoClient, ObjectID, ObjectId } from "mongodb";
 
 export function getImage(req: Request, res: Response) {
-  if (!req.query.id) {
-    res.status(400).send({ error: 'query param id is missing' });
+  if (!req.query.id || !ObjectId.isValid(req.query.id)) {
+    res.status(400).send({ error: 'query param id is missing or no valid id' });
     return;
   }
   getClient().subscribe({
