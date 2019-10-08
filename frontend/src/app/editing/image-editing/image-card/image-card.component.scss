@@ -50,7 +50,7 @@
       justify-content: center;
       transition: all ease-out .2s;
       cursor: pointer;
-      background-color: rgba(var(--primary), .8);
+      background-color: var(--primary);
       opacity: .4;
       font-weight: bold;
       font-size: 2rem;

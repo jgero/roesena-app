@@ -3,7 +3,8 @@ import { getClient } from "../clientProvider";
 import { MongoClient, ObjectID, ObjectId } from "mongodb";
 
 export function getImage(req: Request, res: Response) {
-  if (!req.query.id || !ObjectId.isValid(req.query.id)) {
+  // when id query param exists it has to be * or a valid mongo object id
+  if (!(req.query.id && (req.query.id === '*' || ObjectId.isValid(req.query.id)))) {
     res.status(400).send({ error: 'query param id is missing or no valid id' });
     return;
   }

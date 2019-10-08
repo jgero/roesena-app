@@ -26,15 +26,7 @@
   - level 3 = group leaders
   - level 2 = members
   - level 1 = guest
-- then comparisons for access allowance can be done with:
-  
-```go
-if resource.needed_authority_level > my.authority_level {
-    deny_access()
-} else {
-    grant_access()
-}
-```
+- then comparisons for access allowance should be done before providing data!
 
 ## Articles that helped
 
