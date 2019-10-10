@@ -1,1 +1,12 @@
-<div *ngFor="let event of events">{{event.title}}</div>
+<div class="eventList">
+  <div *ngFor="let event of events | async" class="event-selector" (click)="selectedEvent = event">{{event.title}}</div>
+</div>
+
+<div *ngIf="selectedEvent" class="selectedEvent">
+  <input type="text" [(ngModel)]="selectedEvent.title">
+  <input type="text" [(ngModel)]="selectedEvent.description">
+  <div *ngFor="let person of persons | async" [ngClass]="{'selected': selectedEvent.participants.includes(person._id)}"
+    (click)="toggleID(person._id)">
+    {{person.name}}</div>
+  <input type="button" value="save" (click)="saveEvent(selectedEvent)">
+</div>

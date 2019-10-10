@@ -1,3 +1,16 @@
 :host {
-  flex: 1;
+  display: flex;
+  min-height: 100%;
+
+  .eventList {
+    flex: 1;
+  }
+
+  .selectedEvent {
+    flex: 3;
+
+    .selected {
+      background-color: red;
+    }
+  }
 }
