@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthGuard } from '../shared/services/auth.guard';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +10,13 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(public auth: AuthGuard, private router: Router) { }
+  public myEvents: string[] = [];
+
+  constructor(public auth: AuthGuard, private router: Router, private http: HttpClient) {
+    this.http.get<any[]>('/api/event?id=*').subscribe({
+      next: (persons) => this.myEvents = persons.filter(el => el.participants.includes(this.auth.user.getValue()._id)).map(el => el.title)
+    });
+  }
 
   ngOnInit() { }
 
