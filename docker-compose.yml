@@ -1,9 +1,9 @@
 version: "3.5"
 services:
-  go:
+  middleware:
     build:
-      context: ./backend/
-      dockerfile: $PWD/Docker/dev.backend.Dockerfile
+      context: ./middleware/
+      dockerfile: $PWD/Docker/dev.middleware.Dockerfile
     links:
       - mongo
   angular:
@@ -28,5 +28,5 @@ services:
     ports:
       - 5000:80
     links:
-      - go
+      - middleware
       - angular

@@ -22,7 +22,7 @@
 
 - `name` contains the name string of the person
 - `authorityGroup` is a number which defines what content this person can access
-- `groups` is an array of the unique ids of the groups this person belongs to
+- `groups` is an array of the unique ids of the groups this person belongs to (not implemented yet)
 
 ### articles
 

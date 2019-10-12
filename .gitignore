@@ -52,11 +52,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# built go files
-bin
-# built go packages
-pkg
-# external go packages
-go.mongodb.org
-golang.org
-github.com
+# middleware
+
+# compiled output
+middleware/dist

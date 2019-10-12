@@ -1,0 +1,20 @@
+type Query {
+  persons: [Person]
+  person(_id: String!): Person
+  articles: [Article]
+  article(_id: String!): Article
+}
+
+type Article {
+  _id: String
+  date: Int
+  title: String
+  content: String
+  images: [String]
+}
+
+type Person {
+  _id: String
+  name: String
+  authorityLevel: Int
+}
