@@ -4,6 +4,10 @@ export interface Person {
   authorityLevel: number;
 }
 
+export interface PersonWithPassword extends Person {
+  password: string;
+}
+
 export interface Article {
   _id: string;
   date: number;

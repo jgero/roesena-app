@@ -1,6 +1,7 @@
 import { Request } from "express";
 
 import { Database } from "./connection";
+import { Person } from "./interfaces";
 
 export class ContextMaker extends Database {
 
@@ -12,7 +13,12 @@ export class ContextMaker extends Database {
   }
 
   public async getAuthLevel() {
-    // console.log(this.req.cookies.session_token);
-    return 4;
+    if (this.req.cookies.session_token) {
+      const collection = (await Database.db).collection("persons");
+      const result = await collection.findOne<Person>({ sessionId: this.req.cookies.session_token });
+      return result ? result.authorityLevel : 1;
+    } else {
+      return 1;
+    }
   }
 }

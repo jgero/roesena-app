@@ -6,14 +6,16 @@ import fs from 'fs';
 import { PersonResolver } from './person/personResolvers';
 import { articles, article } from './article/articleResolvers';
 import { ContextMaker } from './context';
+import { AuthResolver } from './auth/authResolver';
 
 (() => {
   // create the express-server instance
   const app = express();
   // use a middleware to parse the cookies
   app.use(require('cookie-parser')());
-  // resolver for persons
+  // resolvers
   const personRes = new PersonResolver();
+  const authRes = new AuthResolver();
   // the actual graphql handler
   app.use('/graphql', (req, res) => {
     return expressGql({
@@ -26,6 +28,10 @@ import { ContextMaker } from './context';
       rootValue: {
         persons: personRes.persons,
         person: personRes.person,
+        me: authRes.me,
+        login: authRes.login,
+        logout: authRes.logout,
+        changePw: authRes.changePw,
         articles: articles,
         article: article
       },

@@ -3,6 +3,13 @@ type Query {
   person(_id: String!): Person
   articles: [Article]
   article(_id: String!): Article
+  me: Person
+}
+
+type Mutation {
+  login(name: String!, password: String!): Person
+  logout(_id: String!): Boolean
+  changePw(_id: String!, newPassword: String!): Boolean
 }
 
 type Article {
