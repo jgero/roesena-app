@@ -1,5 +1,5 @@
 type Query {
-  persons: [Person]
+  persons(name: String): [Person]
   person(_id: String!): Person
   articles: [Article]
   article(_id: String!): Article

@@ -1,29 +1,33 @@
 import { Person } from "../interfaces";
 import { Database } from "../connection";
+import { ObjectID } from "bson";
 
 export class PersonResolver extends Database {
 
-  public persons(): Promise<Person[]> {
-    return new Promise((resolve, reject) => {
-      Database.connection
-        .then(
-          connection => {
-            const collection = connection.db("roesena").collection("persons");
-            collection.find({}).toArray()
-              .then(result => resolve(result))
-              .catch(reason => reject(reason))
-          },
-          reason => reject(reason)
-        );
-    });
+  public async persons({ name }: { name: string }, context: any) {
+    const auth = (await context).authLevel;
+    // user has to be logged in to get person data
+    if (auth > 1) {
+      const collection = (await Database.db).collection("persons");
+      if (name) {
+        return await collection.find({ name: name }).toArray();
+      } else {
+        return await collection.find({}).toArray();
+      }
+    } else {
+      return [];
+    }
   }
 
-  public person(args: any): Promise<Person | undefined> {
-    return new Promise((resolve, reject) => {
-      resolve([
-        { _id: "asdf", name: "Bob", authorityLevel: 4 }, { _id: "jklö", name: "Mary", authorityLevel: 2 }
-      ].find(el => el._id === args._id));
-    });
+  public async person({ _id }: { _id: string }, context: any): Promise<Person | null> {
+    const auth = (await context).authLevel;
+    // user has to be logged in to get person data
+    if (auth > 1 && _id) {
+      const collection = (await Database.db).collection("persons");
+      return await collection.findOne<Person>({ _id: new ObjectID(_id) });
+    } else {
+      return null;
+    }
   }
 
 }

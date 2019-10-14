@@ -16,6 +16,8 @@
 - add "this site uses cookies" popup
 - then after login directly navigate back to the page he came from
 - think of good way to check authentication
+  - add query type in GraphQL named "me" and return Person object and set cookie (to replace restore)
+  - login and logout should be a mutation
 - especially for adding elements
 
 ### Ideas
@@ -25,7 +27,7 @@
   - level 4 = presidency
   - level 3 = group leaders
   - level 2 = members
-  - level 1 = guest
+  - level 1 = guest (not logged in)
 - then comparisons for access allowance can be done with:
   
 ```go
