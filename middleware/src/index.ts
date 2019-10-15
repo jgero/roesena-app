@@ -7,6 +7,7 @@ import { PersonResolver } from './person/personResolvers';
 import { ArticleResolver } from './article/articleResolvers';
 import { ContextMaker } from './context';
 import { AuthResolver } from './auth/authResolver';
+import { ImageResolver } from './image/imageResolvers';
 
 (() => {
   // create the express-server instance
@@ -17,6 +18,7 @@ import { AuthResolver } from './auth/authResolver';
   const authRes = new AuthResolver();
   const personRes = new PersonResolver();
   const articleRes = new ArticleResolver();
+  const imageRes = new ImageResolver();
   // the actual graphql handler
   app.use('/graphql', (req, res) => {
     return expressGql({
@@ -34,7 +36,9 @@ import { AuthResolver } from './auth/authResolver';
         persons: personRes.persons,
         person: personRes.person,
         articles: articleRes.articles,
-        article: articleRes.article
+        article: articleRes.article,
+        images: imageRes.images,
+        image: imageRes.image
       },
       graphiql: true,
       // the context contains the authLevel of the user from the current cookie, aswell as the request and the response

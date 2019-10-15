@@ -1,15 +1,24 @@
 type Query {
+  me: Person
   persons(name: String): [Person]
   person(_id: String!): Person
   articles: [Article]
   article(_id: String!): Article
-  me: Person
+  images: [Image]
+  image(_id: String!): Image
 }
 
 type Mutation {
   login(name: String!, password: String!): Person
   logout(_id: String!): Boolean
   changePw(_id: String!, newPassword: String!): Boolean
+}
+
+type Image {
+  _id: String
+  description: String
+  image: String
+  tags: [String]
 }
 
 type Article {

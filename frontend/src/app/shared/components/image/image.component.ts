@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ImageService } from '../../services/image.service';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'app-image',
@@ -19,24 +21,45 @@ export class ImageComponent implements OnInit, OnDestroy {
 
   public src = new BehaviorSubject<string>(undefined);
 
-  constructor(private imgService: ImageService) { }
+  constructor(private apollo: Apollo) { }
 
   ngOnInit() {
     if (this.id) {
-      this.imgService.getImage(this.id)
-        .subscribe({
-          next: (image) => this.src.next(image.image),
-          error: () => this.src.next('assets/svg/RöSeNa.svg')
-        });
+      this.apollo.watchQuery({
+        query: gql`
+        query GetImages {
+          image(_id: "${this.id}") {
+            image
+          }
+        }`
+      }).valueChanges.subscribe({
+        next: (result: any) => {
+          if (!result.errors && result.data) {
+            this.src.next(result.data.image.image);
+          }
+        },
+        error: () => this.src.next('assets/svg/RöSeNa.svg')
+      });
     } else if (this.dynamicId) {
       this.sub = this.dynamicId.subscribe({
         next: (id) => {
           this.src.next(undefined);
-          this.imgService.getImage(id).subscribe({
-            next: (image) => this.src.next(image.image),
-            error: () => this.src.next('assets/svg/RöSeNa.svg')
+          this.apollo.watchQuery({
+            query: gql`
+            query GetImages {
+              image(_id: "${id}") {
+                image
+              }
+            }`
+          }).valueChanges.subscribe({
+            next: (result: any) => {
+              if (!result.errors && result.data) {
+                this.src.next(result.data.image.image);
+              }
+            }
           });
-        }
+        },
+        error: () => this.src.next('assets/svg/RöSeNa.svg')
       });
     }
   }
