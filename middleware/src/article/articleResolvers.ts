@@ -1,14 +1,18 @@
+import { ObjectID } from "mongodb";
+
 import { Article } from "../interfaces"
+import { Database } from "../connection";
 
-const articleData: Article[] = [
-  { _id: "asdf", content: "testcontent", date: 20191002, images: ["asdftestID"], title: "firstarticle" },
-  { _id: "jklö", content: "testcontent", date: 20191002, images: ["asdftestID"], title: "secondarticle" }
-]
+export class ArticleResolver extends Database {
 
-export function articles(): Article[] {
-  return articleData;
-}
+  public async articles(): Promise<Article[]> {
+    const collection = (await Database.db).collection("articles");
+    return await collection.find({}).toArray();
+  }
 
-export function article(args: any): Article | undefined {
-  return articleData.find(el => el._id === args._id);
+  public async article({ _id }: { _id: string }, context: any): Promise<Article | null> {
+    const collection = (await Database.db).collection("persons");
+    return await collection.findOne<Article>({ _id: new ObjectID(_id) });
+  }
+
 }

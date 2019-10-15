@@ -23,6 +23,7 @@ import { FooterComponent } from './main/footer/footer.component';
 import { NavBarNavigatorsComponent } from './main/nav-bar/nav-bar-navigators/nav-bar-navigators.component';
 import { NavBarMiscComponent } from './main/nav-bar/nav-bar-misc/nav-bar-misc.component';
 import { ImagePageComponent } from './image-page/image-page.component';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ImagePageComponent } from './image-page/image-page.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    GraphQLModule
   ],
   providers: [],
   bootstrap: [MainComponent]

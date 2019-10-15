@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+import { ApolloQueryResult } from 'apollo-client';
 
 @Component({
   selector: 'app-startpage',
@@ -9,21 +11,36 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class StartpageComponent implements OnInit {
 
-  public articles = new BehaviorSubject<{ _id: string, date: number, title: string, content: string, images: string[] }[]>([]);
+  public articles = new BehaviorSubject<Article[]>([]);
 
-  constructor(private http: HttpClient) {
-    // request the articles from the database
-    this.http.get<{ _id: string, date: number, title: string, content: string, images: string[] }[]>('/api/article?id=*').subscribe({
-      next: (arts) => {
-        this.articles.next(arts);
-      },
-      error: (err) => {
-        console.log(err);
+  constructor(private apollo: Apollo) { }
+
+  ngOnInit() {
+    this.apollo.watchQuery({
+      query: gql`
+      query GetArticles {
+        articles {
+          _id
+          date
+          title
+          content
+          images
+        }
+      }`
+    }).valueChanges.subscribe({
+      next: (result: any) => {
+        if (!result.errors && result.data) {
+          this.articles.next(result.data.articles);
+        }
       }
     });
   }
+}
 
-  ngOnInit() {
-  }
-
+interface Article {
+  _id: string;
+  date: number;
+  title: string;
+  content: string;
+  images: string[];
 }

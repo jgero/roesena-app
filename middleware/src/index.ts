@@ -4,7 +4,7 @@ import { buildSchema } from "graphql";
 import fs from 'fs';
 
 import { PersonResolver } from './person/personResolvers';
-import { articles, article } from './article/articleResolvers';
+import { ArticleResolver } from './article/articleResolvers';
 import { ContextMaker } from './context';
 import { AuthResolver } from './auth/authResolver';
 
@@ -14,8 +14,9 @@ import { AuthResolver } from './auth/authResolver';
   // use a middleware to parse the cookies
   app.use(require('cookie-parser')());
   // resolvers
-  const personRes = new PersonResolver();
   const authRes = new AuthResolver();
+  const personRes = new PersonResolver();
+  const articleRes = new ArticleResolver();
   // the actual graphql handler
   app.use('/graphql', (req, res) => {
     return expressGql({
@@ -26,14 +27,14 @@ import { AuthResolver } from './auth/authResolver';
       // first argument in the handler funcs are the arguments, the second part is the context
       // root is part of the context???
       rootValue: {
-        persons: personRes.persons,
-        person: personRes.person,
         me: authRes.me,
         login: authRes.login,
         logout: authRes.logout,
         changePw: authRes.changePw,
-        articles: articles,
-        article: article
+        persons: personRes.persons,
+        person: personRes.person,
+        articles: articleRes.articles,
+        article: articleRes.article
       },
       graphiql: true,
       // the context contains the authLevel of the user from the current cookie, aswell as the request and the response
