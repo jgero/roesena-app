@@ -29,14 +29,14 @@
   - level 2 = members
   - level 1 = guest (not logged in)
 - then comparisons for access allowance can be done with:
-  
-```go
-if resource.needed_authority_level > my.authority_level {
-    deny_access()
-} else {
-    grant_access()
-}
-```
+
+## GraphQL
+
+- add Interfaces for watchQuery method
+- dispose of the apollo subscriptions in the watchQuery's
+- image service can be removed
+- multiple connections from middleware to database are opened atm, clean that up!
+  - maybe move resolvers out of classes and use decorators to inject a connection
 
 ## Articles that helped
 
