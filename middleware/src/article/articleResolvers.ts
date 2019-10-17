@@ -1,18 +1,14 @@
 import { ObjectID } from "mongodb";
 
 import { Article } from "../interfaces"
-import { Database } from "../connection";
+import { ConnectionProvider } from "../connection";
 
-export class ArticleResolver extends Database {
+export async function articles(): Promise<Article[]> {
+  const collection = (await ConnectionProvider.Instance.db).collection("articles");
+  return await collection.find({}).toArray();
+}
 
-  public async articles(): Promise<Article[]> {
-    const collection = (await Database.db).collection("articles");
-    return await collection.find({}).toArray();
-  }
-
-  public async article({ _id }: { _id: string }): Promise<Article | null> {
-    const collection = (await Database.db).collection("persons");
-    return await collection.findOne<Article>({ _id: new ObjectID(_id) });
-  }
-
+export async function article({ _id }: { _id: string }): Promise<Article | null> {
+  const collection = (await ConnectionProvider.Instance.db).collection("persons");
+  return await collection.findOne<Article>({ _id: new ObjectID(_id) });
 }
