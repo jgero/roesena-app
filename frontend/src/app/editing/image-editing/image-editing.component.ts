@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { ImageService } from 'src/app/shared/services/image.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'app-image-editing',
@@ -11,54 +11,58 @@ import { ImageService } from 'src/app/shared/services/image.service';
 export class ImageEditingComponent implements OnInit {
 
   public images = new BehaviorSubject<{ description: string, tags: string[], _id: string, isEditing: boolean }[]>([]);
+  private subs: Subscription[] = [];
 
-  constructor(private http: HttpClient, private imgServ: ImageService) {
+  constructor(private apollo: Apollo) {
     this.loadImages();
   }
 
   ngOnInit() { }
 
   private loadImages() {
-    this.http.get<{ description: string, tags: string[], _id: string }[]>('/api/image?id=*').subscribe({
-      next: data => {
-        this.images.next(data.map(value => {
-          return ({
-            description: value.description,
-            tags: value.tags,
-            _id: value._id,
-            isEditing: false
-          });
-        }));
-      }
-    });
+    this.subs.push(this.apollo.watchQuery<{ images: { _id: string, description: string, tags: string[] }[] }>({
+      query: gql`
+      query GetImages {
+        images {
+          _id
+          description
+          tags
+        }
+      }`
+    }).valueChanges.subscribe({
+      next: result => this.images.next(
+        // destructure returned image and add the isEditing value to it
+        result.data.images.map(({ _id, description, tags }) => ({ _id, description, tags, isEditing: false }))
+      )
+    }));
   }
 
   public onSave(data) {
-    if (data._id) {
-      // update existing image
-      this.imgServ.putImage(data).subscribe({
-        complete: () => this.loadImages(),
-        error: (err) => console.log(err)
-      });
-    } else {
-      // add new image
-      this.imgServ.postImage(data).subscribe({
-        complete: () => this.loadImages(),
-        error: (err) => console.log(err)
-      });
-    }
+    // if (data._id) {
+    //   // update existing image
+    //   this.imgServ.putImage(data).subscribe({
+    //     complete: () => this.loadImages(),
+    //     error: (err) => console.log(err)
+    //   });
+    // } else {
+    //   // add new image
+    //   this.imgServ.postImage(data).subscribe({
+    //     complete: () => this.loadImages(),
+    //     error: (err) => console.log(err)
+    //   });
+    // }
   }
 
   public onEdit(index) {
-    const updatedImages = this.images.getValue();
-    updatedImages[index].isEditing = true;
-    this.images.next(updatedImages);
+    // const updatedImages = this.images.getValue();
+    // updatedImages[index].isEditing = true;
+    // this.images.next(updatedImages);
   }
 
   public onDelete(id) {
-    this.imgServ.deleteImage(id).subscribe({
-      complete: () => this.loadImages(),
-      error: (err) => console.log(err)
-    });
+    // this.imgServ.deleteImage(id).subscribe({
+    //   complete: () => this.loadImages(),
+    //   error: (err) => console.log(err)
+    // });
   }
 }

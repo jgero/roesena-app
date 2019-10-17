@@ -32,11 +32,9 @@
 
 ## GraphQL
 
-- add Interfaces for watchQuery method
-- dispose of the apollo subscriptions in the watchQuery's
-- image service can be removed
 - multiple connections from middleware to database are opened atm, clean that up!
   - maybe move resolvers out of classes and use decorators to inject a connection
+- put the complete image type as an array in the article, not just the id, so a complete article with images and everything can be loaded in one request
 
 ## Articles that helped
 
