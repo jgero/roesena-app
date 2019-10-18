@@ -6,7 +6,7 @@ import fs from 'fs';
 import { getAuthLevel } from './context';
 import { article, articles } from './article/articleResolvers';
 import { me, login, logout, changePw } from './auth/authResolver';
-import { image, images } from './image/imageResolvers';
+import { image, images, newImage } from './image';
 import { person, persons } from './person/personResolvers';
 
 (() => {
@@ -34,7 +34,9 @@ import { person, persons } from './person/personResolvers';
         articles,
         article,
         images,
-        image
+        image,
+        newImage
+        // updateImage
       },
       graphiql: true,
       // the context contains the authLevel of the user from the current cookie, aswell as the request and the response

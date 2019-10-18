@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { Image } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-image-editing',
@@ -38,19 +39,30 @@ export class ImageEditingComponent implements OnInit {
   }
 
   public onSave(data) {
-    // if (data._id) {
-    //   // update existing image
-    //   this.imgServ.putImage(data).subscribe({
-    //     complete: () => this.loadImages(),
-    //     error: (err) => console.log(err)
-    //   });
-    // } else {
-    //   // add new image
-    //   this.imgServ.postImage(data).subscribe({
-    //     complete: () => this.loadImages(),
-    //     error: (err) => console.log(err)
-    //   });
-    // }
+    if (data._id) {
+      // update existing image
+      // this.imgServ.putImage(data).subscribe({
+      //   complete: () => this.loadImages(),
+      //   error: (err) => console.log(err)
+      // });
+    } else {
+      // add new image
+      const newImageMutation = gql`
+        mutation NewImage {
+          newImage(description: "${data.description}", image: "${data.image}", tags: "data.tags") {
+              _id
+              description
+              tags
+              image
+          }
+        }
+      `;
+      this.subs.push(this.apollo.mutate<{ newImage: Image }>({
+        mutation: newImageMutation
+      }).subscribe({
+        next: result => console.log(result.data.newImage)
+      }));
+    }
   }
 
   public onEdit(index) {

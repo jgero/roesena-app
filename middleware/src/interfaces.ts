@@ -16,8 +16,11 @@ export interface Article {
   images: string[];
 }
 
-export interface Image {
+export interface Image extends RawImage {
   _id: string;
+}
+
+export interface RawImage {
   description: string;
   tags: string[];
   image: string;
