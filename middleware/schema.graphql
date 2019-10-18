@@ -14,6 +14,7 @@ type Mutation {
   changePw(_id: String!, newPassword: String!): Boolean
   newImage(description: String!, image: String!, tags: [String]!): Image
   updateImage(_id: String!, description: String!, image: String!, tags: [String]!): Image
+  deleteImage(_id: String!): Boolean
 }
 
 type Image {

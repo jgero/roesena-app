@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+
 import { Image } from 'src/app/interfaces';
 
 @Component({
@@ -41,15 +42,29 @@ export class ImageEditingComponent implements OnInit {
   public onSave(data) {
     if (data._id) {
       // update existing image
-      // this.imgServ.putImage(data).subscribe({
-      //   complete: () => this.loadImages(),
-      //   error: (err) => console.log(err)
-      // });
+      const updateImageMutation = gql`
+        mutation UpdateImage {
+          updateImage(_id: "${data._id}", description: "${data.description}", image: "${data.image}", tags: ${JSON.stringify(data.tags)}) {
+              _id
+              description
+              tags
+              image
+          }
+        }
+      `;
+      this.subs.push(this.apollo.mutate<{ updateImage: Image }>({
+        mutation: updateImageMutation
+      }).subscribe({
+        next: result => {
+          const { _id, description, tags } = { ...result.data.updateImage };
+          this.images.next([...this.images.getValue(), { _id, description, tags, isEditing: false }]);
+        }
+      }));
     } else {
       // add new image
       const newImageMutation = gql`
         mutation NewImage {
-          newImage(description: "${data.description}", image: "${data.image}", tags: "data.tags") {
+          newImage(description: "${data.description}", image: "${data.image}", tags: ${JSON.stringify(data.tags)}) {
               _id
               description
               tags
@@ -66,15 +81,29 @@ export class ImageEditingComponent implements OnInit {
   }
 
   public onEdit(index) {
-    // const updatedImages = this.images.getValue();
-    // updatedImages[index].isEditing = true;
-    // this.images.next(updatedImages);
+    const updatedImages = this.images.getValue();
+    updatedImages[index].isEditing = true;
+    this.images.next(updatedImages);
   }
 
   public onDelete(id) {
-    // this.imgServ.deleteImage(id).subscribe({
-    //   complete: () => this.loadImages(),
-    //   error: (err) => console.log(err)
-    // });
+    const deleteImageMutation = gql`
+        mutation DeleteImage {
+          deleteImage(_id: "${id}")
+        }
+      `;
+    this.subs.push(this.apollo.mutate<{ deleteImage: boolean }>({
+      mutation: deleteImageMutation
+    }).subscribe({
+      next: result => {
+        if (result.data.deleteImage) {
+          // deleting worked, remove image from view
+          this.images.next(this.images.getValue().filter(el => el._id !== id));
+        } else {
+          // error, display some kind of message
+          console.log(result.errors);
+        }
+      }
+    }));
   }
 }
