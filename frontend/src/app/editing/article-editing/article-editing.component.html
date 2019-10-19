@@ -1,7 +1,7 @@
 <app-search></app-search>
 
 <ul class="articleList">
-  <li *ngFor="let article of (artServ.articles | async)" (click)="selectArticle(article)"> {{article.title}} </li>
+  <li *ngFor="let article of articles" (click)="selectArticle(article)"> {{article.title}} </li>
   <li (click)="selectArticle(undefined)">neuer Artikel</li>
   <input type="button" value="Speichern" class="rsn-button" (click)="saveArticle()">
 </ul>
@@ -12,5 +12,11 @@
   <h1>Inhalt</h1>
   <textarea cols="30" rows="10" [(ngModel)]="content" class="box"></textarea>
   <h1>Bilder</h1>
-  <app-image-manager></app-image-manager>
+  <div class="imageContainer">
+    <div *ngFor="let image of images; let i = index" class="imageContainer" (click)="onSelect(i)"
+      [ngClass]="{'active': selectedArticle.getValue().images.includes(image._id, 0)}">
+      <img [src]="image.image | safeURL">
+      <span> {{image.description}} </span>
+    </div>
+  </div>
 </div>

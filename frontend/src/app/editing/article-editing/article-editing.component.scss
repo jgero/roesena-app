@@ -49,5 +49,29 @@
     h1 {
       color: $font-accent;
     }
+
+    .imageContainer {
+      display: flex;
+      overflow-x: auto;
+
+      .imageContainer {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        align-items: center;
+        margin: 1rem;
+
+        &:hover,
+        &.active {
+          background-color: red;
+        }
+
+        img {
+          max-width: 10rem;
+          max-height: 10rem;
+        }
+      }
+
+    }
   }
 }
