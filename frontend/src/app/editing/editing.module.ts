@@ -11,7 +11,6 @@ import { PersonEditingComponent } from './person-editing/person-editing.componen
 import { EventEditingComponent } from './event-editing/event-editing.component';
 import { ArticleEditingComponent } from './article-editing/article-editing.component';
 import { ImageEditingComponent } from './image-editing/image-editing.component';
-import { ImageManagerComponent } from './article-editing/image-manager/image-manager.component';
 import { ImageCardComponent } from './image-editing/image-card/image-card.component';
 import { EditCardComponent } from './image-editing/edit-card/edit-card.component';
 
@@ -22,7 +21,6 @@ import { EditCardComponent } from './image-editing/edit-card/edit-card.component
     EventEditingComponent,
     ArticleEditingComponent,
     ImageEditingComponent,
-    ImageManagerComponent,
     ImageCardComponent,
     EditCardComponent
   ],

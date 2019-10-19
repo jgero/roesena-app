@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
+import gql from 'graphql-tag';
+import { Apollo } from 'apollo-angular';
+import { Event } from '../interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -8,6 +12,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
+
+  private subs: Subscription[] = [];
 
   public weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
   public days = [];
@@ -46,22 +52,34 @@ export class CalendarComponent implements OnInit {
       month: this.date.month,
       day: new Date(this.date.year, this.date.month - 1, 0).getDate()
     });
-    this.http.get<any[]>(`/api/event?start=${start}&end=${end}`).subscribe({
-      next: (val) => {
-        this.events = val;
+    const getEventsQuery = gql`
+      query GetEvents {
+        events(startDate: ${start}, endDate: ${end}) {
+          _id
+          title
+          description
+          startDate
+          endDate
+          participants
+        }
+      }
+    `;
+    this.subs.push(this.apollo.watchQuery<{ events: Event[] }>({
+      query: getEventsQuery
+    }).valueChanges.subscribe({
+      next: result => {
+        this.events = result.data.events;
         updateDays();
       },
-      error: () => {
-        updateDays();
-      }
-    });
+      error: () => updateDays()
+    }));
   }
   public get date() {
     return this.dateObj;
   }
   private dateObj;
 
-  constructor(private sanitizer: DomSanitizer, private http: HttpClient) {
+  constructor(private sanitizer: DomSanitizer, private apollo: Apollo) {
     this.date = {
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,

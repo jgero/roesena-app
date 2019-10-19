@@ -6,6 +6,7 @@ type Query {
   article(_id: String!): Article
   images: [Image]
   image(_id: String!): Image
+  events(startDate: Int!, endDate: Int!): [Event]
 }
 
 type Mutation {
@@ -26,7 +27,7 @@ type Event {
   description: String
   startDate: Int
   endDate: Int,
-  participants: String,
+  participants: [String],
   authorityGroup: Int
 }
 
