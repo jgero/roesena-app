@@ -24,6 +24,7 @@ import { NavBarNavigatorsComponent } from './main/nav-bar/nav-bar-navigators/nav
 import { NavBarMiscComponent } from './main/nav-bar/nav-bar-misc/nav-bar-misc.component';
 import { ImagePageComponent } from './image-page/image-page.component';
 import { PopupModule } from './popup/popup.module';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { PopupModule } from './popup/popup.module';
     FormsModule,
     HttpClientModule,
     SharedModule,
-    PopupModule
+    PopupModule,
+    GraphQLModule
   ],
   providers: [],
   bootstrap: [MainComponent]

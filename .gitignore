@@ -52,5 +52,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# built backend files
-js-backend/build
+# middleware
+
+# compiled output
+middleware/dist

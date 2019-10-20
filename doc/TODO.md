@@ -16,6 +16,8 @@
 - add "this site uses cookies" popup
 - then after login directly navigate back to the page he came from
 - think of good way to check authentication
+  - add query type in GraphQL named "me" and return Person object and set cookie (to replace restore)
+  - login and logout should be a mutation
 - especially for adding elements
 
 ### Ideas
@@ -27,6 +29,10 @@
   - level 2 = members
   - level 1 = guest
 - then comparisons for access allowance should be done before providing data!
+
+## GraphQL
+
+- have a look at nested types (images in articles, persons in events -> not just id, but entire person/image)
 
 ## Articles that helped
 

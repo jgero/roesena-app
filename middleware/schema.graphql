@@ -1,0 +1,53 @@
+type Query {
+  me: Person
+  persons(name: String): [Person]
+  person(_id: String!): Person
+  articles: [Article]
+  article(_id: String!): Article
+  images: [Image]
+  image(_id: String!): Image
+  events(startDate: Int!, endDate: Int!): [Event]
+}
+
+type Mutation {
+  login(name: String!, password: String!): Person
+  logout(_id: String!): Boolean
+  changePw(_id: String!, newPassword: String!): Boolean
+  newImage(description: String!, image: String!, tags: [String]!): Image
+  updateImage(_id: String!, description: String!, image: String!, tags: [String]!): Image
+  deleteImage(_id: String!): Boolean
+  newArticle(date: Int!, title: String!, content: String!, images: [String]!): Article
+  updateArticle(_id: String!, date: Int!, title: String!, content: String!, images: [String]!): Article
+  deleteArticle(_id: String!): Boolean
+}
+
+type Event {
+  _id: String
+  title: String
+  description: String
+  startDate: Int
+  endDate: Int,
+  participants: [String],
+  authorityGroup: Int
+}
+
+type Image {
+  _id: String
+  description: String
+  image: String
+  tags: [String]
+}
+
+type Article {
+  _id: String
+  date: Int
+  title: String
+  content: String
+  images: [String]
+}
+
+type Person {
+  _id: String
+  name: String
+  authorityLevel: Int
+}

@@ -1,29 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+
+import { Article } from '../interfaces';
 
 @Component({
   selector: 'app-startpage',
   templateUrl: './startpage.component.html',
   styleUrls: ['./startpage.component.scss']
 })
-export class StartpageComponent implements OnInit {
+export class StartpageComponent implements OnInit, OnDestroy {
 
-  public articles = new BehaviorSubject<{ _id: string, date: number, title: string, content: string, images: string[] }[]>([]);
+  public articles = new BehaviorSubject<Article[]>([]);
+  private subs: Subscription[] = [];
 
-  constructor(private http: HttpClient) {
-    // request the articles from the database
-    this.http.get<{ _id: string, date: number, title: string, content: string, images: string[] }[]>('/api/article?id=*').subscribe({
-      next: (arts) => {
-        this.articles.next(arts);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-  }
+  constructor(private apollo: Apollo) { }
 
   ngOnInit() {
+    const articleQuery = gql`
+      query GetArticles {
+        articles {
+          _id
+          date
+          title
+          content
+          images
+        }
+      }
+    `;
+    this.subs.push(this.apollo.watchQuery({
+      query: articleQuery
+    }).valueChanges.subscribe({
+      next: (result: any) => {
+        if (!result.errors && result.data) {
+          this.articles.next(result.data.articles);
+        }
+      }
+    }));
   }
 
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
 }
