@@ -29,9 +29,5 @@ services:
     ports:
       - 5000:80
     links:
-<<<<<<< HEAD
-      - backend
-=======
       - middleware
->>>>>>> master
       - angular

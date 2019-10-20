@@ -1,24 +1,20 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-
-// import { HttpClient } from '@angular/common/http';
-// import { tap } from 'rxjs/operators';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 
 import { Person } from 'src/app/interfaces';
+import { MeGQL } from 'src/app/GraphQL/query-services/me-gql.service';
+import { LoginGQL } from '../../GraphQL/mutation-services/login-gql.service';
+import { LogoutGQL } from 'src/app/GraphQL/mutation-services/logout-gql.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, OnDestroy {
 
-  // name of the currently loggend-in user
-  public username = new BehaviorSubject<string>(undefined);
   // complete info about the currently logged-in user
-  private user = new BehaviorSubject<Person>(undefined);
+  public user = new BehaviorSubject<Person>(undefined);
   // apollo subscriptions
   private subs: Subscription[] = [];
 
@@ -40,47 +36,23 @@ export class AuthGuard implements CanActivate, OnDestroy {
     }
   }
 
-  constructor(private router: Router, private apollo: Apollo) {
+  constructor(
+    private router: Router,
+    private meGQL: MeGQL,
+    private loginGQL: LoginGQL,
+    private logoutGQL: LogoutGQL
+  ) {
     // get infos about currently logged-in user
-    this.subs.push(this.apollo.watchQuery<{ me: Person }>({
-      query: gql`
-      query GetSelf {
-        me {
-          _id
-          name
-          authorityLevel
-        }
-      }`
-    }).valueChanges.subscribe({
-      next: result => {
-        if (!result.errors && result.data) {
-          // this.src.next(result.data.image.image);
-          this.user.next(result.data.me);
-        }
-      }
-    }));
-
-    // keep the public BehaviorSubject updated
-    this.subs.push(this.user.subscribe({
-      next: user => {
-        this.username.next((user ? user.name : undefined));
-      }
-    }));
+    this.subs.push(
+      this.meGQL.watch().valueChanges.subscribe({
+        next: result => this.user.next(result.data.me)
+      })
+    );
   }
 
   public login(username: string, password: string): Observable<Person> {
     // mutation with the username and password returns a person
-    const loginMutation = gql`
-      mutation Login {
-        login(name: "${username}", password: "${password}") {
-          _id
-          name
-          authorityLevel
-        }
-      }
-    `;
-    // return the Observable of the mutation
-    return this.apollo.mutate<{ login: Person }>({ mutation: loginMutation })
+    return this.loginGQL.mutate({ username, password })
       .pipe(
         // map the result to only the data that was returned
         map((result) => result.data.login),
@@ -90,16 +62,10 @@ export class AuthGuard implements CanActivate, OnDestroy {
   }
 
   public logout(): Observable<boolean> {
-    // mutation to log out a specific person
-    const logoutMutation = gql`
-    mutation Logout {
-      logout(_id: "${this.user.getValue()._id}")
-    }
-    `;
-    // return the Observable of the mutation
-    return this.apollo.mutate<{ logout: boolean }>({ mutation: logoutMutation })
+    // mutation that logs out the current active user
+    return this.logoutGQL.mutate({ _id: this.user.getValue()._id })
       .pipe(
-        map((result) => result.data.logout),
+        map(result => result.data.logout),
         tap({ next: () => this.user.next(undefined) })
       );
   }
