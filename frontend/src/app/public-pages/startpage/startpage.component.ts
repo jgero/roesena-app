@@ -3,7 +3,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { Article } from '../interfaces';
+import { Article } from '../../interfaces';
 
 @Component({
   selector: 'app-startpage',

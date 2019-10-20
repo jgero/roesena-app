@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AuthGuard } from '../../shared/services/auth.guard';
+import { AuthGuard } from '../../../shared/services/auth.guard';
 import { Subscription } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
 
-import { ImageMetadata } from '../interfaces';
+import { ImageMetadata } from '../../interfaces';
 
 @Component({
   selector: 'app-image-page',

@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
-import { Event } from '../interfaces';
+import { Event } from '../../interfaces';
 import { Subscription } from 'rxjs';
 
 @Component({
