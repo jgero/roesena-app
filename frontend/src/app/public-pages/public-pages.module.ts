@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -25,6 +24,7 @@ import { NavBarNavigatorsComponent } from './main/nav-bar/nav-bar-navigators/nav
 import { NavBarMiscComponent } from './main/nav-bar/nav-bar-misc/nav-bar-misc.component';
 import { ImagePageComponent } from './image-page/image-page.component';
 import { SharedModule } from '../shared/shared.module';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -48,7 +48,7 @@ import { SharedModule } from '../shared/shared.module';
     ImagePageComponent
   ],
   imports: [
-    CommonModule,
+    BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     PublicRouting,
@@ -56,7 +56,7 @@ import { SharedModule } from '../shared/shared.module';
     GraphQLModule,
     SharedModule
   ],
-  exports: [
+  bootstrap: [
     MainComponent
   ]
 })

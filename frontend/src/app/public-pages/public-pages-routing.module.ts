@@ -26,4 +26,4 @@ const routes: Routes = [
   { path: '**', component: ErrorpageComponent, data: { animation: 'ErrorPage' } }
 ];
 
-export const PublicRouting = RouterModule.forChild(routes);
+export const PublicRouting = RouterModule.forRoot(routes);

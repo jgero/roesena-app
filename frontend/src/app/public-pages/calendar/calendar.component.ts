@@ -1,93 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
-import gql from 'graphql-tag';
-import { Apollo } from 'apollo-angular';
-import { Event } from '../../interfaces';
+import { Component, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+
 import { Subscription } from 'rxjs';
+import { EventsByDateGQL } from 'src/app/GraphQL/query-services/events-by-date-gql.service';
+import { Event } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnDestroy {
 
   private subs: Subscription[] = [];
-
   public weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-  public days = [];
-  public events = [];
+  public daysWithMetadata: { gridArea: SafeStyle, events: Event[], date: number }[] = [];
+  private dateObj: { year: number, month: number, day: number };
+
   public set date(v: { year: number, month: number, day: number }) {
-    // update the actual date
+    // update the raw date object
     this.dateObj = v;
-    // define updating day detail array update
-    // the "0." day of a month is the last day of the previous month
-    // because months are a number between 0 and 11 there is no "-1" needed here
-    const updateDays = () => {
-      this.days = new Array(new Date(v.year, v.month, 0).getDate())
-        .fill(undefined)
-        .map((_, ind) => ({
-          gridArea: this.sanitizer.bypassSecurityTrustStyle(this.getGridArea(ind)),
-          events: this.events.filter(ev => {
-            return (
-              ev.startDate <=
-              this.getDBString({ year: this.date.year, month: this.date.month, day: ind + 1 }) &&
-              ev.endDate >=
-              this.getDBString({ year: this.date.year, month: this.date.month, day: ind + 1 })
-            );
-          }).map(ev => ev.title),
-          date: ind + 1
-        }));
-    };
-    // string for start-date
-    const start = this.getDBString({
-      year: this.date.year,
-      month: this.date.month,
-      day: 1
-    });
-    // string for end-date
-    const end = this.getDBString({
-      year: this.date.year,
-      month: this.date.month,
-      day: new Date(this.date.year, this.date.month - 1, 0).getDate()
-    });
-    const getEventsQuery = gql`
-      query GetEvents {
-        events(startDate: ${start}, endDate: ${end}) {
-          _id
-          title
-          description
-          startDate
-          endDate
-          participants
-        }
-      }
-    `;
-    this.subs.push(this.apollo.watchQuery<{ events: Event[] }>({
-      query: getEventsQuery
+    // load the events for the current month
+    this.subs.push(this.eventsGQL.watch({
+      startDate: this.getDBDateNumber({
+        year: this.date.year,
+        month: this.date.month,
+        day: 1
+      }),
+      endDate: this.getDBDateNumber({
+        year: this.date.year,
+        month: this.date.month,
+        day: new Date(this.date.year, this.date.month - 1, 0).getDate()
+      })
     }).valueChanges.subscribe({
-      next: result => {
-        this.events = result.data.events;
-        updateDays();
-      },
-      error: () => updateDays()
+      next: result => this.mapEventsToDays(result.data.events)
     }));
   }
   public get date() {
     return this.dateObj;
   }
-  private dateObj;
 
-  constructor(private sanitizer: DomSanitizer, private apollo: Apollo) {
+  constructor(private sanitizer: DomSanitizer, private eventsGQL: EventsByDateGQL) {
     this.date = {
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
       day: new Date().getDate()
     };
   }
-
-  ngOnInit() { }
 
   private getGridArea(ind) {
     // month is a number between 0 and 11, thus "-1" is needed, because the date.month number is a "normal" month number
@@ -99,6 +58,26 @@ export class CalendarComponent implements OnInit {
     // don't forget the "-1" for the months!
     const column = new Date(this.date.year, this.date.month - 1, ind).getDay() + 2;
     return `${row} / ${column} / ${row} / ${column}`;
+  }
+
+  private mapEventsToDays(events: Event[]) {
+    // because months are a number between 0 and 11 in 'new Date' using 'this.dateObj.month' creates a date
+    // in the next month, but by then using 0 as day argument a date with the last day of the previous
+    // month is created. This means getDate() of this date will be the last day of the current month
+    this.daysWithMetadata = new Array(new Date(this.dateObj.year, this.dateObj.month, 0).getDate())
+      .fill(undefined)
+      .map((_, ind) => ({
+        gridArea: this.sanitizer.bypassSecurityTrustStyle(this.getGridArea(ind)),
+        events: events.filter(ev => {
+          return (
+            ev.startDate <=
+            this.getDBDateNumber({ year: this.date.year, month: this.date.month, day: ind + 1 }) &&
+            ev.endDate >=
+            this.getDBDateNumber({ year: this.date.year, month: this.date.month, day: ind + 1 })
+          );
+        }),
+        date: ind + 1
+      }));
   }
 
   public goNextMonth() {
@@ -123,9 +102,13 @@ export class CalendarComponent implements OnInit {
     this.date = newDate;
   }
 
-  private getDBString(date: { year: number, month: number, day: number }): string {
-    const m = date.month > 9 ? date.month : '0' + date.month;
-    const d = date.day > 9 ? date.day : '0' + date.day;
-    return `${date.year}${m}${d}`;
+  private getDBDateNumber({ year, month, day }: { year: number, month: number, day: number }): number {
+    const m = month > 9 ? month : '0' + month;
+    const d = day > 9 ? day : '0' + day;
+    return parseInt(`${year}${m}${d}`, 10);
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 }
