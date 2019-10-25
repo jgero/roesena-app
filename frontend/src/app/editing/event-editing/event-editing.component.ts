@@ -1,32 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Event } from 'src/app/interfaces';
+import { EventsGQL } from 'src/app/GraphQL/query-services/all-events-gql.service';
 
 @Component({
   selector: 'app-event-editing',
   templateUrl: './event-editing.component.html',
   styleUrls: ['./event-editing.component.scss']
 })
-export class EventEditingComponent implements OnInit {
+export class EventEditingComponent {
 
   public events: Observable<Event[]>;
   public persons: Observable<{ name: string, authorityLevel: number, _id: string }[]>;
 
   public selectedEvent: Event;
 
-  constructor(private http: HttpClient) {
-    this.events = this.http.get<{
-      _id: string,
-      title: string,
-      description: string,
-      startDate: number,
-      endDate: number,
-      participants: string[]
-    }[]>('/api/event?id=*');
-    this.persons = this.http.get<{ name: string, authorityLevel: number, _id: string }[]>('/api/person?id=*');
-  }
-
-  ngOnInit() {
+  constructor(private eventsGQL: EventsGQL) {
+    this.events = this.eventsGQL.watch().valueChanges.pipe(
+      map(el => el.data.events)
+    );
   }
 
   public toggleID(id: string) {
@@ -44,20 +38,11 @@ export class EventEditingComponent implements OnInit {
 
   public saveEvent(event: Event) {
     console.log(event);
-    const id = event._id;
-    delete event._id;
-    this.http.put(`/api/event?id=${id}`, event).subscribe({
-      next: () => console.log('saved!')
-    });
+    // const id = event._id;
+    // delete event._id;
+    // this.http.put(`/api/event?id=${id}`, event).subscribe({
+    //   next: () => console.log('saved!')
+    // });
   }
 
-}
-
-interface Event {
-  _id: string;
-  title: string;
-  description: string;
-  startDate: number;
-  endDate: number;
-  participants: string[];
 }

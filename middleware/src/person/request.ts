@@ -3,16 +3,12 @@ import { ObjectID } from "bson";
 import { Person } from "../interfaces";
 import { ConnectionProvider } from "../connection";
 
-export async function persons({ name }: { name: string }, context: any) {
+export async function persons(_: any, context: any): Promise<Person[]> {
   const auth = (await context).authLevel;
   // user has to be logged in to get person data
   if (auth > 1) {
     const collection = (await ConnectionProvider.Instance.db).collection("persons");
-    if (name) {
-      return await collection.find({ name: name }).toArray();
-    } else {
-      return await collection.find({}).toArray();
-    }
+    return await collection.find({}).toArray();
   } else {
     return [];
   }

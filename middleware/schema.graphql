@@ -6,13 +6,17 @@ type Query {
   article(_id: String!): Article
   images: [Image]
   image(_id: String!): Image
-  events(startDate: Int!, endDate: Int!): [Event]
+  eventsByDate(startDate: Int!, endDate: Int!): [Event]
+  events: [Event]
 }
 
 type Mutation {
   login(name: String!, password: String!): Person
   logout(_id: String!): Boolean
   changePw(_id: String!, newPassword: String!): Boolean
+  newPerson(name: String!, authorityLevel: Int!): Person
+  updatePerson(_id: String!, name: String!, authorityLevel: Int!): Person
+  deletePerson(_id: String!): Boolean
   newImage(description: String!, image: String!, tags: [String]!): Image
   updateImage(_id: String!, description: String!, image: String!, tags: [String]!): Image
   deleteImage(_id: String!): Boolean

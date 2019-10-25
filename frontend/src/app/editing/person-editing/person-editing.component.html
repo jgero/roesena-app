@@ -1,4 +1,4 @@
-<div *ngFor="let person of persons" class="person">
+<div *ngFor="let person of (persons | async)" class="person">
   <!-- <span>{{person.name}}</span> -->
   <input class="name" type="text" [(ngModel)]="person.name" spellcheck="false">
   <input class="auth" type="text" [(ngModel)]="person.authorityLevel" spellcheck="false">
@@ -8,7 +8,7 @@
   <svg (click)="onDelete(person._id)">
     <use href="assets/svg/trash-alt-regular.svg#trash-alt-regular" />
   </svg>
-  <svg (click)="onSave(person._id)">
+  <svg (click)="onSave(person)">
     <use href="assets/svg/save-solid.svg#save-solid" />
   </svg>
 </div>

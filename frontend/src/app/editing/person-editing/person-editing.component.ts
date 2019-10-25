@@ -1,71 +1,94 @@
-import { Component, OnInit, ViewContainerRef, ViewChild, ElementRef } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, ViewContainerRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 import { PopupService } from 'src/app/popup/popup.service';
 import { AuthGuard } from 'src/app/shared/services/auth.guard';
+import { PersonsGQL } from 'src/app/GraphQL/query-services/all-persons-gql.service';
+import { ChangePwGQL } from 'src/app/GraphQL/mutation-services/changePw-gql.service';
+import { UpdatePersonGQL } from 'src/app/GraphQL/mutation-services/updatePerson-gql.service';
+import { NewPersonGQL } from 'src/app/GraphQL/mutation-services/newPerson-gql.service';
+import { DeletePersonGQL } from 'src/app/GraphQL/mutation-services/deletePerson-gql.service';
 
 @Component({
   selector: 'app-person-editing',
   templateUrl: './person-editing.component.html',
   styleUrls: ['./person-editing.component.scss']
 })
-export class PersonEditingComponent {
+export class PersonEditingComponent implements OnDestroy {
 
-  public persons: { name: string, _id: string, authorityLevel: number }[] = [];
+  private subs: Subscription[] = [];
+
+  public persons: Observable<{ name: string, _id: string, authorityLevel: number }[]>;
 
   @ViewChild('box', { static: true })
   inputBox: ElementRef;
 
-  constructor(private http: HttpClient, private popServ: PopupService, private container: ViewContainerRef, private authGuard: AuthGuard) {
+  constructor(
+    private popServ: PopupService,
+    private container: ViewContainerRef,
+    private authGuard: AuthGuard,
+    private personsGQL: PersonsGQL,
+    private changePwGQL: ChangePwGQL,
+    private updatePersonGQL: UpdatePersonGQL,
+    private newPerson: NewPersonGQL,
+    private deletePerson: DeletePersonGQL
+  ) {
     this.getPersons();
   }
 
   private getPersons() {
-    this.http.get<{ name: string, authorityLevel: number, _id: string }[]>('/api/person?id=*').subscribe({
-      // filter out current user for safety
-      next: (persons) => this.persons = persons.filter(el => el._id !== this.authGuard.user.getValue()._id)
-    });
+    this.persons = this.personsGQL.watch().valueChanges
+      .pipe(
+        // filter out current user for safety
+        map(result => result.data.persons.filter(el => el._id !== this.authGuard.user.getValue()._id)),
+        catchError(() => {
+          this.popServ.flashPopup('Could not load Persons', this.container);
+          return [];
+        })
+      );
   }
 
   public onDelete(id: string) {
-    this.http.delete(`/api/person?id=${id}`).subscribe({
-      complete: () => {
-        this.popServ.flashPopup('gelöscht!', this.container);
-        this.getPersons();
-      },
-      error: (err: HttpErrorResponse) => this.popServ.flashPopup(err.statusText, this.container)
-    });
+    this.subs.push(this.deletePerson.mutate({ _id: id }).subscribe({
+      next: result => this.popServ.flashPopup(result.data.deletePerson ? 'Gelöscht!' : 'Fehler!', this.container),
+      error: () => this.popServ.flashPopup('Query Error!', this.container),
+      complete: () => this.getPersons()
+    }));
   }
 
-  public onEnter(value: string) {
-    if (this.inputBox.nativeElement.value === '') {
+  public onEnter(name: string) {
+    if (!name || name === '') {
       return;
     }
-    this.http.post('/api/person', { name: value, authorityLevel: 1 }).subscribe({
-      complete: () => {
-        this.inputBox.nativeElement.value = '';
-        this.popServ.flashPopup('erstellt!', this.container);
-        this.getPersons();
-      },
-      error: (err: HttpErrorResponse) => this.popServ.flashPopup(err.statusText, this.container)
-    });
+    this.subs.push(this.newPerson.mutate({ name, authorityLevel: 1 }).subscribe({
+      next: result => this.popServ.flashPopup(result.data.newPerson ? 'Gespeichert!' : 'Fehler!', this.container),
+      error: () => this.popServ.flashPopup('Query Error!', this.container),
+      complete: () => this.getPersons()
+    }));
   }
 
   public onReset(id: string) {
-    this.http.post('/api/changePW', { _id: id, password: '12345' }).subscribe({
-      complete: () => this.popServ.flashPopup('zurückgesetzt!', this.container),
-      error: (err: HttpErrorResponse) => this.popServ.flashPopup(err.statusText, this.container)
-    });
+    this.subs.push(this.changePwGQL.mutate({ _id: id, newPassword: '12345' }).subscribe({
+      next: result => this.popServ.flashPopup(result.data.changePw ? 'Passwort zurückgesetzt!' : 'Fehler!', this.container),
+      error: () => this.popServ.flashPopup('Query error!', this.container),
+      complete: () => this.getPersons()
+    }));
   }
 
-  public onSave(id: string) {
-    const body = this.persons.find(el => el._id === id);
-    delete body._id;
-    this.http.put(`/api/person?id=${id}`, body).subscribe({
-      complete: () => {
-        this.popServ.flashPopup('gespeichert!', this.container);
-        this.getPersons();
-      },
-      error: (err: HttpErrorResponse) => this.popServ.flashPopup(err.statusText, this.container)
-    });
+  public onSave({ _id, name, authorityLevel }: { _id: string, name: string, authorityLevel: string }) {
+    if ((!name || name === '') || (!authorityLevel || authorityLevel === '')) {
+      this.popServ.flashPopup('Alles ausfüllen!', this.container);
+      return;
+    }
+    this.subs.push(this.updatePersonGQL.mutate({ _id, name, authorityLevel: parseInt(authorityLevel, 10) }).subscribe({
+      next: result => this.popServ.flashPopup(result.data.updatePerson ? 'Gespeichert!' : 'Fehler!', this.container),
+      error: () => this.popServ.flashPopup('Query error!', this.container),
+      complete: () => this.getPersons()
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 }

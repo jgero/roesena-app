@@ -33,7 +33,7 @@ export class CalendarComponent implements OnDestroy {
         day: new Date(this.date.year, this.date.month - 1, 0).getDate()
       })
     }).valueChanges.subscribe({
-      next: result => this.mapEventsToDays(result.data.events)
+      next: result => this.mapEventsToDays(result.data.eventsByDate)
     }));
   }
   public get date() {

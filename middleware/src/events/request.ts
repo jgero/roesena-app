@@ -3,7 +3,7 @@ import { ObjectID } from "mongodb";
 import { Event } from "../interfaces"
 import { ConnectionProvider } from "../connection";
 
-export async function events({ startDate, endDate }: { startDate: number, endDate: number }): Promise<Event[]> {
+export async function eventsByDate({ startDate, endDate }: { startDate: number, endDate: number }): Promise<Event[]> {
   const collection = (await ConnectionProvider.Instance.db).collection("events");
   return await collection.find({
     $and: [
@@ -11,4 +11,9 @@ export async function events({ startDate, endDate }: { startDate: number, endDat
       { endDate: { $gte: startDate } }
     ]
   }).toArray();
+}
+
+export async function events(): Promise<Event[]> {
+  const collection = (await ConnectionProvider.Instance.db).collection("events");
+  return await collection.find({}).toArray();
 }
