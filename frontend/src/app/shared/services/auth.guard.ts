@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate, OnDestroy {
       // logged in
       if (next.routeConfig.path === 'edit') {
         // when going to settings check for level 5 too
-        return this.user.getValue().authorityLevel && (this.user.getValue().authorityLevel >= 5);
+        return this.user.getValue().authorityLevel && (this.user.getValue().authorityLevel >= 4);
       } else {
         // if route is not to settings, being logged in is enough
         return true;

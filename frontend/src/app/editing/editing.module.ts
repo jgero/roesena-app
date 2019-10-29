@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { SharedModule } from '../shared/shared.module';
+import { GraphQLModule } from '../GraphQL/graphql.module';
 
 import { EditingRouting } from './editing-routing.module';
 import { EditingComponent } from './editing.component';
@@ -29,7 +30,8 @@ import { EditCardComponent } from './image-editing/edit-card/edit-card.component
     FormsModule,
     HttpClientModule,
     EditingRouting,
-    SharedModule
+    SharedModule,
+    GraphQLModule
   ]
 })
 export class EditingModule { }

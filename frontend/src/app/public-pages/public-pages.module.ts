@@ -25,6 +25,7 @@ import { NavBarMiscComponent } from './main/nav-bar/nav-bar-misc/nav-bar-misc.co
 import { ImagePageComponent } from './image-page/image-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { EventsForUserPipe } from './events-for-user.pipe';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { BrowserModule } from '@angular/platform-browser';
     MainComponent,
     NavBarNavigatorsComponent,
     NavBarMiscComponent,
-    ImagePageComponent
+    ImagePageComponent,
+    EventsForUserPipe
   ],
   imports: [
     BrowserModule,

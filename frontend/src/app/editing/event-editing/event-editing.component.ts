@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Event } from 'src/app/interfaces';
+import { Event, Person } from 'src/app/interfaces';
 import { EventsGQL } from 'src/app/GraphQL/query-services/all-events-gql.service';
+import { PersonsGQL } from 'src/app/GraphQL/query-services/all-persons-gql.service';
 
 @Component({
   selector: 'app-event-editing',
@@ -13,13 +14,19 @@ import { EventsGQL } from 'src/app/GraphQL/query-services/all-events-gql.service
 export class EventEditingComponent {
 
   public events: Observable<Event[]>;
-  public persons: Observable<{ name: string, authorityLevel: number, _id: string }[]>;
+  public persons: Observable<Person[]>;
 
   public selectedEvent: Event;
 
-  constructor(private eventsGQL: EventsGQL) {
-    this.events = this.eventsGQL.watch().valueChanges.pipe(
+  constructor(
+    eventsGQL: EventsGQL,
+    personsGQL: PersonsGQL
+  ) {
+    this.events = eventsGQL.watch().valueChanges.pipe(
       map(el => el.data.events)
+    );
+    this.persons = personsGQL.watch().valueChanges.pipe(
+      map(el => el.data.persons)
     );
   }
 

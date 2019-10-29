@@ -1,1 +1,14 @@
-<p>events works!</p>
+<input type="checkbox" [(ngModel)]="filterEvents">
+
+<ng-container *ngIf="filterEvents then filtered; else all"></ng-container>
+<ng-template #all>
+
+  <div *ngFor="let event of events | async">
+    {{event.title}}
+  </div>
+</ng-template>
+<ng-template #filtered>
+  <div *ngFor="let event of events | async | eventsForUser">
+    {{event.title}}
+  </div>
+</ng-template>

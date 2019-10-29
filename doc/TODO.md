@@ -9,6 +9,7 @@
 ## Database
 
 - change db collection names? persons may not fit very well
+- remove document links when deleting the document itself (remove person from events when person gets deleted)
 
 ## Login
 
