@@ -8,7 +8,11 @@ export class EventsForUserPipe implements PipeTransform {
   constructor(private auth: AuthGuard) { }
 
   transform(list: Event[]): Event[] {
-    return list.filter(elem => elem.participants.includes(this.auth.user.getValue()._id));
+    if (this.auth.user.getValue() && list) {
+      return list.filter(elem => elem.participants.includes(this.auth.user.getValue()._id));
+    } else {
+      return [];
+    }
   }
 
 }

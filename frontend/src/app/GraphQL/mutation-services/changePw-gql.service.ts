@@ -12,7 +12,7 @@ export class ChangePwGQL extends Mutation<{ changePw: boolean }> {
 
   public document = gql`
     mutation ChangePw($_id: String!, $newPassword: String!) {
-      changePw(_id: $_id, newPassword: $newPassword)
+      changePw(input: { _id: $_id, newPassword: $newPassword })
     }
   `;
 

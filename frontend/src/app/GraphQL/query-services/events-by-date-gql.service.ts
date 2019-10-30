@@ -13,7 +13,7 @@ export class EventsByDateGQL extends Query<{ eventsByDate: Event[] }> {
 
   public document = gql`
     query GetEventsByDate($startDate: Int!, $endDate: Int!) {
-      eventsByDate(startDate: $startDate, endDate: $endDate) {
+      eventsByDate(input: {startDate: $startDate, endDate: $endDate}) {
         _id
         title
         description

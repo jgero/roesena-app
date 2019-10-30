@@ -4,9 +4,10 @@ import { Person } from "../interfaces"
 import { ConnectionProvider } from "../connection";
 
 export async function newPerson(
-  { name, authorityLevel }: { name: string, authorityLevel: number },
+  args: { input: { name: string, authorityLevel: number } },
   context: any
 ): Promise<Person | null> {
+  const { name, authorityLevel } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
   const authLevel: number = (await context).authLevel;
   // only presidency or admins can create persons
@@ -20,9 +21,10 @@ export async function newPerson(
 }
 
 export async function updatePerson(
-  { _id, name, authorityLevel }: Person,
+  args: { input: Person },
   context: any
 ): Promise<Person | null> {
+  const { _id, name, authorityLevel } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
   const authLevel: number = (await context).authLevel;
   const beforeUpdate = await collection.findOne<Person>({ _id: new ObjectID(_id) });

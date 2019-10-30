@@ -13,7 +13,7 @@ export class LoginGQL extends Mutation<{ login: Person }> {
 
   public document = gql`
     mutation Login($username: String!, $password: String!) {
-      login(name: $username, password: $password) {
+      login(input: { name: $username, password: $password }) {
         _id
         name
         authorityLevel

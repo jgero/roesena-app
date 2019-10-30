@@ -13,7 +13,7 @@ export class NewPersonGQL extends Mutation<{ newPerson: Person }> {
 
   public document = gql`
     mutation UpdatePerson($name: String!, $authorityLevel: Int!) {
-      newPerson(name: $name, authorityLevel: $authorityLevel) {
+      newPerson(input: { name: $name, authorityLevel: $authorityLevel }) {
         _id
         name
         authorityLevel

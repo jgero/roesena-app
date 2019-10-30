@@ -4,9 +4,9 @@ import { Image } from "../interfaces"
 import { ConnectionProvider } from "../connection";
 
 export async function newImage(
-  { description, image, tags }: {
-    description: string, image: string, tags: string[]
-  }): Promise<Image> {
+  args: { input: { description: string, image: string, tags: string[] } }
+): Promise<Image> {
+  const { description, image, tags } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("images");
   return new Promise((resolve) => {
     collection.insertOne({ description, image, tags }).then(result => {
@@ -17,8 +17,9 @@ export async function newImage(
 }
 
 export async function updateImage(
-  { _id, description, image, tags }: { _id: string, description: string, image: string, tags: string[] }
+  args: { input: { _id: string, description: string, image: string, tags: string[] } }
 ): Promise<Image> {
+  const { _id, description, image, tags } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("images");
   return new Promise((resolve) => {
     collection.replaceOne({ _id: new ObjectID(_id) }, { description, image, tags }).then(result => {

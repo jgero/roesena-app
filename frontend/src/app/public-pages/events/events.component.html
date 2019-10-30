@@ -1,4 +1,4 @@
-<input type="checkbox" [(ngModel)]="filterEvents">
+<input *ngIf="auth.user | async" type="checkbox" [(ngModel)]="filterEvents">
 
 <ng-container *ngIf="filterEvents then filtered; else all"></ng-container>
 <ng-template #all>

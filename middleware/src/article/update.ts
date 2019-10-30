@@ -4,8 +4,9 @@ import { Article } from "../interfaces"
 import { ConnectionProvider } from "../connection";
 
 export async function updateArticle(
-  { _id, date, title, content, images }: { _id: string, date: number, title: string, content: string, images: string[] }
+  args: { input: { _id: string, date: number, title: string, content: string, images: string[] } }
 ): Promise<Article> {
+  const { _id, date, title, content, images } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("articles");
   return new Promise((resolve) => {
     collection.replaceOne({ _id: new ObjectID(_id) }, { date, title, content, images }).then(res => {
@@ -15,8 +16,9 @@ export async function updateArticle(
 }
 
 export async function newArticle(
-  { date, title, content, images }: { date: number, title: string, content: string, images: string[] }
+  args: { input: { date: number, title: string, content: string, images: string[] } }
 ): Promise<Article> {
+  const { date, title, content, images } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
   return new Promise((resolve) => {
     collection.insertOne({ date, title, content, images }).then(res => {

@@ -12,7 +12,7 @@ import { Event } from 'src/app/interfaces';
 export class EventsGQL extends Query<{ events: Event[] }> {
 
   public document = gql`
-    query GetEventsByDate {
+    query GetAllEvents {
       events {
         _id
         title

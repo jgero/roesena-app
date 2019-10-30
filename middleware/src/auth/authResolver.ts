@@ -17,7 +17,8 @@ export async function me(_args: any, context: any): Promise<Person | null> {
   }
 }
 
-export async function login({ password, name }: { password: string, name: string }, context: any): Promise<Person | null> {
+export async function login(args: { input: { password: string, name: string } }, context: any): Promise<Person | null> {
+  const { name, password } = args.input;
   const res: Response = (await context).response;
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
   const toLogIn = await collection.findOne<PersonWithPassword>({ name: name });
@@ -28,7 +29,7 @@ export async function login({ password, name }: { password: string, name: string
     // generate random session id
     const session = randomBytes(16).toString('base64');
     // set the session id in the database
-    await collection.updateOne({ name: name }, { $set: { sessionId: session } });
+    await collection.updateOne({ name }, { $set: { sessionId: session } });
     // set the cookie on the response
     res.cookie("session_token", session);
     // return the person without the password
@@ -56,7 +57,8 @@ export async function logout({ _id }: { _id: string }, context: any): Promise<bo
   }
 }
 
-export async function changePw({ _id, newPassword }: { _id: string, newPassword: string }, context: any): Promise<boolean> {
+export async function changePw(args: { input: { _id: string, newPassword: string } }, context: any): Promise<boolean> {
+  const { _id, newPassword } = args.input;
   const req: Request = (await context).request;
   const authLevel: number = (await context).authLevel;
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
