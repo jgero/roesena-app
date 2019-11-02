@@ -8,7 +8,7 @@ import { article, articles, newArticle, updateArticle, deleteArticle } from './a
 import { me, login, logout, changePw } from './auth/authResolver';
 import { image, images, newImage, updateImage, deleteImage } from './image';
 import { person, persons, newPerson, updatePerson, deletePerson } from './person';
-import { events, eventsByDate } from './events';
+import { events, eventsByDate, newEvent, updateEvent, acceptEvent } from './events';
 
 (() => {
   // create the express-server instance
@@ -46,7 +46,10 @@ import { events, eventsByDate } from './events';
         updateArticle,
         deleteArticle,
         events,
-        eventsByDate
+        eventsByDate,
+        newEvent,
+        updateEvent,
+        acceptEvent
       },
       graphiql: true,
       // the context contains the authLevel of the user from the current cookie, aswell as the request and the response

@@ -32,4 +32,5 @@ export interface Event {
   startDate: number;
   endDate: number;
   participants: string[];
+  accepted: string[];
 }

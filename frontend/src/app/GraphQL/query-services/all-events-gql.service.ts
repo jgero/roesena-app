@@ -20,6 +20,7 @@ export class EventsGQL extends Query<{ events: Event[] }> {
         startDate
         endDate
         participants
+        accepted
       }
     }
   `;

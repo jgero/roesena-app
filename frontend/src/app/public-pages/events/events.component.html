@@ -1,14 +1,12 @@
 <input *ngIf="auth.user | async" type="checkbox" [(ngModel)]="filterEvents">
 
-<ng-container *ngIf="filterEvents then filtered; else all"></ng-container>
-<ng-template #all>
-
-  <div *ngFor="let event of events | async">
-    {{event.title}}
+<div class="event-container">
+  <div class="event-card" *ngFor="let event of (filterEvents ? (events | async | eventsForUser) : (events | async))">
+    <span>{{event.title}}</span>
+    <span>{{event.description}}</span>
+    <div class="accepted">
+      <span *ngFor="let id of event.accepted">{{id}}</span>
+    </div>
+    <input *ngIf="filterEvents" type="button" value="accept" (click)="acceptEvent(event._id)">
   </div>
-</ng-template>
-<ng-template #filtered>
-  <div *ngFor="let event of events | async | eventsForUser">
-    {{event.title}}
-  </div>
-</ng-template>
+</div>

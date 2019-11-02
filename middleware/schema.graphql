@@ -23,6 +23,19 @@ type Mutation {
   newArticle(input: NewArticle!): Article
   updateArticle(input: UpdateArticle!): Article
   deleteArticle(_id: String!): Boolean
+  newEvent(input: NewEvent!): Event
+  updateEvent(input: UpdateEvent!): Event
+  deleteEvent(_id: String!): Boolean
+  acceptEvent(_id: String!): Boolean
+}
+
+input NewEvent {
+  title: String
+  description: String
+  startDate: Int
+  endDate: Int,
+  participants: [String],
+  authorityGroup: Int
 }
 
 input UpdateEvent {
@@ -94,8 +107,9 @@ type Event {
   title: String
   description: String
   startDate: Int
-  endDate: Int,
-  participants: [String],
+  endDate: Int
+  participants: [String]
+  accepted: [String]
   authorityGroup: Int
 }
 

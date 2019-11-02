@@ -31,9 +31,9 @@ export async function updatePerson(
   // only presidency or admins can update persons
   // you can only update users with lower auth level
   if ((authLevel > 3) && (authorityLevel < authLevel) && (beforeUpdate && (authLevel > beforeUpdate.authorityLevel))) {
-    const result = await collection.replaceOne({ _id: new ObjectID(_id) }, { name, authorityLevel });
+    const result = await collection.findOneAndUpdate({ _id: new ObjectID(_id) }, { $set: { name, authorityLevel } });
     // the result.ops[0] contains the data that was inserted by the query
-    return result.ops[0] as Person;
+    return result.value as Person;
   }
   return null;
 }

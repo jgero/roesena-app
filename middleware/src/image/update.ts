@@ -22,8 +22,8 @@ export async function updateImage(
   const { _id, description, image, tags } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("images");
   return new Promise((resolve) => {
-    collection.replaceOne({ _id: new ObjectID(_id) }, { description, image, tags }).then(result => {
-      resolve(result.ops[0] as Image);
+    collection.findOneAndUpdate({ _id: new ObjectID(_id) }, { $set: { description, image, tags } }).then(result => {
+      resolve(result.value as Image);
     });
   });
 }

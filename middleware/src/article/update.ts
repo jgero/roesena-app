@@ -9,8 +9,8 @@ export async function updateArticle(
   const { _id, date, title, content, images } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection("articles");
   return new Promise((resolve) => {
-    collection.replaceOne({ _id: new ObjectID(_id) }, { date, title, content, images }).then(res => {
-      resolve(res.ops[0] as Article);
+    collection.findOneAndUpdate({ _id: new ObjectID(_id) }, { $set: { date, title, content, images } }).then(res => {
+      resolve(res.value as Article);
     });
   });
 }
