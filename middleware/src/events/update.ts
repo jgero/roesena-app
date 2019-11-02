@@ -1,32 +1,33 @@
 import { ObjectID } from "mongodb";
 import { Request } from "express";
 
-import { Event, Person } from "../interfaces"
+import { Event, Person, EventInput, EventUpdate } from "../interfaces"
 import { ConnectionProvider } from "../connection";
+import { GQLContext } from "../index";
 
-export async function newEvent(
-  args: { input: { title: string, description: string, startDate: number, endDate: number, participants: string[], authorityGroup: number } }
-): Promise<Event> {
-  const { title, description, startDate, endDate, participants, authorityGroup } = args.input;
+export async function newEvent(args: { input: EventInput }, context: Promise<GQLContext>): Promise<string> {
   const collection = (await ConnectionProvider.Instance.db).collection("events");
-  return new Promise((resolve) => {
-    collection.insertOne({ title, description, startDate, endDate, participants, authorityGroup }).then(result => {
-      // the result.ops[0] contains the data that was inserted by the query
-      resolve(result.ops[0] as Event);
-    })
-  });
+  const auth = (await context).authLevel;
+  if (auth >= 3 && auth >= args.input.authorityGroup) {
+    const result = await collection.insertOne(args.input);
+    // return the id of the inserted Event
+    return (result.insertedId.toHexString());
+  }
+  return null;
 }
 
-export async function updateEvent(
-  args: { input: { _id: string, title: string, description: string, startDate: number, endDate: number, participants: string[], authorityGroup: number } }
-): Promise<Event> {
-  const { _id, title, description, startDate, endDate, participants, authorityGroup } = args.input;
+export async function updateEvent(args: { input: EventUpdate }, context: Promise<GQLContext>): Promise<Event | null> {
   const collection = (await ConnectionProvider.Instance.db).collection("events");
-  return new Promise((resolve) => {
-    collection.findOneAndUpdate({ _id: new ObjectID(_id) }, { $set: { title, description, startDate, endDate, participants, authorityGroup } }).then(result => {
-      resolve(result.value as Event);
-    });
-  });
+  const auth = (await context).authLevel;
+  // find old event to check if editing should be allowed
+  const old = await collection.findOne<Event>({ _id: new ObjectID(args.input._id) });
+  if (old && auth >= 3 && auth >= old.authorityGroup) {
+    const id = args.input._id;
+    delete args.input._id;
+    const result = await collection.findOneAndUpdate({ _id: new ObjectID(id) }, { $set: args.input });
+    return result.value;
+  }
+  return null;
 }
 
 export async function acceptEvent({ _id }: { _id: string }, context: any): Promise<boolean> {
@@ -42,8 +43,8 @@ export async function acceptEvent({ _id }: { _id: string }, context: any): Promi
     if (event && event.participants.find(el => el == user._id)) {
       // only accept if person is an participant and has not already accepted
       const result = await eventCollection.updateOne({ _id: new ObjectID(_id) }, { $addToSet: { accepted: user._id } });
-      return Promise.resolve(result.modifiedCount === 1);
+      return result.modifiedCount === 1;
     }
   }
-  return Promise.resolve(false);
+  return false;
 }

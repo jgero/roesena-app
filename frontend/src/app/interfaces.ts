@@ -25,12 +25,19 @@ export interface ImageMetadata {
   tags: string[];
 }
 
-export interface Event {
-  _id: string;
+export interface EventInput {
   title: string;
   description: string;
   startDate: number;
   endDate: number;
   participants: string[];
+  authorityGroup: number;
+}
+
+export interface EventUpdate extends EventInput {
+  _id: string;
+}
+
+export interface Event extends EventUpdate {
   accepted: string[];
 }

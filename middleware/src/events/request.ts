@@ -1,5 +1,3 @@
-import { ObjectID } from "mongodb";
-
 import { Event } from "../interfaces"
 import { ConnectionProvider } from "../connection";
 

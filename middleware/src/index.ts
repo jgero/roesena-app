@@ -54,7 +54,7 @@ import { events, eventsByDate, newEvent, updateEvent, acceptEvent } from './even
       graphiql: true,
       // the context contains the authLevel of the user from the current cookie, aswell as the request and the response
       // context is async, which means it returns a Promise!
-      context: (async (request: Request, response: Response) => {
+      context: (async (request: Request, response: Response): Promise<GQLContext> => {
         // const maker = new ContextMaker(request);
         const authLevel = await getAuthLevel(request);
         return {
@@ -67,3 +67,9 @@ import { events, eventsByDate, newEvent, updateEvent, acceptEvent } from './even
   });
   app.listen(4000, () => console.log('Express GraphQL Server running!'));
 })();
+
+export interface GQLContext {
+  authLevel: number;
+  request: Request;
+  response: Response;
+}

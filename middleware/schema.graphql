@@ -23,7 +23,7 @@ type Mutation {
   newArticle(input: NewArticle!): Article
   updateArticle(input: UpdateArticle!): Article
   deleteArticle(_id: String!): Boolean
-  newEvent(input: NewEvent!): Event
+  newEvent(input: NewEvent!): String
   updateEvent(input: UpdateEvent!): Event
   deleteEvent(_id: String!): Boolean
   acceptEvent(_id: String!): Boolean

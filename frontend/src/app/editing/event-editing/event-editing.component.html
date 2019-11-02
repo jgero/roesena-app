@@ -8,5 +8,5 @@
   <div *ngFor="let person of persons | async" [ngClass]="{'selected': selectedEvent.participants.includes(person._id)}"
     (click)="toggleID(person._id)">
     {{person.name}}</div>
-  <input type="button" value="save" (click)="saveEvent(selectedEvent)">
+  <input type="button" value="save" (click)="updateEvent(selectedEvent)">
 </div>

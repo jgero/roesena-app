@@ -21,6 +21,7 @@ export class EventsGQL extends Query<{ events: Event[] }> {
         endDate
         participants
         accepted
+        authorityGroup
       }
     }
   `;
