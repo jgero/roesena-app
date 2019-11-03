@@ -11,7 +11,7 @@ import { GraphQLModule } from '../graphql.module';
 export class LogoutGQL extends Mutation<{ logout: boolean }> {
 
   public document = gql`
-    mutation Logout($_id: String!) {
+    mutation Logout($_id: ID!) {
       logout(_id: $_id)
     }
   `;

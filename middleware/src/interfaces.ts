@@ -40,5 +40,5 @@ export interface EventUpdate extends EventInput {
 }
 
 export interface Event extends EventUpdate {
-  accepted: string[];
+  accepted: { id: string, amount: number }[];
 }

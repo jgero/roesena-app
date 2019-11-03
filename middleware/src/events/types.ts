@@ -1,0 +1,65 @@
+import {
+  GraphQLString,
+  GraphQLID,
+  GraphQLInputObjectType,
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLInt,
+  GraphQLList,
+} from 'graphql';
+
+import { PersonType } from '../person/types';
+
+const ParticipantType = new GraphQLObjectType({
+  name: 'Participant',
+  fields: () => ({
+    person: { type: GraphQLNonNull(PersonType) },
+    amount: { type: GraphQLNonNull(GraphQLInt) }
+  })
+});
+
+export const EventType = new GraphQLObjectType({
+  name: 'Event',
+  fields: () => ({
+    _id: { type: GraphQLNonNull(GraphQLID) },
+    title: { type: GraphQLNonNull(GraphQLString) },
+    description: { type: GraphQLString },
+    startDate: { type: GraphQLNonNull(GraphQLInt) },
+    endDate: { type: GraphQLNonNull(GraphQLInt) },
+    authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
+    participants: { type: GraphQLList(ParticipantType) }
+  })
+});
+
+export const NewEventInputType = new GraphQLInputObjectType({
+  name: 'NewEventInputType',
+  fields: () => ({
+    title: { type: GraphQLNonNull(GraphQLString) },
+    description: { type: GraphQLString },
+    startDate: { type: GraphQLNonNull(GraphQLInt) },
+    endDate: { type: GraphQLNonNull(GraphQLInt) },
+    authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
+    participants: { type: GraphQLList(GraphQLString) }
+  })
+});
+
+export const UpdateEventInputType = new GraphQLInputObjectType({
+  name: 'UpdateEventInputType',
+  fields: () => ({
+    _id: { type: GraphQLNonNull(GraphQLID) },
+    title: { type: GraphQLNonNull(GraphQLString) },
+    description: { type: GraphQLString },
+    startDate: { type: GraphQLNonNull(GraphQLInt) },
+    endDate: { type: GraphQLNonNull(GraphQLInt) },
+    authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
+    participants: { type: GraphQLList(GraphQLString) }
+  })
+});
+
+export const TimeRangeInputType = new GraphQLInputObjectType({
+  name: 'TimeRangeInputType',
+  fields: () => ({
+    startDate: { type: GraphQLNonNull(GraphQLInt) },
+    endDate: { type: GraphQLNonNull(GraphQLInt) }
+  })
+});

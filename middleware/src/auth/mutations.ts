@@ -1,23 +1,33 @@
 import { Request, Response } from "express";
+import { GraphQLID, GraphQLNonNull, GraphQLBoolean } from "graphql";
 import { compare, hash } from "bcrypt";
 import { randomBytes } from "crypto";
 import { ObjectID } from "bson";
 
 import { Person, PersonWithPassword } from "../interfaces";
 import { ConnectionProvider } from "../connection";
+import { PersonType } from '../person/types';
+import { LoginInputType, ChangePwInputType } from "./types";
 
-export async function me(_args: any, context: any): Promise<Person | null> {
-  const req: Request = (await context).request;
-  // user has to be logged in to get person data
-  if (req.cookies.session_token) {
-    const collection = (await ConnectionProvider.Instance.db).collection("persons");
-    return await collection.findOne<Person>({ sessionId: req.cookies.session_token });
-  } else {
-    return null;
+export const authMutations = {
+  login: {
+    type: PersonType,
+    args: { input: { type: new GraphQLNonNull(LoginInputType) } },
+    resolve: login
+  },
+  logout: {
+    type: new GraphQLNonNull(GraphQLBoolean),
+    args: { _id: { type: new GraphQLNonNull(GraphQLID) } },
+    resolve: logout
+  },
+  changePw: {
+    type: new GraphQLNonNull(GraphQLBoolean),
+    args: { input: { type: new GraphQLNonNull(ChangePwInputType) } },
+    resolve: changePw
   }
-}
+};
 
-export async function login(args: { input: { password: string, name: string } }, context: any): Promise<Person | null> {
+async function login(_: any, args: any, context: any): Promise<Person | null> {
   const { name, password } = args.input;
   const res: Response = (await context).response;
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
@@ -41,7 +51,8 @@ export async function login(args: { input: { password: string, name: string } },
   }
 }
 
-export async function logout({ _id }: { _id: string }, context: any): Promise<boolean> {
+async function logout(_: any, args: any, context: any): Promise<boolean> {
+  const _id = args._id;
   const res: Response = (await context).response;
   const req: Request = (await context).request;
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
@@ -57,7 +68,7 @@ export async function logout({ _id }: { _id: string }, context: any): Promise<bo
   }
 }
 
-export async function changePw(args: { input: { _id: string, newPassword: string } }, context: any): Promise<boolean> {
+async function changePw(_: any, args: any, context: any): Promise<boolean> {
   const { _id, newPassword } = args.input;
   const req: Request = (await context).request;
   const authLevel: number = (await context).authLevel;

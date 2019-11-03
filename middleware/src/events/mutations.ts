@@ -1,22 +1,46 @@
+import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 import { ObjectID } from "mongodb";
 import { Request } from "express";
 
-import { Event, Person, EventInput, EventUpdate } from "../interfaces"
+import { Event, Person } from "../interfaces"
 import { ConnectionProvider } from "../connection";
-import { GQLContext } from "../index";
+import { EventType, NewEventInputType, UpdateEventInputType } from './types';
 
-export async function newEvent(args: { input: EventInput }, context: Promise<GQLContext>): Promise<string> {
+export const eventMutations = {
+  newEvent: {
+    type: EventType,
+    args: { input: { type: new GraphQLNonNull(NewEventInputType) } },
+    resolve: newEvent
+  },
+  updateEvent: {
+    type: EventType,
+    args: { input: { type: new GraphQLNonNull(UpdateEventInputType) } },
+    resolve: updateEvent
+  },
+  deleteEvent: {
+    type: GraphQLBoolean,
+    args: { _id: { type: new GraphQLNonNull(GraphQLID) } },
+    resolve: deleteEvent
+  },
+  acceptEvent: {
+    type: GraphQLBoolean,
+    args: { _id: { type: new GraphQLNonNull(GraphQLID) } },
+    resolve: acceptEvent
+  }
+};
+
+async function newEvent(_: any, args: any, context: any): Promise<string> {
   const collection = (await ConnectionProvider.Instance.db).collection("events");
   const auth = (await context).authLevel;
   if (auth >= 3 && auth >= args.input.authorityGroup) {
     const result = await collection.insertOne(args.input);
     // return the id of the inserted Event
-    return (result.insertedId.toHexString());
+    return (result.insertedId as string);
   }
-  return null;
+  return "";
 }
 
-export async function updateEvent(args: { input: EventUpdate }, context: Promise<GQLContext>): Promise<Event | null> {
+async function updateEvent(_: any, args: any, context: any): Promise<Event | null> {
   const collection = (await ConnectionProvider.Instance.db).collection("events");
   const auth = (await context).authLevel;
   // find old event to check if editing should be allowed
@@ -30,7 +54,8 @@ export async function updateEvent(args: { input: EventUpdate }, context: Promise
   return null;
 }
 
-export async function acceptEvent({ _id }: { _id: string }, context: any): Promise<boolean> {
+async function acceptEvent(_: any, args: any, context: any): Promise<boolean> {
+  const _id = args._id;
   const personCollection = (await ConnectionProvider.Instance.db).collection("persons");
   const eventCollection = (await ConnectionProvider.Instance.db).collection("events");
   const req: Request = (await context).request;
@@ -47,4 +72,14 @@ export async function acceptEvent({ _id }: { _id: string }, context: any): Promi
     }
   }
   return false;
+}
+
+async function deleteEvent(_: any, args: any, context: any): Promise<boolean> {
+  const _id = args._id;
+  const collection = (await ConnectionProvider.Instance.db).collection("events");
+  return new Promise((resolve) => {
+    collection.deleteOne({ _id: new ObjectID(_id) }).then(result => {
+      resolve(result.deletedCount === 1);
+    });
+  });
 }
