@@ -39,7 +39,7 @@ async function eventsByDate(_: any, args: any, context: any): Promise<Event[]> {
   );
 }
 
-async function mapIdsToPersons(event) {
+export async function mapIdsToPersons(event) {
   const collection = (await ConnectionProvider.Instance.db).collection("persons");
   return event.map(async event => {
     event.participants = await event.participants.map(async el => {

@@ -6,7 +6,6 @@ services:
       dockerfile: $PWD/Docker/dev.middleware.Dockerfile
     links:
       - mongo
-    restart: on-failure
   angular:
     build:
       context: ./frontend/

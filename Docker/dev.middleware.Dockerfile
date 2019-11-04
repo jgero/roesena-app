@@ -1,5 +1,5 @@
 # base image
-FROM node:9.6.1
+FROM node:13
 
 # set working directory
 WORKDIR /app
@@ -10,4 +10,4 @@ RUN npm install
 # add current directory to /app folder in the container
 COPY . /app
 # start app
-CMD npm run start:compile
+CMD ["npm", "run", "start:compile"]

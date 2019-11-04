@@ -2,9 +2,9 @@ import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 import { ObjectID } from "mongodb";
 import { Request } from "express";
 
-import { Event, Person } from "../interfaces"
 import { ConnectionProvider } from "../connection";
 import { EventType, NewEventInputType, UpdateEventInputType, AcceptEventInputType } from './types';
+import { mapIdsToPersons } from './queries';
 
 export const eventMutations = {
   newEvent: {
@@ -29,26 +29,32 @@ export const eventMutations = {
   }
 };
 
-async function newEvent(_: any, args: any, context: any): Promise<string> {
+async function newEvent(_: any, args: any, context: any) {
   const collection = (await ConnectionProvider.Instance.db).collection("events");
   const auth = (await context).authLevel;
-  if (auth >= 3 && auth >= args.input.authorityGroup) {
+  // only group leaders or higher are allowed to update events
+  // you can only create events at your auth level or lower
+  if (auth > 2 && auth >= args.input.authorityGroup) {
     const result = await collection.insertOne(args.input);
-    // return the id of the inserted Event
-    return (result.insertedId as string);
+    // return the new event (with all participants)
+    return await mapIdsToPersons(result.ops[0]);
   }
   return "";
 }
 
-async function updateEvent(_: any, args: any, context: any): Promise<Event | null> {
+async function updateEvent(_: any, args: any, context: any) {
   const collection = (await ConnectionProvider.Instance.db).collection("events");
   const auth = (await context).authLevel;
-  // find old event to check if editing should be allowed
-  const old = await collection.findOne<Event>({ _id: new ObjectID(args.input._id) });
-  if (old && auth >= 3 && auth >= old.authorityGroup) {
+  // only group leaders or higher are allowed to update events
+  if (auth > 2) {
     const id = args.input._id;
     delete args.input._id;
-    const result = await collection.findOneAndUpdate({ _id: new ObjectID(id) }, { $set: args.input });
+    const result = await collection.findOneAndUpdate(
+      // match the desired event if the authLevel of the user is high enough
+      { _id: new ObjectID(id), "authorityGroup": { $lte: auth } },
+      // update the provided elements
+      { $set: args.input }
+    );
     return result.value;
   }
   return null;
