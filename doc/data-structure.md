@@ -77,10 +77,8 @@
   "startDate": "20190904",
   "endDate": "20191015",
   "participants": [
-    "234523452345",
-    "2345234523452345",
-    "2345234523452345",
-    "sadfasdfasdfasd"
+    { "_id": "234523452345", "amount": 3 },
+    { "_id": "2345234523452", "amount": 5 }
   ],
   "authorityGroup": "3"
 }

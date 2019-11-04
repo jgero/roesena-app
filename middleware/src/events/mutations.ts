@@ -4,7 +4,7 @@ import { Request } from "express";
 
 import { Event, Person } from "../interfaces"
 import { ConnectionProvider } from "../connection";
-import { EventType, NewEventInputType, UpdateEventInputType } from './types';
+import { EventType, NewEventInputType, UpdateEventInputType, AcceptEventInputType } from './types';
 
 export const eventMutations = {
   newEvent: {
@@ -24,7 +24,7 @@ export const eventMutations = {
   },
   acceptEvent: {
     type: GraphQLBoolean,
-    args: { _id: { type: new GraphQLNonNull(GraphQLID) } },
+    args: { input: { type: new GraphQLNonNull(AcceptEventInputType) } },
     resolve: acceptEvent
   }
 };
@@ -54,22 +54,24 @@ async function updateEvent(_: any, args: any, context: any): Promise<Event | nul
   return null;
 }
 
+// when amount in participant is not set the person has not accepted yet
+// add mutation to unset the amount again to cancel if already accepted
+
 async function acceptEvent(_: any, args: any, context: any): Promise<boolean> {
-  const _id = args._id;
+  const { _id, amount } = args.input;
   const personCollection = (await ConnectionProvider.Instance.db).collection("persons");
   const eventCollection = (await ConnectionProvider.Instance.db).collection("events");
   const req: Request = (await context).request;
   // get logged-in user
-  const user = await personCollection.findOne<Person>({ sessionId: req.cookies.session_token });
+  const user = await personCollection.findOne({ sessionId: req.cookies.session_token });
   if (user) {
-    // get the event which should be accepted
-    const event = await eventCollection.findOne<Event>({ _id: new ObjectID(_id) });
-    // because of some type problems the participants have to be compared with only two '=' symbols
-    if (event && event.participants.find(el => el == user._id)) {
-      // only accept if person is an participant and has not already accepted
-      const result = await eventCollection.updateOne({ _id: new ObjectID(_id) }, { $addToSet: { accepted: user._id } });
-      return result.modifiedCount === 1;
-    }
+    const result = await eventCollection.updateOne(
+      // match by event id and the person id in the participants so only events the user is participant of match
+      { _id: new ObjectID(_id), "participants._id": (user._id as ObjectID).toHexString() },
+      // update the amount for the matched participant
+      { $set: { "participants.$.amount": amount } }
+    );
+    return result.modifiedCount === 1;
   }
   return false;
 }

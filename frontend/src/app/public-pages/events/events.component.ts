@@ -15,7 +15,7 @@ import { PopupService } from 'src/app/popup/popup.service';
 export class EventsComponent implements OnInit {
 
   public filterEvents: boolean;
-  public events: Observable<Event[]>;
+  public events: Observable<any>;
 
   private subs: Subscription[] = [];
 
@@ -35,7 +35,7 @@ export class EventsComponent implements OnInit {
   }
 
   public acceptEvent(id: string) {
-    this.subs.push(this.acc.mutate({ _id: id }).subscribe({
+    this.subs.push(this.acc.mutate({ _id: id, amount: 6 }).subscribe({
       next: result => this.popServ.flashPopup(result.data.acceptEvent ? 'Done!' : 'Fehler!', this.container),
       error: () => this.popServ.flashPopup('Query Error!', this.container)
     }));

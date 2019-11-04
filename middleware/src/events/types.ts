@@ -14,7 +14,7 @@ const ParticipantType = new GraphQLObjectType({
   name: 'Participant',
   fields: () => ({
     person: { type: GraphQLNonNull(PersonType) },
-    amount: { type: GraphQLNonNull(GraphQLInt) }
+    amount: { type: GraphQLInt }
   })
 });
 
@@ -61,5 +61,13 @@ export const TimeRangeInputType = new GraphQLInputObjectType({
   fields: () => ({
     startDate: { type: GraphQLNonNull(GraphQLInt) },
     endDate: { type: GraphQLNonNull(GraphQLInt) }
+  })
+});
+
+export const AcceptEventInputType = new GraphQLInputObjectType({
+  name: 'AcceptEventInputType',
+  fields: () => ({
+    _id: { type: GraphQLNonNull(GraphQLID) },
+    amount: { type: GraphQLNonNull(GraphQLInt) }
   })
 });
