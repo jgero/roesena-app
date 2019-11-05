@@ -3,6 +3,8 @@ import { GraphQLSchema, GraphQLObjectType } from 'graphql';
 import { eventQueries, eventMutations } from '../events';
 import { authQueries, authMutations } from '../auth';
 import { personQueries, personMutations } from '../person';
+import { imageQueries, imageMutations } from '../image';
+import { articleQueries, articleMutations } from '../article';
 
 export const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -10,7 +12,9 @@ export const schema = new GraphQLSchema({
     fields: () => ({
       ...eventQueries,
       ...authQueries,
-      ...personQueries
+      ...personQueries,
+      ...imageQueries,
+      ...articleQueries
     })
   }),
   mutation: new GraphQLObjectType({
@@ -18,7 +22,9 @@ export const schema = new GraphQLSchema({
     fields: () => ({
       ...eventMutations,
       ...authMutations,
-      ...personMutations
+      ...personMutations,
+      ...imageMutations,
+      ...articleMutations
     })
   })
 });
