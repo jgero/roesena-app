@@ -5,7 +5,7 @@ import {
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLInt,
-  GraphQLList,
+  GraphQLList
 } from 'graphql';
 
 import { PersonType } from '../person/types';
