@@ -9,11 +9,9 @@ import { GraphQLModule } from '../graphql.module';
   providedIn: GraphQLModule
 })
 export class DeletePersonGQL extends Mutation<{ deletePerson: boolean }> {
-
   public document = gql`
-    mutation DeletePerson($_id: String!) {
+    mutation DeletePerson($_id: ID!) {
       deletePerson(_id: $_id)
     }
   `;
-
 }

@@ -10,7 +10,6 @@ import { Person } from 'src/app/interfaces';
   providedIn: GraphQLModule
 })
 export class NewPersonGQL extends Mutation<{ newPerson: Person }> {
-
   public document = gql`
     mutation UpdatePerson($name: String!, $authorityLevel: Int!) {
       newPerson(input: { name: $name, authorityLevel: $authorityLevel }) {
@@ -20,5 +19,4 @@ export class NewPersonGQL extends Mutation<{ newPerson: Person }> {
       }
     }
   `;
-
 }

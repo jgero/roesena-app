@@ -9,21 +9,25 @@ import { Event } from 'src/app/interfaces';
 @Injectable({
   providedIn: GraphQLModule
 })
-export class EventsByDateGQL extends Query<{ eventsByDate: Event[] }> {
-
+export class EventsByDateGQL extends Query<{ eventsByDate: any[] }> {
   public document = gql`
     query GetEventsByDate($startDate: Int!, $endDate: Int!) {
-      eventsByDate(input: {startDate: $startDate, endDate: $endDate}) {
+      eventsByDate(input: { startDate: $startDate, endDate: $endDate }) {
         _id
         title
         description
         startDate
         endDate
-        participants
-        accepted
+        participants {
+          person {
+            _id
+            name
+            authorityLevel
+          }
+          amount
+        }
         authorityGroup
       }
     }
   `;
-
 }

@@ -9,11 +9,9 @@ import { GraphQLModule } from '../graphql.module';
   providedIn: GraphQLModule
 })
 export class ChangePwGQL extends Mutation<{ changePw: boolean }> {
-
   public document = gql`
-    mutation ChangePw($_id: String!, $newPassword: String!) {
-      changePw(input: { _id: $_id, newPassword: $newPassword })
+    mutation ChangePw($_id: ID!, $password: String!) {
+      changePw(input: { _id: $_id, password: $password })
     }
   `;
-
 }

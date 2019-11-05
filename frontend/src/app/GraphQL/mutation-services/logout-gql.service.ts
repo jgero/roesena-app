@@ -9,11 +9,9 @@ import { GraphQLModule } from '../graphql.module';
   providedIn: GraphQLModule
 })
 export class LogoutGQL extends Mutation<{ logout: boolean }> {
-
   public document = gql`
     mutation Logout($_id: ID!) {
       logout(_id: $_id)
     }
   `;
-
 }

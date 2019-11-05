@@ -9,8 +9,7 @@ import { Person } from 'src/app/interfaces';
 @Injectable({
   providedIn: GraphQLModule
 })
-export class MeGQL extends Query<{ me: Person }> {
-
+export class MeGQL extends Query<{ me: any }> {
   public document = gql`
     query GetSelf {
       me {

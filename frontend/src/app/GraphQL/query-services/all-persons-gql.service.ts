@@ -9,8 +9,7 @@ import { Person } from 'src/app/interfaces';
 @Injectable({
   providedIn: GraphQLModule
 })
-export class PersonsGQL extends Query<{ persons: Person[] }> {
-
+export class PersonsGQL extends Query<{ persons: any[] }> {
   public document = gql`
     query GetAllPersons {
       persons {
@@ -20,5 +19,4 @@ export class PersonsGQL extends Query<{ persons: Person[] }> {
       }
     }
   `;
-
 }

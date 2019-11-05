@@ -10,7 +10,6 @@ import { Person } from 'src/app/interfaces';
   providedIn: GraphQLModule
 })
 export class LoginGQL extends Mutation<{ login: Person }> {
-
   public document = gql`
     mutation Login($username: String!, $password: String!) {
       login(input: { name: $username, password: $password }) {
@@ -20,5 +19,4 @@ export class LoginGQL extends Mutation<{ login: Person }> {
       }
     }
   `;
-
 }

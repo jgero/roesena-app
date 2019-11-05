@@ -5,11 +5,11 @@ import { ConnectionProvider } from '../connection';
 import { ImageType } from './types';
 
 export const imageQueries = {
-  persons: {
+  images: {
     type: new GraphQLNonNull(GraphQLList(ImageType)),
     resolve: images
   },
-  person: {
+  image: {
     type: ImageType,
     args: { _id: { type: new GraphQLNonNull(GraphQLID) } },
     resolve: image

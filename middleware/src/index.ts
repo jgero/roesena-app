@@ -1,7 +1,7 @@
-import express, { Response, Request } from 'express';
-import expressGQL from 'express-graphql'
+import express from 'express';
+import expressGQL from 'express-graphql';
 
-import { schema } from "./GraphQL/schema";
+import { schema } from './GraphQL/schema';
 import { getAuthLevel } from './context';
 
 // create the express-server instance
