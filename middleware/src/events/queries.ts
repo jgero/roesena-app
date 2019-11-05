@@ -19,23 +19,31 @@ export const eventQueries = {
 async function events(_a: any, _b: any, context: any) {
   const auth = (await context).authLevel;
   const collection = (await ConnectionProvider.Instance.db).collection('events');
-  return await mapIdsToPersons(await collection.find({ authorityGroup: { $lte: auth } }).toArray());
+  if (auth > 1) {
+    return await mapIdsToPersons(await collection.find({ authorityGroup: { $lte: auth } }).toArray());
+  } else {
+    return [];
+  }
 }
 
 async function eventsByDate(_: any, args: any, context: any) {
   const auth = (await context).authLevel;
   const collection = (await ConnectionProvider.Instance.db).collection('events');
-  return await mapIdsToPersons(
-    await collection
-      .find({
-        $and: [
-          { authorityGroup: { $lte: auth } },
-          { startDate: { $lte: args.input.endDate } },
-          { endDate: { $gte: args.input.startDate } }
-        ]
-      })
-      .toArray()
-  );
+  if (auth > 1) {
+    return await mapIdsToPersons(
+      await collection
+        .find({
+          $and: [
+            { authorityGroup: { $lte: auth } },
+            { startDate: { $lte: args.input.endDate } },
+            { endDate: { $gte: args.input.startDate } }
+          ]
+        })
+        .toArray()
+    );
+  } else {
+    return [];
+  }
 }
 
 export async function mapIdsToPersons(event) {

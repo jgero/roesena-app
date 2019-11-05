@@ -27,7 +27,7 @@ async function persons(_: any, _args: any, context: any) {
       .project({ name: 1, authorityLevel: 1 })
       .toArray();
   } else {
-    return null;
+    return [];
   }
 }
 
