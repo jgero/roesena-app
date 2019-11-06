@@ -9,7 +9,7 @@ export interface Article {
   date: number;
   title: string;
   content: string;
-  images: string[];
+  images: Image[];
 }
 
 export interface Image {

@@ -1,46 +1,32 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 import { Article } from '../../interfaces';
+import { ArticlesGQL } from 'src/app/GraphQL/query-services/all-articles-gql.service';
+import { map, catchError } from 'rxjs/operators';
+import { PopupService } from 'src/app/popup/popup.service';
 
 @Component({
   selector: 'app-startpage',
   templateUrl: './startpage.component.html',
   styleUrls: ['./startpage.component.scss']
 })
-export class StartpageComponent implements OnInit, OnDestroy {
+export class StartpageComponent implements OnInit {
+  public articles: Observable<Article[]>;
 
-  public articles = new BehaviorSubject<Article[]>([]);
-  private subs: Subscription[] = [];
-
-  constructor(private apollo: Apollo) { }
+  constructor(private articlesGQL: ArticlesGQL, private popServ: PopupService, private container: ViewContainerRef) {}
 
   ngOnInit() {
-    const articleQuery = gql`
-      query GetArticles {
-        articles {
-          _id
-          date
-          title
-          content
-          images
-        }
-      }
-    `;
-    this.subs.push(this.apollo.watchQuery({
-      query: articleQuery
-    }).valueChanges.subscribe({
-      next: (result: any) => {
-        if (!result.errors && result.data) {
-          this.articles.next(result.data.articles);
-        }
-      }
-    }));
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.articles = this.articlesGQL.watch().valueChanges.pipe(
+      // map to actual data
+      map(result => result.data.articles),
+      // catch error and return empty article array
+      catchError(() => {
+        this.popServ.flashPopup('Could not load Persons', this.container);
+        return [];
+      })
+    );
   }
 }

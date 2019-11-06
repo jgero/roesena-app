@@ -18,32 +18,25 @@ export const articleQueries = {
 
 async function articles(_: any, _args: any, context: any) {
   const collection = (await ConnectionProvider.Instance.db).collection('articles');
-  const auth = (await context).authLevel;
-  // only members can see images
-  if (auth > 1) {
-    return await mapIdsToImages(await collection.find({}).toArray());
-  } else {
-    return [];
-  }
+  return await mapIdsToImages(await collection.find({}).toArray());
 }
 
 async function article(_: any, args: any, context: any) {
   const collection = (await ConnectionProvider.Instance.db).collection('articles');
-  const auth = (await context).authLevel;
-  // only members can see persons
-  if (auth > 1) {
-    return await mapIdsToImages(await collection.find({ _id: new ObjectID(args._id) }).toArray());
-  } else {
-    return null;
-  }
+  return await mapIdsToImages(await collection.find({ _id: new ObjectID(args._id) }).toArray());
 }
 
 async function mapIdsToImages(articles: any[]) {
   const collection = (await ConnectionProvider.Instance.db).collection('images');
   return articles.map(async article => {
+    // map the ids to the image objects
     article.images = await article.images.map(async imageID => {
-      return await collection.findOne({ _id: new ObjectID(imageID) });
+      try {
+        return await collection.findOne({ _id: new ObjectID(imageID) });
+      } catch (e) {
+        return undefined;
+      }
     });
-    return event;
+    return article;
   });
 }

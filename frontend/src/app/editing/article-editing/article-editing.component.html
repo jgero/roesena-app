@@ -14,7 +14,7 @@
   <h1>Bilder</h1>
   <div class="imageContainer">
     <div *ngFor="let image of images; let i = index" class="imageContainer" (click)="onSelect(i)"
-      [ngClass]="{'active': selectedArticle.getValue().images.includes(image._id, 0)}">
+      [ngClass]="{'active': isContainingId(image._id)}">
       <img [src]="image.image | safeURL">
       <span> {{image.description}} </span>
     </div>

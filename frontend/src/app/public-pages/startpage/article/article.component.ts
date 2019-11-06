@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
+
+import { Article } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-article',
@@ -7,14 +9,10 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./article.component.scss']
 })
 export class ArticleComponent implements OnInit {
-
   @Input()
-  public article: { title: string, content: string, _id: string, images: string[] };
+  public article: Article;
 
-  // public src: string;
-
-  constructor(private http: HttpClient) {
-  }
+  constructor() {}
 
   ngOnInit() {
     // request the first image from the database
@@ -28,5 +26,4 @@ export class ArticleComponent implements OnInit {
     //     }
     //   });
   }
-
 }
