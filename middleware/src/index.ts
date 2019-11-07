@@ -24,4 +24,27 @@ app.use('/graphql', (req, res) => {
   })(req, res);
 });
 // start the graphql server
-app.listen(4000, () => console.log('Express GraphQL Server running!'));
+let server;
+function startServer() {
+  server = app.listen(4000, () => console.log('Express GraphQL Server running!'));
+}
+startServer();
+
+declare const module: any;
+
+// webpack hot reloading
+if (module.hot) {
+  module.hot.accept(() => {
+    if (server) {
+      server.close();
+    }
+    startServer();
+    // if(server) {
+    //   server.close();
+    // } else {
+    //   startServer();
+    // }
+  });
+  // when changes were detected app needs to restart -> shut down server here
+  module.hot.dispose(() => server.close());
+}

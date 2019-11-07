@@ -4,6 +4,9 @@ services:
     build:
       context: ./middleware/
       dockerfile: $PWD/Docker/dev.middleware.Dockerfile
+    volumes:
+      - "./middleware/:/app"
+      - "/app/node_modules"
     links:
       - mongo
   angular:
