@@ -8,27 +8,14 @@ import { TagComponent } from './components/tag/tag.component';
 import { ImageComponent } from './components/image/image.component';
 import { SafeURLPipe } from './safe-url.pipe';
 import { HoverableDirective } from './hoverable.directive';
+import { GraphQLModule } from '../GraphQL/graphql.module';
 
-const exports = [
-  SafeURLPipe,
-  HoverableDirective,
-  SearchComponent,
-  TagComponent,
-  ImageComponent
-];
+const exports = [SafeURLPipe, HoverableDirective, SearchComponent, TagComponent, ImageComponent];
 
 @NgModule({
-  declarations: [
-    ...exports
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule
-  ],
-  exports: [
-    ...exports
-  ],
+  declarations: [...exports],
+  imports: [CommonModule, FormsModule, GraphQLModule],
+  exports: [...exports],
   providers: []
 })
-export class SharedModule { }
+export class SharedModule {}

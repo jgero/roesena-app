@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { of } from 'rxjs';
 
 import { Article } from 'src/app/interfaces';
 

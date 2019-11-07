@@ -23,5 +23,5 @@ async function images(_: any, _args: any, _context: any) {
 
 async function image(_: any, args: any, context: any) {
   const collection = (await ConnectionProvider.Instance.db).collection('images');
-  return await collection.find({ _id: new ObjectID(args._id) }).toArray();
+  return await collection.findOne({ _id: new ObjectID(args._id) });
 }

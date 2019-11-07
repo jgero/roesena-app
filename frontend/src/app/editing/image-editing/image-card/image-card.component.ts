@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Image } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-image-card',
@@ -6,9 +7,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./image-card.component.scss']
 })
 export class ImageCardComponent implements OnInit {
-
   @Input()
-  public image: { image: string, description: string, tags: string[], _id: string };
+  public image: Image;
 
   @Output()
   public edit = new EventEmitter<string>();
@@ -17,9 +17,9 @@ export class ImageCardComponent implements OnInit {
   @Output()
   public delete = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public onEdit() {
     this.edit.emit(this.image._id);
@@ -32,5 +32,4 @@ export class ImageCardComponent implements OnInit {
   public onDelete() {
     this.delete.emit(this.image._id);
   }
-
 }

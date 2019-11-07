@@ -4,16 +4,17 @@ import { Query } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 import { GraphQLModule } from '../graphql.module';
-import { ImageMetadata } from 'src/app/interfaces';
+import { Image } from 'src/app/interfaces';
 
 @Injectable({
   providedIn: GraphQLModule
 })
-export class ImagesGQL extends Query<{ images: ImageMetadata[] }> {
+export class ImageGQL extends Query<{ image: Image }> {
   public document = gql`
-    query Images {
-      images {
+    query Image($_id: ID!) {
+      image(_id: $_id) {
         _id
+        data
         description
         tags
       }

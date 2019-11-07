@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Article, Image, ShallowArticle } from 'src/app/interfaces';
+import { Article, Image, ShallowArticle, ImageMetadata } from 'src/app/interfaces';
 import { ImagesGQL } from 'src/app/GraphQL/query-services/all-images-gql.service';
 import { UpdateArticleGQL } from 'src/app/GraphQL/mutation-services/updateArticle-gql.service';
 import { NewArticleGQL } from 'src/app/GraphQL/mutation-services/newArticle-gql.service';
@@ -23,7 +23,7 @@ export class ArticleEditingComponent implements OnInit, OnDestroy {
     date: 0
   };
   public articles: ShallowArticle[] = [];
-  public images: Image[] = [];
+  public images: ImageMetadata[] = [];
 
   constructor(
     articlesGql: ShallowArticlesGQL,

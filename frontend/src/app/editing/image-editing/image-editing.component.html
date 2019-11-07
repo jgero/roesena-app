@@ -1,9 +1,9 @@
 <div class="images">
   <ng-container *ngFor="let image of images | async; let i = index">
-    <ng-container *ngIf="image.isEditing === false;then static else edit"></ng-container>
+    <ng-container *ngIf="image._id !== editingId;then static else edit"></ng-container>
 
     <ng-template #static>
-      <app-image-card [image]="image" (delete)="onDelete($event)" (edit)="onEdit(i)"></app-image-card>
+      <app-image-card [image]="image" (delete)="onDelete($event)" (edit)="onEdit(image._id)"></app-image-card>
     </ng-template>
 
     <ng-template #edit>
