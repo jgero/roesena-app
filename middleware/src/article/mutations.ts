@@ -3,6 +3,7 @@ import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 import { ConnectionProvider } from '../connection';
 import { ObjectID } from 'bson';
 import { ArticleType, NewArticleInputType, UpdateArticleInputType } from './types';
+import { mapIdsToImages } from './queries';
 
 export const articleMutations = {
   newArticle: {
@@ -29,7 +30,7 @@ async function newArticle(_: any, args: any, context: any) {
   if (auth > 1) {
     const result = await collection.insertOne(args.input);
     // the result.ops[0] contains the data that was inserted by the query
-    return result.ops[0];
+    return (await mapIdsToImages([result.ops[0]]))[0];
   }
   return null;
 }
@@ -43,9 +44,10 @@ async function updateArticle(_: any, args: any, context: any) {
     const result = await collection.findOneAndUpdate(
       { _id: new ObjectID(_id) },
       // update the image
-      { $set: { date, title, content, images } }
+      { $set: { date, title, content, images } },
+      { returnOriginal: false }
     );
-    return result.value;
+    return (await mapIdsToImages([result.value]))[0];
   }
   return null;
 }

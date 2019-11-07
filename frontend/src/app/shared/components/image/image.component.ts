@@ -1,10 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Image } from 'src/app/interfaces';
+import { Observable } from 'apollo-link';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-image',
@@ -13,11 +11,13 @@ import { Image } from 'src/app/interfaces';
 })
 export class ImageComponent implements OnInit {
   @Input()
-  public image: Image;
+  private image: Image = undefined;
+
+  public src = new BehaviorSubject<string>(undefined);
 
   constructor() {}
 
   ngOnInit() {
-    console.log(this.image);
+    this.src.next(this.image.data);
   }
 }

@@ -35,7 +35,7 @@ async function newImage(_: any, args: any, context: any) {
 }
 
 async function updateImage(_: any, args: any, context: any) {
-  const { _id, description, image, tags } = args.input;
+  const { _id, description, data, tags } = args.input;
   const collection = (await ConnectionProvider.Instance.db).collection('images');
   const auth = (await context).authLevel;
   // only group leaders and above can edit images
@@ -43,7 +43,8 @@ async function updateImage(_: any, args: any, context: any) {
     const result = await collection.findOneAndUpdate(
       { _id: new ObjectID(_id) },
       // update the image
-      { $set: { description, image, tags } }
+      { $set: { description, data, tags } },
+      { returnOriginal: false }
     );
     return result.value;
   }

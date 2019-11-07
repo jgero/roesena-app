@@ -19,7 +19,7 @@ export class ArticlesGQL extends Query<{ articles: Article[] }> {
         date
         images {
           _id
-          image
+          data
           description
           tags
         }

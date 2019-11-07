@@ -5,7 +5,7 @@ export const ImageType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLNonNull(GraphQLID) },
     description: { type: GraphQLNonNull(GraphQLString) },
-    image: { type: GraphQLNonNull(GraphQLString) },
+    data: { type: GraphQLNonNull(GraphQLString) },
     tags: { type: GraphQLNonNull(GraphQLList(GraphQLString)) }
   })
 });
@@ -14,7 +14,7 @@ export const NewImageInputType = new GraphQLInputObjectType({
   name: 'NewImageInputType',
   fields: () => ({
     description: { type: GraphQLNonNull(GraphQLString) },
-    image: { type: GraphQLNonNull(GraphQLString) },
+    data: { type: GraphQLNonNull(GraphQLString) },
     tags: { type: GraphQLNonNull(GraphQLList(GraphQLString)) }
   })
 });
@@ -24,7 +24,7 @@ export const UpdateImageInputType = new GraphQLInputObjectType({
   fields: () => ({
     _id: { type: GraphQLNonNull(GraphQLID) },
     description: { type: GraphQLNonNull(GraphQLString) },
-    image: { type: GraphQLNonNull(GraphQLString) },
+    data: { type: GraphQLNonNull(GraphQLString) },
     tags: { type: GraphQLNonNull(GraphQLList(GraphQLString)) }
   })
 });

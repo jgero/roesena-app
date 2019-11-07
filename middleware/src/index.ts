@@ -39,11 +39,6 @@ if (module.hot) {
       server.close();
     }
     startServer();
-    // if(server) {
-    //   server.close();
-    // } else {
-    //   startServer();
-    // }
   });
   // when changes were detected app needs to restart -> shut down server here
   module.hot.dispose(() => server.close());

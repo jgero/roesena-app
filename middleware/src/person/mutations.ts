@@ -46,7 +46,8 @@ async function updatePerson(_: any, args: any, context: any) {
       // only update if auth of person to update is lower than the own auth level
       { _id: new ObjectID(_id), authorityLevel: { $lt: auth } },
       // update name and authorrityLevel
-      { $set: { name, authorityLevel } }
+      { $set: { name, authorityLevel } },
+      { returnOriginal: false }
     );
     return result.value;
   }

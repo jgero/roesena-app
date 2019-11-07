@@ -1,7 +1,7 @@
-<ng-container *ngIf="image then image; else loading"></ng-container>
+<ng-container *ngIf="src | async then image; else loading"></ng-container>
 
 <ng-template #image>
-  <img [src]="image.image | safeURL" />
+  <img [src]="src | async | safeURL" />
 </ng-template>
 
 <ng-template #loading>

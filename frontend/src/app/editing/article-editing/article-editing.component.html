@@ -8,14 +8,14 @@
 
 <div class="article">
   <h1>Titel</h1>
-  <input [(ngModel)]="title" class="underlined">
+  <input [(ngModel)]="selectedArticle.title" class="underlined">
   <h1>Inhalt</h1>
-  <textarea cols="30" rows="10" [(ngModel)]="content" class="box"></textarea>
+  <textarea cols="30" rows="10" [(ngModel)]="selectedArticle.content" class="box"></textarea>
   <h1>Bilder</h1>
   <div class="imageContainer">
-    <div *ngFor="let image of images; let i = index" class="imageContainer" (click)="onSelect(i)"
+    <div *ngFor="let image of images; let i = index" class="imageContainer" (click)="toggleImageInSelection(i)"
       [ngClass]="{'active': isContainingId(image._id)}">
-      <img [src]="image.image | safeURL">
+      <img [src]="image.data | safeURL">
       <span> {{image.description}} </span>
     </div>
   </div>

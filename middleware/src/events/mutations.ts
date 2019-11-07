@@ -58,7 +58,8 @@ async function updateEvent(_: any, args: any, context: any) {
       // match the desired event if the authLevel of the user is high enough
       { _id: new ObjectID(id), authorityGroup: { $lte: auth } },
       // update the provided elements
-      { $set: args.input }
+      { $set: args.input },
+      { returnOriginal: false }
     );
     return await mapIdsToPersons(result.value);
   }

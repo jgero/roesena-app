@@ -26,17 +26,19 @@ async function article(_: any, args: any, context: any) {
   return await mapIdsToImages(await collection.find({ _id: new ObjectID(args._id) }).toArray());
 }
 
-async function mapIdsToImages(articles: any[]) {
+export async function mapIdsToImages(articles: any[]) {
   const collection = (await ConnectionProvider.Instance.db).collection('images');
-  return articles.map(async article => {
+  return await articles.map(async article => {
     // map the ids to the image objects
     article.images = await article.images.map(async imageID => {
+      let image;
       try {
-        return await collection.findOne({ _id: new ObjectID(imageID) });
+        image = await collection.findOne({ _id: new ObjectID(imageID) });
       } catch (e) {
-        return undefined;
+        image = undefined;
       }
+      return await image;
     });
-    return article;
+    return await article;
   });
 }

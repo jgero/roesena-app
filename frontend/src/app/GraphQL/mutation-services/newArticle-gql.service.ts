@@ -9,10 +9,10 @@ import { Article } from 'src/app/interfaces';
 @Injectable({
   providedIn: GraphQLModule
 })
-export class UpdateArticleGQL extends Mutation<{ updateArticle: Article }> {
+export class NewArticleGQL extends Mutation<{ newArticle: Article }> {
   public document = gql`
-    mutation UpdateArticle($_id: ID!, $date: Int!, $title: String!, $content: String!, $images: [String]!) {
-      updateArticle(input: { _id: $_id, date: $date, title: $title, content: $content, images: $images }) {
+    mutation NewArticle($date: Int!, $title: String!, $content: String!, $images: [String]!) {
+      newArticle(input: { date: $date, title: $title, content: $content, images: $images }) {
         _id
         date
         title
