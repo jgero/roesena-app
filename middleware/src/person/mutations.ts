@@ -30,7 +30,9 @@ async function newPerson(_: any, args: any, context: any) {
   if (auth > 3 && auth > args.input.authorityLevel) {
     const result = await collection.insertOne(args.input);
     // the result.ops[0] contains the data that was inserted by the query
-    return result.ops[0];
+    if (result.insertedCount > 0) {
+      return result.ops[0];
+    }
   }
   return null;
 }

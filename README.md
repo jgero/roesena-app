@@ -1,5 +1,9 @@
 # RöSeNa-App
 
+## HINTS
+
+- when changing schema in the middleware server has to be completely restarted, **hot reload does not update the schema**
+
 ## prerequisites
 
 - docker and docker-compose has to be installed

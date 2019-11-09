@@ -8,7 +8,9 @@ const uri = '/graphql';
 export function createApollo(httpLink: HttpLink) {
   return {
     link: httpLink.create({ uri }),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+      addTypename: false
+    })
   };
 }
 

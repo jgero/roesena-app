@@ -3,17 +3,15 @@ import { Injectable } from '@angular/core';
 import { Mutation } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { GraphQLModule } from '../graphql.module';
+import { GraphQLModule } from '../../graphql.module';
 
 @Injectable({
   providedIn: GraphQLModule
 })
 export class AcceptEventGQL extends Mutation<{ acceptEvent: boolean }> {
-
   public document = gql`
     mutation AcceptEvent($_id: ID!, $amount: Int!) {
-      acceptEvent(input: {_id: $_id, amount: $amount})
+      acceptEvent(input: { _id: $_id, amount: $amount })
     }
   `;
-
 }

@@ -42,9 +42,11 @@ async function newEvent(_: any, args: any, context: any) {
   if (auth > 2 && auth >= args.input.authorityGroup) {
     const result = await collection.insertOne(args.input);
     // return the new event (with all participants)
-    return await mapIdsToPersons(result.ops[0]);
+    if (result.insertedCount > 0) {
+      return (await mapIdsToPersons([result.ops[0]]))[0];
+    }
   }
-  return '';
+  return null;
 }
 
 async function updateEvent(_: any, args: any, context: any) {
@@ -61,7 +63,7 @@ async function updateEvent(_: any, args: any, context: any) {
       { $set: args.input },
       { returnOriginal: false }
     );
-    return await mapIdsToPersons(result.value);
+    return (await mapIdsToPersons([result.value]))[0];
   }
   return null;
 }

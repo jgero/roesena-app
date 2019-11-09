@@ -9,7 +9,7 @@ import { Event } from 'src/app/interfaces';
 @Injectable({
   providedIn: GraphQLModule
 })
-export class EventsGQL extends Query<{ events: any[] }> {
+export class EventsGQL extends Query<{ events: Event[] }> {
   public document = gql`
     query GetAllEvents {
       events {

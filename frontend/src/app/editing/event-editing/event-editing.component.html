@@ -1,12 +1,16 @@
 <div class="eventList">
-  <div *ngFor="let event of events | async" class="event-selector" (click)="selectedEvent = event">{{event.title}}</div>
+  <div *ngFor="let event of events | async" class="event-selector" (click)="selectEvent(event)">
+    {{event.title}} <span (click)="deleteEvent(event._id)" style="color: red;">delete</span></div>
+  <div class="event-selector" (click)="selectEvent()">new Event</div>
 </div>
 
-<div *ngIf="selectedEvent" class="selectedEvent">
+<div class="selectedEvent">
   <input type="text" [(ngModel)]="selectedEvent.title">
   <input type="text" [(ngModel)]="selectedEvent.description">
-  <div *ngFor="let person of persons | async" [ngClass]="{'selected': selectedEvent.participants.includes(person._id)}"
-    (click)="toggleID(person._id)">
+  <input type="text" [(ngModel)]="selectedEvent.startDate">
+  <input type="text" [(ngModel)]="selectedEvent.endDate">
+  <div *ngFor="let person of persons | async" [ngClass]="{'selected': isParticipant(person._id)}"
+    (click)="togglePerson(person)">
     {{person.name}}</div>
-  <input type="button" value="save" (click)="updateEvent(selectedEvent)">
+  <input type="button" value="save" (click)="saveEvent()">
 </div>

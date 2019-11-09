@@ -27,7 +27,15 @@ export const EventType = new GraphQLObjectType({
     startDate: { type: GraphQLNonNull(GraphQLInt) },
     endDate: { type: GraphQLNonNull(GraphQLInt) },
     authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
-    participants: { type: GraphQLList(ParticipantType) }
+    participants: { type: GraphQLNonNull(GraphQLList(ParticipantType)) }
+  })
+});
+
+const ParticipantInputType = new GraphQLInputObjectType({
+  name: 'ParticipantInputType',
+  fields: () => ({
+    _id: { type: GraphQLNonNull(GraphQLID) },
+    amount: { type: GraphQLInt }
   })
 });
 
@@ -39,7 +47,7 @@ export const NewEventInputType = new GraphQLInputObjectType({
     startDate: { type: GraphQLNonNull(GraphQLInt) },
     endDate: { type: GraphQLNonNull(GraphQLInt) },
     authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
-    participants: { type: GraphQLList(GraphQLString) }
+    participants: { type: GraphQLNonNull(GraphQLList(ParticipantInputType)) }
   })
 });
 
@@ -52,7 +60,7 @@ export const UpdateEventInputType = new GraphQLInputObjectType({
     startDate: { type: GraphQLNonNull(GraphQLInt) },
     endDate: { type: GraphQLNonNull(GraphQLInt) },
     authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
-    participants: { type: GraphQLList(GraphQLString) }
+    participants: { type: GraphQLNonNull(GraphQLList(ParticipantInputType)) }
   })
 });
 
