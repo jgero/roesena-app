@@ -8,8 +8,8 @@
   grid-template-columns: 1fr 3fr;
   grid-template-rows: 15vh auto;
   grid-template-areas:
-    "search search"
-    "list edit";
+    'search search'
+    'list edit';
 
   app-search {
     grid-area: search;
@@ -22,9 +22,9 @@
     padding-right: 5rem;
     border-right: 2px solid var(--inactive);
 
-    &>li {
+    & > li {
       list-style-type: none;
-      padding: .2rem .5rem;
+      padding: 0.2rem 0.5rem;
       cursor: pointer;
 
       &:hover {
@@ -32,8 +32,6 @@
         color: var(--font-secondary);
       }
     }
-
-
   }
 
   .article {
@@ -41,7 +39,7 @@
     flex-direction: column;
     align-items: center;
 
-    &>* {
+    & > * {
       width: 70%;
     }
 
@@ -65,12 +63,10 @@
           background-color: red;
         }
 
-        img {
-          max-width: 10rem;
-          max-height: 10rem;
+        app-image {
+          height: 5rem;
         }
       }
-
     }
   }
 }

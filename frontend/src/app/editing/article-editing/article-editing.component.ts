@@ -1,18 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Subscription, Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
-import { Article, Image, ShallowArticle, ImageMetadata } from 'src/app/interfaces';
+import { Article, ShallowArticle, ImageMetadata } from 'src/app/interfaces';
 import { ImagesGQL } from 'src/app/GraphQL/query-services/all-images-gql.service';
-import { UpdateArticleGQL } from 'src/app/GraphQL/mutation-services/updateArticle-gql.service';
-import { NewArticleGQL } from 'src/app/GraphQL/mutation-services/newArticle-gql.service';
+import { UpdateArticleGQL } from 'src/app/GraphQL/mutation-services/article/updateArticle-gql.service';
+import { NewArticleGQL } from 'src/app/GraphQL/mutation-services/article/newArticle-gql.service';
 import { ShallowArticlesGQL } from 'src/app/GraphQL/query-services/all-articles-shallow-gql.service';
+import { DeleteArticleGQL } from 'src/app/GraphQL/mutation-services/article/deleteArticle-gql.service';
+import { PopupService } from 'src/app/popup/popup.service';
 
 @Component({
   selector: 'app-article-editing',
   templateUrl: './article-editing.component.html',
   styleUrls: ['./article-editing.component.scss']
 })
-export class ArticleEditingComponent implements OnInit, OnDestroy {
+export class ArticleEditingComponent implements OnDestroy {
   private subs: Subscription[] = [];
 
   public selectedArticle: ShallowArticle = {
@@ -22,32 +25,35 @@ export class ArticleEditingComponent implements OnInit, OnDestroy {
     images: [],
     date: 0
   };
-  public articles: ShallowArticle[] = [];
-  public images: ImageMetadata[] = [];
+  public articles: Observable<ShallowArticle[]>;
+  public images: Observable<ImageMetadata[]>;
 
   constructor(
-    articlesGql: ShallowArticlesGQL,
-    imagesGql: ImagesGQL,
+    private articlesGql: ShallowArticlesGQL,
+    private imagesGql: ImagesGQL,
     private updateArticleGql: UpdateArticleGQL,
-    private newArticleGql: NewArticleGQL
+    private newArticleGql: NewArticleGQL,
+    private deleteArticleGql: DeleteArticleGQL,
+    private popServ: PopupService,
+    private container: ViewContainerRef
   ) {
     // get articles
-    this.subs.push(
-      articlesGql.watch().valueChanges.subscribe({
-        next: res => (this.articles = res.data.articles),
-        error: err => console.log(err)
+    this.articles = this.articlesGql.watch().valueChanges.pipe(
+      map(el => el.data.articles),
+      catchError(() => {
+        this.popServ.flashPopup('could not load articles', this.container);
+        return of([]);
       })
     );
     // get images
-    this.subs.push(
-      imagesGql.watch().valueChanges.subscribe({
-        next: res => (this.images = res.data.images),
-        error: err => console.log(err)
+    this.images = this.imagesGql.watch().valueChanges.pipe(
+      map(el => el.data.images),
+      catchError(() => {
+        this.popServ.flashPopup('could not load images', this.container);
+        return of([]);
       })
     );
   }
-
-  ngOnInit() {}
 
   public selectArticle(article?: Article) {
     if (article) {
@@ -70,7 +76,12 @@ export class ArticleEditingComponent implements OnInit, OnDestroy {
       const { _id, date, title, content } = this.selectedArticle;
       this.subs.push(
         this.updateArticleGql.mutate({ _id, date, title, content, images }).subscribe({
-          next: newArticle => console.log(newArticle.data.updateArticle)
+          next: () => this.popServ.flashPopup('Artikel bearbeitet', this.container),
+          error: () => this.popServ.flashPopup('Bearbeiten fehlgeschlagen', this.container),
+          complete: () => {
+            // refetch the articles, will cause the articles Observable to emit the new values
+            this.articlesGql.watch().refetch();
+          }
         })
       );
     } else {
@@ -78,21 +89,40 @@ export class ArticleEditingComponent implements OnInit, OnDestroy {
       const { title, content } = this.selectedArticle;
       this.subs.push(
         this.newArticleGql.mutate({ date: this.getCurrentDate(), title, content, images }).subscribe({
-          next: newArticle => console.log(newArticle.data.newArticle)
+          next: () => this.popServ.flashPopup('Artikel hinzugefügt', this.container),
+          error: () => this.popServ.flashPopup('Hinzufügen fehlgeschlagen', this.container),
+          complete: () => {
+            // refetch the articles, will cause the articles Observable to emit the new values
+            this.articlesGql.watch().refetch();
+          }
         })
       );
     }
   }
 
-  public toggleImageInSelection(index: number) {
+  public deleteArticle(id: string) {
+    this.subs.push(
+      this.deleteArticleGql.mutate({ _id: id }).subscribe({
+        next: () => this.popServ.flashPopup('Artikel gelöscht', this.container),
+        error: () => this.popServ.flashPopup('Löschen fehlgeschlagen', this.container),
+        complete: () => {
+          // refetch the articles, will cause the articles Observable to emit the new values
+          this.articlesGql.watch().refetch();
+        }
+      })
+    );
+  }
+
+  public toggleImageInSelection(id: string) {
     // look if id of the clicked image is already in the selection
-    const imgIndexInSelection = this.selectedArticle.images.findIndex(img => img._id === this.images[index]._id);
-    if (imgIndexInSelection < 0) {
-      // id is not already in the selection -> add it
-      this.selectedArticle.images.push({ _id: this.images[index]._id });
-    } else {
+    const isInSelection = !!this.selectedArticle.images.find(el => el._id === id);
+    console.log(isInSelection);
+    if (isInSelection) {
       // id is already in the selection -> remove it
-      this.selectedArticle.images.splice(imgIndexInSelection, 1);
+      this.selectedArticle.images = this.selectedArticle.images.filter(el => el._id !== id);
+    } else {
+      // id is not already in the selection -> add it
+      this.selectedArticle.images.push({ _id: id });
     }
   }
 

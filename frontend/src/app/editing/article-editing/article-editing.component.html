@@ -1,7 +1,8 @@
 <app-search></app-search>
 
 <ul class="articleList">
-  <li *ngFor="let article of articles" (click)="selectArticle(article)"> {{article.title}} </li>
+  <li *ngFor="let article of articles | async" (click)="selectArticle(article)"> {{article.title}} <span
+      (click)="deleteArticle(article._id)" style="color: red;">delte</span> </li>
   <li (click)="selectArticle(undefined)">neuer Artikel</li>
   <input type="button" value="Speichern" class="rsn-button" (click)="saveArticle()">
 </ul>
@@ -13,9 +14,9 @@
   <textarea cols="30" rows="10" [(ngModel)]="selectedArticle.content" class="box"></textarea>
   <h1>Bilder</h1>
   <div class="imageContainer">
-    <div *ngFor="let image of images; let i = index" class="imageContainer" (click)="toggleImageInSelection(i)"
+    <div *ngFor="let image of images | async" class="imageContainer" (click)="toggleImageInSelection(image._id)"
       [ngClass]="{'active': isContainingId(image._id)}">
-      <img [src]="image.data | safeURL">
+      <app-image [image]="image"></app-image>
       <span> {{image.description}} </span>
     </div>
   </div>
