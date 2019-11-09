@@ -3,7 +3,7 @@
     <ng-container *ngIf="image._id !== editingId;then static else edit"></ng-container>
 
     <ng-template #static>
-      <app-image-card [image]="image" (delete)="onDelete($event)" (edit)="onEdit(image._id)"></app-image-card>
+      <app-image-card [image]="image" (delete)="onDelete($event)" (edit)="editingId = image._id"></app-image-card>
     </ng-template>
 
     <ng-template #edit>
