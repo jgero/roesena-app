@@ -1,5 +1,7 @@
 import express from 'express';
 import expressGQL from 'express-graphql';
+import bodyParser from "body-parser";
+import cookieParser from 'cookie-parser';
 
 import { schema } from './GraphQL/schema';
 import { getAuthLevel } from './context';
@@ -7,7 +9,9 @@ import { getAuthLevel } from './context';
 // create the express-server instance
 const app = express();
 // use a middleware to parse the cookies
-app.use(require('cookie-parser')());
+app.use(cookieParser());
+// add extra body parser plugin to allow 10 mb file uploads
+app.use(bodyParser({limit: '10mb'}));
 // use the graphql middleware
 app.use('/graphql', (req, res) => {
   return expressGQL({
