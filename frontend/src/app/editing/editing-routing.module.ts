@@ -8,10 +8,19 @@ import { EditingComponent } from './editing.component';
 
 const editingRoutes: Routes = [
   {
-    path: '', component: EditingComponent, canActivate: [AuthGuard], children: [
+    path: '',
+    component: EditingComponent,
+    canActivate: [AuthGuard],
+    children: [
       { path: 'persons', component: PersonEditingComponent },
-      { path: 'events', component: EventEditingComponent },
-      { path: 'articles', component: ArticleEditingComponent },
+      {
+        path: 'events',
+        children: [{ path: '', component: EventEditingComponent }, { path: ':id', component: EventEditingComponent }]
+      },
+      {
+        path: 'articles',
+        children: [{ path: '', component: ArticleEditingComponent }, { path: ':id', component: ArticleEditingComponent }]
+      },
       { path: 'images', component: ImageEditingComponent },
       { path: '**', redirectTo: 'persons', pathMatch: 'full' }
     ]

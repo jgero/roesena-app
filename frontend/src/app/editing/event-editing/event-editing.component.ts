@@ -3,12 +3,14 @@ import { Observable, Subscription, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { Event, Person } from 'src/app/interfaces';
-import { EventsGQL } from 'src/app/GraphQL/query-services/all-events-gql.service';
 import { PersonsGQL } from 'src/app/GraphQL/query-services/all-persons-gql.service';
 import { UpdateEventGQL } from 'src/app/GraphQL/mutation-services/event/updateEvent-gql.service';
 import { PopupService } from 'src/app/popup/popup.service';
 import { DeleteEventGQL } from 'src/app/GraphQL/mutation-services/event/deleteEvent-gql.service';
 import { NewEventGQL } from 'src/app/GraphQL/mutation-services/event/newEvent-gql.service';
+import { ListService } from '../list.service';
+import { EventsShallowGQL } from 'src/app/GraphQL/query-services/events/all-events-shallow-gql.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-event-editing',
@@ -31,16 +33,19 @@ export class EventEditingComponent implements OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
-    private eventsGQL: EventsGQL,
+    private eventsGQL: EventsShallowGQL,
     private personsGQL: PersonsGQL,
     private updateEvGQL: UpdateEventGQL,
     private newEvGql: NewEventGQL,
     private deleteEvGql: DeleteEventGQL,
     private popServ: PopupService,
-    private container: ViewContainerRef
+    private container: ViewContainerRef,
+    private listServ: ListService,
+    private route: ActivatedRoute
   ) {
-    this.events = this.eventsGQL.watch().valueChanges.pipe(
-      map(el => el.data.events),
+    console.log(route.snapshot.params);
+    this.listServ.list = this.eventsGQL.watch().valueChanges.pipe(
+      map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))),
       catchError(() => {
         this.popServ.flashPopup('could not load events', this.container);
         return of([]);
@@ -53,28 +58,13 @@ export class EventEditingComponent implements OnDestroy {
         return of([]);
       })
     );
-  }
-
-  public selectEvent(newEv?: Event) {
-    if (newEv) {
-      Object.assign(this.selectedEvent, newEv);
-    } else {
-      this.selectedEvent = {
-        _id: undefined,
-        authorityGroup: 1,
-        description: '',
-        endDate: 0,
-        startDate: 0,
-        participants: [],
-        title: ''
-      };
-    }
+    // request the event from the route id here
+    // this will then be the selected event
+    // if no id is in route new event has to be created
   }
 
   public isParticipant(id: string): boolean {
-    console.log(id, this.selectedEvent.participants);
     const res = !!this.selectedEvent.participants.find(part => part.person._id === id);
-    console.log(res);
     return res;
   }
 
@@ -126,7 +116,8 @@ export class EventEditingComponent implements OnDestroy {
     }
   }
 
-  public deleteEvent(id: string) {
+  public deleteEvent() {
+    const id = this.selectedEvent._id;
     this.subs.push(
       this.deleteEvGql.mutate({ _id: id }).subscribe({
         next: () => this.popServ.flashPopup('Event gelöscht', this.container),

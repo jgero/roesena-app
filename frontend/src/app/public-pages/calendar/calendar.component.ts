@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import { Subscription } from 'rxjs';
-import { EventsByDateGQL } from 'src/app/GraphQL/query-services/events-by-date-gql.service';
 import { Event } from 'src/app/interfaces';
+import { EventsByDateGQL } from 'src/app/GraphQL/query-services/events/events-by-date-gql.service';
 
 @Component({
   selector: 'app-calendar',
@@ -11,30 +11,33 @@ import { Event } from 'src/app/interfaces';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnDestroy {
-
   private subs: Subscription[] = [];
   public weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-  public daysWithMetadata: { gridArea: SafeStyle, events: Event[], date: number }[] = [];
-  private dateObj: { year: number, month: number, day: number };
+  public daysWithMetadata: { gridArea: SafeStyle; events: Event[]; date: number }[] = [];
+  private dateObj: { year: number; month: number; day: number };
 
-  public set date(v: { year: number, month: number, day: number }) {
+  public set date(v: { year: number; month: number; day: number }) {
     // update the raw date object
     this.dateObj = v;
     // load the events for the current month
-    this.subs.push(this.eventsGQL.watch({
-      startDate: this.getDBDateNumber({
-        year: this.date.year,
-        month: this.date.month,
-        day: 1
-      }),
-      endDate: this.getDBDateNumber({
-        year: this.date.year,
-        month: this.date.month,
-        day: new Date(this.date.year, this.date.month - 1, 0).getDate()
-      })
-    }).valueChanges.subscribe({
-      next: result => this.mapEventsToDays(result.data.eventsByDate)
-    }));
+    this.subs.push(
+      this.eventsGQL
+        .watch({
+          startDate: this.getDBDateNumber({
+            year: this.date.year,
+            month: this.date.month,
+            day: 1
+          }),
+          endDate: this.getDBDateNumber({
+            year: this.date.year,
+            month: this.date.month,
+            day: new Date(this.date.year, this.date.month - 1, 0).getDate()
+          })
+        })
+        .valueChanges.subscribe({
+          next: result => this.mapEventsToDays(result.data.eventsByDate)
+        })
+    );
   }
   public get date() {
     return this.dateObj;
@@ -70,10 +73,8 @@ export class CalendarComponent implements OnDestroy {
         gridArea: this.sanitizer.bypassSecurityTrustStyle(this.getGridArea(ind)),
         events: events.filter(ev => {
           return (
-            ev.startDate <=
-            this.getDBDateNumber({ year: this.date.year, month: this.date.month, day: ind + 1 }) &&
-            ev.endDate >=
-            this.getDBDateNumber({ year: this.date.year, month: this.date.month, day: ind + 1 })
+            ev.startDate <= this.getDBDateNumber({ year: this.date.year, month: this.date.month, day: ind + 1 }) &&
+            ev.endDate >= this.getDBDateNumber({ year: this.date.year, month: this.date.month, day: ind + 1 })
           );
         }),
         date: ind + 1
@@ -102,7 +103,7 @@ export class CalendarComponent implements OnDestroy {
     this.date = newDate;
   }
 
-  private getDBDateNumber({ year, month, day }: { year: number, month: number, day: number }): number {
+  private getDBDateNumber({ year, month, day }: { year: number; month: number; day: number }): number {
     const m = month > 9 ? month : '0' + month;
     const d = day > 9 ? day : '0' + day;
     return parseInt(`${year}${m}${d}`, 10);

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Query } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { GraphQLModule } from '../graphql.module';
+import { GraphQLModule } from '../../graphql.module';
 import { Event } from 'src/app/interfaces';
 
 @Injectable({

@@ -25,13 +25,6 @@ import { EditCardComponent } from './image-editing/edit-card/edit-card.component
     ImageCardComponent,
     EditCardComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    EditingRouting,
-    SharedModule,
-    GraphQLModule
-  ]
+  imports: [CommonModule, FormsModule, HttpClientModule, EditingRouting, SharedModule, GraphQLModule]
 })
-export class EditingModule { }
+export class EditingModule {}

@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Event } from 'src/app/interfaces';
-import { EventsGQL } from 'src/app/GraphQL/query-services/all-events-gql.service';
 import { map, tap } from 'rxjs/operators';
 import { AuthGuard } from 'src/app/shared/services/auth.guard';
 import { AcceptEventGQL } from 'src/app/GraphQL/mutation-services/event/acceptEvent-gql.service';
 import { PopupService } from 'src/app/popup/popup.service';
+import { EventsGQL } from 'src/app/GraphQL/query-services/events/all-events-gql.service';
 
 @Component({
   selector: 'app-events',
@@ -14,7 +14,7 @@ import { PopupService } from 'src/app/popup/popup.service';
 })
 export class EventsComponent implements OnInit {
   public filterEvents: boolean;
-  public events: Observable<any>;
+  public events: Observable<Event[]>;
 
   private subs: Subscription[] = [];
 

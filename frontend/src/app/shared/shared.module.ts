@@ -8,11 +8,12 @@ import { ImageComponent } from './components/image/image.component';
 import { SafeURLPipe } from './safe-url.pipe';
 import { HoverableDirective } from './hoverable.directive';
 import { GraphQLModule } from '../GraphQL/graphql.module';
+import { ButtonComponent } from './components/button/button.component';
 
 const exports = [SafeURLPipe, HoverableDirective, SearchComponent, TagComponent, ImageComponent];
 
 @NgModule({
-  declarations: [...exports],
+  declarations: [...exports, ButtonComponent],
   imports: [CommonModule, FormsModule, GraphQLModule],
   exports: [...exports],
   providers: []

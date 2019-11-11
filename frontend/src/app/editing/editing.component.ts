@@ -1,30 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { ListService } from './list.service';
 
 @Component({
   selector: 'app-editing',
   templateUrl: './editing.component.html',
   styleUrls: ['./editing.component.scss']
 })
-export class EditingComponent implements OnDestroy {
-
-  private routerSub: Subscription;
-  public activeTab: string;
-
-  constructor(public router: Router) {
-    this.routerSub = router.events
-      .pipe(filter(routerEvent => routerEvent instanceof NavigationEnd))
-      .subscribe({
-        next: (routerEvent: NavigationEnd) => {
-          this.activeTab = routerEvent.urlAfterRedirects.split('/')[2];
-        }
-      });
+export class EditingComponent {
+  constructor(public listSrv: ListService, private router: Router, private route: ActivatedRoute) {
+    console.log(this.route.snapshot.data);
   }
 
-  ngOnDestroy() {
-    this.routerSub.unsubscribe();
+  select(id: string | null) {
+    // console.log(this.route.data.events);
+    const mode = this.router.url.split('/')[2];
+    if (id) {
+      this.router.navigate(['edit', mode, id]);
+    } else {
+      this.router.navigate(['edit', mode]);
+    }
   }
-
 }
