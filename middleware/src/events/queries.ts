@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLID } from 'graphql';
 
 import { ConnectionProvider } from '../connection';
 import { EventType, TimeRangeInputType } from './types';
@@ -8,6 +8,11 @@ export const eventQueries = {
   events: {
     type: new GraphQLNonNull(GraphQLList(EventType)),
     resolve: events
+  },
+  event: {
+    type: EventType,
+    args: { _id: { type: new GraphQLNonNull(GraphQLID) } },
+    resolve: event
   },
   eventsByDate: {
     type: new GraphQLNonNull(GraphQLList(EventType)),
@@ -23,6 +28,17 @@ async function events(_a: any, _b: any, context: any) {
     return await mapIdsToPersons(await collection.find({ authorityGroup: { $lte: auth } }).toArray());
   } else {
     return [];
+  }
+}
+
+async function event(_a: any, args: any, context: any) {
+  const auth = (await context).authLevel;
+  const collection = (await ConnectionProvider.Instance.db).collection('events');
+  if (auth > 1) {
+    const ev = await collection.findOne({ _id: new ObjectID(args._id), authorityGroup: { $lte: auth } });
+    return (await mapIdsToPersons([ev]))[0];
+  } else {
+    return null;
   }
 }
 

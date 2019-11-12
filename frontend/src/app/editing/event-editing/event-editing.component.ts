@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Observable, Subscription, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, take } from 'rxjs/operators';
 
 import { Event, Person } from 'src/app/interfaces';
 import { PersonsGQL } from 'src/app/GraphQL/query-services/all-persons-gql.service';
@@ -11,6 +11,7 @@ import { NewEventGQL } from 'src/app/GraphQL/mutation-services/event/newEvent-gq
 import { ListService } from '../list.service';
 import { EventsShallowGQL } from 'src/app/GraphQL/query-services/events/all-events-shallow-gql.service';
 import { ActivatedRoute } from '@angular/router';
+import { EventGQL } from 'src/app/GraphQL/query-services/events/event-gql.service';
 
 @Component({
   selector: 'app-event-editing',
@@ -34,6 +35,7 @@ export class EventEditingComponent implements OnDestroy {
 
   constructor(
     private eventsGQL: EventsShallowGQL,
+    private eventGql: EventGQL,
     private personsGQL: PersonsGQL,
     private updateEvGQL: UpdateEventGQL,
     private newEvGql: NewEventGQL,
@@ -43,7 +45,6 @@ export class EventEditingComponent implements OnDestroy {
     private listServ: ListService,
     private route: ActivatedRoute
   ) {
-    console.log(route.snapshot.params);
     this.listServ.list = this.eventsGQL.watch().valueChanges.pipe(
       map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))),
       catchError(() => {
@@ -58,9 +59,24 @@ export class EventEditingComponent implements OnDestroy {
         return of([]);
       })
     );
-    // request the event from the route id here
-    // this will then be the selected event
-    // if no id is in route new event has to be created
+    this.subs.push(
+      this.route.paramMap.subscribe({
+        next: params => {
+          const id = params.get('id');
+          if (id) {
+            this.subs.push(
+              this.eventGql
+                .watch({ _id: this.route.snapshot.params['id'] })
+                .valueChanges.pipe(take(1))
+                .subscribe({
+                  next: result => (this.selectedEvent = result.data.event),
+                  error: () => this.popServ.flashPopup('could not load event', this.container)
+                })
+            );
+          }
+        }
+      })
+    );
   }
 
   public isParticipant(id: string): boolean {
