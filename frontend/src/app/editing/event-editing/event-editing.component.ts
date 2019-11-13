@@ -21,12 +21,20 @@ import { EventGQL } from 'src/app/GraphQL/query-services/events/event-gql.servic
 export class EventEditingComponent implements OnDestroy {
   public events: Observable<Event[]>;
   public persons: Observable<Person[]>;
-  public selectedEvent: Event = {
+  private selectedEvent: {
+    _id: string;
+    authorityGroup: number;
+    description: string;
+    endDate: string;
+    startDate: string;
+    participants: { person: Person; amount: number }[];
+    title: string;
+  } = {
     _id: undefined,
     authorityGroup: 1,
     description: '',
-    endDate: 0,
-    startDate: 0,
+    endDate: undefined,
+    startDate: undefined,
     participants: [],
     title: ''
   };
@@ -69,7 +77,16 @@ export class EventEditingComponent implements OnDestroy {
                 .watch({ _id: this.route.snapshot.params['id'] })
                 .valueChanges.pipe(take(1))
                 .subscribe({
-                  next: result => (this.selectedEvent = result.data.event),
+                  next: result =>
+                    (this.selectedEvent = {
+                      _id: result.data.event._id,
+                      authorityGroup: result.data.event.authorityGroup,
+                      description: result.data.event.description,
+                      participants: result.data.event.participants,
+                      title: result.data.event.title,
+                      startDate: this.toDateString(result.data.event.startDate),
+                      endDate: this.toDateString(result.data.event.endDate)
+                    }),
                   error: () => this.popServ.flashPopup('could not load event', this.container)
                 })
             );
@@ -95,11 +112,10 @@ export class EventEditingComponent implements OnDestroy {
   }
 
   public saveEvent() {
-    const { _id, description, title } = this.selectedEvent;
+    const { _id, description, title, authorityGroup } = this.selectedEvent;
     // because of the binding to the input field these fields are acutally strings and have to be converted
-    const authorityGroup = parseInt(this.selectedEvent.authorityGroup as any, 10);
-    const startDate = parseInt(this.selectedEvent.startDate as any, 10);
-    const endDate = parseInt(this.selectedEvent.endDate as any, 10);
+    const startDate = this.toDateNumber(this.selectedEvent.startDate);
+    const endDate = this.toDateNumber(this.selectedEvent.endDate);
     // only return the id and amount of participants
     const participants = this.selectedEvent.participants.map(part => ({
       amount: part.amount,
@@ -148,5 +164,22 @@ export class EventEditingComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  private toDateString(dateNumber: number): string {
+    const year = dateNumber.toString().substr(0, 4);
+    const month = dateNumber.toString().substr(4, 2);
+    const day = dateNumber.toString().substr(6, 2);
+    return `${day}.${month}.${year}`;
+  }
+
+  private toDateNumber(dateString: string): number {
+    const parts = dateString.split('.');
+    const year = parseInt(parts[2]);
+    const month = parseInt(parts[1]);
+    const day = parseInt(parts[0]);
+    const m = month > 9 ? month : '0' + month;
+    const d = day > 9 ? day : '0' + day;
+    return parseInt(`${year}${m}${d}`, 10);
   }
 }

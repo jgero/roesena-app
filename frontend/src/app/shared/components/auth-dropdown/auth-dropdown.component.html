@@ -1,0 +1,8 @@
+<div class="drop-wrapper">
+  <div class="status" (click)="isVisible = !isVisible">{{ AuthStrings[auth - 1] }}</div>
+  <div class="options" [ngClass]="{ active: isVisible }">
+    <div class="option" *ngFor="let astr of AuthStrings; let i = index" (click)="emit(i + 1)">
+      {{ astr }}
+    </div>
+  </div>
+</div>

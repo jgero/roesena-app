@@ -1,0 +1,35 @@
+.drop-wrapper {
+  font-size: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+
+  .status {
+    padding: 0.5rem;
+    color: var(--background);
+    border-radius: 0.5rem;
+    background-color: var(--secondary);
+    font-weight: bold;
+    // z-index: 2;
+  }
+
+  .options {
+    background-color: var(--background);
+    color: var(--secondary);
+    font-weight: bold;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    border-radius: 0.5rem;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out, visivility 0s linear 0.2s;
+
+    &.active {
+      height: unset;
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

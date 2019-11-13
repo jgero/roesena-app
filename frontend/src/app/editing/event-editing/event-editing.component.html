@@ -1,11 +1,41 @@
-<div class="selectedEvent">
-  <input type="text" [(ngModel)]="selectedEvent.title" />
-  <input type="text" [(ngModel)]="selectedEvent.description" />
-  <input type="text" [(ngModel)]="selectedEvent.startDate" />
-  <input type="text" [(ngModel)]="selectedEvent.endDate" />
-  <div *ngFor="let person of persons | async" [ngClass]="{ selected: isParticipant(person._id) }" (click)="togglePerson(person)">
-    {{ person.name }}
+<div class="main-data">
+  <input type="text" [(ngModel)]="selectedEvent.title" class="underlined title" placeholder="Titel" required="true" />
+  <textarea [(ngModel)]="selectedEvent.description" rows="10" class="box description" placeholder="Beschreibung"></textarea>
+  <div class="person-selection">
+    <div
+      *ngFor="let person of persons | async"
+      class="person"
+      [ngClass]="{ selected: isParticipant(person._id) }"
+      (click)="togglePerson(person)"
+    >
+      {{ person.name }}
+    </div>
   </div>
-  <input type="button" value="save" (click)="saveEvent()" />
-  <input type="button" value="delete" (click)="deleteEvent()" />
+  <app-button value="speichern" (click)="saveEvent()"></app-button>
+  <app-button value="löschen" (click)="deleteEvent()"></app-button>
+</div>
+<div class="dates">
+  <div class="date">
+    <div>Beginn</div>
+    <input
+      type="text"
+      class="underlined"
+      [(ngModel)]="selectedEvent.startDate"
+      placeholder="DD.MM.YYYY"
+      pattern="^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}$"
+      required="true"
+    />
+  </div>
+  <div class="date">
+    <div>Ende</div>
+    <input
+      type="text"
+      class="underlined"
+      [(ngModel)]="selectedEvent.endDate"
+      placeholder="DD.MM.YYYY"
+      pattern="^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}$"
+      required="true"
+    />
+  </div>
+  <app-auth-dropdown [(auth)]="selectedEvent.authorityGroup"></app-auth-dropdown>
 </div>
