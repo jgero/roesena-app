@@ -7,7 +7,7 @@ import { GraphQLModule } from '../graphql.module';
 import { ShallowArticle } from 'src/app/interfaces';
 
 @Injectable({
-  providedIn: GraphQLModule
+  providedIn: 'root'
 })
 export class ShallowArticlesGQL extends Query<{ articles: ShallowArticle[] }> {
   public document = gql`

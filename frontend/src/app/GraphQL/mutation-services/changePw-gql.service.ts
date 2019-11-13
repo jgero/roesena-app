@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { GraphQLModule } from '../graphql.module';
 
 @Injectable({
-  providedIn: GraphQLModule
+  providedIn: 'root'
 })
 export class ChangePwGQL extends Mutation<{ changePw: boolean }> {
   public document = gql`

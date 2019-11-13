@@ -8,10 +8,10 @@ import { UpdateEventGQL } from 'src/app/GraphQL/mutation-services/event/updateEv
 import { PopupService } from 'src/app/popup/popup.service';
 import { DeleteEventGQL } from 'src/app/GraphQL/mutation-services/event/deleteEvent-gql.service';
 import { NewEventGQL } from 'src/app/GraphQL/mutation-services/event/newEvent-gql.service';
-import { ListService } from '../list.service';
 import { EventsShallowGQL } from 'src/app/GraphQL/query-services/events/all-events-shallow-gql.service';
 import { ActivatedRoute } from '@angular/router';
 import { EventGQL } from 'src/app/GraphQL/query-services/events/event-gql.service';
+import { ListType } from 'src/app/shared/components/selection-list/selection-list.component';
 
 @Component({
   selector: 'app-event-editing',
@@ -19,17 +19,10 @@ import { EventGQL } from 'src/app/GraphQL/query-services/events/event-gql.servic
   styleUrls: ['./event-editing.component.scss']
 })
 export class EventEditingComponent implements OnDestroy {
+  tpe: ListType = ListType.Events;
   public events: Observable<Event[]>;
   public persons: Observable<Person[]>;
-  private selectedEvent: {
-    _id: string;
-    authorityGroup: number;
-    description: string;
-    endDate: string;
-    startDate: string;
-    participants: { person: Person; amount: number }[];
-    title: string;
-  } = {
+  private selectedEvent: Event = {
     _id: undefined,
     authorityGroup: 1,
     description: '',
@@ -50,16 +43,8 @@ export class EventEditingComponent implements OnDestroy {
     private deleteEvGql: DeleteEventGQL,
     private popServ: PopupService,
     private container: ViewContainerRef,
-    private listServ: ListService,
     private route: ActivatedRoute
   ) {
-    this.listServ.list = this.eventsGQL.watch().valueChanges.pipe(
-      map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))),
-      catchError(() => {
-        this.popServ.flashPopup('could not load events', this.container);
-        return of([]);
-      })
-    );
     this.persons = this.personsGQL.watch().valueChanges.pipe(
       map(el => el.data.persons),
       catchError(() => {
@@ -74,7 +59,7 @@ export class EventEditingComponent implements OnDestroy {
           if (id) {
             this.subs.push(
               this.eventGql
-                .watch({ _id: this.route.snapshot.params['id'] })
+                .watch({ _id: params.get('id') })
                 .valueChanges.pipe(take(1))
                 .subscribe({
                   next: result =>
@@ -84,8 +69,8 @@ export class EventEditingComponent implements OnDestroy {
                       description: result.data.event.description,
                       participants: result.data.event.participants,
                       title: result.data.event.title,
-                      startDate: this.toDateString(result.data.event.startDate),
-                      endDate: this.toDateString(result.data.event.endDate)
+                      startDate: result.data.event.startDate,
+                      endDate: result.data.event.endDate
                     }),
                   error: () => this.popServ.flashPopup('could not load event', this.container)
                 })
@@ -112,10 +97,8 @@ export class EventEditingComponent implements OnDestroy {
   }
 
   public saveEvent() {
-    const { _id, description, title, authorityGroup } = this.selectedEvent;
-    // because of the binding to the input field these fields are acutally strings and have to be converted
-    const startDate = this.toDateNumber(this.selectedEvent.startDate);
-    const endDate = this.toDateNumber(this.selectedEvent.endDate);
+    console.log(this.selectedEvent);
+    const { _id, description, title, authorityGroup, startDate, endDate } = this.selectedEvent;
     // only return the id and amount of participants
     const participants = this.selectedEvent.participants.map(part => ({
       amount: part.amount,
@@ -164,22 +147,5 @@ export class EventEditingComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
-  }
-
-  private toDateString(dateNumber: number): string {
-    const year = dateNumber.toString().substr(0, 4);
-    const month = dateNumber.toString().substr(4, 2);
-    const day = dateNumber.toString().substr(6, 2);
-    return `${day}.${month}.${year}`;
-  }
-
-  private toDateNumber(dateString: string): number {
-    const parts = dateString.split('.');
-    const year = parseInt(parts[2]);
-    const month = parseInt(parts[1]);
-    const day = parseInt(parts[0]);
-    const m = month > 9 ? month : '0' + month;
-    const d = day > 9 ? day : '0' + day;
-    return parseInt(`${year}${m}${d}`, 10);
   }
 }

@@ -9,7 +9,7 @@ export class AuthDropdownComponent {
   public readonly AuthStrings = ['öffentlich', 'Mitglieder', 'Gruppenleiter', 'Präsidium', 'Admins'];
 
   @Input()
-  auth: number;
+  auth: number = 1;
   @Output()
   private authChange = new EventEmitter<number>();
   isVisible: boolean = false;

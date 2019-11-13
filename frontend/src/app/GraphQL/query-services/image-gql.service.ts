@@ -7,7 +7,7 @@ import { GraphQLModule } from '../graphql.module';
 import { Image } from 'src/app/interfaces';
 
 @Injectable({
-  providedIn: GraphQLModule
+  providedIn: 'root'
 })
 export class ImageGQL extends Query<{ image: Image }> {
   public document = gql`

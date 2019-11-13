@@ -14,6 +14,7 @@ import { ArticleEditingComponent } from './article-editing/article-editing.compo
 import { ImageEditingComponent } from './image-editing/image-editing.component';
 import { ImageCardComponent } from './image-editing/image-card/image-card.component';
 import { EditCardComponent } from './image-editing/edit-card/edit-card.component';
+import { DateAndAuthComponent } from './event-editing/date-and-auth/date-and-auth.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { EditCardComponent } from './image-editing/edit-card/edit-card.component
     ArticleEditingComponent,
     ImageEditingComponent,
     ImageCardComponent,
-    EditCardComponent
+    EditCardComponent,
+    DateAndAuthComponent
   ],
   imports: [CommonModule, FormsModule, HttpClientModule, EditingRouting, SharedModule, GraphQLModule]
 })

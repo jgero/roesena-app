@@ -7,7 +7,7 @@ import { GraphQLModule } from '../graphql.module';
 import { Person } from 'src/app/interfaces';
 
 @Injectable({
-  providedIn: GraphQLModule
+  providedIn: 'root'
 })
 export class LoginGQL extends Mutation<{ login: Person }> {
   public document = gql`

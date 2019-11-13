@@ -1,9 +1,1 @@
-<ul>
-  <li *ngFor="let listItem of listSrv.list | async" (click)="select(listItem._id)">
-    {{ listItem.value }}
-  </li>
-  <li (click)="select(undefined)">neu</li>
-</ul>
-<div class="editors">
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>

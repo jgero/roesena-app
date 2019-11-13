@@ -7,7 +7,7 @@ import { GraphQLModule } from '../graphql.module';
 import { Article } from 'src/app/interfaces';
 
 @Injectable({
-  providedIn: GraphQLModule
+  providedIn: 'root'
 })
 export class ArticlesGQL extends Query<{ articles: Article[] }> {
   public document = gql`

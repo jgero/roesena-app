@@ -10,6 +10,7 @@ import { HoverableDirective } from './hoverable.directive';
 import { GraphQLModule } from '../GraphQL/graphql.module';
 import { ButtonComponent } from './components/button/button.component';
 import { AuthDropdownComponent } from './components/auth-dropdown/auth-dropdown.component';
+import { SelectionListComponent } from './components/selection-list/selection-list.component';
 
 const exports = [
   SafeURLPipe,
@@ -18,7 +19,8 @@ const exports = [
   TagComponent,
   ImageComponent,
   ButtonComponent,
-  AuthDropdownComponent
+  AuthDropdownComponent,
+  SelectionListComponent
 ];
 
 @NgModule({

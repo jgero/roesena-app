@@ -1,3 +1,4 @@
+<app-selection-list [listType]="tpe"></app-selection-list>
 <div class="main-data">
   <input type="text" [(ngModel)]="selectedEvent.title" class="underlined title" placeholder="Titel" required="true" />
   <textarea [(ngModel)]="selectedEvent.description" rows="10" class="box description" placeholder="Beschreibung"></textarea>
@@ -14,28 +15,8 @@
   <app-button value="speichern" (click)="saveEvent()"></app-button>
   <app-button value="löschen" (click)="deleteEvent()"></app-button>
 </div>
-<div class="dates">
-  <div class="date">
-    <div>Beginn</div>
-    <input
-      type="text"
-      class="underlined"
-      [(ngModel)]="selectedEvent.startDate"
-      placeholder="DD.MM.YYYY"
-      pattern="^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}$"
-      required="true"
-    />
-  </div>
-  <div class="date">
-    <div>Ende</div>
-    <input
-      type="text"
-      class="underlined"
-      [(ngModel)]="selectedEvent.endDate"
-      placeholder="DD.MM.YYYY"
-      pattern="^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}$"
-      required="true"
-    />
-  </div>
-  <app-auth-dropdown [(auth)]="selectedEvent.authorityGroup"></app-auth-dropdown>
-</div>
+<app-date-and-auth
+  [(startDate)]="selectedEvent.startDate"
+  [(endDate)]="selectedEvent.endDate"
+  [(auth)]="selectedEvent.authorityGroup"
+></app-date-and-auth>

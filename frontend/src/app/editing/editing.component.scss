@@ -1,35 +1,6 @@
 :host {
   flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 5fr;
-  grid-template-rows: 15vh auto;
-  grid-template-areas:
-    'search empty'
-    'list edit';
   min-height: 100%;
-
-  ul {
-    grid-area: list;
-    height: max-content;
-    padding-right: 2rem;
-    border-right: 2px solid var(--inactive);
-
-    & > li {
-      list-style-type: none;
-      padding: 0.2rem 0.5rem;
-      cursor: pointer;
-
-      &:hover {
-        background-color: var(--secondary);
-        color: var(--font-secondary);
-      }
-    }
-  }
-
-  .editors {
-    grid-area: edit;
-    // background-color: var(--inactive);
-    // border: 2px solid var(--inactive);
-    // border-top: none;
-  }
+  padding: 5vw 5vh;
+  display: block;
 }

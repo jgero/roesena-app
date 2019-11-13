@@ -2,14 +2,14 @@
 
 :host {
   min-height: 100%;
-  padding: 0 5%;
   display: grid;
-  grid-template-columns: 5fr 1fr;
+  grid-template-columns: 1fr 5fr 1fr;
   column-gap: 1rem;
-  grid-template-areas: 'main-data dates';
+  grid-template-areas: 'list main-data dates';
 
   .main-data {
     grid-area: main-data;
+    padding: 0 2rem;
 
     & > input,
     & > textarea {
@@ -48,21 +48,10 @@
     }
   }
 
-  .dates {
+  app-date-and-auth {
     grid-area: dates;
-
-    .date {
-      margin-bottom: 1rem;
-
-      div {
-        color: var(--font);
-        margin-bottom: 0.1rem;
-        font-weight: bold;
-      }
-    }
-
-    app-auth-dropdown {
-      // font-size: 3rem;
-    }
+  }
+  app-selection-list {
+    grid-area: list;
   }
 }

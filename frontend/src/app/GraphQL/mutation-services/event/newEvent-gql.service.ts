@@ -7,7 +7,7 @@ import { GraphQLModule } from '../../graphql.module';
 import { Event } from 'src/app/interfaces';
 
 @Injectable({
-  providedIn: GraphQLModule
+  providedIn: 'root'
 })
 export class NewEventGQL extends Mutation<{ newEvent: Event }> {
   public document = gql`
