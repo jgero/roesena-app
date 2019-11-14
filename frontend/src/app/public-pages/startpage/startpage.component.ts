@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+import { Observable } from 'rxjs';
 
 import { Article } from '../../interfaces';
-import { ArticlesGQL } from 'src/app/GraphQL/query-services/all-articles-gql.service';
+import { ArticlesGQL } from 'src/app/GraphQL/query-services/articles/all-articles-gql.service';
 import { map, catchError } from 'rxjs/operators';
 import { PopupService } from 'src/app/popup/popup.service';
 

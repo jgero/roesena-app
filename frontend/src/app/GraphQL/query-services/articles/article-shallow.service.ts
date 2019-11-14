@@ -1,27 +1,22 @@
 import { Injectable } from '@angular/core';
-
 import { Query } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { GraphQLModule } from '../graphql.module';
-import { Article } from 'src/app/interfaces';
+import { ShallowArticle } from 'src/app/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ArticlesGQL extends Query<{ articles: Article[] }> {
+export class ShallowArticleGQL extends Query<{ article: ShallowArticle }> {
   public document = gql`
-    query Articles {
-      articles {
+    query Article($_id: ID!) {
+      article(_id: $_id) {
         _id
         title
         content
         date
         images {
           _id
-          data
-          description
-          tags
         }
       }
     }

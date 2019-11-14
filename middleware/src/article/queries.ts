@@ -23,7 +23,7 @@ async function articles(_: any, _args: any, context: any) {
 
 async function article(_: any, args: any, context: any) {
   const collection = (await ConnectionProvider.Instance.db).collection('articles');
-  return await mapIdsToImages(await collection.find({ _id: new ObjectID(args._id) }).toArray());
+  return (await mapIdsToImages(await collection.find({ _id: new ObjectID(args._id) }).toArray()))[0];
 }
 
 export async function mapIdsToImages(articles: any[]) {

@@ -1,7 +1,7 @@
-<app-selection-list [listType]="tpe"></app-selection-list>
+<app-selection-list [list]="list"></app-selection-list>
 <div class="main-data">
   <input type="text" [(ngModel)]="selectedEvent.title" class="underlined title" placeholder="Titel" required="true" />
-  <textarea [(ngModel)]="selectedEvent.description" rows="10" class="box description" placeholder="Beschreibung"></textarea>
+  <textarea [(ngModel)]="selectedEvent.description" rows="10" class="box" placeholder="Beschreibung"></textarea>
   <div class="person-selection">
     <div
       *ngFor="let person of persons | async"

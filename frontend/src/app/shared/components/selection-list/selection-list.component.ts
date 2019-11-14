@@ -11,25 +11,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class SelectionListComponent implements OnInit {
   @Input()
-  listType: ListType;
   list: Observable<{ _id: string; value: string }[]>;
   public activeId: string = null;
 
-  constructor(private eventsGQL: EventsGQL, private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.activeId = this.route.snapshot.paramMap.get('id');
-    switch (this.listType) {
-      case ListType.Events:
-        this.list = this.eventsGQL.watch().valueChanges.pipe(
-          map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))),
-          catchError(() => {
-            // this.popServ.flashPopup('could not load events', this.container);
-            return of([]);
-          })
-        );
-        break;
-    }
   }
 
   select(id: string | null) {
@@ -41,9 +29,4 @@ export class SelectionListComponent implements OnInit {
       this.router.navigate(['edit', mode]);
     }
   }
-}
-
-export enum ListType {
-  Events,
-  Articles
 }

@@ -1,14 +1,16 @@
 import { Component, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, take } from 'rxjs/operators';
 
 import { Article, ShallowArticle, ImageMetadata } from 'src/app/interfaces';
 import { ImagesGQL } from 'src/app/GraphQL/query-services/all-images-gql.service';
 import { UpdateArticleGQL } from 'src/app/GraphQL/mutation-services/article/updateArticle-gql.service';
 import { NewArticleGQL } from 'src/app/GraphQL/mutation-services/article/newArticle-gql.service';
-import { ShallowArticlesGQL } from 'src/app/GraphQL/query-services/all-articles-shallow-gql.service';
+import { ShallowArticlesGQL } from 'src/app/GraphQL/query-services/articles/all-articles-shallow-gql.service';
 import { DeleteArticleGQL } from 'src/app/GraphQL/mutation-services/article/deleteArticle-gql.service';
 import { PopupService } from 'src/app/popup/popup.service';
+import { ActivatedRoute } from '@angular/router';
+import { ShallowArticleGQL } from 'src/app/GraphQL/query-services/articles/article-shallow.service';
 
 @Component({
   selector: 'app-article-editing',
@@ -16,6 +18,7 @@ import { PopupService } from 'src/app/popup/popup.service';
   styleUrls: ['./article-editing.component.scss']
 })
 export class ArticleEditingComponent implements OnDestroy {
+  list: Observable<{ _id: string; value: string }[]>;
   private subs: Subscription[] = [];
 
   public selectedArticle: ShallowArticle = {
@@ -25,10 +28,12 @@ export class ArticleEditingComponent implements OnDestroy {
     images: [],
     date: 0
   };
-  public articles: Observable<ShallowArticle[]>;
+  // public articles: Observable<ShallowArticle[]>;
   public images: Observable<ImageMetadata[]>;
 
   constructor(
+    private route: ActivatedRoute,
+    private articleGql: ShallowArticleGQL,
     private articlesGql: ShallowArticlesGQL,
     private imagesGql: ImagesGQL,
     private updateArticleGql: UpdateArticleGQL,
@@ -38,8 +43,8 @@ export class ArticleEditingComponent implements OnDestroy {
     private container: ViewContainerRef
   ) {
     // get articles
-    this.articles = this.articlesGql.watch().valueChanges.pipe(
-      map(el => el.data.articles),
+    this.list = this.articlesGql.watch().valueChanges.pipe(
+      map(el => el.data.articles.map(el => ({ _id: el._id, value: el.title }))),
       catchError(() => {
         this.popServ.flashPopup('could not load articles', this.container);
         return of([]);
@@ -53,20 +58,33 @@ export class ArticleEditingComponent implements OnDestroy {
         return of([]);
       })
     );
-  }
-
-  public selectArticle(article?: Article) {
-    if (article) {
-      Object.assign(this.selectedArticle, article);
-    } else {
-      this.selectedArticle = {
-        _id: undefined,
-        title: '',
-        content: '',
-        images: [],
-        date: 0
-      };
-    }
+    // get selected Article
+    this.subs.push(
+      this.route.paramMap.subscribe({
+        next: params => {
+          const id = params.get('id');
+          if (id) {
+            this.subs.push(
+              this.articleGql
+                .watch({ _id: id })
+                .valueChanges.pipe(take(1))
+                .subscribe({
+                  next: result => {
+                    this.selectedArticle = {
+                      _id: result.data.article._id,
+                      title: result.data.article.title,
+                      content: result.data.article.content,
+                      images: result.data.article.images,
+                      date: result.data.article.date
+                    };
+                  },
+                  error: () => this.popServ.flashPopup('could not load event', this.container)
+                })
+            );
+          }
+        }
+      })
+    );
   }
 
   public saveArticle() {
@@ -100,9 +118,12 @@ export class ArticleEditingComponent implements OnDestroy {
     }
   }
 
-  public deleteArticle(id: string) {
+  public deleteArticle() {
+    if (!this.selectedArticle._id) {
+      return;
+    }
     this.subs.push(
-      this.deleteArticleGql.mutate({ _id: id }).subscribe({
+      this.deleteArticleGql.mutate({ _id: this.selectedArticle._id }).subscribe({
         next: () => this.popServ.flashPopup('Artikel gelöscht', this.container),
         error: () => this.popServ.flashPopup('Löschen fehlgeschlagen', this.container),
         complete: () => {

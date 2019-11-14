@@ -11,7 +11,6 @@ import { NewEventGQL } from 'src/app/GraphQL/mutation-services/event/newEvent-gq
 import { EventsShallowGQL } from 'src/app/GraphQL/query-services/events/all-events-shallow-gql.service';
 import { ActivatedRoute } from '@angular/router';
 import { EventGQL } from 'src/app/GraphQL/query-services/events/event-gql.service';
-import { ListType } from 'src/app/shared/components/selection-list/selection-list.component';
 
 @Component({
   selector: 'app-event-editing',
@@ -19,7 +18,7 @@ import { ListType } from 'src/app/shared/components/selection-list/selection-lis
   styleUrls: ['./event-editing.component.scss']
 })
 export class EventEditingComponent implements OnDestroy {
-  tpe: ListType = ListType.Events;
+  list: Observable<{ _id: string; value: string }[]>;
   public events: Observable<Event[]>;
   public persons: Observable<Person[]>;
   private selectedEvent: Event = {
@@ -45,6 +44,13 @@ export class EventEditingComponent implements OnDestroy {
     private container: ViewContainerRef,
     private route: ActivatedRoute
   ) {
+    this.list = this.eventsGQL.watch().valueChanges.pipe(
+      map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))),
+      catchError(() => {
+        this.popServ.flashPopup('could not load events', this.container);
+        return of([]);
+      })
+    );
     this.persons = this.personsGQL.watch().valueChanges.pipe(
       map(el => el.data.persons),
       catchError(() => {

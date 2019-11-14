@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-
 import { Query } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { GraphQLModule } from '../graphql.module';
-import { ShallowArticle } from 'src/app/interfaces';
+import { Article } from 'src/app/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ShallowArticlesGQL extends Query<{ articles: ShallowArticle[] }> {
+export class ArticlesGQL extends Query<{ articles: Article[] }> {
   public document = gql`
     query Articles {
       articles {
@@ -19,6 +17,9 @@ export class ShallowArticlesGQL extends Query<{ articles: ShallowArticle[] }> {
         date
         images {
           _id
+          data
+          description
+          tags
         }
       }
     }
