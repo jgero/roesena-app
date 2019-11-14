@@ -68,6 +68,8 @@ async function updateEvent(_: any, args: any, context: any) {
   return null;
 }
 
+// not needed !!!!!
+// to cancel an event amount is set to 0!
 async function cancelEvent(_: any, args: any, context: any) {
   const personCollection = (await ConnectionProvider.Instance.db).collection('persons');
   const eventCollection = (await ConnectionProvider.Instance.db).collection('events');

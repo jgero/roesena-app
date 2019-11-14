@@ -24,11 +24,11 @@ export const eventQueries = {
 async function events(_a: any, _b: any, context: any) {
   const auth = (await context).authLevel;
   const collection = (await ConnectionProvider.Instance.db).collection('events');
-  if (auth > 1) {
-    return await mapIdsToPersons(await collection.find({ authorityGroup: { $lte: auth } }).toArray());
-  } else {
-    return [];
-  }
+  // if (auth > 1) {
+  return await mapIdsToPersons(await collection.find({ authorityGroup: { $lte: auth } }).toArray());
+  // } else {
+  // return [];
+  // }
 }
 
 async function event(_a: any, args: any, context: any) {

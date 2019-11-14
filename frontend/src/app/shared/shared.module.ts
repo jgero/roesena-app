@@ -11,6 +11,7 @@ import { GraphQLModule } from '../GraphQL/graphql.module';
 import { ButtonComponent } from './components/button/button.component';
 import { AuthDropdownComponent } from './components/auth-dropdown/auth-dropdown.component';
 import { SelectionListComponent } from './components/selection-list/selection-list.component';
+import { SwitchComponent } from './components/switch/switch.component';
 
 const exports = [
   SafeURLPipe,
@@ -20,7 +21,8 @@ const exports = [
   ImageComponent,
   ButtonComponent,
   AuthDropdownComponent,
-  SelectionListComponent
+  SelectionListComponent,
+  SwitchComponent
 ];
 
 @NgModule({

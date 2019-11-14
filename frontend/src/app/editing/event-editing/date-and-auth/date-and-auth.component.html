@@ -21,7 +21,7 @@
     placeholder="DD.MM.YYYY"
     pattern="^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}$"
     required="true"
-    (change)="newStart(endEl.value)"
+    (change)="newEnd(endEl.value)"
   />
 </div>
 <app-auth-dropdown [auth]="auth" (authChange)="updateAuth($event)"></app-auth-dropdown>

@@ -1,4 +1,4 @@
-<input spellcheck="false" />
+<input #search spellcheck="false" (keydown.esc)="search.value = ''; doSearch('')" (keyup)="doSearch(search.value)" />
 <svg>
   <use href="assets/svg/search-solid.svg#search" />
 </svg>
