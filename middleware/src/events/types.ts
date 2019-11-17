@@ -9,12 +9,32 @@ import {
 } from 'graphql';
 
 import { PersonType } from '../person/types';
+import { ConnectionProvider } from '../database/connection';
+import { ObjectID } from 'bson';
 
 const ParticipantType = new GraphQLObjectType({
   name: 'Participant',
   fields: () => ({
-    person: { type: GraphQLNonNull(PersonType) },
-    amount: { type: GraphQLInt }
+    person: {
+      type: GraphQLNonNull(PersonType),
+      resolve: async (parent, args, context) => {
+        if (!parent._id) {
+          return undefined;
+        }
+        const collection = (await ConnectionProvider.Instance.db).collection('persons');
+        return await collection.findOne({ _id: new ObjectID(parent._id) });
+      }
+    },
+    amount: {
+      type: GraphQLInt,
+      resolve: (parent, args, context) => {
+        if (!parent.amount || parent.amount === null) {
+          return undefined;
+        } else {
+          return parent.amount;
+        }
+      }
+    }
   })
 });
 

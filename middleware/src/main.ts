@@ -1,17 +1,19 @@
 import express from 'express';
 import expressGQL from 'express-graphql';
-import bodyParser from "body-parser";
+import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import { Server } from 'http';
 
 import { schema } from './GraphQL/schema';
 import { getAuthLevel } from './context';
+import { GraphQLFieldResolver, GraphQLTypeResolver } from 'graphql';
 
 // create the express-server instance
 const app = express();
 // use a middleware to parse the cookies
 app.use(cookieParser());
 // add extra body parser plugin to allow 10 mb file uploads
-app.use(bodyParser({limit: '10mb'}));
+app.use(bodyParser({ limit: '10mb' }));
 // use the graphql middleware
 app.use('/graphql', (req, res) => {
   return expressGQL({
@@ -28,11 +30,13 @@ app.use('/graphql', (req, res) => {
   })(req, res);
 });
 // start the graphql server
-let server;
+let server: Server;
 function startServer() {
   server = app.listen(4000, () => console.log('Express GraphQL Server running!'));
 }
 startServer();
+
+function fieldResolver() {}
 
 declare const module: any;
 

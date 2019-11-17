@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLList, GraphQLID } from 'graphql';
 import { ObjectID } from 'bson';
 
-import { ConnectionProvider } from '../connection';
+import { ConnectionProvider } from '../database/connection';
 import { ArticleType } from './types';
 
 export const articleQueries = {
@@ -30,7 +30,7 @@ export async function mapIdsToImages(articles: any[]) {
   const collection = (await ConnectionProvider.Instance.db).collection('images');
   return await articles.map(async article => {
     // map the ids to the image objects
-    article.images = await article.images.map(async imageID => {
+    article.images = await article.images.map(async (imageID: any) => {
       let image;
       try {
         image = await collection.findOne({ _id: new ObjectID(imageID) });

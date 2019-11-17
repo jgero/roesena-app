@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLList, GraphQLID } from 'graphql';
 import { ObjectID } from 'bson';
 
-import { ConnectionProvider } from '../connection';
+import { ConnectionProvider } from '../database/connection';
 import { ImageType } from './types';
 
 export const imageQueries = {

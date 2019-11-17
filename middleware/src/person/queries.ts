@@ -2,7 +2,7 @@ import { GraphQLNonNull, GraphQLList, GraphQLID } from 'graphql';
 import { ObjectID } from 'bson';
 
 import { PersonType } from './types';
-import { ConnectionProvider } from '../connection';
+import { ConnectionProvider } from '../database/connection';
 
 export const personQueries = {
   persons: {

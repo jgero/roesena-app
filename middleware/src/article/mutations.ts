@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 
-import { ConnectionProvider } from '../connection';
+import { ConnectionProvider } from '../database/connection';
 import { ObjectID } from 'bson';
 import { ArticleType, NewArticleInputType, UpdateArticleInputType } from './types';
 import { mapIdsToImages } from './queries';

@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-import { ConnectionProvider } from './connection';
+import { ConnectionProvider } from './database/connection';
 
 export async function getAuthLevel(req: Request): Promise<number> {
   if (req.cookies.session_token) {

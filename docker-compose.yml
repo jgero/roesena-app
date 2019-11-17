@@ -1,12 +1,13 @@
-version: "3.5"
+version: '3.5'
 services:
   middleware:
+    tty: true
     build:
       context: ./middleware/
       dockerfile: $PWD/Docker/dev.middleware.Dockerfile
     volumes:
-      - "./middleware/:/app"
-      - "/app/node_modules"
+      - './middleware/:/app'
+      - '/app/node_modules'
     links:
       - mongo
   angular:
@@ -14,8 +15,8 @@ services:
       context: ./frontend/
       dockerfile: $PWD/Docker/dev.frontend.Dockerfile
     volumes:
-      - "./frontend/:/app"
-      - "/app/node_modules"
+      - './frontend/:/app'
+      - '/app/node_modules'
   mongo:
     build:
       context: ./database/

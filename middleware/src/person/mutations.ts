@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 
 import { PersonType, NewPersonInputType, UpdatePersonInputType } from './types';
-import { ConnectionProvider } from '../connection';
+import { ConnectionProvider } from '../database/connection';
 import { ObjectID } from 'bson';
 
 export const personMutations = {

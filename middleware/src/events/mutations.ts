@@ -2,9 +2,8 @@ import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 import { ObjectID } from 'mongodb';
 import { Request } from 'express';
 
-import { ConnectionProvider } from '../connection';
+import { ConnectionProvider } from '../database/connection';
 import { EventType, NewEventInputType, UpdateEventInputType, AcceptEventInputType } from './types';
-import { mapIdsToPersons } from './queries';
 
 export const eventMutations = {
   newEvent: {
@@ -26,11 +25,6 @@ export const eventMutations = {
     type: GraphQLBoolean,
     args: { input: { type: new GraphQLNonNull(AcceptEventInputType) } },
     resolve: acceptEvent
-  },
-  cancelEvent: {
-    type: GraphQLBoolean,
-    args: { _id: { type: new GraphQLNonNull(GraphQLID) } },
-    resolve: cancelEvent
   }
 };
 
@@ -43,7 +37,7 @@ async function newEvent(_: any, args: any, context: any) {
     const result = await collection.insertOne(args.input);
     // return the new event (with all participants)
     if (result.insertedCount > 0) {
-      return (await mapIdsToPersons([result.ops[0]]))[0];
+      return result.ops[0];
     }
   }
   return null;
@@ -63,29 +57,9 @@ async function updateEvent(_: any, args: any, context: any) {
       { $set: args.input },
       { returnOriginal: false }
     );
-    return (await mapIdsToPersons([result.value]))[0];
+    return result.value;
   }
   return null;
-}
-
-// not needed !!!!!
-// to cancel an event amount is set to 0!
-async function cancelEvent(_: any, args: any, context: any) {
-  const personCollection = (await ConnectionProvider.Instance.db).collection('persons');
-  const eventCollection = (await ConnectionProvider.Instance.db).collection('events');
-  const req: Request = (await context).request;
-  // get logged-in user
-  const user = await personCollection.findOne({ sessionId: req.cookies.session_token });
-  if (user) {
-    const result = await eventCollection.updateOne(
-      // match by event id and the person id in the participants so only events the user is participant of match
-      { _id: new ObjectID(args._id), 'participants._id': (user._id as ObjectID).toHexString() },
-      // unset the amount for the matched participant
-      { $unset: { 'participants.$.amount': '' } }
-    );
-    return result.modifiedCount === 1;
-  }
-  return false;
 }
 
 async function acceptEvent(_: any, args: any, context: any) {
