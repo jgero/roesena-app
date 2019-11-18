@@ -13,7 +13,15 @@ export const ArticleType = new GraphQLObjectType({
     images: {
       type: GraphQLNonNull(GraphQLList(ImageType)),
       resolve: async (parent: any, args: any, context: any) => {
-        return getImageById(parent._id);
+        if (parent.images) {
+          return await Promise.all(
+            (parent.images as string[]).map(imageId => {
+              return getImageById(imageId);
+            })
+          );
+        } else {
+          return [];
+        }
       }
     }
   })
