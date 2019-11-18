@@ -1,5 +1,5 @@
 import { ConnectionProvider } from '../connection';
-import { Person } from '../../interfaces/PersonInterfaces';
+import { Person } from '../../interfaces';
 
 export async function getPersonBySessionId(sessionId: string): Promise<Person | null> {
   // return Person data if a session exists

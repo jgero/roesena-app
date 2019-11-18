@@ -1,6 +1,6 @@
 import { ConnectionProvider } from '../connection';
 
-import { Event } from '../../interfaces/EventInterfaces';
+import { Event } from '../../interfaces';
 import { ObjectID } from 'bson';
 
 export async function getAllEvents(userAuthLevel: number): Promise<Event[]> {
@@ -35,7 +35,7 @@ export async function getEventsByDate(userAuthLevel: number, startDate: number, 
   const collection = (await ConnectionProvider.Instance.db).collection('events');
   // only get events if it is at or below the user's authorityLevel
   let res = await collection
-    .find({
+    .find<Event>({
       $and: [{ authorityGroup: { $lte: userAuthLevel } }, { startDate: { $lte: endDate } }, { endDate: { $gte: startDate } }]
     })
     .toArray();

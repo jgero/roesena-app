@@ -2,7 +2,7 @@ import { compare, hash } from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { ObjectID } from 'bson';
 
-import { Person } from '../../interfaces/PersonInterfaces';
+import { Person } from '../../interfaces';
 import { ConnectionProvider } from '../connection';
 
 export async function loginUser(name: string, queryPassword: string): Promise<{ user: Person | null; sessionId: string }> {

@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 import { Request, Response } from 'express';
 
-import { loginUser, logoutUser, changePasswordForUser } from 'src/database/update/auth';
+import { loginUser, logoutUser, changePasswordForUser } from '../../database/update/auth';
 import { LoginInputType, ChangePwInputType, PersonType } from '../types';
 
 export default {

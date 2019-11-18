@@ -1,6 +1,6 @@
 import { ObjectID } from 'bson';
 
-import { Event } from 'src/interfaces';
+import { Event } from '../../interfaces';
 import { ConnectionProvider } from '../connection';
 
 export async function createEvent(newEvent: Event, auth: number): Promise<Event | null> {

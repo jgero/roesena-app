@@ -2,7 +2,7 @@ import { GraphQLNonNull, GraphQLBoolean, GraphQLID } from 'graphql';
 import { Request } from 'express';
 
 import { EventType, NewEventInputType, UpdateEventInputType, AcceptEventInputType } from '../types';
-import { createEvent, updateEvent, acceptEventForUserBySessionIdWithAmount, deleteEvent } from 'src/database/update/event';
+import { createEvent, updateEvent, acceptEventForUserBySessionIdWithAmount, deleteEvent } from '../../database/update/event';
 
 export default {
   newEvent: {
