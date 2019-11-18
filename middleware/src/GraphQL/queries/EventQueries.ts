@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLList, GraphQLID } from 'graphql';
 
-import { EventType, TimeRangeInputType } from '../../events/types';
-import { getAllEvents, getEventById, getEventsByDate } from '../../database/get/event';
+import { EventType, TimeRangeInputType } from '../types';
+import { getAllEvents, getEventById, getEventsByDate } from 'src/database/get/event';
 
 export default {
   events: {

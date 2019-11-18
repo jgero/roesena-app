@@ -6,7 +6,6 @@ import { Server } from 'http';
 
 import { schema } from './GraphQL/schema';
 import { getAuthLevel } from './context';
-import { GraphQLFieldResolver, GraphQLTypeResolver } from 'graphql';
 
 // create the express-server instance
 const app = express();
@@ -35,8 +34,6 @@ function startServer() {
   server = app.listen(4000, () => console.log('Express GraphQL Server running!'));
 }
 startServer();
-
-function fieldResolver() {}
 
 declare const module: any;
 

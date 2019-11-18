@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
-import { PersonType } from '../../person/types';
-import { getPersonBySessionId } from '../../database/get/auth';
+import { PersonType } from '../types';
+import { getPersonBySessionId } from 'src/database/get/auth';
 
 export default {
   me: {
