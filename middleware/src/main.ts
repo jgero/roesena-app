@@ -11,8 +11,8 @@ import { getAuthLevel } from './context';
 const app = express();
 // use a middleware to parse the cookies
 app.use(cookieParser());
-// add extra body parser plugin to allow 10 mb file uploads
-app.use(bodyParser({ limit: '10mb' }));
+// set json limit in body parser middleware to allow 10 mb file uploads
+app.use(bodyParser.json({ limit: '10mb' }));
 // use the graphql middleware
 app.use('/graphql', (req, res) => {
   return expressGQL({
