@@ -38,7 +38,7 @@ export const EventType = new GraphQLObjectType({
     description: { type: GraphQLString },
     startDate: { type: GraphQLNonNull(GraphQLInt) },
     endDate: { type: GraphQLNonNull(GraphQLInt) },
-    authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
+    authorityLevel: { type: GraphQLNonNull(GraphQLInt) },
     participants: { type: GraphQLNonNull(GraphQLList(ParticipantType)) }
   })
 });

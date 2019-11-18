@@ -31,10 +31,14 @@ export async function updateImage(imageToUpdate: Image, auth: number): Promise<I
 }
 
 export async function deleteImage(imageId: string, auth: number): Promise<boolean> {
-  const collection = (await ConnectionProvider.Instance.db).collection('images');
+  const imageCollection = (await ConnectionProvider.Instance.db).collection('images');
+  const articleCollection = (await ConnectionProvider.Instance.db).collection('articles');
   // only group leaders and above can delete images
   if (auth > 2) {
-    const result = await collection.deleteOne({ _id: new ObjectID(imageId) });
+    // remove the references to the image, which will be deleted, in all the articles
+    await articleCollection.updateMany({}, { $pull: { images: imageId } });
+    // delete the image
+    const result = await imageCollection.deleteOne({ _id: new ObjectID(imageId) });
     return result.deletedCount === 1;
   }
   return false;

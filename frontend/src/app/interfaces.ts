@@ -40,5 +40,5 @@ export interface Event {
   startDate: number;
   endDate: number;
   participants: { person: Person; amount: number }[];
-  authorityGroup: number;
+  authorityLevel: number;
 }

@@ -24,7 +24,7 @@ export class EventsByDateGQL extends Query<{ eventsByDate: Event[] }> {
           }
           amount
         }
-        authorityGroup
+        authorityLevel
       }
     }
   `;

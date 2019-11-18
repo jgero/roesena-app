@@ -15,7 +15,7 @@ export const NewEventInputType = new GraphQLInputObjectType({
     description: { type: GraphQLString },
     startDate: { type: GraphQLNonNull(GraphQLInt) },
     endDate: { type: GraphQLNonNull(GraphQLInt) },
-    authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
+    authorityLevel: { type: GraphQLNonNull(GraphQLInt) },
     participants: { type: GraphQLNonNull(GraphQLList(ParticipantInputType)) }
   })
 });
@@ -28,7 +28,7 @@ export const UpdateEventInputType = new GraphQLInputObjectType({
     description: { type: GraphQLString },
     startDate: { type: GraphQLNonNull(GraphQLInt) },
     endDate: { type: GraphQLNonNull(GraphQLInt) },
-    authorityGroup: { type: GraphQLNonNull(GraphQLInt) },
+    authorityLevel: { type: GraphQLNonNull(GraphQLInt) },
     participants: { type: GraphQLNonNull(GraphQLList(ParticipantInputType)) }
   })
 });

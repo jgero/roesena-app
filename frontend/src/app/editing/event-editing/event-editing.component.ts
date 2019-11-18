@@ -23,7 +23,7 @@ export class EventEditingComponent implements OnDestroy {
   public persons: Observable<Person[]>;
   private selectedEvent: Event = {
     _id: undefined,
-    authorityGroup: 1,
+    authorityLevel: 1,
     description: '',
     endDate: undefined,
     startDate: undefined,
@@ -71,7 +71,7 @@ export class EventEditingComponent implements OnDestroy {
                   next: result =>
                     (this.selectedEvent = {
                       _id: result.data.event._id,
-                      authorityGroup: result.data.event.authorityGroup,
+                      authorityLevel: result.data.event.authorityLevel,
                       description: result.data.event.description,
                       participants: result.data.event.participants,
                       title: result.data.event.title,
@@ -104,7 +104,7 @@ export class EventEditingComponent implements OnDestroy {
 
   public saveEvent() {
     console.log(this.selectedEvent);
-    const { _id, description, title, authorityGroup, startDate, endDate } = this.selectedEvent;
+    const { _id, description, title, authorityLevel, startDate, endDate } = this.selectedEvent;
     // only return the id and amount of participants
     const participants = this.selectedEvent.participants.map(part => ({
       amount: part.amount,
@@ -113,7 +113,7 @@ export class EventEditingComponent implements OnDestroy {
     if (_id) {
       // update the event
       this.subs.push(
-        this.updateEvGQL.mutate({ _id, description, title, authorityGroup, endDate, startDate, participants }).subscribe({
+        this.updateEvGQL.mutate({ _id, description, title, authorityLevel, endDate, startDate, participants }).subscribe({
           next: () => this.popServ.flashPopup('Event bearbeitet', this.container),
           error: () => this.popServ.flashPopup('Bearbeiten fehlgeschlagen', this.container),
           complete: () => {
@@ -125,7 +125,7 @@ export class EventEditingComponent implements OnDestroy {
     } else {
       // create a new event
       this.subs.push(
-        this.newEvGql.mutate({ description, title, authorityGroup, endDate, startDate, participants }).subscribe({
+        this.newEvGql.mutate({ description, title, authorityLevel, endDate, startDate, participants }).subscribe({
           next: () => this.popServ.flashPopup('Event erstellt', this.container),
           error: () => this.popServ.flashPopup('Erstellen fehlgeschlagen', this.container),
           complete: () => {

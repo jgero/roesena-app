@@ -16,7 +16,7 @@ export class EventGQL extends Query<{ event: Event }> {
         description
         startDate
         endDate
-        authorityGroup
+        authorityLevel
         participants {
           person {
             _id

@@ -1,12 +1,5 @@
 <app-selection-list [list]="list"></app-selection-list>
 
-<!-- <ul class="articleList">
-  <li *ngFor="let article of articles | async" (click)="selectArticle(article)"> {{article.title}} <span
-       style="color: red;">delte</span> </li>
-  <li (click)="selectArticle(undefined)">neuer Artikel</li>
-  <input type="button" value="Speichern" class="rsn-button" >
-</ul> -->
-
 <div class="article">
   <input [(ngModel)]="selectedArticle.title" class="underlined title" placeholder="Titel" />
   <textarea rows="10" [(ngModel)]="selectedArticle.content" class="box" placeholder="Inahlt"></textarea>

@@ -7,7 +7,7 @@ export async function createEvent(newEvent: Event, auth: number): Promise<Event 
   const collection = (await ConnectionProvider.Instance.db).collection('events');
   // only group leaders or higher are allowed to update events
   // you can only create events at your auth level or lower
-  if (auth > 2 && auth >= newEvent.authorityGroup) {
+  if (auth > 2 && auth >= newEvent.authorityLevel) {
     const result = await collection.insertOne(newEvent);
     // return the new event (with all participants)
     if (result.insertedCount > 0) {
@@ -25,9 +25,9 @@ export async function updateEvent(eventToUpdate: Event, auth: number): Promise<E
     delete eventToUpdate._id;
     const result = await collection.findOneAndUpdate(
       // match the desired event if the authLevel of the user is high enough
-      { _id: new ObjectID(id), authorityGroup: { $lte: auth } },
+      { _id: new ObjectID(id), authorityLevel: { $lte: auth } },
       // update the provided elements
-      { $set: { eventToUpdate } },
+      { $set: { ...eventToUpdate } },
       { returnOriginal: false }
     );
     return result.value;

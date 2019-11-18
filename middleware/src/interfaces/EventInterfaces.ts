@@ -4,6 +4,6 @@ export interface Event {
   description: string;
   startDate: number;
   endDate: number;
-  authorityGroup: number;
+  authorityLevel: number;
   participants: { _id: string; amount: number }[];
 }

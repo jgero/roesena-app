@@ -15,10 +15,7 @@
   "authorityLevel": 4,
   "password": "asdfasdfasd09ß0pasd0jf",
   "sessionId": "1234521345-1235-14235-12435",
-  "groups": [
-    "9827d34023fa50230408",
-    "23049daf8230957dt3n40"
-  ]
+  "groups": ["9827d34023fa50230408", "23049daf8230957dt3n40"]
 }
 ```
 
@@ -36,10 +33,7 @@
   "date": "20190804",
   "title": "article title",
   "content": "this is the text content of the article",
-  "images": [
-    "23562g34fa3425612",
-    "982e7340235s0230f408"
-  ]
+  "images": ["23562g34fa3425612", "982e7340235s0230f408"]
 }
 ```
 
@@ -56,11 +50,7 @@
   "_id": "2903847509278345",
   "description": "this picture shows a dog",
   "image": "data of the image",
-  "tags": [
-    "dog",
-    "having fun",
-    "animal"
-  ]
+  "tags": ["dog", "having fun", "animal"]
 }
 ```
 
@@ -80,7 +70,7 @@
     { "_id": "234523452345", "amount": 3 },
     { "_id": "2345234523452", "amount": 5 }
   ],
-  "authorityGroup": "3"
+  "authorityLevel": "3"
 }
 ```
 
@@ -89,4 +79,4 @@
 - `startDate` is an ISO string of the point in time when the event starts
 - `endDate` is an ISO string of the point in time when the event ends
 - `participants` ids of the persons that are invited to the event
-- `authorityGroup` contains the authority level you need at least to access the event
+- `authorityLevel` contains the authority level you need at least to access the event

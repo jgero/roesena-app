@@ -12,21 +12,15 @@ import { trigger, transition, query, animate, style } from '@angular/animations'
   animations: [
     trigger('barAnimation', [
       transition('void => *', [
-        query(':self', [
-          style({ height: 0, opacity: 0 }),
-          animate('0.2s', style({ height: '3.5rem', opacity: 1 }))
-        ], { optional: true })
+        query(':self', [style({ height: 0, opacity: 0 }), animate('0.2s', style({ height: '3.5rem', opacity: 1 }))], {
+          optional: true
+        })
       ]),
-      transition('* => void', [
-        query(':self', [
-          animate('0.2s', style({ height: 0, opacity: 0 }))
-        ], { optional: true })
-      ])
+      transition('* => void', [query(':self', [animate('0.2s', style({ height: 0, opacity: 0 }))], { optional: true })])
     ])
   ]
 })
 export class NavBarComponent implements OnDestroy {
-
   private routerSub: Subscription;
   public routeParts: string[] = [];
 
@@ -37,8 +31,10 @@ export class NavBarComponent implements OnDestroy {
     { path: 'calendar', children: [] },
     { path: 'images', children: [] },
     {
-      path: 'edit', children: [
+      path: 'edit',
+      children: [
         { path: 'edit/persons', title: 'Personen', children: [] },
+        { path: 'edit/groups', title: 'Gruppen', children: [] },
         { path: 'edit/events', title: 'Events', children: [] },
         { path: 'edit/articles', title: 'Artikel', children: [] },
         { path: 'edit/images', title: 'Bilder', children: [] }
@@ -47,13 +43,11 @@ export class NavBarComponent implements OnDestroy {
   ];
 
   constructor(public auth: AuthGuard, public router: Router) {
-    this.routerSub = router.events
-      .pipe(filter(routerEvent => routerEvent instanceof NavigationEnd))
-      .subscribe({
-        next: (routerEvent: NavigationEnd) => {
-          this.routeParts = routerEvent.urlAfterRedirects.split('/').filter(el => el && el !== '');
-        }
-      });
+    this.routerSub = router.events.pipe(filter(routerEvent => routerEvent instanceof NavigationEnd)).subscribe({
+      next: (routerEvent: NavigationEnd) => {
+        this.routeParts = routerEvent.urlAfterRedirects.split('/').filter(el => el && el !== '');
+      }
+    });
   }
 
   public getSecondLayer() {
@@ -66,5 +60,4 @@ export class NavBarComponent implements OnDestroy {
   ngOnDestroy() {
     this.routerSub.unsubscribe();
   }
-
 }

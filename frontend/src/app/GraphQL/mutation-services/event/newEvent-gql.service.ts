@@ -17,7 +17,7 @@ export class NewEventGQL extends Mutation<{ newEvent: Event }> {
       $startDate: Int!
       $endDate: Int!
       $participants: [ParticipantInputType]!
-      $authorityGroup: Int!
+      $authorityLevel: Int!
     ) {
       newEvent(
         input: {
@@ -26,7 +26,7 @@ export class NewEventGQL extends Mutation<{ newEvent: Event }> {
           startDate: $startDate
           endDate: $endDate
           participants: $participants
-          authorityGroup: $authorityGroup
+          authorityLevel: $authorityLevel
         }
       ) {
         _id
@@ -42,7 +42,7 @@ export class NewEventGQL extends Mutation<{ newEvent: Event }> {
           }
           amount
         }
-        authorityGroup
+        authorityLevel
       }
     }
   `;
