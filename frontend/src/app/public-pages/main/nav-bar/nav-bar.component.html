@@ -1,14 +1,47 @@
-<!-- root navigation level -->
-<nav class="layer-one">
-  <app-nav-bar-navigators [routeParts]="routeParts"></app-nav-bar-navigators>
-
-  <app-nav-bar-misc [routeParts]="routeParts"></app-nav-bar-misc>
+<nav>
+  <div routerLinkActive="active" class="textItem" routerLink="groups">
+    <span appHoverable>Gruppen</span>
+  </div>
+  <div routerLinkActive="active" class="textItem" routerLink="events">
+    <span appHoverable>Events</span>
+  </div>
+  <div routerLinkActive="active" class="textItem" routerLink="archive">
+    <span appHoverable>Archiv</span>
+  </div>
+  <div routerLinkActive="active" class="svgItem" routerLink="calendar">
+    <svg>
+      <use href="assets/svg/calendar-alt-regular.svg#calendar" />
+    </svg>
+  </div>
+  <div routerLinkActive="active" class="svgItem" routerLink="images">
+    <svg>
+      <use href="assets/svg/images-regular.svg#images" />
+    </svg>
+  </div>
+  <div routerLinkActive="active" class="svgItem" routerLink="edit" *ngIf="auth.user | async">
+    <svg>
+      <use href="assets/svg/edit-solid.svg#edit-solid" />
+    </svg>
+  </div>
 </nav>
-
-<nav class="layer-two" [@barAnimation]="routeParts" *ngIf="routeParts.length > 1">
-  <ng-container *ngFor="let child of getSecondLayer()">
-    <div class="textItem" [routerLink]="child.path" [ngClass]="{'active': routeParts[1] === child.path.split('/')[1]}">
-      <span appHoverable>{{child.title}}</span>
+<aside>
+  <input type="text" placeholder="Seite durchsuchen" />
+  <div class="svgItem">
+    <svg>
+      <use href="assets/svg/facebook-square-brands.svg#facebook-square-brands" />
+    </svg>
+  </div>
+  <ng-container *ngIf="auth.user | async; then profile; else login"></ng-container>
+  <ng-template #login>
+    <div routerLinkActive="active" class="svgItem" routerLink="login">
+      <svg>
+        <use href="assets/svg/sign-in-alt-solid.svg#sign-in" />
+      </svg>
     </div>
-  </ng-container>
-</nav>
+  </ng-template>
+  <ng-template #profile>
+    <div class="profile" routerLink="profile">
+      <span>{{ (auth.user | async).name.charAt(0) }}</span>
+    </div>
+  </ng-template>
+</aside>

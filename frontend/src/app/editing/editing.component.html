@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<nav [@barAnimation]="true">
+  <div appHoverable routerLink="persons" routerLinkActive="selected">Personen</div>
+  <div appHoverable routerLink="groups" routerLinkActive="selected">Gruppen</div>
+  <div appHoverable routerLink="events" routerLinkActive="selected">Events</div>
+  <div appHoverable routerLink="articles" routerLinkActive="selected">Artikel</div>
+  <div appHoverable routerLink="images" routerLinkActive="selected">Bilder</div>
+</nav>
+
+<div>
+  <router-outlet></router-outlet>
+</div>
