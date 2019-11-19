@@ -38,9 +38,11 @@ export async function updatePerson(personToUpdate: Person, auth: number): Promis
 export async function deletePerson(personId: string, auth: number): Promise<boolean> {
   const personCollection = (await ConnectionProvider.Instance.db).collection('persons');
   const eventCollection = (await ConnectionProvider.Instance.db).collection('events');
+  const groupCollection = (await ConnectionProvider.Instance.db).collection('groups');
   // only presidency or admins can delete persons and only persons with lower auth level
   if (auth > 3) {
     await eventCollection.updateMany({}, { $pull: { participants: { _id: personId } } });
+    await groupCollection.updateMany({}, { $pull: { members: personId } });
     const result = await personCollection.deleteOne({ _id: new ObjectID(personId), authorityLevel: { $lt: auth } });
     return result.deletedCount === 1;
   }

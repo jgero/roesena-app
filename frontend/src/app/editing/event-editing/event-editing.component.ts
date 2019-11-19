@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Observable, Subscription, of } from 'rxjs';
 import { map, catchError, take } from 'rxjs/operators';
 
-import { Event, Person } from 'src/app/interfaces';
+import { Event, Person, Group } from 'src/app/interfaces';
 import { PersonsGQL } from 'src/app/GraphQL/query-services/all-persons-gql.service';
 import { UpdateEventGQL } from 'src/app/GraphQL/mutation-services/event/updateEvent-gql.service';
 import { PopupService } from 'src/app/popup/popup.service';
@@ -11,6 +11,7 @@ import { NewEventGQL } from 'src/app/GraphQL/mutation-services/event/newEvent-gq
 import { EventsShallowGQL } from 'src/app/GraphQL/query-services/events/all-events-shallow-gql.service';
 import { ActivatedRoute } from '@angular/router';
 import { EventGQL } from 'src/app/GraphQL/query-services/events/event-gql.service';
+import { GroupsForArticlesGQL } from './queries/groups-for-articles-gql.service';
 
 @Component({
   selector: 'app-event-editing',
@@ -21,6 +22,7 @@ export class EventEditingComponent implements OnDestroy {
   list: Observable<{ _id: string; value: string }[]>;
   public events: Observable<Event[]>;
   public persons: Observable<Person[]>;
+  public groups: Observable<Group[]>;
   private selectedEvent: Event = {
     _id: undefined,
     authorityLevel: 1,
@@ -40,10 +42,18 @@ export class EventEditingComponent implements OnDestroy {
     private updateEvGQL: UpdateEventGQL,
     private newEvGql: NewEventGQL,
     private deleteEvGql: DeleteEventGQL,
+    private groupsGql: GroupsForArticlesGQL,
     private popServ: PopupService,
     private container: ViewContainerRef,
     private route: ActivatedRoute
   ) {
+    this.groups = this.groupsGql.watch().valueChanges.pipe(
+      map(el => el.data.groups),
+      catchError(() => {
+        this.popServ.flashPopup('could not load groups', this.container);
+        return of([]);
+      })
+    );
     this.list = this.eventsGQL.watch().valueChanges.pipe(
       map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))),
       catchError(() => {
@@ -100,6 +110,15 @@ export class EventEditingComponent implements OnDestroy {
       // else add it
       this.selectedEvent.participants.push({ person: pers, amount: undefined });
     }
+  }
+
+  addGroup(selectedGroup: Group) {
+    selectedGroup.members.forEach(member => {
+      if (!this.selectedEvent.participants.find(participant => participant.person._id === member._id)) {
+        // if member is not already participant
+        this.selectedEvent.participants.push({ person: member, amount: undefined });
+      }
+    });
   }
 
   public saveEvent() {

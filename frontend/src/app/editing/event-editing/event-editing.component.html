@@ -3,6 +3,7 @@
   <input type="text" [(ngModel)]="selectedEvent.title" class="underlined title" placeholder="Titel" required="true" />
   <textarea [(ngModel)]="selectedEvent.description" rows="10" class="box" placeholder="Beschreibung"></textarea>
   <div class="person-selection">
+    <div *ngFor="let group of groups | async" class="person" (click)="addGroup(group)">{{ group.name }}</div>
     <div
       *ngFor="let person of persons | async"
       class="person"
