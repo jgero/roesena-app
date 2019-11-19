@@ -1,5 +1,11 @@
 # TODO
 
+## navigation
+
+- move navigation elements near the router outlets
+- work with routerLinks and routerLinkActive to reduce big amounts of code
+- move the second layer of navigation to the side of the page (some kind of box)
+
 ## Help-Page
 
 - add how to contact someone when:
@@ -13,13 +19,7 @@
 
 ## Login
 
-- check cookies on API requests
 - add "this site uses cookies" popup
-- then after login directly navigate back to the page he came from
-- think of good way to check authentication
-  - add query type in GraphQL named "me" and return Person object and set cookie (to replace restore)
-  - login and logout should be a mutation
-- especially for adding elements
 
 ### Ideas
 
@@ -29,11 +29,6 @@
   - level 3 = group leaders
   - level 2 = members
   - level 1 = guest
-- then comparisons for access allowance should be done before providing data!
-
-## GraphQL
-
-- have a look at nested types (images in articles, persons in events -> not just id, but entire person/image)
 
 ## Articles that helped
 

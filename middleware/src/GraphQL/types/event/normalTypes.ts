@@ -1,8 +1,7 @@
 import { GraphQLString, GraphQLID, GraphQLObjectType, GraphQLNonNull, GraphQLInt, GraphQLList } from 'graphql';
-import { ObjectID } from 'bson';
 
 import { PersonType } from '../person';
-import { ConnectionProvider } from '../../../database/connection';
+import { getPersonById } from '../../../database/get/person';
 
 const ParticipantType = new GraphQLObjectType({
   name: 'Participant',
@@ -13,8 +12,8 @@ const ParticipantType = new GraphQLObjectType({
         if (!parent._id) {
           return undefined;
         }
-        const collection = (await ConnectionProvider.Instance.db).collection('persons');
-        return await collection.findOne({ _id: new ObjectID(parent._id) });
+        const auth = (await context).authLevel;
+        return getPersonById(parent._id, auth);
       }
     },
     amount: {

@@ -10,6 +10,8 @@ import imageQueries from './queries/ImageQueries';
 import imageMutations from './mutations/ImageMutations';
 import personQueries from './queries/PersonQueries';
 import personMutations from './mutations/PersonMutations';
+import groupQueries from './queries/GroupQueries';
+import groupMutations from './mutations/GroupMutations';
 
 export const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -19,7 +21,8 @@ export const schema = new GraphQLSchema({
       ...authQueries,
       ...eventQueries,
       ...imageQueries,
-      ...personQueries
+      ...personQueries,
+      ...groupQueries
     })
   }),
   mutation: new GraphQLObjectType({
@@ -29,7 +32,8 @@ export const schema = new GraphQLSchema({
       ...authMutations,
       ...eventMutations,
       ...imageMutations,
-      ...personMutations
+      ...personMutations,
+      ...groupMutations
     })
   })
 });

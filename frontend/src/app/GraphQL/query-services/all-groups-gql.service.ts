@@ -3,18 +3,17 @@ import { Injectable } from '@angular/core';
 import { Query } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { Person } from 'src/app/interfaces';
+import { Group } from 'src/app/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PersonsGQL extends Query<{ persons: Person[] }> {
+export class GroupsGQL extends Query<{ groups: Group[] }> {
   public document = gql`
-    query GetAllPersons {
-      persons {
+    query GetAllGroups {
+      groups {
         _id
         name
-        authorityLevel
       }
     }
   `;
