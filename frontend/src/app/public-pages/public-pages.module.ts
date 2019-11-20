@@ -24,6 +24,7 @@ import { ImagePageComponent } from './image-page/image-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { EventsFilterPipe } from './events/events-filter.pipe';
+import { LogoComponent } from './main/logo/logo.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { EventsFilterPipe } from './events/events-filter.pipe';
     FooterComponent,
     MainComponent,
     ImagePageComponent,
-    EventsFilterPipe
+    EventsFilterPipe,
+    LogoComponent
   ],
   imports: [BrowserModule, BrowserAnimationsModule, FormsModule, PublicRouting, PopupModule, GraphQLModule, SharedModule],
   bootstrap: [MainComponent]

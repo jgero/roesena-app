@@ -1,10 +1,10 @@
-<ng-container *ngIf="!(auth.user | async);then login else logout"></ng-container>
+<ng-container *ngIf="!(auth.user | async); then login; else logout"></ng-container>
 
 <ng-template #login>
   <div class="loginBox">
     <h1>Anmeldung</h1>
     <input [(ngModel)]="username" type="text" placeholder="Benutzername" spellcheck="false" />
-    <input [(ngModel)]="password" type="password" placeholder="Passwort" spellcheck="false" />
+    <input [(ngModel)]="password" type="password" placeholder="Passwort" spellcheck="false" (keydown.enter)="tryLogin()" />
     <input type="button" value="Anmelden" class="rsn-button" (click)="tryLogin()" />
     <p>
       Sie haben kein Konto oder Ihr Passwort vergessen?
@@ -14,7 +14,7 @@
 </ng-template>
 
 <ng-template #logout>
-  <h1>Hello, {{(auth.user | async).name}}!</h1>
+  <h1>Hello, {{ (auth.user | async).name }}!</h1>
   <br />
   <input type="button" value="Abmelden" class="rsn-button" (click)="tryLogout()" />
 </ng-template>

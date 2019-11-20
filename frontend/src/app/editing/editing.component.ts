@@ -11,7 +11,7 @@ import { trigger, transition, query, style, animate } from '@angular/animations'
         query(
           ':self',
           [
-            style({ transform: 'translateX(100%)', opacity: 0 }),
+            style({ transform: 'translateX(-100%)', opacity: 0 }),
             animate('0.2s', style({ transform: 'translateX(0)', opacity: 1 }))
           ],
           {
