@@ -3,9 +3,9 @@
 :host {
   min-height: 100%;
   display: grid;
-  grid-template-columns: 1fr 5fr 1fr;
+  grid-template-columns: 6fr 1fr;
   column-gap: 1rem;
-  grid-template-areas: 'list main-data dates';
+  grid-template-areas: 'main-data dates';
 
   .main-data {
     grid-area: main-data;
@@ -47,8 +47,5 @@
 
   app-date-and-auth {
     grid-area: dates;
-  }
-  app-selection-list {
-    grid-area: list;
   }
 }

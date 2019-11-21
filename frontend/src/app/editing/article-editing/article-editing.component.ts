@@ -18,7 +18,6 @@ import { ShallowArticleGQL } from 'src/app/GraphQL/query-services/articles/artic
   styleUrls: ['./article-editing.component.scss']
 })
 export class ArticleEditingComponent implements OnDestroy {
-  list: Observable<{ _id: string; value: string }[]>;
   private subs: Subscription[] = [];
 
   public selectedArticle: ShallowArticle = {
@@ -42,14 +41,6 @@ export class ArticleEditingComponent implements OnDestroy {
     private popServ: PopupService,
     private container: ViewContainerRef
   ) {
-    // get articles
-    this.list = this.articlesGql.watch().valueChanges.pipe(
-      map(el => el.data.articles.map(el => ({ _id: el._id, value: el.title }))),
-      catchError(() => {
-        this.popServ.flashPopup('could not load articles', this.container);
-        return of([]);
-      })
-    );
     // get images
     this.images = this.imagesGql.watch().valueChanges.pipe(
       map(el => el.data.images),

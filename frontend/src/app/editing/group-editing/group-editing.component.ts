@@ -19,7 +19,6 @@ export class GroupEditingComponent implements OnInit, OnDestroy {
   public name: string = '';
   public members: string[] = [];
   public persons: Observable<Person[]>;
-  public list: Observable<{ _id: string; value: string }[]>;
 
   private subs: Subscription[] = [];
 
@@ -33,9 +32,6 @@ export class GroupEditingComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.persons = this.personsGql.watch().valueChanges.pipe(map(el => el.data.persons));
-    this.list = this.groupsGql
-      .watch()
-      .valueChanges.pipe(map(el => el.data.groups.map(grp => ({ _id: grp._id, value: grp.name }))));
     this.subs.push(
       this.route.paramMap.subscribe({
         next: paramMap => {

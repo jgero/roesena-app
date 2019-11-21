@@ -19,8 +19,6 @@ import { GroupsForArticlesGQL } from './queries/groups-for-articles-gql.service'
   styleUrls: ['./event-editing.component.scss']
 })
 export class EventEditingComponent implements OnDestroy {
-  list: Observable<{ _id: string; value: string }[]>;
-  public events: Observable<Event[]>;
   public persons: Observable<Person[]>;
   public groups: Observable<Group[]>;
   private selectedEvent: Event = {
@@ -51,13 +49,6 @@ export class EventEditingComponent implements OnDestroy {
       map(el => el.data.groups),
       catchError(() => {
         this.popServ.flashPopup('could not load groups', this.container);
-        return of([]);
-      })
-    );
-    this.list = this.eventsGQL.watch().valueChanges.pipe(
-      map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))),
-      catchError(() => {
-        this.popServ.flashPopup('could not load events', this.container);
         return of([]);
       })
     );
