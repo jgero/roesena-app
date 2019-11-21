@@ -12,19 +12,42 @@
     border-right: solid 1px var(--secondary);
     padding-block-start: 1rem;
 
-    div {
-      cursor: pointer;
-      padding: 0.7rem;
-      font-size: 1.1rem;
+    .link-container {
+      .subgroup-title {
+        cursor: pointer;
+        padding: 0.7rem;
+        font-size: 1.1rem;
 
-      &.selected {
-        background-color: var(--secondary);
-        color: var(--font-secondary);
+        &.selected {
+          background-color: var(--secondary);
+          color: var(--font-secondary);
+        }
+      }
+
+      .subgroup-title.selected + .subgroup-list {
+        max-height: 20rem;
+        opacity: 1;
+        overflow: auto;
+        transition: max-height ease-out 0.2s 0s, opacity ease-out 0.2s 0.2s;
+      }
+      .subgroup-list {
+        transition: max-height ease-out 0.2s 0.2s, opacity ease-out 0.2s 0s;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        .subgroup-list-item {
+          padding: 0.1rem 1.5rem;
+          cursor: pointer;
+
+          &.selected {
+            background-color: var(--inactive);
+          }
+        }
       }
     }
   }
 
-  div {
+  .content {
     grid-area: content;
   }
 }
