@@ -16,6 +16,7 @@ import { ImageCardComponent } from './image-editing/image-card/image-card.compon
 import { EditCardComponent } from './image-editing/edit-card/edit-card.component';
 import { DateAndAuthComponent } from './event-editing/date-and-auth/date-and-auth.component';
 import { GroupEditingComponent } from './group-editing/group-editing.component';
+import { ListFilterPipe } from './list-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { GroupEditingComponent } from './group-editing/group-editing.component';
     ImageCardComponent,
     EditCardComponent,
     DateAndAuthComponent,
-    GroupEditingComponent
+    GroupEditingComponent,
+    ListFilterPipe
   ],
   imports: [CommonModule, FormsModule, HttpClientModule, EditingRouting, SharedModule, GraphQLModule]
 })

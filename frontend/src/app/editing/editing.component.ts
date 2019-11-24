@@ -29,35 +29,39 @@ import { ShallowArticlesGQL } from '../GraphQL/query-services/articles/all-artic
   ]
 })
 export class EditingComponent {
-  public groupList: Observable<{ _id: string; value: string }[]>;
+  public searchString: string = '';
 
-  public navConfig = [
-    {
-      title: 'Personen',
-      path: 'persons',
-      list: of([])
-    },
-    {
-      title: 'Gruppen',
-      path: 'groups',
-      list: this.groupsGql.watch().valueChanges.pipe(map(el => el.data.groups.map(grp => ({ _id: grp._id, value: grp.name }))))
-    },
-    {
-      title: 'Events',
-      path: 'events',
-      list: this.eventsGql.watch().valueChanges.pipe(map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))))
-    },
-    {
-      title: 'Artikel',
-      path: 'articles',
-      list: this.articlesGql.watch().valueChanges.pipe(map(el => el.data.articles.map(el => ({ _id: el._id, value: el.title }))))
-    },
-    {
-      title: 'Bilder',
-      path: 'images',
-      list: of([])
-    }
-  ];
+  public navConfig: { title: string; path: string; list: Observable<{ _id: string; value: string }[]> }[] = [];
 
-  constructor(private groupsGql: GroupsGQL, private eventsGql: EventsShallowGQL, private articlesGql: ShallowArticlesGQL) {}
+  constructor(private groupsGql: GroupsGQL, private eventsGql: EventsShallowGQL, private articlesGql: ShallowArticlesGQL) {
+    this.navConfig = [
+      {
+        title: 'Personen',
+        path: 'persons',
+        list: of([])
+      },
+      {
+        title: 'Gruppen',
+        path: 'groups',
+        list: this.groupsGql.watch().valueChanges.pipe(map(el => el.data.groups.map(grp => ({ _id: grp._id, value: grp.name }))))
+      },
+      {
+        title: 'Events',
+        path: 'events',
+        list: this.eventsGql.watch().valueChanges.pipe(map(el => el.data.events.map(el => ({ _id: el._id, value: el.title }))))
+      },
+      {
+        title: 'Artikel',
+        path: 'articles',
+        list: this.articlesGql
+          .watch()
+          .valueChanges.pipe(map(el => el.data.articles.map(el => ({ _id: el._id, value: el.title }))))
+      },
+      {
+        title: 'Bilder',
+        path: 'images',
+        list: of([])
+      }
+    ];
+  }
 }
