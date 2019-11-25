@@ -25,7 +25,7 @@
   </div>
 </nav>
 <aside>
-  <input type="text" placeholder="Seite durchsuchen" />
+  <input #search type="text" placeholder="Seite durchsuchen" (keydown.enter)="doSearch(search.value)" (keydown.esc)="reset()" />
   <div class="svgItem">
     <svg>
       <use href="assets/svg/facebook-square-brands.svg#facebook-square-brands" />

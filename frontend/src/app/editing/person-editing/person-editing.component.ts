@@ -10,6 +10,7 @@ import { UpdatePersonGQL } from 'src/app/GraphQL/mutation-services/updatePerson-
 import { NewPersonGQL } from 'src/app/GraphQL/mutation-services/newPerson-gql.service';
 import { DeletePersonGQL } from 'src/app/GraphQL/mutation-services/deletePerson-gql.service';
 import { Person } from 'src/app/interfaces';
+import { GlobalSearchService } from 'src/app/public-pages/main/global-search.service';
 
 @Component({
   selector: 'app-person-editing',
@@ -23,6 +24,7 @@ export class PersonEditingComponent implements OnDestroy {
 
   constructor(
     private popServ: PopupService,
+    public search: GlobalSearchService,
     private container: ViewContainerRef,
     private authGuard: AuthGuard,
     private personsGQL: PersonsGQL,
@@ -78,7 +80,7 @@ export class PersonEditingComponent implements OnDestroy {
   }
 
   public onSave({ _id, name, authorityLevel }: { _id: string; name: string; authorityLevel: string }) {
-    if (!name || name === '' || (!authorityLevel || authorityLevel === '')) {
+    if (!name || name === '' || !authorityLevel || authorityLevel === '') {
       this.popServ.flashPopup('Alles ausfüllen!', this.container);
       return;
     }
