@@ -1,5 +1,5 @@
-import { Component, ViewContainerRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { Observable, Subscription, of } from 'rxjs';
+import { Component, ViewContainerRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Subscription, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { PopupService } from 'src/app/popup/popup.service';
@@ -11,6 +11,8 @@ import { NewPersonGQL } from 'src/app/GraphQL/mutation-services/newPerson-gql.se
 import { DeletePersonGQL } from 'src/app/GraphQL/mutation-services/deletePerson-gql.service';
 import { Person } from 'src/app/interfaces';
 import { GlobalSearchService } from 'src/app/public-pages/main/global-search.service';
+import { ActivatedRoute } from '@angular/router';
+import { InputComponent } from 'src/app/shared/components/input/input.component';
 
 @Component({
   selector: 'app-person-editing',
@@ -19,27 +21,37 @@ import { GlobalSearchService } from 'src/app/public-pages/main/global-search.ser
 })
 export class PersonEditingComponent implements OnDestroy {
   private subs: Subscription[] = [];
-
-  public persons: Observable<Person[]>;
+  public persons: Person[] = [];
+  public newPerson = { name: '', authorityLevel: 1 };
+  @ViewChild('newPersonInput', { static: true })
+  private newPersonInputRef: ElementRef<InputComponent>;
 
   constructor(
-    private popServ: PopupService,
     public search: GlobalSearchService,
+    private popServ: PopupService,
+    private route: ActivatedRoute,
     private container: ViewContainerRef,
     private authGuard: AuthGuard,
     private personsGQL: PersonsGQL,
     private changePwGQL: ChangePwGQL,
     private updatePersonGQL: UpdatePersonGQL,
-    private newPerson: NewPersonGQL,
-    private deletePerson: DeletePersonGQL
+    private newPersonGQL: NewPersonGQL,
+    private deletePersonGQL: DeletePersonGQL
   ) {
-    this.persons = this.personsGQL.watch().valueChanges.pipe(
-      // filter out current user for safety
-      map(result => result.data.persons.filter(el => el._id !== this.authGuard.user.getValue()._id)),
-      catchError(() => {
-        this.popServ.flashPopup('Could not load Persons', this.container);
-        return of([]);
-      })
+    this.subs.push(
+      this.personsGQL
+        .watch()
+        .valueChanges.pipe(
+          // filter out current user for safety
+          map(result => result.data.persons.filter(el => el._id !== this.authGuard.user.getValue()._id)),
+          catchError(() => {
+            this.popServ.flashPopup('Could not load Persons', this.container);
+            return of([]);
+          })
+        )
+        .subscribe({
+          next: val => (this.persons = val)
+        })
     );
   }
 
@@ -47,9 +59,14 @@ export class PersonEditingComponent implements OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  public onDelete(id: string) {
+  public onDelete() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.popServ.flashPopup('Keine Person ausgewählt!', this.container);
+      return;
+    }
     this.subs.push(
-      this.deletePerson.mutate({ _id: id }).subscribe({
+      this.deletePersonGQL.mutate({ _id: id }).subscribe({
         next: result => this.popServ.flashPopup(result.data.deletePerson ? 'Gelöscht!' : 'Fehler!', this.container),
         error: () => this.popServ.flashPopup('Query Error!', this.container),
         complete: () => this.personsGQL.watch().refetch()
@@ -57,20 +74,12 @@ export class PersonEditingComponent implements OnDestroy {
     );
   }
 
-  public onEnter(name: string) {
-    if (!name || name === '') {
+  public onReset() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.popServ.flashPopup('Keine Person ausgewählt!', this.container);
       return;
     }
-    this.subs.push(
-      this.newPerson.mutate({ name, authorityLevel: 1 }).subscribe({
-        next: result => this.popServ.flashPopup(result.data.newPerson ? 'Gespeichert!' : 'Fehler!', this.container),
-        error: () => this.popServ.flashPopup('Query Error!', this.container),
-        complete: () => this.personsGQL.watch().refetch()
-      })
-    );
-  }
-
-  public onReset(id: string) {
     this.subs.push(
       this.changePwGQL.mutate({ _id: id, password: '12345' }).subscribe({
         next: result => this.popServ.flashPopup(result.data.changePw ? 'Passwort zurückgesetzt!' : 'Fehler!', this.container),
@@ -79,16 +88,42 @@ export class PersonEditingComponent implements OnDestroy {
     );
   }
 
-  public onSave({ _id, name, authorityLevel }: { _id: string; name: string; authorityLevel: string }) {
-    if (!name || name === '' || !authorityLevel || authorityLevel === '') {
+  public onSave() {
+    // get the person with the id of the route
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.createPerson();
+      return;
+    }
+    const data = this.persons.find(person => person._id === id);
+    if (!data.name || data.name === '' || !data.authorityLevel) {
       this.popServ.flashPopup('Alles ausfüllen!', this.container);
       return;
     }
     this.subs.push(
-      this.updatePersonGQL.mutate({ _id, name, authorityLevel: parseInt(authorityLevel, 10) }).subscribe({
+      this.updatePersonGQL.mutate({ ...data }).subscribe({
         next: result => this.popServ.flashPopup(result.data.updatePerson ? 'Gespeichert!' : 'Fehler!', this.container),
         error: () => this.popServ.flashPopup('Query error!', this.container),
         complete: () => this.personsGQL.watch().refetch()
+      })
+    );
+  }
+
+  public createPerson() {
+    if (!this.newPerson.name || this.newPerson.name === '') {
+      this.popServ.flashPopup('Keine Name eingegeben!', this.container);
+      return;
+    }
+    this.subs.push(
+      this.newPersonGQL.mutate({ ...this.newPerson }).subscribe({
+        next: result => this.popServ.flashPopup(result.data.newPerson ? 'Gespeichert!' : 'Fehler!', this.container),
+        error: () => this.popServ.flashPopup('Query Error!', this.container),
+        complete: () => {
+          // for some reason the nativeElement is undefined but the properties are on the base object
+          (this.newPersonInputRef as any).value = '';
+          this.newPerson.name = '';
+          this.personsGQL.watch().refetch();
+        }
       })
     );
   }

@@ -3,8 +3,20 @@
     <th>Name</th>
     <th>Berechtigungsgruppe</th>
   </tr>
+  <tr [routerLink]="['../']" [class.selected]="!(route.paramMap | async).get('id')">
+    <td>
+      <div class="name">
+        <app-input #newPersonInput [(value)]="newPerson.name"></app-input>
+      </div>
+    </td>
+    <td>
+      <div>
+        <app-auth-dropdown [(auth)]="newPerson.authorityLevel" [personMode]="true"></app-auth-dropdown>
+      </div>
+    </td>
+  </tr>
   <tr
-    *ngFor="let person of persons | async | personFilter: (search.searchString | async)"
+    *ngFor="let person of persons | personFilter: (search.searchString | async)"
     [routerLink]="['../', person._id]"
     routerLinkActive="selected"
   >
@@ -22,7 +34,7 @@
 </table>
 
 <aside>
-  <app-button value="speichern" (click)="onSave(person)"></app-button>
-  <app-button value="löschen" (click)="onDelete(person._id)"></app-button>
+  <app-button value="speichern" (click)="onSave()"></app-button>
+  <app-button value="löschen" (click)="onDelete()"></app-button>
   <app-button value="Passwort zurücksetzen" (click)="onReset()"></app-button>
 </aside>
