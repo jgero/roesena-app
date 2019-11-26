@@ -12,6 +12,7 @@ import { ButtonComponent } from './components/button/button.component';
 import { AuthDropdownComponent } from './components/auth-dropdown/auth-dropdown.component';
 import { SelectionListComponent } from './components/selection-list/selection-list.component';
 import { SwitchComponent } from './components/switch/switch.component';
+import { InputComponent } from './components/input/input.component';
 
 const exports = [
   SafeURLPipe,
@@ -22,7 +23,8 @@ const exports = [
   ButtonComponent,
   AuthDropdownComponent,
   SelectionListComponent,
-  SwitchComponent
+  SwitchComponent,
+  InputComponent
 ];
 
 @NgModule({

@@ -1,16 +1,28 @@
-<div *ngFor="let person of persons | async | personFilter: (search.searchString | async)" class="person">
-  <!-- <span>{{person.name}}</span> -->
-  <input class="name" type="text" [(ngModel)]="person.name" spellcheck="false" />
-  <input class="auth" type="text" [(ngModel)]="person.authorityLevel" spellcheck="false" />
-  <svg (click)="onReset(person._id)">
-    <use href="assets/svg/redo-alt-solid.svg#redo-alt-solid" />
-  </svg>
-  <svg (click)="onDelete(person._id)">
-    <use href="assets/svg/trash-alt-regular.svg#trash-alt-regular" />
-  </svg>
-  <svg (click)="onSave(person)">
-    <use href="assets/svg/save-solid.svg#save-solid" />
-  </svg>
-</div>
+<table>
+  <tr class="header">
+    <th>Name</th>
+    <th>Berechtigungsgruppe</th>
+  </tr>
+  <tr
+    *ngFor="let person of persons | async | personFilter: (search.searchString | async)"
+    [routerLink]="['../', person._id]"
+    routerLinkActive="selected"
+  >
+    <td>
+      <div class="name">
+        <app-input [(value)]="person.name"></app-input>
+      </div>
+    </td>
+    <td>
+      <div>
+        <app-auth-dropdown [(auth)]="person.authorityLevel" [personMode]="true"></app-auth-dropdown>
+      </div>
+    </td>
+  </tr>
+</table>
 
-<input #box type="text" placeholder="neue Person" class="person" (keyup.enter)="onEnter(box.value)" (blur)="box.value = ''" />
+<aside>
+  <app-button value="speichern" (click)="onSave(person)"></app-button>
+  <app-button value="löschen" (click)="onDelete(person._id)"></app-button>
+  <app-button value="Passwort zurücksetzen" (click)="onReset()"></app-button>
+</aside>

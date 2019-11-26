@@ -1,51 +1,55 @@
 :host {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 5%;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-template-areas: 'table buttons';
+  column-gap: 2rem;
+  padding: 2rem;
+  position: relative;
 
-  .person {
-    font-size: 2rem;
-    padding: 0.5rem;
-    background-color: var(--secondary);
-    color: var(--font-secondary);
-    margin: 1rem;
-    border-radius: 1rem;
-    border: none;
+  table {
+    grid-area: table;
+    border-collapse: collapse;
 
-    input {
-      outline: none;
-      border: none;
-      font-size: inherit;
-      font-family: inherit;
-      background-color: transparent;
-      color: inherit;
+    tr {
+      &:not(.header) {
+        transition: background-color ease-out 0.1s;
+        cursor: pointer;
 
-      &.name {
-        width: 10rem;
+        &.selected {
+          background-color: var(--highlight) !important;
+        }
+        &:nth-child(even) {
+          background-color: var(--inactive);
+        }
       }
 
-      &.auth {
-        width: 2rem;
+      th,
+      td {
+        padding: 0.5rem;
       }
-    }
 
-    svg {
-      height: 1.5rem;
-      width: 1.5rem;
-      margin: 0 0.5rem;
-      transition: transform 0.2s ease-out;
-      cursor: pointer;
+      th {
+        font-size: 2rem;
+        color: var(--font-accent);
+      }
 
-      &:hover {
-        transform: scale(1.1);
+      td {
+        .name {
+          font-size: 1.5rem;
+        }
+
+        & > * {
+          display: flex;
+          justify-content: center;
+        }
       }
     }
   }
 
-  input {
-    &::placeholder {
-      color: var(--font-secondary);
-      font-style: italic;
-    }
+  aside {
+    grid-area: buttons;
+    position: sticky;
+    top: 4rem;
+    height: fit-content;
   }
 }

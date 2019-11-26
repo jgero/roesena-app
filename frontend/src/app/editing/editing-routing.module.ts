@@ -13,7 +13,13 @@ const editingRoutes: Routes = [
     component: EditingComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'persons', component: PersonEditingComponent },
+      {
+        path: 'persons',
+        children: [
+          { path: '', component: PersonEditingComponent },
+          { path: ':id', component: PersonEditingComponent }
+        ]
+      },
       {
         path: 'groups',
         children: [
