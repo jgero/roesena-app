@@ -2,49 +2,45 @@
 
 :host {
   min-height: 100%;
-  display: grid;
-  grid-template-columns: 6fr 1fr;
-  column-gap: 1rem;
-  grid-template-areas: 'main-data buttons';
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  align-items: center;
+  color: var(--font-accent);
 
-  .buttons {
-    grid-area: buttons;
+  & > * {
+    margin: 0.5rem;
+    width: 70%;
   }
 
-  .article {
-    grid-area: main-data;
-    padding: 0 2rem;
-    & > input,
-    & > textarea {
-      margin: 1rem 0;
-      width: 60%;
-      color: var(--font);
-      width: 70%;
-    }
+  .title {
+    font-size: 3rem;
+  }
 
-    .title {
-      font-size: 3rem;
-    }
+  .imageWrapper {
+    display: flex;
 
     .imageContainer {
       display: flex;
-      overflow-x: auto;
+      flex-direction: column;
+      font-weight: bold;
+      align-items: center;
+      padding: 1rem;
+      margin: 0.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
 
-      .imageContainer {
-        display: flex;
-        flex-direction: column;
-        font-weight: bold;
-        align-items: center;
-        margin: 1rem;
+      &:hover,
+      &.active {
+        background-color: var(--secondary);
+      }
 
-        &:hover,
-        &.active {
-          background-color: red;
-        }
+      app-image {
+        height: 5rem;
+      }
 
-        app-image {
-          height: 5rem;
-        }
+      span {
+        margin-top: 0.5rem;
       }
     }
   }

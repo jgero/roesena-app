@@ -8,6 +8,7 @@ import { UpdateImageGQL } from 'src/app/GraphQL/mutation-services/image/updateIm
 import { NewImageGQL } from 'src/app/GraphQL/mutation-services/image/newImage-gql.service';
 import { DeleteImageGQL } from 'src/app/GraphQL/mutation-services/image/deleteImage-gql.service';
 import { PopupService } from 'src/app/popup/popup.service';
+import { GlobalSearchService } from 'src/app/public-pages/main/global-search.service';
 
 @Component({
   selector: 'app-image-editing',
@@ -25,7 +26,8 @@ export class ImageEditingComponent implements OnDestroy {
     private newImageGql: NewImageGQL,
     private deleteImageGql: DeleteImageGQL,
     private popServ: PopupService,
-    private container: ViewContainerRef
+    private container: ViewContainerRef,
+    public search: GlobalSearchService
   ) {
     this.images = this.imagesGql.watch().valueChanges.pipe(
       map(el => el.data.images),

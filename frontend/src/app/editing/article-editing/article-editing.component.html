@@ -1,17 +1,15 @@
-<div class="article">
-  <input [(ngModel)]="selectedArticle.title" class="underlined title" placeholder="Titel" />
-  <textarea rows="10" [(ngModel)]="selectedArticle.content" class="box" placeholder="Inahlt"></textarea>
-  <h1>Bilder</h1>
-  <div class="imageContainer">
-    <div
-      *ngFor="let image of images | async"
-      class="imageContainer"
-      (click)="toggleImageInSelection(image._id)"
-      [ngClass]="{ active: isContainingId(image._id) }"
-    >
-      <app-image [image]="image"></app-image>
-      <span> {{ image.description }} </span>
-    </div>
+<app-input [(value)]="selectedArticle.title" class="title" placeholder="Title"></app-input>
+<app-text-area [(value)]="selectedArticle.content" placeholder="Inhalt"></app-text-area>
+<h1>Bilder</h1>
+<div class="imageWrapper">
+  <div
+    *ngFor="let image of images | async | imageFilter: (search.searchString | async)"
+    class="imageContainer"
+    (click)="toggleImageInSelection(image._id)"
+    [ngClass]="{ active: isContainingId(image._id) }"
+  >
+    <app-image [image]="image"></app-image>
+    <span> {{ image.description }} </span>
   </div>
 </div>
 

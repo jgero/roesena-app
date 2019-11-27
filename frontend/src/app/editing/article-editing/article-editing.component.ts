@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
 import { map, catchError, take } from 'rxjs/operators';
 
-import { Article, ShallowArticle, ImageMetadata } from 'src/app/interfaces';
+import { ShallowArticle, ImageMetadata } from 'src/app/interfaces';
 import { ImagesGQL } from 'src/app/GraphQL/query-services/all-images-gql.service';
 import { UpdateArticleGQL } from 'src/app/GraphQL/mutation-services/article/updateArticle-gql.service';
 import { NewArticleGQL } from 'src/app/GraphQL/mutation-services/article/newArticle-gql.service';
@@ -11,6 +11,7 @@ import { DeleteArticleGQL } from 'src/app/GraphQL/mutation-services/article/dele
 import { PopupService } from 'src/app/popup/popup.service';
 import { ActivatedRoute } from '@angular/router';
 import { ShallowArticleGQL } from 'src/app/GraphQL/query-services/articles/article-shallow.service';
+import { GlobalSearchService } from 'src/app/public-pages/main/global-search.service';
 
 @Component({
   selector: 'app-article-editing',
@@ -39,7 +40,8 @@ export class ArticleEditingComponent implements OnDestroy {
     private newArticleGql: NewArticleGQL,
     private deleteArticleGql: DeleteArticleGQL,
     private popServ: PopupService,
-    private container: ViewContainerRef
+    private container: ViewContainerRef,
+    public search: GlobalSearchService
   ) {
     // get images
     this.images = this.imagesGql.watch().valueChanges.pipe(

@@ -10,7 +10,7 @@ export class EventsFilterPipe implements PipeTransform {
     if (personal) {
       list = list.filter(elem => elem.participants.filter(el => el.person._id === this.auth.user.getValue()._id).length > 0);
     }
-    if (searchString && searchString !== '') {
+    if (searchString && searchString !== '' && list) {
       list = list.filter(
         elem =>
           elem.title.toLowerCase().includes(searchString.toLowerCase()) ||

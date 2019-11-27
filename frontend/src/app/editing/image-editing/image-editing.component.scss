@@ -1,38 +1,5 @@
-@import '../../shared/partials/input.scss';
-@import '../../shared/partials/button.scss';
-
 :host {
-  input[type="file"] {
-    display: none;
-  }
-
-  label {
-    color: red;
-  }
-
-  .new,
-  .images {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .newImageContainer {
-    width: max-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: .5rem;
-    border: 1px solid var(--inactive);
-    margin: 1rem;
-
-    img {
-      max-width: 100px;
-      max-height: 100px;
-    }
-
-    img,
-    img+input {
-      margin-bottom: .5rem;
-    }
-  }
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2rem;
 }

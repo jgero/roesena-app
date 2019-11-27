@@ -6,6 +6,7 @@ import { AuthGuard } from 'src/app/shared/services/auth.guard';
 import { AcceptEventGQL } from 'src/app/GraphQL/mutation-services/event/acceptEvent-gql.service';
 import { PopupService } from 'src/app/popup/popup.service';
 import { EventsGQL } from 'src/app/GraphQL/query-services/events/all-events-gql.service';
+import { GlobalSearchService } from '../main/global-search.service';
 
 @Component({
   selector: 'app-events',
@@ -24,7 +25,8 @@ export class EventsComponent implements OnInit {
     private eventGQL: EventsGQL,
     private acc: AcceptEventGQL,
     private container: ViewContainerRef,
-    private popServ: PopupService
+    private popServ: PopupService,
+    public search: GlobalSearchService
   ) {
     this.events = this.eventGQL.watch().valueChanges.pipe(map(el => el.data.events));
   }
