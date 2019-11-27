@@ -1,1 +1,8 @@
-<input #input type="text" [(ngModel)]="value" (keyup)="valueChange.emit(input.value)" spellcheck="false" />
+<input
+  #input
+  type="text"
+  [(ngModel)]="value"
+  [placeholder]="placeholder"
+  (keyup)="valueChange.emit(input.value)"
+  spellcheck="false"
+/>

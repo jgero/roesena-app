@@ -10,6 +10,7 @@
     border: none;
     border-bottom: 1px solid var(--secondary);
     transition: border-color ease-out 0.2s;
+    width: 100%;
 
     &::placeholder {
       font-style: italic;

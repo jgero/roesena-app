@@ -1,17 +1,15 @@
-<div class="editor">
-  <input type="text" class="underlined" placeholder="Name" [(ngModel)]="name" />
-
-  <div class="person-list">
-    <div
-      class="person"
-      *ngFor="let person of persons | async"
-      (click)="toggleMember(person._id)"
-      [class.selected]="members.includes(person._id)"
-    >
-      {{ person.name }}
-    </div>
+<app-input [(value)]="name" placeholder="Name" class="title"> </app-input>
+<div class="person-selection">
+  <div
+    class="person"
+    *ngFor="let person of persons | async | personFilter: (search.searchString | async)"
+    (click)="toggleMember(person._id)"
+    [class.selected]="members.includes(person._id)"
+  >
+    {{ person.name }}
   </div>
-
+</div>
+<div>
   <app-button value="speichern" (click)="save()"></app-button>
   <app-button value="löschen" (click)="delete()"></app-button>
 </div>

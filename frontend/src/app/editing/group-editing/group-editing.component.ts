@@ -9,6 +9,7 @@ import { GroupGQL } from 'src/app/GraphQL/query-services/group-gql.service';
 import { DeleteGroupGQL } from './mutations/deleteGroup-gql.service';
 import { NewGroupGQL } from './mutations/newGroup-gql.service';
 import { UpdateGroupGQL } from './mutations/updateGroup-gql.service';
+import { GlobalSearchService } from 'src/app/public-pages/main/global-search.service';
 
 @Component({
   selector: 'app-group-editing',
@@ -29,7 +30,8 @@ export class GroupEditingComponent implements OnInit, OnDestroy {
     private newGrpGql: NewGroupGQL,
     private updateGrpGql: UpdateGroupGQL,
     private personsGql: PersonsGQL,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public search: GlobalSearchService
   ) {
     this.persons = this.personsGql.watch().valueChanges.pipe(map(el => el.data.persons));
     this.subs.push(

@@ -1,0 +1,19 @@
+:host {
+  textarea {
+    outline: none;
+    border: 1px solid var(--secondary);
+    width: 100%;
+    resize: none;
+    font-size: 1rem;
+    font-family: Roboto;
+    transition: border-color ease-out 0.2s;
+
+    &:focus {
+      border-color: var(--primary);
+    }
+
+    &::placeholder {
+      font-style: italic;
+    }
+  }
+}

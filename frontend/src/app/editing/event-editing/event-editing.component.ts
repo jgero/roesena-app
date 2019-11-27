@@ -12,6 +12,7 @@ import { EventsShallowGQL } from 'src/app/GraphQL/query-services/events/all-even
 import { ActivatedRoute } from '@angular/router';
 import { EventGQL } from 'src/app/GraphQL/query-services/events/event-gql.service';
 import { GroupsForArticlesGQL } from './queries/groups-for-articles-gql.service';
+import { GlobalSearchService } from 'src/app/public-pages/main/global-search.service';
 
 @Component({
   selector: 'app-event-editing',
@@ -43,7 +44,8 @@ export class EventEditingComponent implements OnDestroy {
     private groupsGql: GroupsForArticlesGQL,
     private popServ: PopupService,
     private container: ViewContainerRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public search: GlobalSearchService
   ) {
     this.groups = this.groupsGql.watch().valueChanges.pipe(
       map(el => el.data.groups),

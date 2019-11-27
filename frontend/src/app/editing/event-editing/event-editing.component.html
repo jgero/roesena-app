@@ -1,10 +1,10 @@
 <div class="main-data">
-  <input type="text" [(ngModel)]="selectedEvent.title" class="underlined title" placeholder="Titel" required="true" />
-  <textarea [(ngModel)]="selectedEvent.description" rows="10" class="box" placeholder="Beschreibung"></textarea>
+  <app-input [(value)]="selectedEvent.title" placeholder="Titel" class="title"></app-input>
+  <app-text-area [(value)]="selectedEvent.description" placeholder="Beschreibung"></app-text-area>
   <div class="person-selection">
     <div *ngFor="let group of groups | async" class="person" (click)="addGroup(group)">{{ group.name }}</div>
     <div
-      *ngFor="let person of persons | async"
+      *ngFor="let person of persons | async | personFilter: (search.searchString | async)"
       class="person"
       [ngClass]="{ selected: isParticipant(person._id) }"
       (click)="togglePerson(person)"
@@ -12,8 +12,10 @@
       {{ person.name }}
     </div>
   </div>
-  <app-button value="speichern" (click)="saveEvent()"></app-button>
-  <app-button value="löschen" (click)="deleteEvent()"></app-button>
+  <div>
+    <app-button value="speichern" (click)="saveEvent()"></app-button>
+    <app-button value="löschen" (click)="deleteEvent()"></app-button>
+  </div>
 </div>
 <app-date-and-auth
   [(startDate)]="selectedEvent.startDate"
