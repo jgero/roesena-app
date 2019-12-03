@@ -1,8 +1,0 @@
-<h1>{{date.month | monthName}} {{date.year}}</h1>
-<h2 *ngFor="let weekday of weekdays" [style.grid-area]="weekday">{{weekday}}</h2>
-<div class="day" *ngFor="let day of daysWithMetadata" [style.grid-area]="day.gridArea">
-  <app-day-details [day]="day"></app-day-details>
-</div>
-
-<span class="arrow left" (click)="goPreviousMonth()"></span>
-<span class="arrow right" (click)="goNextMonth()"></span>

@@ -1,6 +1,0 @@
-<ul>
-  <li *ngFor="let listItem of list | async" (click)="select(listItem._id)" [ngClass]="{ active: listItem._id === activeId }">
-    {{ listItem.value }}
-  </li>
-  <li (click)="select(undefined)">neu</li>
-</ul>
