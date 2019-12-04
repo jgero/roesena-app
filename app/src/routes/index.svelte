@@ -1,3 +1,7 @@
+<script>
+	import { fadeIn, fadeOut } from '../animations/fade.js';
+</script>
+
 <style>
 	h1, figure, p {
 		text-align: center;
@@ -36,6 +40,7 @@
 	<title>RöSeNa</title>
 </svelte:head>
 
+<div in:fadeIn out:fadeOut>
 <h1>Great success!</h1>
 
 <figure>
@@ -44,3 +49,4 @@
 </figure>
 
 <p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+</div>

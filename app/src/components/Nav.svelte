@@ -7,7 +7,7 @@
 	nav {
 		box-shadow: 0 -0.4rem 0.9rem 0.2rem var(--box-border);
 		padding: .5rem;
-		margin-block-end: 1rem;
+		background-color: var(--background);
 	}
 
 	ul, a {
@@ -36,9 +36,10 @@
 		transition: color 0.2s ease-out, border-bottom 0.2s ease-out;
 	}
 
-	a:hover,
-	a:active {
+	a.textElem:hover,
+	a.textElem:focus {
 		color: var(--primary);
+		outline: none;
 	}
 
 	a.selected {
@@ -51,7 +52,7 @@
 <nav>
 	<ul>
 		<li><a href='.'><Logo /></a></li>
-		<li><a href="events" class:selected='{segment === "events"}'>Events</a></li>
-		<li><a href="calendar" class:selected='{segment === "calendar"}'>Kalender</a></li>
+		<li><a class="textElem" href="events" class:selected='{segment === "events"}'>Events</a></li>
+		<li><a class="textElem" href="calendar" class:selected='{segment === "calendar"}'>Kalender</a></li>
 	</ul>
 </nav>

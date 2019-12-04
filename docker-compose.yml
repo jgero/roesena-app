@@ -1,0 +1,9 @@
+version: '3.5'
+services:
+  mongo:
+    tty: true
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - ./database:/data/db

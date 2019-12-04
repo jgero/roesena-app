@@ -1,21 +1,17 @@
 {
   "name": "roesena-app",
-  "description": "A Web-App powered by svelte-sapper and firebase",
+  "description": "A Web-App powered by svelte-sapper and mongodb",
   "version": "0.0.1",
   "scripts": {
     "dev": "sapper dev",
-    "build": "sapper build --legacy && cp -R ./__sapper__/build ./functions/__sapper__",
-    "prebuild": "rm -rf functions/__sapper__/build && mkdir -p functions/__sapper__/build",
-    "export": "sapper export --legacy",
-    "start": "npm run build && firebase serve",
-    "predeploy": "npm run build",
-    "deploy": "firebase deploy",
+    "build": "sapper build --legacy",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run"
   },
   "dependencies": {
     "compression": "^1.7.1",
+    "mongodb": "^3.3.5",
     "polka": "next",
     "sirv": "^0.4.0"
   },
