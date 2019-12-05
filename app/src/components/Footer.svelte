@@ -8,6 +8,7 @@
     width: 100%;
     background-color: var(--secondary);
     padding: 2rem;
+    margin-block-start: 4rem;
     padding-block-start: 6rem;
     clip-path: polygon(100% 100%, 0% 100%, 0% 30%, 50% 0%, 100% 30%);
     display: flex;

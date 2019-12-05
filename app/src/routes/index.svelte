@@ -3,36 +3,47 @@
 </script>
 
 <style>
-	h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
+	.wrapper {
+		display: grid;
+    grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		row-gap: 1rem;
+    grid-template-areas: 'header .' 'aside .';
+    height: 100%;
+    width: 100%;
 	}
 
-	h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
+	header {
+		grid-area: header;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 	}
 
-	figure {
-		margin: 0 0 1em 0;
+	header > h1 {
+		font-size: 5rem;
 	}
 
-	img {
-		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
+	header > h1,
+	header > h3 {
+		margin: 0;
+		color: var(--on-background);
 	}
 
-	p {
-		margin: 1em auto;
+	aside {
+		grid-area: aside;
+		display: flex;
+    justify-content: center;
+    align-items: center;
 	}
 
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
+	aside > div {
+		width: 50%;
+    padding: 1rem;
+    background-color: var(--primary);
+    color: var(--on-primary);
+    border-radius: .5rem;
 	}
 </style>
 
@@ -40,13 +51,17 @@
 	<title>RöSeNa</title>
 </svelte:head>
 
-<div in:fadeIn out:fadeOut>
-<h1>Great success!</h1>
+<div class="wrapper" in:fadeIn out:fadeOut>
+	<header>
+		<h1>Röhlinger</h1>
+		<h1>Sechtanarren</h1>
+		<h3>e.V.1970</h3>
+	</header>
 
-<figure>
-	<img alt='Borat' src='great-success.png'>
-	<figcaption>HIGH FIVE!</figcaption>
-</figure>
-
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+	<aside>
+		<div>
+			<h3>fancy!</h3>
+			<p>Hier wird dann mal das aktuellste Event angezeigt!!</p>
+		</div>
+	</aside>
 </div>

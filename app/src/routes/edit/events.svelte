@@ -1,15 +1,28 @@
 <script>
   const dateRegEx = String.raw`^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$`;
   const authRegEx = String.raw`^[12345]{1}$`;
+
+  fetch("events.json").then(el => el.json()).then(el => console.log(el));
+
   function onSubmit(event) {
     const data = {
       title: event.target.title.value,
-      event: event.target.description.value,
-      start_date: event.target.start_date.value,
-      end_date: event.target.end_date.value,
-      auth_lvl: event.target.auth_lvl.value
+      description: event.target.description.value,
+      start_date: dateInputToJsDate(event.target.start_date.value).toISOString(),
+      end_date: dateInputToJsDate(event.target.end_date.value).toISOString(),
+      auth_lvl: parseInt(event.target.auth_lvl.value, 10)
     };
     console.log(data);
+    fetch("events.json", {method: "POST", headers: { "Content-Type": "application/json"}, body: JSON.stringify(data)});
+  }
+
+  function dateInputToJsDate(dateString) {
+    // split string into array in year month day format
+    let segments = dateString.split(".").reverse();
+    // subtract 1 from month, because january is 0. month in js
+    segments[1] = segments[1] - 1;
+    // return date object of these segments
+    return new Date(...segments);
   }
 </script>
 

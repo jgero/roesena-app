@@ -15,12 +15,27 @@
 		padding-block-start: 1rem;
 		overflow-y: auto;
 		overflow-x: hidden;
+		position: relative;
+	}
+
+	img {
+		z-index: -1;
+		height: 90vh;
+    opacity: .4;
+    position: absolute;
+		transform: translateX(50%);
+		transition: opacity .4 ease-out;
+	}
+
+	.startpage {
+		opacity: 1;
 	}
 </style>
 
 <Nav {segment}/>
 
 <main>
+	<img src="svg/wappen.svg" alt="background image" class:startpage="{!segment}">
 	<slot></slot>
 	<Footer />
 </main>
