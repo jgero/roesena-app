@@ -39,9 +39,15 @@
   let mondayFirstOffset = new Date(year, month - 1, 1).getDay();
   mondayFirstOffset = mondayFirstOffset > 0 ? mondayFirstOffset - 1 : 6;
   const dayTemplate = new Array(new Date(year, month, 0).getDate()).fill(undefined).map((_, index) => {
-    const column = new Date(year, month - 1, mondayFirstOffset + index + 1).getDay() + 2;
+    const column = new Date(year, month - 1, mondayFirstOffset + index + 1).getDay() + 1;
     const row = Math.floor((mondayFirstOffset + index) / 7) + 3;
-    const events = ["test1", "test2"];
+    const events = [
+      {_id: "aöslkdfuß0asdß0f", title: "event with a long name"},
+      {_id: "testsetyva0", title: "event 03"},
+      {_id: "ß097as0d8fa0ß8df", title: "Saisoneröffnung"},
+      {_id: "asd089faß0df", title: "Umzug in Röhlingen"},
+      {_id: "asßdf8asdfß", title: "22 Jahre wildes Heer party"}
+    ];
     return {
       templateArea: `${row} / ${column} / ${row} / ${column}`,
       date: index + 1,
@@ -52,23 +58,23 @@
 
 <style>
   .calendarWrapper {
-    min-height: 100%;
+    height: 100%;
     width: 100%;
     padding: 1rem;
     display: grid;
     grid-template-rows: 1fr .5fr    1fr 1fr 1fr 1fr 1fr 1fr;
     row-gap: .5rem;
-    grid-template-columns: 2fr   1fr 1fr 1fr 1fr 1fr 1fr 1fr    2fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     column-gap: .5rem;
     grid-template-areas:
-      ". . . header header header . . ."
-      ". mon tue wed thu fri sat sun ."
-      ". . . . . . . . ."
-      "arrow-left . . . . . . . arrow-right"
-      "arrow-left . . . . . . . arrow-right"
-      ". . . . . . . . ."
-      ". . . . . . . . ."
-      ". . . . . . . . ."
+      ". . header header header . ."
+      "mon tue wed thu fri sat sun"
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
   }
 
   h1, h2 {
@@ -84,6 +90,10 @@
     background-color: var(--primary);
     border-radius: .5rem;
     padding: .2rem;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .dayField > span {
@@ -92,6 +102,26 @@
     justify-content: center;
     font-weight: bold;
     border-bottom: 1px solid var(--background);
+  }
+
+  .eventWrapper {
+    overflow-y: auto;
+  }
+
+  .eventWrapper > a {
+    display: block;
+    text-decoration: none;
+    padding: .1rem;
+    margin: .1rem;
+    border-radius: .3rem;
+    color: var(--on-primar);
+    background-color: var(--primary);
+  }
+
+  .eventWrapper > a:hover,
+  .eventWrapper > a:focus {
+    background-color: var(--background);
+    color: var(--on-background);
   }
 </style>
 
@@ -103,9 +133,13 @@
   {#each dayTemplate as dayTemplateItem}
     <div style="grid-area: {dayTemplateItem.templateArea}" class="dayField">
       <span>{dayTemplateItem.date}</span>
-      {#each dayTemplateItem.events as ev}
-        <div>{ev}</div>
-      {/each}
+      {#if dayTemplateItem.events.length > 0}
+        <div class="eventWrapper">
+          {#each dayTemplateItem.events as ev}
+            <a href="events/{ev._id}">{ev.title}</a>
+          {/each}
+        </div>
+      {/if}
     </div>
   {/each}
 </div>
