@@ -54,5 +54,6 @@
 		<li><a href='.'><Logo /></a></li>
 		<li><a class="textElem" href="events" class:selected='{segment === "events"}'>Events</a></li>
 		<li><a class="textElem" href="calendar" class:selected='{segment === "calendar"}'>Kalender</a></li>
+		<li><a class="textElem" href="edit" class:selected='{segment === 'edit'}'>Bearbeiten</a></li>
 	</ul>
 </nav>
