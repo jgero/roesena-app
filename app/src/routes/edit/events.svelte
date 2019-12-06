@@ -2,8 +2,6 @@
   const dateRegEx = String.raw`^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$`;
   const authRegEx = String.raw`^[12345]{1}$`;
 
-  fetch("events.json").then(el => el.json()).then(el => console.log(el));
-
   function onSubmit(event) {
     const data = {
       title: event.target.title.value,

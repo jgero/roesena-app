@@ -4,7 +4,6 @@
 
 <style>
   footer {
-    position: relative;
     width: 100%;
     background-color: var(--secondary);
     padding: 2rem;
