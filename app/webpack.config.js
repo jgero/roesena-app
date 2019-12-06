@@ -55,7 +55,7 @@ module.exports = {
           use: {
             loader: 'svelte-loader',
             options: {
-              css: false,
+              css: true,
               generate: 'ssr',
               dev
             }

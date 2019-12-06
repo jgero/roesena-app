@@ -3,43 +3,12 @@
   export let year;
   export let month;
 
-  // make header string of passed month and year
-  let headerString;
-  switch(month) {
-    case 1: headerString = "Januar"; break;
-    case 2: headerString = "Februar"; break;
-    case 3: headerString = "März"; break;
-    case 4: headerString = "April"; break;
-    case 5: headerString = "Mai"; break;
-    case 6: headerString = "Juni"; break;
-    case 7: headerString = "Juli"; break;
-    case 8: headerString = "August"; break;
-    case 9: headerString = "September"; break;
-    case 10: headerString = "Oktober"; break;
-    case 11: headerString = "November"; break;
-    case 12: headerString = "Dezember"; break;
-    default: throw new Error("unknown month number: " + month);
-  }
-  // append year to the header
-  headerString = headerString + " " + year;
-
-  // set weekdays
-  const weekdayStrings = [
-    { area: "mon", text: "Mo" },
-    { area: "tue", text: "Di" },
-    { area: "wed", text: "Mi" },
-    { area: "thu", text: "Do" },
-    { area: "fri", text: "Fr" },
-    { area: "sat", text: "Sa" },
-    { area: "sun", text: "So" }
-  ];
-
+  $: headerString = makeHeaderString(month, year);
+  $: mondayFirstOffset = new Date(year, month - 1, 1).getDay() ? new Date(year, month - 1, 1).getDay() - 1 : 6;
   // gather day information
   // important infos: Date.date is base 1, Date.month is base 0, Date.day is base 0 and begins with sunday
-  let mondayFirstOffset = new Date(year, month - 1, 1).getDay();
-  mondayFirstOffset = mondayFirstOffset > 0 ? mondayFirstOffset - 1 : 6;
-  const dayTemplate = new Array(new Date(year, month, 0).getDate()).fill(undefined).map((_, index) => {
-    const column = new Date(year, month - 1, mondayFirstOffset + index + 1).getDay() + 1;
+  $: dayTemplate = new Array(new Date(year, month, 0).getDate()).fill(undefined).map((_, index) => {
+    const column = new Date(year, month - 1, index).getDay() + 1;
     const row = Math.floor((mondayFirstOffset + index) / 7) + 3;
     const events = [
       {_id: "aöslkdfuß0asdß0f", title: "event with a long name"},
@@ -54,6 +23,42 @@
       events
     }
   });
+
+  // set weekdays
+  const weekdayStrings = [
+    { area: "mon", text: "Mo" },
+    { area: "tue", text: "Di" },
+    { area: "wed", text: "Mi" },
+    { area: "thu", text: "Do" },
+    { area: "fri", text: "Fr" },
+    { area: "sat", text: "Sa" },
+    { area: "sun", text: "So" }
+  ];
+
+  // make header string of passed month and year
+  function makeHeaderString(month, year) {
+    let newHeaderString = (() => {
+      switch(month) {
+        case 1: return "Januar";
+        case 2: return "Februar";
+        case 3: return "März";
+        case 4: return "April";
+        case 5: return "Mai";
+        case 6: return "Juni";
+        case 7: return "Juli";
+        case 8: return "August";
+        case 9: return "September";
+        case 10: return "Oktober";
+        case 11: return "November";
+        case 12: return "Dezember";
+        default: throw new Error("unknown month number: " + month);
+      }
+    })();
+    // append year to the header
+    return newHeaderString + " " + year;
+  }
+
+
 </script>
 
 <style>

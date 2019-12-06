@@ -1,6 +1,5 @@
-<script>
-  import { goto } from '@sapper/app';
-
-  // when no parameter is given navigate to the calendar of the current month
-  goto(`calendar/${new Date().toISOString()}`);
+<script context="module">
+  export async function preload() {
+    this.redirect(200, `calendar/${new Date().toISOString()}`);
+  }
 </script>
