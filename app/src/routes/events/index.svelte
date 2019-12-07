@@ -7,16 +7,21 @@
 
 <script>
   import { fadeIn, fadeOut } from '../../animations/fade.js';
+  import EventCard from "../../components/events/EventCard.svelte";
 
   export let events;
 </script>
 
 <style>
-
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
 </style>
 
 <div in:fadeIn out:fadeOut>
   {#each events as ev}
-    <div>{ev.title}</div>
+    <EventCard event={ev}/>
   {/each}
 </div>
