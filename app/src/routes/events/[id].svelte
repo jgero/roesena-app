@@ -36,6 +36,7 @@
   p {
     margin: 2rem 0;
     white-space: pre-wrap;
+    width: 100%;
   }
 </style>
 

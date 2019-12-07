@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const URL = 'mongodb://localhost:27017';
+const URL = 'mongodb://mongo:27017';
 let _db;
 
 export function initDB(callback) {

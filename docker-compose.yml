@@ -3,7 +3,16 @@ services:
   mongo:
     tty: true
     image: mongo:latest
-    ports:
-      - 27017:27017
     volumes:
       - ./database:/data/db
+  app:
+    tty: true
+    build:
+      context: ./app
+      dockerfile: prod.Dockerfile
+    ports:
+      - 80:3000
+    links:
+      - mongo
+    depends_on:
+      - mongo

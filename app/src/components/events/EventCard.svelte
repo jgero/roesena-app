@@ -11,7 +11,7 @@
   a {
     width: 35%;
     min-width: 200px;
-    height: 25%;
+    max-height: 25vh;
     text-decoration: none;
     color: var(--on-primary);
     background-color: var(--primary);

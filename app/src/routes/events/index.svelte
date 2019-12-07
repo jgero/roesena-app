@@ -17,6 +17,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    width: 70%;
   }
 </style>
 
