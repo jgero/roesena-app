@@ -1,14 +1,13 @@
-name: remote ssh command
+name: deploy app
 on:
   push:
     branches:
       - master
 jobs:
-  build:
-    name: Build
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
+      - name: clone repo and compose on server with ssh
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}

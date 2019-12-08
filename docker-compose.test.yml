@@ -1,0 +1,13 @@
+version: '3.5'
+services:
+  # the cypress test environment in a container, it will run tests on the prod build of the app
+  cypress:
+    image: cypress/included:3.7.0
+    tty: true
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    environment:
+      - CYPRESS_baseUrl=http://app:3000
+    links:
+      - app
