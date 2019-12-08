@@ -2,7 +2,7 @@ version: '3.5'
 services:
   app:
     build:
-      dockerfile: dev.Dockerfile
+      dockerfile: docker/dev.Dockerfile
     ports:
       - 3000:3000
       - 10000:10000

@@ -1,8 +1,11 @@
 # RöSeNa-App
 
-## HINTS
+## TODO
 
-- when changing schema in the middleware server has to be completely restarted, **hot reload does not update the schema**
+- github actions test and build + deploy pipelines
+- create tests
+- seed mongo db
+- do some kind of data backups in production
 
 ## prerequisites
 
@@ -11,5 +14,13 @@
 
 ## run it
 
-- run `docker-compose up --build` in root directory of the repository for development build
-- update a container service with `docker-compose up -d --no-deps --build 'service_name'`
+Each time the containers are started with docker-compose the demo data will be added. To delete the old containers run `docker-compose down`.
+
+**development**: `docker-compose up`
+
+**production**: `docker-compose -f docker-compose.yml up`
+
+## hints
+
+- clone a single branch from repo: `git clone --single-branch --branch <branchname> <remote-repo>`
+- connect with ssh and a specific ssh-key: `ssh -i ~/.ssh/id_rsa user@80.240.20.232`
