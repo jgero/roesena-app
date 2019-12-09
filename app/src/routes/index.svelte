@@ -55,7 +55,7 @@
 	<header>
 		<h1>Röhlinger</h1>
 		<h1>Sechtanarren</h1>
-		<h3>e.V.1970</h3>
+		<h3>e.V. 1970</h3>
 	</header>
 
 	<aside>
