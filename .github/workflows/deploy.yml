@@ -1,8 +1,7 @@
 name: deploy app
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,4 +12,9 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: sudo rm -f -R roesena-app && git clone --single-branch --branch master https://github.com/jgero/roesena-app.git && cd roesena-app && docker-compose -f docker-compose.yml up -d
+          script: |
+            [ -d "./roesena-app" ] && cd roesena-app && docker-compose down && cd ..
+            sudo rm -f -R roesena-app
+            git clone --single-branch --branch master https://github.com/jgero/roesena-app.git
+            cd roesena-app
+            docker-compose -f docker-compose.yml up --build -d
