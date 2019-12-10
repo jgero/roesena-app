@@ -1,3 +1,10 @@
+<script context="module">
+        export async function preload({ params }) {
+  const events = await this.fetch(`calendar/${params.id}.json`).then(el => el.json());
+  return { events };
+}
+</script>
+
 <script>
   import Calendar from "../../components/calendar/calendar.svelte";
   import { stores } from '@sapper/app';

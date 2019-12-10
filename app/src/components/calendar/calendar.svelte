@@ -3,6 +3,10 @@
   export let year;
   export let month;
 
+  let events = [];
+
+  $: (async() => events = await fetch(`calendar/${new Date(year, month - 1).toUTCString()}.json`).then(el => el.json()))();
+
   $: headerString = makeHeaderString(month, year);
   $: mondayFirstOffset = new Date(year, month - 1, 1).getDay() ? new Date(year, month - 1, 1).getDay() - 1 : 6;
   // gather day information
@@ -10,17 +14,11 @@
   $: dayTemplate = new Array(new Date(year, month, 0).getDate()).fill(undefined).map((_, index) => {
     const column = new Date(year, month - 1, index).getDay() + 1;
     const row = Math.floor((mondayFirstOffset + index) / 7) + 3;
-    const events = [
-      {_id: "aöslkdfuß0asdß0f", title: "event with a long name"},
-      {_id: "testsetyva0", title: "event 03"},
-      {_id: "ß097as0d8fa0ß8df", title: "Saisoneröffnung"},
-      {_id: "asd089faß0df", title: "Umzug in Röhlingen"},
-      {_id: "asßdf8asdfß", title: "22 Jahre wildes Heer party"}
-    ];
     return {
       templateArea: `${row} / ${column} / ${row} / ${column}`,
       date: index + 1,
-      events
+      // month + 1 because the passed month here is with base 1 and js calculates it with base 0, index + 1 because it is base 0 here and js dates are with base 1
+      events: events.filter(event => new Date(event.start_date).getTime() <= new Date(year, month - 1, index + 1).getTime() && new Date(event.end_date).getTime() >= new Date(year, month - 1, index + 1).getTime())
     }
   });
 

@@ -1,6 +1,7 @@
 FROM node:10-alpine
 
 ENV NODE_ENV=development
+ENV TZ='Europe/Amsterdam'
 
 WORKDIR /app
 

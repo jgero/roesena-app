@@ -6,6 +6,7 @@
 </script>
 
 <script>
+  import { fadeIn, fadeOut } from '../../animations/fade.js';
   export let event;
 
   function getDateStringFromUTCFormat(date) {
@@ -40,7 +41,7 @@
   }
 </style>
 
-<article>
+<article in:fadeIn out:fadeOut>
   <h1><span>{event.title}</span></h1>
   <span class="dateWrapper">
     <span>{getDateStringFromUTCFormat(event.start_date)}</span> - <span>{getDateStringFromUTCFormat(event.end_date)}</span>
