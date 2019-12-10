@@ -1,6 +1,7 @@
 <script>
 	import Nav from '../components/Nav.svelte';
-	import Footer from '../components/Footer.svelte';
+  import Footer from '../components/Footer.svelte';
+  import Popup from '../components/Popup.svelte';
 
 	export let segment;
 </script>
@@ -33,6 +34,7 @@
 </style>
 
 <Nav {segment}/>
+<Popup />
 
 <main>
 	<img src="svg/wappen.svg" alt="background image" class:startpage="{!segment}">

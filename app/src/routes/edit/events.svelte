@@ -1,4 +1,6 @@
 <script>
+  import { flashPopup } from '../../stores.js';
+
   const dateRegEx = String.raw`^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$`;
   const authRegEx = String.raw`^[12345]{1}$`;
 
@@ -10,8 +12,9 @@
       end_date: dateInputToJsDate(event.target.end_date.value).toISOString(),
       auth_lvl: parseInt(event.target.auth_lvl.value, 10)
     };
-    console.log(data);
-    fetch("events.json", {method: "POST", headers: { "Content-Type": "application/json"}, body: JSON.stringify(data)});
+    fetch("events.json", {method: "POST", headers: { "Content-Type": "application/json"}, body: JSON.stringify(data)})
+      .then(() => flashPopup.next("Event erfolgreich erstellt"))
+      .catch(() => flashPopup.next("Fehler!"));
   }
 
   function dateInputToJsDate(dateString) {
