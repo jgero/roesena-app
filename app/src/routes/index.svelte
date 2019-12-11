@@ -1,5 +1,14 @@
+<script context="module">
+	export async function preload({ params, query }) {
+    const events = await this.fetch("nextEvent.json").then(el => el.json());
+    return { event: events[0] };
+	}
+</script>
+
 <script>
-	import { fadeIn, fadeOut } from '../animations/fade.js';
+  import { fadeIn, fadeOut } from '../animations/fade.js';
+
+  export let event;
 </script>
 
 <style>
@@ -36,9 +45,16 @@
 		display: flex;
     justify-content: center;
     align-items: center;
-	}
+  }
 
-	aside > div {
+  a {
+    width: 100%;
+    height:100%;
+    text-decoration: none;
+    color:inherit;
+  }
+
+	aside div {
 		width: 50%;
     padding: 1rem;
     background-color: var(--primary);
@@ -58,10 +74,12 @@
 		<h3>e.V. 1970</h3>
 	</header>
 
-	<aside>
-		<div>
-			<h3>fancy!</h3>
-			<p>Hier wird dann mal das aktuellste Event angezeigt!!</p>
-		</div>
+  <aside>
+		  <div>
+    <a href="events/{event._id}">
+        <h3>{event.title}</h3>
+        <p>{event.description}</p>
+    </a>
+		  </div>
 	</aside>
 </div>
