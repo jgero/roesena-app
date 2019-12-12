@@ -74,12 +74,15 @@
 		<h3>e.V. 1970</h3>
 	</header>
 
-  <aside>
+  {#if event}
+    <aside>
 		  <div>
-    <a href="events/{event._id}">
-        <h3>{event.title}</h3>
-        <p>{event.description}</p>
-    </a>
+        <a href="events/{event._id}">
+          <h3>{event.title}</h3>
+          <p>{event.description}</p>
+        </a>
 		  </div>
-	</aside>
+	  </aside>
+  {/if}
+
 </div>

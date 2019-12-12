@@ -3,6 +3,7 @@ FROM node:10-alpine AS builder
 WORKDIR /app
 
 ENV NODE_ENV=development
+ENV TZ='Europe/Amsterdam'
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
@@ -23,6 +24,7 @@ WORKDIR /app
 
 #install in prod mode now so only needed packages are here
 ENV NODE_ENV=production
+ENV TZ='Europe/Amsterdam'
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
