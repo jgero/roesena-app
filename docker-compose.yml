@@ -19,6 +19,7 @@ services:
       dockerfile: docker/prod.Dockerfile
     ports:
       - 80:3000
+    # wait for seeding continer to be ready so database acutally has data when app is started
     depends_on:
       - mongo-seed
     links:

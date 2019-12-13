@@ -55,6 +55,7 @@
     {#each lists.events as event}
       <li><a href="edit/events/{event._id}">{event.title}</a></li>
     {/each}
+    <li class="new"><a href="/edit/events">new</a></li>
   </ul>
   <ul>
     <li class="header">Gruppen</li>
