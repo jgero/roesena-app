@@ -7,8 +7,25 @@
 
 <script>
   import { fadeIn, fadeOut  } from '../../animations/fade.js';
+  import { flashPopup } from '../../stores.js';
 
   export let lists;
+
+  function onDelete(id) {
+    console.log(id);
+    fetch(`events/${id}.json`, { method: "DELETE" }).then(el => el.json())
+      .then((result) => {
+        if (result.success) {
+          flashPopup.next("Event gelöscht");
+          // delete the deleted event from the list of shown items
+          lists.events.splice(lists.events.findIndex(el => el._id === id), 1);
+          lists = lists;
+          return;
+        }
+        flashPopup.next("Event konnte nicht gelöscht werden");
+      })
+      .catch(() => flashPopup.next("Fehler!"));
+  }
 </script>
 
 <style>
@@ -38,6 +55,7 @@
   
   a {
     text-decoration: none;
+    outline:none;
     color: inherit;
     border-bottom: 1px solid transparent;
     transition: border-color .2s ease-out;
@@ -53,7 +71,7 @@
   <ul>
     <li class="header">Events</li>
     {#each lists.events as event}
-      <li><a href="edit/events/{event._id}">{event.title}</a></li>
+      <li><a href="edit/events/{event._id}">{event.title}</a><button on:click={() => onDelete(event._id)}>delete</button></li>
     {/each}
     <li class="new"><a href="/edit/events">new</a></li>
   </ul>
