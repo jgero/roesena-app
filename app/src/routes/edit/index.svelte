@@ -8,6 +8,7 @@
 <script>
   import { fadeIn, fadeOut  } from '../../animations/fade.js';
   import { flashPopup } from '../../stores.js';
+  import { goto } from '@sapper/app';
 
   export let lists;
 
@@ -47,6 +48,12 @@
     max-width: 15vw;
   }
 
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   li.header {
     font-weight: bold;
     font-size: 1.5rem;
@@ -61,6 +68,31 @@
     transition: border-color .2s ease-out;
   }
 
+  button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: transparent;
+    color: var(--on-primary);
+    border: .2rem solid var(--on-primary);
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: .5rem;
+    padding: 0;
+    margin: .2rem;
+    text-align: center;
+    border-radius: .4rem;
+    outline: none;
+  transition: .2s ease-out all;
+  }
+
+  button:hover,
+  button:focus {
+    cursor: pointer;
+    background-color: var(--on-primary);
+    color: var(--primary);
+    border-color: var(--on-primary);
+  }
+
   a:hover,
   a:focus {
     border-bottom: 1px solid var(--on-primary);
@@ -71,9 +103,9 @@
   <ul>
     <li class="header">Events</li>
     {#each lists.events as event}
-      <li><a href="edit/events/{event._id}">{event.title}</a><button on:click={() => onDelete(event._id)}>delete</button></li>
+      <li><a href="edit/events/{event._id}">{event.title}</a><button on:click={() => onDelete(event._id)}>-</button></li>
     {/each}
-    <li class="new"><a href="/edit/events">new</a></li>
+    <li><button on:click={() => goto('/edit/events') }>+</button></li>
   </ul>
   <ul>
     <li class="header">Gruppen</li>
