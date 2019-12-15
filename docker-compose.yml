@@ -7,8 +7,8 @@ services:
   # mongo container to seed the database, not needed after that
   mongo-seed:
     build:
-      context: ./database
-      dockerfile: seeding.Dockerfile
+      context: ./app
+      dockerfile: docker/seeding.Dockerfile
     links:
       - mongodb
   # sapper app

@@ -32,3 +32,11 @@ In addition to the test container the normal production compose file is used to 
 ## tools
 
 For easy deployment to the remote host with ssh [appleboy/ssh-action](https://github.com/appleboy/ssh-action) is used in the deployment action.
+
+## database
+
+### Export data
+
+#### to JSON
+
+To export a single collection in the databse in JSON format run `mongoexport --collection=<collection-name> --db=<db-name>` in the shell of the container, not the mongo shell of the database.
