@@ -1,9 +1,7 @@
 describe('the events page of the app', () => {
-  before('load example data of fixtures that is also saved in databse', () => {
-    cy.fixture('events').as('events');
-  })
 
   beforeEach(() => {
+    cy.fixture('events').as('events');
     cy.visit('/events');
   });
 
@@ -17,6 +15,16 @@ describe('the events page of the app', () => {
           cy.get('span').contains(getDateString(event.end_date.$date));
           cy.get('p').contains(event.description);
         });
+      });
+    });
+  });
+
+  it('contains links to the event detail pages', () => {
+    cy.get('@events').then((events) => {
+      console.log(events);
+      events.forEach((event) => {
+        cy.get('h3').contains(event.title).click();
+        cy.url().should('include', event._id);
       });
     });
   });
