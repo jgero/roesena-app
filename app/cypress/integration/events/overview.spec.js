@@ -10,10 +10,10 @@ describe('the events page of the app', () => {
     cy.get('@events').then((events) => {
       events.forEach((event) => {
         cy.get('a').within(() => {
-          cy.get('h3').contains(event.title);
-          cy.get('span').contains(getDateString(event.start_date.$date));
-          cy.get('span').contains(getDateString(event.end_date.$date));
-          cy.get('p').contains(event.description);
+          cy.contains('h3', event.title);
+          cy.contains('span', getDateString(event.start_date.$date));
+          cy.contains('span', getDateString(event.end_date.$date));
+          cy.contains('p', event.description);
         });
       });
     });
@@ -21,10 +21,9 @@ describe('the events page of the app', () => {
 
   it('contains links to the event detail pages', () => {
     cy.get('@events').then((events) => {
-      console.log(events);
       events.forEach((event) => {
-        cy.get('h3').contains(event.title).click();
-        cy.url().should('include', event._id);
+        cy.contains('h3', event.title).click();
+        cy.url().should('match', /events\/[a-f\d]{24}$/i);
       });
     });
   });

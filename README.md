@@ -25,7 +25,7 @@ Spins up the database like in development, the app is built without the dev-depe
 
 Tests can be run with `make test`, which just cleans up any remaining containers and starts `docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from cypress --abort-on-container-exit cypress`.
 
-Builds the production version with the production compose files of the app and runs the cypress tests. This ensures, that the actual production verion of the app works and there will be no differences between testing and production environments.
+Builds the production version with the production compose files of the app and runs the cypress tests. This ensures, that the actual production verion of the app works and there will be no differences between testing and production environments. All the test are written in a way, that the order and amout of executions does not matter, for example if deleting elements is tested, they get inserted with the same values again afterwards. A drawback of this is, that ID's are not predictable, so when ID's are checked a regex is used, which could lead to very specific undetected errors.
 
 ## tools
 
