@@ -99,6 +99,10 @@
   }
 </style>
 
+<svelte:head>
+<title>RöSeNa Daten Bearbeiten</title>
+</svelte:head>
+
 <div in:fadeIn out:fadeOut class="wrapper">
   <ul>
     <li class="header">Events</li>

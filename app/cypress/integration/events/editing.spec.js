@@ -23,7 +23,7 @@ describe('CRUD for events, ', () => {
     cy.get('@events').then(events => {
       // save the id of the event that will be deleted
       cy.contains('a', events[0].title)
-        .parent().contains('button', 'delete').click();
+        .parent().contains('button', '-').click();
       cy.contains('a', events[0].title).should('not.exist');
       // reload the page and it should still not be there
       cy.visit('/edit');
