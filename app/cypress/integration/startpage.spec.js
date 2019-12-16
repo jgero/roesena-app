@@ -15,5 +15,5 @@ describe('the startpage of the app', () => {
     cy.get('aside').contains('h3', /.*/);
     cy.get('aside').contains('p', /.*/).click();
     cy.url().should('include', '/events');
-  })
+  });
 });
