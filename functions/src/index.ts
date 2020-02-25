@@ -9,3 +9,11 @@ export const createUser = functions.auth.user().onCreate(user => {
     .doc(user.uid)
     .set({ authLevel: 0, name: user.email });
 });
+
+export const deleteUser = functions.auth.user().onDelete(user => {
+  return admin
+    .firestore()
+    .collection("persons")
+    .doc(user.uid)
+    .delete();
+});

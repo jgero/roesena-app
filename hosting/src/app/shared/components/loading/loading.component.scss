@@ -1,0 +1,26 @@
+:host {
+  position: fixed;
+  display: block;
+  bottom: 0;
+  left: -30vw;
+  width: 30vw;
+  height: 5px;
+  background-color: red;
+  background-image: linear-gradient(to right, var(--background), var(--error), var(--background));
+  animation-name: movement;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+@keyframes movement {
+  0% {
+    left: -30vw;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: -30vw;
+  }
+}

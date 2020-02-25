@@ -4,6 +4,7 @@ import { AngularFirestore, DocumentChangeAction } from "@angular/fire/firestore"
 import { BehaviorSubject, Subscription, Observable, from } from "rxjs";
 import { map, switchMap, filter, tap } from "rxjs/operators";
 import "firebase/firestore";
+import { LoadingService } from "../shared/services/loading.service";
 
 @Injectable({
   providedIn: "root"

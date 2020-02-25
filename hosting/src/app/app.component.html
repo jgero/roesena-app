@@ -20,3 +20,5 @@
 <main>
   <router-outlet></router-outlet>
 </main>
+
+<app-loading *ngIf="loading.$isLoading | async"></app-loading>

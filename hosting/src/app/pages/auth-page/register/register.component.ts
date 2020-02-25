@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 
 import { AuthService } from "../../../services/auth.service";
+import { LoadingService } from "src/app/shared/services/loading.service";
 
 @Component({
   selector: "app-register",
@@ -17,7 +18,7 @@ export class RegisterComponent implements OnDestroy {
     password: new FormControl("")
   });
   private sub: Subscription;
-  constructor(public auth: AuthService, private router: Router) {
+  constructor(public auth: AuthService, private router: Router, private load: LoadingService) {
     this.sub = this.auth.$user.subscribe(el => {
       if (el) {
         router.navigate(["auth"]);
@@ -30,8 +31,16 @@ export class RegisterComponent implements OnDestroy {
   }
 
   public onSubmit() {
-    this.auth
-      .register(this.registerForm.value.email, this.registerForm.value.password)
-      .subscribe({ next: el => this.router.navigate(["auth"]), error: el => console.log(el) });
+    this.load.$isLoading.next(true);
+    this.auth.register(this.registerForm.value.email, this.registerForm.value.password).subscribe({
+      next: _ => {
+        this.load.$isLoading.next(false);
+        this.router.navigate(["auth"]);
+      },
+      error: el => {
+        this.load.$isLoading.next(false);
+        console.log(el);
+      }
+    });
   }
 }
