@@ -44,8 +44,8 @@ export class AuthService implements OnDestroy {
     return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(map(_ => null));
   }
 
-  public logout(): void {
-    this.auth.signOut();
+  public logout(): Observable<void> {
+    return from(this.auth.signOut());
   }
 
   public register(email: string, password: string): Observable<null> {

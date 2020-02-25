@@ -3,23 +3,27 @@ import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 
 import { AuthService } from "../../services/auth.service";
+import { LoadingService } from "src/app/shared/services/loading.service";
 
 @Component({
   selector: "app-auth-page",
   templateUrl: "./auth-page.component.html",
   styleUrls: ["./auth-page.component.scss"]
 })
-export class AuthPageComponent implements OnDestroy {
-  private sub: Subscription;
-  constructor(public auth: AuthService, router: Router) {
-    this.sub = this.auth.$user.subscribe(el => {
-      if (!el) {
-        router.navigate(["auth", "login"]);
+export class AuthPageComponent {
+  constructor(public auth: AuthService, private router: Router, private loading: LoadingService) {}
+
+  public logout() {
+    this.loading.$isLoading.next(true);
+    this.auth.logout().subscribe({
+      next: _ => {
+        this.loading.$isLoading.next(false);
+        this.router.navigate(["auth", "login"]);
+      },
+      error: err => {
+        this.loading.$isLoading.next(false);
+        console.log(err);
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 }
