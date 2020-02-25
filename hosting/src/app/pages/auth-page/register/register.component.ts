@@ -17,7 +17,7 @@ export class RegisterComponent implements OnDestroy {
     password: new FormControl("")
   });
   private sub: Subscription;
-  constructor(public auth: AuthService, router: Router) {
+  constructor(public auth: AuthService, private router: Router) {
     this.sub = this.auth.$user.subscribe(el => {
       if (el) {
         router.navigate(["auth"]);
@@ -29,5 +29,9 @@ export class RegisterComponent implements OnDestroy {
     this.sub.unsubscribe();
   }
 
-  public onSubmit() {}
+  public onSubmit() {
+    this.auth
+      .register(this.registerForm.value.email, this.registerForm.value.password)
+      .subscribe({ next: el => this.router.navigate(["auth"]), error: el => console.log(el) });
+  }
 }

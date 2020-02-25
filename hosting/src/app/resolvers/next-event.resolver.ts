@@ -24,9 +24,9 @@ export class NextEventResolver implements Resolve<appEvent> {
         // sort the events
         map(el => el.sort((a, b) => b.endDate.getTime() - a.endDate.getTime())),
         // filter out all the ones that are already over
-        map(el => el.filter(val => new Date().getTime() - val.endDate.getTime() > 0)),
-        // take the first one of the sorted ones
-        map(el => el[0])
+        map(el => el.filter(val => new Date().getTime() - val.endDate.getTime() < 0)),
+        // take the last one of the sorted array to get the next event
+        map(el => el[el.length - 1])
       );
   }
 }

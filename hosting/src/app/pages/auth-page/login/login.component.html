@@ -1,7 +1,7 @@
 <h1>Anmelden</h1>
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="E-Mail" formControlName="email" />
-  <input type="password" placeholder="Passwort" formControlName="password" />
+  <input type="text" placeholder="E-Mail" formControlName="email" required />
+  <input type="password" placeholder="Passwort" formControlName="password" required />
   <button type="submit" [disabled]="loginForm.invalid">Login</button>
 </form>
 <div routerLink="/auth/register">Neues Konto erstellen?</div>

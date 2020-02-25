@@ -1,8 +1,0 @@
-<h1>Registrieren</h1>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="Anzeigename" formControlName="name" />
-  <input type="text" placeholder="E-Mail" formControlName="email" />
-  <input type="password" placeholder="Passwort" formControlName="password" />
-  <button type="submit" [disabled]="registerForm.invalid">Login</button>
-</form>
-<div routerLink="/auth/login">Ich habe bereits ein Konto</div>

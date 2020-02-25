@@ -1,13 +1,10 @@
 {
   "hosting": [
     {
+      "predeploy": ["npm --prefix hosting run build:prod"],
       "target": "roesena-app",
-      "public": "dist/roesena-app",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "public": "hosting/dist/roesena-app",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",
@@ -15,5 +12,8 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "predeploy": ["npm --prefix functions run lint", "npm --prefix functions run build"]
+  }
 }
