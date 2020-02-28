@@ -68,6 +68,20 @@ export class AuthService implements OnDestroy {
     );
   }
 
+  public updateName(name: string): Observable<void> {
+    return from(
+      this.firestore
+        .collection("persons")
+        .doc(this.$user.getValue().id)
+        .update({ name })
+    ).pipe(
+      tap(_ => {
+        const old = this.$user.getValue();
+        this.$user.next({ id: old.id, authLevel: old.authLevel, name });
+      })
+    );
+  }
+
   ngOnDestroy() {
     this.subs.forEach(el => el.unsubscribe());
   }

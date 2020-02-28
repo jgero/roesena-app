@@ -11,6 +11,7 @@ import { LoadingService } from "src/app/shared/services/loading.service";
   styleUrls: ["./auth-page.component.scss"]
 })
 export class AuthPageComponent {
+  newName: string;
   constructor(public auth: AuthService, private router: Router, private loading: LoadingService) {}
 
   public logout() {
@@ -24,6 +25,13 @@ export class AuthPageComponent {
         this.loading.$isLoading.next(false);
         console.log(err);
       }
+    });
+  }
+
+  public updateName() {
+    this.auth.updateName(this.newName).subscribe({
+      next: _ => console.log("updated!"),
+      error: err => console.log(err)
     });
   }
 }
