@@ -1,20 +1,9 @@
 :host {
   z-index: 1;
   display: block;
-  position: fixed;
-  left: 0;
-  top: 0;
-  max-width: 75vw;
-  height: 100vh;
   color: var(--on-surface);
   background-color: var(--surface);
   box-shadow: 0 2px 5px 0px var(--on-background);
-  transform: translateX(-100%);
-  transition: transform ease-out 0.2s;
-
-  &.visible {
-    transform: translateX(0);
-  }
 
   nav {
     overflow-y: auto;
