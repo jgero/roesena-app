@@ -21,11 +21,12 @@ h1 {
   color: var(--on-primary);
   margin: 0;
   padding: 1rem;
-  font-size: 3rem;
+  font-size: 2rem;
+  @media only screen and (min-width: 1000px) {
+    font-size: 3rem;
+  }
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-  position: sticky;
-  top: 0;
   box-shadow: 0 0px 5px 0px var(--on-background);
 }
 

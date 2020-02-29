@@ -6,12 +6,10 @@ import { Component, OnInit, HostBinding } from "@angular/core";
   styleUrls: ["./nav-bar.component.scss"]
 })
 export class NavBarComponent implements OnInit {
-  public isVisible = true;
+  // public isVisible = true;
   constructor() {}
 
-  @HostBinding("class.visible") get visible() {
-    return this.isVisible;
-  }
+  @HostBinding("class.visible") isVisible = true;
 
   ngOnInit(): void {}
 }

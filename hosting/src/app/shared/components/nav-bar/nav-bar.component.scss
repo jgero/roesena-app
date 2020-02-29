@@ -1,9 +1,22 @@
 :host {
   z-index: 1;
   display: block;
+  position: relative;
   color: var(--on-surface);
   background-color: var(--surface);
   box-shadow: 0 2px 5px 0px var(--on-background);
+  height: 100vh;
+
+  @media only screen and (max-width: 1000px) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    transition: transform ease-out 0.2s;
+    &.visible {
+      transform: translateX(0);
+    }
+  }
 
   nav {
     overflow-y: auto;
@@ -60,7 +73,7 @@
 .burger {
   position: absolute;
   cursor: pointer;
-  top: 1rem;
+  bottom: 1rem;
   right: -5rem;
   display: flex;
   flex-direction: column;
@@ -71,6 +84,10 @@
   border-radius: 2rem;
   background-color: var(--surface);
   box-shadow: 0 2px 5px 0px var(--on-background);
+
+  @media only screen and (min-width: 1000px) {
+    display: none;
+  }
 }
 .line {
   width: 100%;
