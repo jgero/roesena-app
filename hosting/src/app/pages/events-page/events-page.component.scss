@@ -28,17 +28,13 @@
 
   button {
     $size: 4rem;
-    // position: fixed;
-    // left: calc(50% - #{($size / 2)});
-    // bottom: 3rem;
-    // width: $size;
-    // height: $size;
     border-radius: #{$size / 2};
     padding: 0;
     margin: #{$size / 2};
 
     i {
       font-size: $size;
+      padding: 0;
     }
   }
 }

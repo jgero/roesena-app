@@ -1,0 +1,12 @@
+<input
+  [class.empty]="input.value.length === 0"
+  type="text"
+  [value]="value"
+  (change)="valueChange.emit(input.value)"
+  #input
+  [required]="required"
+  [pattern]="pattern"
+  (keyup)="onChange()"
+/>
+<span [class.invalid]="!isValid">{{ label }}</span>
+<i class="material-icons" *ngIf="!isValid">report_problem</i>

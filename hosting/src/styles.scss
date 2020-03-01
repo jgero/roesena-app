@@ -9,7 +9,6 @@ body {
   --surface: #ffffff;
   --on-surface: #000000;
   --on-surface-light: #dddddd;
-  // temporary error color
   --error: #ad150d;
   --on-error: #ffffff;
 }
@@ -28,18 +27,6 @@ h1 {
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   box-shadow: 0 0px 5px 0px var(--on-background);
-}
-
-input {
-  border: none;
-  border-bottom: 1px solid var(--primary);
-  &#title {
-    font-size: 2rem;
-  }
-
-  &:invalid {
-    border-color: var(--error);
-  }
 }
 
 html,

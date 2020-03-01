@@ -8,7 +8,11 @@ button {
   cursor: pointer;
   border: none;
   border-radius: 0.5rem;
-  transition: color ease-out 0.2s, background-color ease-out 0.2s;
+  transition: all ease-out 0.2s;
+
+  i {
+    padding-right: 0.5rem;
+  }
 
   &.text {
     color: var(--primary);
@@ -31,15 +35,24 @@ button {
 
     &:active,
     &:focus {
-      background-color: var(--primary);
-      color: var(--on-primary);
+      background-color: var(--on-surface-light);
     }
   }
 
-  &.delete {
-    color: var(--error);
+  &.contained {
+    background-color: var(--primary);
+    color: var(--on-primary);
+
+    &:hover {
+      opacity: 0.85;
+    }
+
     &:active,
     &:focus {
+      opacity: 0.7;
+    }
+
+    &.delete {
       background-color: var(--error);
       color: var(--on-error);
     }

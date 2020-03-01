@@ -2,29 +2,30 @@ import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFirestore } from "@angular/fire/firestore";
 
-import { FormGroup, FormControl } from "@angular/forms";
-
 @Component({
   selector: "app-event-editor",
   templateUrl: "./event-editor.component.html",
   styleUrls: ["./event-editor.component.scss"]
 })
 export class EventEditorComponent {
-  eventForm = new FormGroup({
-    title: new FormControl(""),
-    description: new FormControl(""),
-    startDate: new FormControl(this.getDateStringFromDate(new Date())),
-    startTime: new FormControl(this.getTimeStringFromDate(new Date())),
-    endDate: new FormControl(this.getDateStringFromDate(new Date())),
-    endTime: new FormControl(this.getTimeStringFromDate(new Date())),
-    authLevel: new FormControl("0")
-  });
+  initData = {
+    title: "",
+    description: "",
+    authLevel: "0",
+    startDate: this.getDateStringFromDate(new Date()),
+    startTime: this.getTimeStringFromDate(new Date()),
+    endDate: this.getDateStringFromDate(new Date()),
+    endTime: this.getTimeStringFromDate(new Date())
+  };
+
+  title = "";
 
   constructor(private firestore: AngularFirestore, public route: ActivatedRoute, private router: Router) {
+    this.title = this.route.snapshot.paramMap.get("id") ? "Event bearbeiten" : "Event erstellen";
     if (this.route.snapshot.paramMap.get("id")) {
       // save already existing event in here so it can be edited
       const { title, description, authLevel, startDate, endDate } = route.snapshot.data.appEvent;
-      this.eventForm.setValue({
+      this.initData = {
         title,
         description,
         authLevel,
@@ -32,7 +33,7 @@ export class EventEditorComponent {
         startTime: this.getTimeStringFromDate(startDate),
         endDate: this.getDateStringFromDate(endDate),
         endTime: this.getTimeStringFromDate(endDate)
-      });
+      };
     }
   }
 
@@ -53,8 +54,7 @@ export class EventEditorComponent {
       .padStart(2, "0")}`;
   }
 
-  public saveEvent(): void {
-    const { title, description, authLevel, startDate, startTime, endDate, endTime } = this.eventForm.value;
+  public saveEvent({ title, description, authLevel, startDate, startTime, endDate, endTime }: any): void {
     const updated = {
       title,
       description,
