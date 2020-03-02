@@ -1,16 +1,32 @@
 :host {
-  display: flex;
-  justify-content: center;
+  display: grid;
   width: 100%;
   height: 100%;
-  position: relative;
+  grid-template-columns: 1fr;
+  grid-template-areas: "main";
+  grid-template-rows: 1fr;
+
+  @media only screen and (min-width: 1000px) {
+    grid-template-columns: 1fr 7fr;
+    grid-template-areas: "sideNav main";
+  }
+
+  app-nav-bar {
+    grid-area: sideNav;
+  }
+
+  app-auth-status {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+  }
 
   img {
     position: absolute;
     pointer-events: none;
     height: 90vh;
     top: 5vh;
-    transform: translateX(75%);
+    right: 10vw;
     opacity: 0.4;
     transition: opacity ease-out 0.2s;
     z-index: -1;
@@ -21,31 +37,7 @@
   }
 
   main {
-    width: 100%;
-    min-height: 100%;
-  }
-
-  .loginStatus {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    font-size: 2rem;
-    cursor: pointer;
-
-    & > * {
-      font-weight: bold;
-    }
-
-    span {
-      padding: 1rem;
-      display: block;
-      background-color: var(--primary);
-      color: var(--on-primary);
-      border-radius: 2rem;
-      height: 4rem;
-      width: 4rem;
-      line-height: 2rem;
-      text-align: center;
-    }
+    grid-area: main;
+    overflow-y: auto;
   }
 }

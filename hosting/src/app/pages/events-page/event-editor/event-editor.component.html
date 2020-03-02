@@ -1,47 +1,78 @@
-<button routerLink="/events" class="close delete"><i class="material-icons">close</i></button>
+<button routerLink="/events" class="close text"><i class="material-icons">close</i>SCHLIESEN</button>
 
-<form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
-  <input type="text" placeholder="Titel" formControlName="title" required />
-  <textarea placeholder="Beschreibung" rows="5" formControlName="description"></textarea>
-  <div class="timeWrapper">
-    <div class="timeElement">
-      <span>Beginn</span>
-      <input
-        formControlName="startDate"
-        type="text"
-        pattern="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$"
-        placeholder="dd.mm.yyyy"
-        required
-      />
-      <input formControlName="startTime" type="text" pattern="^([01][0-9]|2[0-3]):([0-5][0-9])$" placeholder="hh:mm" required />
-    </div>
-    <div class="timeElement">
-      <span>Ende</span>
-      <input
-        formControlName="endDate"
-        pattern="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$"
-        placeholder="dd.mm.yyyy"
-        required
-      />
-      <input formControlName="endTime" type="text" pattern="^([01][0-9]|2[0-3]):([0-5][0-9])$" placeholder="hh:mm" required />
-    </div>
-  </div>
+<h2>{{ title }}</h2>
 
-  <div class="selectWrapper">
-    <span>Sichtbar für</span>
-    <select formControlName="authLevel" required>
-      <option value="0">Gäste</option>
-      <option value="1">Mitglieder</option>
-      <option value="2">Gruppenleiter</option>
-      <option value="3">Präsidium</option>
-      <option value="4">Admins</option>
-    </select>
-  </div>
+<form #eventForm="ngForm" (ngSubmit)="saveEvent(eventForm.value)">
+  <app-input
+    name="title"
+    label="Titel"
+    [required]="true"
+    pattern="^[a-zA-Z ]{3,35}$"
+    [ngModel]="initData.title"
+    [style.grid-area]="'title'"
+  ></app-input>
+  <app-input
+    name="description"
+    label="Beschreibung"
+    [ngModel]="initData.description"
+    [style.grid-area]="'description'"
+  ></app-input>
 
-  <div class="buttonWrapper">
-    <button type="submit" [disabled]="eventForm.invalid">Speichern<i class="material-icons">save</i></button>
-    <button type="button" [disabled]="!route.snapshot.paramMap.get('id')" class="delete" (click)="deleteEvent()">
-      Löschen<i class="material-icons">delete</i>
-    </button>
-  </div>
+  <span [style.grid-area]="'s-label'">Beginn</span>
+  <app-input
+    name="startDate"
+    label="Datum"
+    [required]="true"
+    pattern="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$"
+    [ngModel]="initData.startDate"
+    [style.grid-area]="'s-date'"
+  ></app-input>
+  <app-input
+    name="startTime"
+    label="Zeit"
+    [required]="true"
+    pattern="^([01][0-9]|2[0-3]):([0-5][0-9])$"
+    [ngModel]="initData.startTime"
+    [style.grid-area]="'s-time'"
+  ></app-input>
+
+  <span [style.grid-area]="'e-label'">Ende</span>
+  <app-input
+    name="endDate"
+    label="Datum"
+    [required]="true"
+    pattern="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$"
+    [ngModel]="initData.endDate"
+    [style.grid-area]="'e-date'"
+  ></app-input>
+  <app-input
+    name="endTime"
+    label="Zeit"
+    [required]="true"
+    pattern="^([01][0-9]|2[0-3]):([0-5][0-9])$"
+    [ngModel]="initData.endTime"
+    [style.grid-area]="'e-time'"
+  ></app-input>
+
+  <span [style.grid-area]="'a-label'">Sichtbar für</span>
+  <select name="authLevel" required [ngModel]="initData.authLevel" [style.grid-area]="'a-el'">
+    <option value="0">Gäste</option>
+    <option value="1">Mitglieder</option>
+    <option value="2">Gruppenleiter</option>
+    <option value="3">Präsidium</option>
+    <option value="4">Admins</option>
+  </select>
+
+  <button type="submit" class="save contained" [disabled]="eventForm.invalid" [style.grid-area]="'save'">
+    <i class="material-icons">save</i>Speichern
+  </button>
+  <button
+    type="button"
+    [disabled]="!route.snapshot.paramMap.get('id')"
+    class="delete contained"
+    (click)="deleteEvent()"
+    [style.grid-area]="'delete'"
+  >
+    <i class="material-icons">delete</i>Löschen
+  </button>
 </form>

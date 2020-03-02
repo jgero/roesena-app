@@ -6,12 +6,7 @@
   routerLinkActive="opac"
   [routerLinkActiveOptions]="{ exact: true }"
 />
-<div class="loginStatus" routerLink="/auth">
-  <i *ngIf="!(auth.$user | async); else logout" class="material-icons">input</i>
-  <ng-template #logout>
-    <span>{{ (auth.$user | async).name.toUpperCase().substring(0, 1) }}</span>
-  </ng-template>
-</div>
+<app-auth-status></app-auth-status>
 <main>
   <router-outlet></router-outlet>
 </main>
