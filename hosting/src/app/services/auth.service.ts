@@ -1,43 +1,17 @@
-import { Injectable, OnDestroy } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { BehaviorSubject, Subscription, Observable, from, of } from "rxjs";
+import { BehaviorSubject, Observable, from, of } from "rxjs";
 import { map, switchMap, filter, tap } from "rxjs/operators";
 import "firebase/firestore";
 
 @Injectable({
   providedIn: "root"
 })
-export class AuthService implements OnDestroy {
+export class AuthService {
   public $user = new BehaviorSubject<{ id: string; name: string; authLevel: number }>(null);
-  private subs: Subscription[] = [];
 
-  constructor(public auth: AngularFireAuth, private firestore: AngularFirestore) {
-    this.subs.push(
-      // watch which user is currently logged-in
-      auth.user.subscribe(user => {
-        if (user) {
-          this.subs.push(
-            // get the name of the user from the database
-            this.firestore
-              .collection("persons")
-              .doc(user.uid)
-              .get()
-              .subscribe(docRef => {
-                // update the BehaviourSubject with the user
-                if (docRef.data()) {
-                  this.$user.next({ name: docRef.data().name, id: user.uid, authLevel: docRef.data().authLevel });
-                } else {
-                  this.$user.next(null);
-                }
-              })
-          );
-        } else {
-          this.$user.next(null);
-        }
-      })
-    );
-  }
+  constructor(public auth: AngularFireAuth, private firestore: AngularFirestore) {}
 
   public getUserFromServer(): Observable<{ id: string; name: string; authLevel: number } | null> {
     return from(this.auth.currentUser).pipe(
@@ -49,16 +23,34 @@ export class AuthService implements OnDestroy {
               .get()
               .pipe(map(userDoc => ({ id: userDoc.id, name: userDoc.data().name, authLevel: userDoc.data().authLevel })))
           : of(null)
-      )
+      ),
+      tap(user => this.$user.next(user))
     );
   }
 
   public login(email: string, password: string): Observable<null> {
-    return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(map(_ => null));
+    return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(
+      // get the user from the credentials
+      map(userCredentials => userCredentials.user),
+      // get the user data from the database
+      switchMap(user =>
+        user
+          ? this.firestore
+              .collection("persons")
+              .doc(user.uid)
+              .get()
+              .pipe(map(userDoc => ({ id: userDoc.id, name: userDoc.data().name, authLevel: userDoc.data().authLevel })))
+          : of(null)
+      ),
+      // save it to the observable
+      tap(user => this.$user.next(user)),
+      // hide the data from the caller
+      map(_ => null)
+    );
   }
 
   public logout(): Observable<void> {
-    return from(this.auth.signOut());
+    return from(this.auth.signOut()).pipe(tap(() => this.$user.next(null)));
   }
 
   public register(email: string, password: string): Observable<null> {
@@ -75,9 +67,23 @@ export class AuthService implements OnDestroy {
           )
       ),
       // then sign in the newly registered user
-      switchMap(_ => from(this.auth.signInWithEmailAndPassword(email, password))),
+      switchMap(() => from(this.auth.signInWithEmailAndPassword(email, password))),
+      // get the user from the credentials
+      map(userCredentials => userCredentials.user),
+      // get the user data from the database
+      switchMap(user =>
+        user
+          ? this.firestore
+              .collection("persons")
+              .doc(user.uid)
+              .get()
+              .pipe(map(userDoc => ({ id: userDoc.id, name: userDoc.data().name, authLevel: userDoc.data().authLevel })))
+          : of(null)
+      ),
+      // save it to the observable
+      tap(user => this.$user.next(user)),
       // remove the data from the observable
-      map(_ => null)
+      map(() => null)
     );
   }
 
@@ -88,14 +94,10 @@ export class AuthService implements OnDestroy {
         .doc(this.$user.getValue().id)
         .update({ name })
     ).pipe(
-      tap(_ => {
+      tap(() => {
         const old = this.$user.getValue();
         this.$user.next({ id: old.id, authLevel: old.authLevel, name });
       })
     );
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach(el => el.unsubscribe());
   }
 }

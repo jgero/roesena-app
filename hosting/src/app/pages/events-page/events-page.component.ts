@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, switchMap } from "rxjs/operators";
 import { AngularFirestore } from "@angular/fire/firestore";
 
 import { appEvent } from "../../utils/interfaces";
@@ -17,12 +17,14 @@ export class EventsPageComponent implements OnInit {
   public events: Observable<appEvent[]>;
 
   constructor(firestore: AngularFirestore, private router: Router, auth: AuthService) {
-    this.events = firestore
-      .collection<appEvent>("events", qFn =>
-        qFn.where(`authLevel`, "<=", auth.$user.getValue() ? auth.$user.getValue().authLevel : 0)
-      )
-      .snapshotChanges()
-      .pipe(map(convertEventFromChangeActions));
+    this.events = auth.getUserFromServer().pipe(
+      switchMap(user =>
+        firestore
+          .collection<appEvent>("events", qFn => qFn.where(`authLevel`, "<=", user ? user.authLevel : 0))
+          .snapshotChanges()
+      ),
+      map(convertEventFromChangeActions)
+    );
   }
 
   ngOnInit(): void {}
