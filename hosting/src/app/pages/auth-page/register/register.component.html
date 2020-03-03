@@ -1,14 +1,24 @@
 <h1>Registrieren</h1>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="Anzeigename" formControlName="name" pattern="^[a-zA-Z ]*" required />
-  <input
-    type="text"
-    placeholder="E-Mail"
-    formControlName="email"
-    pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
-    required
-  />
-  <input type="password" placeholder="Passwort" formControlName="password" required />
-  <button type="submit" [disabled]="registerForm.invalid">Registrieren</button>
-</form>
-<div routerLink="/auth/login">Ich habe bereits ein Konto</div>
+<div class="registerWrapper">
+  <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm.value)">
+    <app-input
+      name="name"
+      label="Anzeigename"
+      [required]="true"
+      pattern="^[a-zA-Z ]+$"
+      [style.grid-area]="'name'"
+      ngModel
+    ></app-input>
+    <app-input
+      name="email"
+      label="E-Mail"
+      [required]="true"
+      pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+      [style.grid-area]="'mail'"
+      ngModel
+    ></app-input>
+    <app-input name="password" label="Passwort" [required]="true" type="password" [style.grid-area]="'pw'" ngModel></app-input>
+    <button type="submit" class="contained" [disabled]="registerForm.invalid">REGISTRIEREN</button>
+    <button class="text" routerLink="/auth/login">Ich habe bereits ein Konto</button>
+  </form>
+</div>

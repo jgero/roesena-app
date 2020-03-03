@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { BehaviorSubject, Observable, from, of } from "rxjs";
-import { map, switchMap, filter, tap } from "rxjs/operators";
+import { map, switchMap, filter, tap, take } from "rxjs/operators";
 import "firebase/firestore";
 
 @Injectable({
@@ -53,7 +53,7 @@ export class AuthService {
     return from(this.auth.signOut()).pipe(tap(() => this.$user.next(null)));
   }
 
-  public register(email: string, password: string): Observable<null> {
+  public register(email: string, password: string, name: string): Observable<null> {
     return from(this.auth.createUserWithEmailAndPassword(email, password)).pipe(
       // wait until the person is created in the database
       switchMap(user =>
@@ -63,9 +63,19 @@ export class AuthService {
           .valueChanges()
           .pipe(
             // filter out the updates without names
-            filter((el: any) => el && !!el.name)
+            filter((el: any) => el && !!el.name),
+            map(val => {
+              val.id = user.user.uid;
+              return val;
+            }),
+            take(1)
           )
       ),
+      tap(el => console.log(el)),
+      // save it to the observable
+      tap(user => this.$user.next(user)),
+      // update to the provided name
+      switchMap(() => this.updateName(name)),
       // then sign in the newly registered user
       switchMap(() => from(this.auth.signInWithEmailAndPassword(email, password))),
       // get the user from the credentials

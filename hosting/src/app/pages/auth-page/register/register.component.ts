@@ -1,7 +1,5 @@
-import { Component, OnDestroy } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import { Component } from "@angular/core";
 import { Router } from "@angular/router";
-import { Subscription } from "rxjs";
 
 import { AuthService } from "../../../services/auth.service";
 import { LoadingService } from "src/app/shared/services/loading.service";
@@ -11,35 +9,19 @@ import { LoadingService } from "src/app/shared/services/loading.service";
   templateUrl: "./register.component.html",
   styleUrls: ["./register.component.scss"]
 })
-export class RegisterComponent implements OnDestroy {
-  registerForm = new FormGroup({
-    name: new FormControl(""),
-    email: new FormControl(""),
-    password: new FormControl("")
-  });
-  private sub: Subscription;
-  constructor(public auth: AuthService, private router: Router, private load: LoadingService) {
-    this.sub = this.auth.$user.subscribe(el => {
-      if (el) {
-        router.navigate(["auth"]);
-      }
-    });
-  }
+export class RegisterComponent {
+  constructor(public auth: AuthService, private router: Router, private load: LoadingService) {}
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
-  public onSubmit() {
+  public onSubmit(val: any) {
     this.load.$isLoading.next(true);
-    this.auth.register(this.registerForm.value.email, this.registerForm.value.password).subscribe({
+    this.auth.register(val.email, val.password, val.name).subscribe({
       next: _ => {
         this.load.$isLoading.next(false);
         this.router.navigate(["auth"]);
       },
-      error: el => {
+      error: err => {
         this.load.$isLoading.next(false);
-        console.log(el);
+        console.log(err);
       }
     });
   }
