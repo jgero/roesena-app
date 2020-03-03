@@ -16,7 +16,7 @@ export class LoginComponent {
     this.auth.login(val.email, val.password).subscribe({
       next: _ => {
         this.loading.$isLoading.next(false);
-        this.router.navigate(["/auth"]);
+        this.router.navigate(["auth"]);
       },
       error: err => {
         this.loading.$isLoading.next(false);

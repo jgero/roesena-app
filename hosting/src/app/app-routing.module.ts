@@ -14,6 +14,7 @@ import { NextEventResolver } from "./resolvers/next-event.resolver";
 import { LoadUserGuard } from "./guards/load-user.guard";
 import { RegisterComponent } from "./pages/auth-page/register/register.component";
 import { LoginComponent } from "./pages/auth-page/login/login.component";
+import { AuthGuard } from "./guards/auth.guard";
 
 const routes: Routes = [
   {
@@ -46,6 +47,7 @@ const routes: Routes = [
       },
       {
         path: "auth",
+        canActivateChild: [AuthGuard],
         children: [
           {
             path: "",
