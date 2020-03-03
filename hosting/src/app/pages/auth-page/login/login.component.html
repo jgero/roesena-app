@@ -1,7 +1,15 @@
 <h1>Anmelden</h1>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="E-Mail" formControlName="email" required />
-  <input type="password" placeholder="Passwort" formControlName="password" required />
-  <button type="submit" [disabled]="loginForm.invalid">Login</button>
-</form>
-<div routerLink="/auth/register">Neues Konto erstellen?</div>
+<div class="loginHelper">
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm.value)">
+    <app-input
+      name="email"
+      label="E-Mail"
+      [required]="true"
+      pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+      ngModel
+    ></app-input>
+    <app-input name="password" label="Passwort" [required]="true" type="password" ngModel></app-input>
+    <button type="submit" class="contained" [disabled]="loginForm.invalid">LOGIN</button>
+    <button class="text" routerLink="/auth/register">Neues Konto erstellen?</button>
+  </form>
+</div>

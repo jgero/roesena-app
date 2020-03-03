@@ -37,6 +37,8 @@ export class InputComponent implements AfterViewInit, ControlValueAccessor {
   pattern: string = ".*";
   @Input()
   disabled: boolean = false;
+  @Input()
+  type: string = "text";
   @Output()
   valueChange = new EventEmitter<string>();
 

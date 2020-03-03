@@ -1,10 +1,9 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
-import { AngularFirestore, DocumentChangeAction } from "@angular/fire/firestore";
-import { BehaviorSubject, Subscription, Observable, from } from "rxjs";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { BehaviorSubject, Subscription, Observable, from, of } from "rxjs";
 import { map, switchMap, filter, tap } from "rxjs/operators";
 import "firebase/firestore";
-import { LoadingService } from "../shared/services/loading.service";
 
 @Injectable({
   providedIn: "root"
@@ -37,6 +36,20 @@ export class AuthService implements OnDestroy {
           this.$user.next(null);
         }
       })
+    );
+  }
+
+  public getUserFromServer(): Observable<{ id: string; name: string; authLevel: number } | null> {
+    return from(this.auth.currentUser).pipe(
+      switchMap(user =>
+        user
+          ? this.firestore
+              .collection("persons")
+              .doc(user.uid)
+              .get()
+              .pipe(map(userDoc => ({ id: userDoc.id, name: userDoc.data().name, authLevel: userDoc.data().authLevel })))
+          : of(null)
+      )
     );
   }
 
