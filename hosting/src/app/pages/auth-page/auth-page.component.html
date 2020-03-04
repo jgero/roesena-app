@@ -1,3 +1,37 @@
-<button (click)="logout()">Logout</button>
-<input type="text" [(ngModel)]="newName" required />
-<button (click)="updateName()">update</button>
+<h1>Profil</h1>
+<div class="authWrapper">
+  <div class="profileContainer">
+    <div>
+      <span class="static">Anzeigename:</span><span class="dynamic">{{ (auth.$user | async)?.name }}</span>
+    </div>
+    <div>
+      <span class="static">Berechtigungsgruppe:</span><span class="dynamic">{{ getAuthLevelText() }}</span>
+    </div>
+    <form #changeNameForm="ngForm" (ngSubmit)="updateName(changeNameForm.value)">
+      <app-input name="newName" label="neuer Name" pattern="^[a-zA-Z ]+$" [required]="true" ngModel></app-input>
+      <button type="submit" class="outlined" [disabled]="changeNameForm.invalid">NAME ÄNDERN</button>
+    </form>
+  </div>
+  <div *ngIf="(auth.$user | async)?.authLevel > 3">
+    <h2>Berechtigungslevel Manager</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Berechtigungsgruppe</th>
+      </tr>
+      <tr *ngFor="let person of $persons | async">
+        <td>{{ person.name }}</td>
+        <td>{{ person.authLevel }}</td>
+      </tr>
+    </table>
+
+    <!-- <div class="table">
+      <h3>Name</h3>
+      <h3>Berechtigungsgruppe</h3>
+      <ng-container *ngFor="let person of $persons | async">
+        <div class="name">{{ person.name }}</div>
+        <div class="authLevel">{{ person.authLevel }}</div>
+      </ng-container>
+    </div> -->
+  </div>
+</div>

@@ -3,30 +3,77 @@
   flex-direction: column;
   height: 100%;
   align-items: center;
-  justify-content: center;
 
-  h1 {
-    position: fixed;
-  }
-
-  form {
+  .authWrapper {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: center;
 
-    & > * {
-      margin: 1rem;
+    .profileContainer {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 2rem;
+
+      div {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+
+        span.static {
+          font-weight: bold;
+          margin-right: 1rem;
+        }
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        & > * {
+          margin: 1rem;
+        }
+      }
     }
 
-    div {
-      cursor: pointer;
-      border-bottom: 1px solid transparent;
-      transition: border-bottom-color ease-out 0.2s;
+    table {
+      $borderRadius: 0.3rem;
+      border-collapse: collapse;
+      border-style: none;
+      box-shadow: 0 2px 5px 0px var(--on-background);
+      background-color: var(--surface);
+      border-radius: $borderRadius;
 
-      &:hover,
-      &:active,
-      &:focus {
-        border-bottom-color: var(--primary);
+      td,
+      th {
+        padding: 0.4rem 1rem;
+      }
+
+      tr:not(:first-child) {
+        cursor: pointer;
+        transition: background-color ease-out 0.2s;
+        &:hover {
+          background-color: var(--on-surface-light);
+        }
+      }
+      tr:last-child {
+        td:first-child {
+          border-bottom-left-radius: $borderRadius;
+        }
+        td:last-child {
+          border-bottom-right-radius: $borderRadius;
+        }
+        border-bottom-left-radius: $borderRadius;
+        border-bottom-right-radius: $borderRadius;
+      }
+
+      tr:not(:last-child) {
+        border-bottom: 1px solid var(--on-surface-light);
+      }
+
+      th {
+        text-align: left;
       }
     }
   }

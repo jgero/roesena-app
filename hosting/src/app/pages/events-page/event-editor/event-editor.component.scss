@@ -9,11 +9,6 @@
   flex-direction: column;
   align-items: center;
 
-  h2 {
-    font-size: 1.8rem;
-    color: var(--primary);
-  }
-
   form {
     display: grid;
     grid-template-rows: repeat(2, 4rem) 2rem repeat(2, 4rem) 2rem 3rem 4rem;
