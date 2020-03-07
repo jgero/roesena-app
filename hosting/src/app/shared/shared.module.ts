@@ -9,8 +9,9 @@ import { EventCardComponent } from "./components/event-card/event-card.component
 import { ToLocalTimeStringPipe } from "./pipes/to-local-time-string.pipe";
 import { LoadingComponent } from "./components/loading/loading.component";
 import { InputComponent } from "./components/input/input.component";
+import { DropdownComponent } from "./components/dropdown/dropdown.component";
 
-const components = [NavBarComponent, EventCardComponent, LoadingComponent, InputComponent];
+const components = [NavBarComponent, EventCardComponent, LoadingComponent, InputComponent, DropdownComponent];
 const pipes = [ToLocalDateStringPipe, ToLocalTimeStringPipe];
 
 @NgModule({

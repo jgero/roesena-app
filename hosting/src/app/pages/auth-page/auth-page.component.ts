@@ -13,6 +13,13 @@ import { map } from "rxjs/operators";
   styleUrls: ["./auth-page.component.scss"]
 })
 export class AuthPageComponent {
+  public dropdownItems = [
+    { value: 0, label: "Gast" },
+    { value: 1, label: "Mitglied" },
+    { value: 2, label: "Gruppenleiter" },
+    { value: 3, label: "Präsidium" },
+    { value: 4, label: "Admin" }
+  ];
   constructor(public auth: AuthService, private firestore: AngularFirestore, private loading: LoadingService) {}
   private persons: Observable<{ name: string; id: string; authLevel: number }[]>;
 
@@ -31,6 +38,10 @@ export class AuthPageComponent {
         )
       );
     return this.persons;
+  }
+
+  debug(arg: any) {
+    console.log(arg);
   }
 
   public updateName(val: any) {

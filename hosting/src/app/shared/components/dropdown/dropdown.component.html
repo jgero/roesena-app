@@ -1,0 +1,8 @@
+<div tabindex="0" class="activeItem" (click)="value = items[activeIndex].value">
+  <span>{{ items[activeIndex].label }}</span>
+  <span class="dropdownLabel">{{ label }}</span>
+  <i class="material-icons">arrow_drop_down</i>
+</div>
+<div class="itemContainer">
+  <span class="item" *ngFor="let item of items" (click)="value = item.value">{{ item.label }}</span>
+</div>

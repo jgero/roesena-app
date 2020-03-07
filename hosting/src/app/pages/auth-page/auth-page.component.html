@@ -14,7 +14,7 @@
   </div>
   <div *ngIf="(auth.$user | async)?.authLevel > 3">
     <h2>Berechtigungslevel Manager</h2>
-    <table>
+    <!-- <table>
       <tr>
         <th>Name</th>
         <th>Berechtigungsgruppe</th>
@@ -23,15 +23,26 @@
         <td>{{ person.name }}</td>
         <td>{{ person.authLevel }}</td>
       </tr>
-    </table>
+    </table> -->
 
-    <!-- <div class="table">
+    <div class="table">
       <h3>Name</h3>
       <h3>Berechtigungsgruppe</h3>
-      <ng-container *ngFor="let person of $persons | async">
+      <span></span>
+      <form #updatePersonFrom="ngForm" (ngSubmit)="debug(updatePersonFrom.value)" *ngFor="let person of $persons | async">
         <div class="name">{{ person.name }}</div>
-        <div class="authLevel">{{ person.authLevel }}</div>
-      </ng-container>
-    </div> -->
+        <app-dropdown
+          [items]="dropdownItems"
+          name="authLevel"
+          label="Berechtigungsgruppe"
+          [ngModel]="person.authLevel"
+        ></app-dropdown>
+        <button class="text" type="submit">Speichern</button>
+      </form>
+      <!-- <ng-container> -->
+      <!-- <div class="authLevel">{{ person.authLevel }}</div> -->
+      <!-- <i class="material-icons">save</i> -->
+      <!-- </ng-container> -->
+    </div>
   </div>
 </div>
