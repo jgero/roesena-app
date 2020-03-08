@@ -45,46 +45,15 @@
       background-color: var(--surface);
       padding: 1rem;
       border-radius: 0.3rem;
+      row-gap: 1.5rem;
+
+      h3 {
+        margin: 0;
+      }
+
+      app-dropdown.ng-pristine + button {
+        visibility: hidden;
+      }
     }
-
-    // table {
-    //   $borderRadius: 0.3rem;
-    //   border-collapse: collapse;
-    //   border-style: none;
-    //   box-shadow: 0 2px 5px 0px var(--on-background);
-    //   background-color: var(--surface);
-    //   border-radius: $borderRadius;
-
-    //   td,
-    //   th {
-    //     padding: 0.4rem 1rem;
-    //   }
-
-    //   tr:not(:first-child) {
-    //     cursor: pointer;
-    //     transition: background-color ease-out 0.2s;
-    //     &:hover {
-    //       background-color: var(--on-surface-light);
-    //     }
-    //   }
-    //   tr:last-child {
-    //     td:first-child {
-    //       border-bottom-left-radius: $borderRadius;
-    //     }
-    //     td:last-child {
-    //       border-bottom-right-radius: $borderRadius;
-    //     }
-    //     border-bottom-left-radius: $borderRadius;
-    //     border-bottom-right-radius: $borderRadius;
-    //   }
-
-    //   tr:not(:last-child) {
-    //     border-bottom: 1px solid var(--on-surface-light);
-    //   }
-
-    //   th {
-    //     text-align: left;
-    //   }
-    // }
   }
 }

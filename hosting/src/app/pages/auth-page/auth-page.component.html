@@ -7,42 +7,29 @@
     <div>
       <span class="static">Berechtigungsgruppe:</span><span class="dynamic">{{ getAuthLevelText() }}</span>
     </div>
-    <form #changeNameForm="ngForm" (ngSubmit)="updateName(changeNameForm.value)">
+    <form #changeNameForm="ngForm" (ngSubmit)="updateOwnName(changeNameForm.value)">
       <app-input name="newName" label="neuer Name" pattern="^[a-zA-Z ]+$" [required]="true" ngModel></app-input>
       <button type="submit" class="outlined" [disabled]="changeNameForm.invalid">NAME ÄNDERN</button>
     </form>
   </div>
-  <div *ngIf="(auth.$user | async)?.authLevel > 3">
-    <h2>Berechtigungslevel Manager</h2>
-    <!-- <table>
-      <tr>
-        <th>Name</th>
-        <th>Berechtigungsgruppe</th>
-      </tr>
-      <tr *ngFor="let person of $persons | async">
-        <td>{{ person.name }}</td>
-        <td>{{ person.authLevel }}</td>
-      </tr>
-    </table> -->
 
+  <div *ngIf="(auth.$user | async)?.authLevel >= 4">
+    <h2>Berechtigungslevel Manager</h2>
     <div class="table">
       <h3>Name</h3>
       <h3>Berechtigungsgruppe</h3>
       <span></span>
-      <form #updatePersonFrom="ngForm" (ngSubmit)="debug(updatePersonFrom.value)" *ngFor="let person of $persons | async">
+      <ng-container *ngFor="let person of $persons | async">
         <div class="name">{{ person.name }}</div>
         <app-dropdown
+          #authInput
           [items]="dropdownItems"
           name="authLevel"
           label="Berechtigungsgruppe"
           [ngModel]="person.authLevel"
         ></app-dropdown>
-        <button class="text" type="submit">Speichern</button>
-      </form>
-      <!-- <ng-container> -->
-      <!-- <div class="authLevel">{{ person.authLevel }}</div> -->
-      <!-- <i class="material-icons">save</i> -->
-      <!-- </ng-container> -->
+        <button class="text" (click)="updateAuthLevel(person.id, authInput.value)">Speichern</button>
+      </ng-container>
     </div>
   </div>
 </div>

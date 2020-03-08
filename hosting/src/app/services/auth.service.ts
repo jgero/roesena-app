@@ -75,7 +75,7 @@ export class AuthService {
       // save it to the observable
       tap(user => this.$user.next(user)),
       // update to the provided name
-      switchMap(() => this.updateName(name)),
+      switchMap(() => this.updateOwnName(name)),
       // then sign in the newly registered user
       switchMap(() => from(this.auth.signInWithEmailAndPassword(email, password))),
       // get the user from the credentials
@@ -97,7 +97,7 @@ export class AuthService {
     );
   }
 
-  public updateName(name: string): Observable<void> {
+  public updateOwnName(name: string): Observable<void> {
     return from(
       this.firestore
         .collection("persons")
@@ -109,5 +109,14 @@ export class AuthService {
         this.$user.next({ id: old.id, authLevel: old.authLevel, name });
       })
     );
+  }
+
+  public updateAuthLevel(id: string, authLevel: number): Observable<null> {
+    return from(
+      this.firestore
+        .collection("persons")
+        .doc(id)
+        .update({ authLevel })
+    ).pipe(map(() => null));
   }
 }

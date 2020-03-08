@@ -44,9 +44,17 @@ export class AuthPageComponent {
     console.log(arg);
   }
 
-  public updateName(val: any) {
+  public updateOwnName(val: any) {
     this.loading.$isLoading.next(true);
-    this.auth.updateName(val.newName).subscribe({
+    this.auth.updateOwnName(val.newName).subscribe({
+      next: () => this.loading.$isLoading.next(false),
+      error: err => console.log(err)
+    });
+  }
+
+  public updateAuthLevel(id: string, level: number) {
+    this.loading.$isLoading.next(true);
+    this.auth.updateAuthLevel(id, level).subscribe({
       next: () => this.loading.$isLoading.next(false),
       error: err => console.log(err)
     });

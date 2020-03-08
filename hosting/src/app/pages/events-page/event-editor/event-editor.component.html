@@ -55,13 +55,13 @@
   ></app-input>
 
   <span [style.grid-area]="'a-label'">Sichtbar für</span>
-  <select name="authLevel" required [ngModel]="initData.authLevel" [style.grid-area]="'a-el'">
-    <option value="0">Gäste</option>
-    <option value="1">Mitglieder</option>
-    <option value="2">Gruppenleiter</option>
-    <option value="3">Präsidium</option>
-    <option value="4">Admins</option>
-  </select>
+  <app-dropdown
+    name="authLevel"
+    [ngModel]="initData.authLevel"
+    [style.grid-area]="'a-el'"
+    [items]="dropdownItems"
+    label="Berechtigungsgruppe"
+  ></app-dropdown>
 
   <button type="submit" class="save contained" [disabled]="eventForm.invalid" [style.grid-area]="'save'">
     <i class="material-icons">save</i>Speichern

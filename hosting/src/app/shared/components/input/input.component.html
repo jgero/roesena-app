@@ -8,6 +8,7 @@
   [pattern]="pattern"
   [type]="type"
   (keyup)="onChange()"
+  (blur)="propagateTouch()"
 />
 <span [class.invalid]="!isValid">{{ label }}</span>
 <i class="material-icons" *ngIf="!isValid">report_problem</i>

@@ -44,6 +44,7 @@ export class InputComponent implements AfterViewInit, ControlValueAccessor {
 
   // this will be set to the register on change callback function
   propagateChange: (_: any) => {};
+  propagateTouch: () => {};
 
   constructor(public cdr: ChangeDetectorRef) {}
 
@@ -68,7 +69,7 @@ export class InputComponent implements AfterViewInit, ControlValueAccessor {
     this.propagateChange = fn;
   }
   registerOnTouched(fn: any): void {
-    // "touching" the element does nothing
+    this.propagateTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;

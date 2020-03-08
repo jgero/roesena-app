@@ -17,7 +17,13 @@ export class EventEditorComponent {
     endDate: this.getDateStringFromDate(new Date()),
     endTime: this.getTimeStringFromDate(new Date())
   };
-
+  dropdownItems = [
+    { value: 0, label: "Gäste" },
+    { value: 1, label: "Mitglieder" },
+    { value: 2, label: "Gruppenleiter" },
+    { value: 3, label: "Präsidium" },
+    { value: 4, label: "Admins" }
+  ];
   title = "";
 
   constructor(private firestore: AngularFirestore, public route: ActivatedRoute, private router: Router) {
@@ -58,7 +64,7 @@ export class EventEditorComponent {
     const updated = {
       title,
       description,
-      authLevel: parseInt(authLevel),
+      authLevel,
       startDate: this.getDateFromDateAndTimeStrings(startDate, startTime),
       endDate: this.getDateFromDateAndTimeStrings(endDate, endTime)
     };
