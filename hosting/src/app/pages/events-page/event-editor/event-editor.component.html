@@ -57,11 +57,17 @@
   <span [style.grid-area]="'a-label'">Sichtbar für</span>
   <app-dropdown
     name="authLevel"
-    [ngModel]="initData.authLevel"
+    [ngModel]="dropdownItems[initData.authLevel].value"
     [style.grid-area]="'a-el'"
     [items]="dropdownItems"
     label="Berechtigungsgruppe"
   ></app-dropdown>
+
+  <app-person-manager
+    name="participants"
+    [ngModel]="initData.participants"
+    [style.grid-area]="'participants'"
+  ></app-person-manager>
 
   <button type="submit" class="save contained" [disabled]="eventForm.invalid" [style.grid-area]="'save'">
     <i class="material-icons">save</i>Speichern
