@@ -1,0 +1,10 @@
+<div>
+  <span class="static">Anzeigename:</span><span class="dynamic">{{ (auth.$user | async)?.name }}</span>
+</div>
+<div>
+  <span class="static">Berechtigungsgruppe:</span><span class="dynamic">{{ auth.getAuthLevelText() }}</span>
+</div>
+<form #changeNameForm="ngForm" (ngSubmit)="updateOwnName(changeNameForm.value)">
+  <app-input name="newName" label="neuer Name" pattern="^[a-zA-Z ]+$" [required]="true" ngModel></app-input>
+  <button type="submit" class="outlined" [disabled]="changeNameForm.invalid">NAME ÄNDERN</button>
+</form>

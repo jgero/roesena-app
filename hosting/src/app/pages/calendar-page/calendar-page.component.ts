@@ -61,7 +61,7 @@ export class CalendarPageComponent implements OnDestroy {
         this.dayTemplate = new Array(dayAmount).fill(undefined).map(
           (_, index): dayTemplateElement => {
             const column = new Date(this.year, this.month, index).getDay() + 1;
-            const row = Math.floor((offset + index) / 7) + 3;
+            const row = Math.floor((offset + index) / 7) + 2;
             return {
               date: index + 1,
               events: data.calendarEvents.filter(

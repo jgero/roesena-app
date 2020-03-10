@@ -119,4 +119,26 @@ export class AuthService {
         .update({ authLevel })
     ).pipe(map(() => null));
   }
+
+  getAuthLevelText(): string {
+    const user = this.$user.getValue();
+    if (user) {
+      switch (user.authLevel) {
+        case 0:
+          return "Gast";
+        case 1:
+          return "Mitglied";
+        case 2:
+          return "Gruppenleiter/Elferrat";
+        case 3:
+          return "Präsidium";
+        case 4:
+          return "Admin";
+        default:
+          return "Fehler";
+      }
+    } else {
+      return "";
+    }
+  }
 }

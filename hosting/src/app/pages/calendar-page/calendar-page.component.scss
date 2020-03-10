@@ -1,39 +1,16 @@
 :host {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  width: 100%;
-  padding: 2rem;
-  padding-top: 0;
-  display: grid;
-  grid-template-rows: 1fr 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  row-gap: 0.5rem;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  column-gap: 0.5rem;
-  grid-template-areas:
-    ". . header header header . ."
-    "mon tue wed thu fri sat sun"
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . .";
-
-  h1,
-  h2 {
-    text-align: center;
-  }
 
   h1 {
-    grid-area: header;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin: 0;
-    height: fit-content;
-    padding: 1rem;
-    font-size: 3rem;
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+
+    span {
+      margin: 0 2rem;
+    }
 
     i.material-icons {
       font-size: 3rem;
@@ -49,45 +26,64 @@
     }
   }
 
-  h2 {
-    background-color: var(--primary);
-    color: var(--on-primary);
-    margin: 0;
-    height: fit-content;
-    padding: 0.2rem;
-    border-radius: 0.5rem;
-  }
+  .calendar {
+    flex: 1;
+    padding: 2rem;
+    display: grid;
+    grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    row-gap: 0.5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 0.5rem;
+    grid-template-areas:
+      "mon tue wed thu fri sat sun"
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . .";
 
-  .dayCard {
-    color: var(--on-surface);
-    background-color: var(--surface);
-    box-shadow: 0 2px 5px 0px var(--on-background);
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-
-    h3 {
+    h2 {
+      background-color: var(--primary);
+      color: var(--on-primary);
       margin: 0;
-      color: var(--primary);
+      height: fit-content;
+      padding: 0.2rem;
+      text-align: center;
+      border-radius: 0.5rem;
     }
 
-    ul.eventWrapper {
-      flex: 1 1 0;
-      overflow-y: auto;
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
+    .dayCard {
+      color: var(--on-surface);
+      background-color: var(--surface);
+      box-shadow: 0 2px 5px 0px var(--on-background);
+      border-radius: 0.5rem;
+      padding: 0.5rem;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
 
-      li {
-        margin: 0.1rem;
-        padding: 0.1rem;
-        background-color: var(--primary);
-        color: var(--on-primary);
-        border-radius: 0.2rem;
-        height: fit-content;
+      h3 {
+        margin: 0;
+        color: var(--primary);
+      }
+
+      ul.eventWrapper {
+        flex: 1 1 0;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+
+        li {
+          margin: 0.1rem;
+          padding: 0.1rem;
+          background-color: var(--primary);
+          color: var(--on-primary);
+          border-radius: 0.2rem;
+          height: fit-content;
+        }
       }
     }
   }

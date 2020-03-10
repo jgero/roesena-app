@@ -14,7 +14,10 @@ import { NextEventResolver } from "./resolvers/next-event.resolver";
 import { LoadUserGuard } from "./guards/load-user.guard";
 import { RegisterComponent } from "./pages/auth-page/register/register.component";
 import { LoginComponent } from "./pages/auth-page/login/login.component";
-import { AuthGuard } from "./guards/auth.guard";
+import { ProfileComponent } from "./pages/auth-page/profile/profile.component";
+import { AuthLevelManagerComponent } from "./pages/auth-page/auth-level-manager/auth-level-manager.component";
+import { ChangeNameComponent } from "./pages/auth-page/change-name/change-name.component";
+import { LoggedInGuard } from "./guards/logged-in.guard";
 
 const routes: Routes = [
   {
@@ -47,11 +50,27 @@ const routes: Routes = [
       },
       {
         path: "auth",
-        canActivateChild: [AuthGuard],
+        component: AuthPageComponent,
         children: [
           {
             path: "",
-            component: AuthPageComponent
+            pathMatch: "full",
+            redirectTo: "profile"
+          },
+          {
+            path: "profile",
+            component: ProfileComponent,
+            canActivate: [LoggedInGuard]
+          },
+          {
+            path: "auth-level-manager",
+            component: AuthLevelManagerComponent,
+            canActivate: [LoggedInGuard]
+          },
+          {
+            path: "rename",
+            component: ChangeNameComponent,
+            canActivate: [LoggedInGuard]
           },
           {
             path: "register",

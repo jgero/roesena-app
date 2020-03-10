@@ -4,56 +4,12 @@
   height: 100%;
   align-items: center;
 
-  .authWrapper {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  header {
+    width: 100%;
+    margin-bottom: 2rem;
 
-    .profileContainer {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 2rem;
-
-      div {
-        display: flex;
-        justify-content: space-between;
-        font-size: 1.4rem;
-        margin-bottom: 0.5rem;
-
-        span.static {
-          font-weight: bold;
-          margin-right: 1rem;
-        }
-      }
-
-      form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        & > * {
-          margin: 1rem;
-        }
-      }
-    }
-
-    .table {
-      display: grid;
-      grid-template-columns: 1fr 1fr min-content;
-      align-items: center;
-      box-shadow: 0 2px 5px 0px var(--on-background);
-      background-color: var(--surface);
-      padding: 1rem;
-      border-radius: 0.3rem;
-      row-gap: 1.5rem;
-
-      h3 {
-        margin: 0;
-      }
-
-      app-dropdown.ng-pristine + button {
-        visibility: hidden;
-      }
+    h1 {
+      position: relative;
     }
   }
 }

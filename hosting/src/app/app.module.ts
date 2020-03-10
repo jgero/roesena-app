@@ -17,6 +17,9 @@ import { CalendarPageComponent } from "./pages/calendar-page/calendar-page.compo
 import { AuthPageComponent } from "./pages/auth-page/auth-page.component";
 import { LoginComponent } from "./pages/auth-page/login/login.component";
 import { RegisterComponent } from "./pages/auth-page/register/register.component";
+import { ChangeNameComponent } from './pages/auth-page/change-name/change-name.component';
+import { AuthLevelManagerComponent } from './pages/auth-page/auth-level-manager/auth-level-manager.component';
+import { ProfileComponent } from './pages/auth-page/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { RegisterComponent } from "./pages/auth-page/register/register.component
     CalendarPageComponent,
     AuthPageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ChangeNameComponent,
+    AuthLevelManagerComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
