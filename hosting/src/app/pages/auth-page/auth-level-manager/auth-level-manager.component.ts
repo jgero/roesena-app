@@ -39,9 +39,9 @@ export class AuthLevelManagerComponent {
   }
 
   updateAuthLevel(id: string, level: number) {
-    this.loading.$isLoading.next(true);
+    this.loading.incLoading();
     this.auth.updateAuthLevel(id, level).subscribe({
-      next: () => this.loading.$isLoading.next(false),
+      next: () => this.loading.decLoading(),
       error: err => console.log(err)
     });
   }

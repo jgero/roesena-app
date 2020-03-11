@@ -1,0 +1,23 @@
+:host {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: min-content;
+  row-gap: 1rem;
+  box-shadow: 0 2px 5px 0px var(--on-background);
+  background-color: var(--surface);
+  padding: 1rem;
+  border-radius: 0.3rem;
+
+  form {
+    display: flex;
+  }
+
+  h4 {
+    align-self: center;
+  }
+
+  app-input.ng-pristine + button,
+  app-input.ng-invalid + button {
+    visibility: hidden;
+  }
+}

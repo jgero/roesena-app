@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { environment } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFireFunctionsModule, ORIGIN } from "@angular/fire/functions";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -17,9 +18,10 @@ import { CalendarPageComponent } from "./pages/calendar-page/calendar-page.compo
 import { AuthPageComponent } from "./pages/auth-page/auth-page.component";
 import { LoginComponent } from "./pages/auth-page/login/login.component";
 import { RegisterComponent } from "./pages/auth-page/register/register.component";
-import { ChangeNameComponent } from './pages/auth-page/change-name/change-name.component';
-import { AuthLevelManagerComponent } from './pages/auth-page/auth-level-manager/auth-level-manager.component';
-import { ProfileComponent } from './pages/auth-page/profile/profile.component';
+import { ChangeNameComponent } from "./pages/auth-page/change-name/change-name.component";
+import { AuthLevelManagerComponent } from "./pages/auth-page/auth-level-manager/auth-level-manager.component";
+import { MyEventsComponent } from "./pages/auth-page/my-events/my-events.component";
+import { LoadingPipe } from "./shared/pipes/loading.pipe";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,7 @@ import { ProfileComponent } from './pages/auth-page/profile/profile.component';
     RegisterComponent,
     ChangeNameComponent,
     AuthLevelManagerComponent,
-    ProfileComponent
+    MyEventsComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +44,7 @@ import { ProfileComponent } from './pages/auth-page/profile/profile.component';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireFunctionsModule,
     AppRoutingModule,
     SharedModule
   ],

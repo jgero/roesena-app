@@ -8,7 +8,7 @@ import { AuthService } from "src/app/services/auth.service";
 })
 export class AuthPageComponent {
   navItems = [
-    { label: "Profil", route: "/auth/profile" },
+    { label: "Meine Termine", route: "/auth/my-events" },
     { label: "Name ändern", route: "/auth/rename" },
     { label: "Berechtigungs Manager", route: "/auth/auth-level-manager" }
   ];

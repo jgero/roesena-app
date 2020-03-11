@@ -8,20 +8,6 @@
   border-radius: 0.5rem;
   margin: 1rem;
 
-  h3 {
-    font-size: 2rem;
-    margin: 0.5rem;
-    margin-bottom: 0;
-  }
-
-  h4 {
-    margin: 0;
-    margin-left: 0.5rem;
-    font-size: 1.1rem;
-    color: var(--on-surface);
-    opacity: 0.6;
-  }
-
   .spacer {
     display: block;
     height: 1px;
@@ -51,14 +37,4 @@
     display: flex;
     justify-content: space-between;
   }
-
-  // i.edit {
-  //   top: 0.2rem;
-  //   right: 0.2rem;
-  // }
-
-  // i.details {
-  //   bottom: 0.2rem;
-  //   left: calc(50% - 0.5rem);
-  // }
 }

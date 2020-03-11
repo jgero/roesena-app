@@ -12,14 +12,14 @@ export class LoginComponent {
   constructor(public auth: AuthService, private router: Router, private loading: LoadingService) {}
 
   public onSubmit(val: any) {
-    this.loading.$isLoading.next(true);
+    this.loading.incLoading();
     this.auth.login(val.email, val.password).subscribe({
       next: _ => {
-        this.loading.$isLoading.next(false);
+        this.loading.decLoading();
         this.router.navigate(["auth"]);
       },
       error: err => {
-        this.loading.$isLoading.next(false);
+        this.loading.decLoading();
         console.log(err);
       }
     });

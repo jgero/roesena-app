@@ -11,9 +11,9 @@ export class ChangeNameComponent {
   constructor(public auth: AuthService, private loading: LoadingService) {}
 
   updateOwnName(val: any) {
-    this.loading.$isLoading.next(true);
+    this.loading.incLoading();
     this.auth.updateOwnName(val.newName).subscribe({
-      next: () => this.loading.$isLoading.next(false),
+      next: () => this.loading.decLoading(),
       error: err => console.log(err)
     });
   }

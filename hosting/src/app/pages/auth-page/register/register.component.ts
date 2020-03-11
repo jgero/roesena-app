@@ -13,14 +13,14 @@ export class RegisterComponent {
   constructor(public auth: AuthService, private router: Router, private load: LoadingService) {}
 
   public onSubmit(val: any) {
-    this.load.$isLoading.next(true);
+    this.load.incLoading();
     this.auth.register(val.email, val.password, val.name).subscribe({
       next: _ => {
-        this.load.$isLoading.next(false);
+        this.load.decLoading();
         this.router.navigate(["auth"]);
       },
       error: err => {
-        this.load.$isLoading.next(false);
+        this.load.decLoading();
         console.log(err);
       }
     });

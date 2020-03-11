@@ -14,10 +14,11 @@ import { NextEventResolver } from "./resolvers/next-event.resolver";
 import { LoadUserGuard } from "./guards/load-user.guard";
 import { RegisterComponent } from "./pages/auth-page/register/register.component";
 import { LoginComponent } from "./pages/auth-page/login/login.component";
-import { ProfileComponent } from "./pages/auth-page/profile/profile.component";
 import { AuthLevelManagerComponent } from "./pages/auth-page/auth-level-manager/auth-level-manager.component";
 import { ChangeNameComponent } from "./pages/auth-page/change-name/change-name.component";
 import { LoggedInGuard } from "./guards/logged-in.guard";
+import { EventForProfileResolver } from "./resolvers/event-for-profile.resolver";
+import { MyEventsComponent } from "./pages/auth-page/my-events/my-events.component";
 
 const routes: Routes = [
   {
@@ -55,11 +56,12 @@ const routes: Routes = [
           {
             path: "",
             pathMatch: "full",
-            redirectTo: "profile"
+            redirectTo: "my-events"
           },
           {
-            path: "profile",
-            component: ProfileComponent,
+            path: "my-events",
+            component: MyEventsComponent,
+            resolve: { events: EventForProfileResolver },
             canActivate: [LoggedInGuard]
           },
           {

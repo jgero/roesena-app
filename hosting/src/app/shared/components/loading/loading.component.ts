@@ -1,10 +1,8 @@
-import { Component, OnInit, HostBinding, OnDestroy } from "@angular/core";
-import { LoadingService } from "../../services/loading.service";
-import { Subscription } from "rxjs";
+import { Component } from "@angular/core";
 
 @Component({
   selector: "app-loading",
-  templateUrl: "./loading.component.html",
+  template: "",
   styleUrls: ["./loading.component.scss"]
 })
 export class LoadingComponent {}
