@@ -1,20 +1,19 @@
-<h2>Event-Name</h2>
-<h2>Datum</h2>
-<h2>Meine Teilnehmerzahl</h2>
-<ng-container *ngFor="let event of $events">
+<form
+  *ngFor="let event of $events"
+  #amountForm="ngForm"
+  (ngSubmit)="respondToEvent(event.id, amountForm.value); amountForm.reset()"
+>
   <h3>{{ event.title }}</h3>
   <h4>
     <time [dateTime]="event.startDate">{{ event.startDate | toLocalDateString }}</time
     >-<time [dateTime]="event.endDate">{{ event.endDate | toLocalDateString }}</time>
   </h4>
-  <form #amountForm="ngForm" (ngSubmit)="respondToEvent(event.id, amountForm.value); amountForm.reset()">
-    <app-input
-      name="amount"
-      label="Teilnehmerzahl"
-      [required]="true"
-      pattern="^[0-9]+$"
-      [ngModel]="getAmountFromEvent(event)"
-    ></app-input>
-    <button class="text" type="submit">Speichern</button>
-  </form>
-</ng-container>
+  <app-input
+    name="amount"
+    label="Teilnehmerzahl"
+    [required]="true"
+    pattern="^[0-9]+$"
+    [ngModel]="getAmountFromEvent(event)"
+  ></app-input>
+  <button class="text" type="submit">Speichern</button>
+</form>

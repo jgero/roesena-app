@@ -1,8 +1,9 @@
-<h3>Name</h3>
-<h3>Berechtigungsgruppe</h3>
-<span></span>
-<ng-container *ngFor="let person of $persons | async">
-  <div class="name">{{ person.name }}</div>
+<form
+  *ngFor="let person of $persons | async"
+  #authLevelForm="ngForm"
+  (ngSubmit)="updateAuthLevel(person.id, authLevelForm.value.authLevel)"
+>
+  <h3>{{ person.name }}</h3>
   <app-dropdown
     #authInput
     [items]="dropdownItems"
@@ -10,5 +11,5 @@
     label="Berechtigungsgruppe"
     [ngModel]="person.authLevel"
   ></app-dropdown>
-  <button class="text" (click)="updateAuthLevel(person.id, authInput.value)">Speichern</button>
-</ng-container>
+  <button class="text" type="submit">Speichern</button>
+</form>

@@ -1,6 +1,6 @@
 <button routerLink="/events" class="close text"><i class="material-icons">close</i>SCHLIESSEN</button>
 
-<h2>{{ title }}</h2>
+<h1>{{ title }}</h1>
 
 <form #eventForm="ngForm" (ngSubmit)="saveEvent(eventForm.value)">
   <app-input
