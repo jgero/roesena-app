@@ -19,6 +19,7 @@ import { ChangeNameComponent } from "./pages/auth-page/change-name/change-name.c
 import { LoggedInGuard } from "./guards/logged-in.guard";
 import { EventForProfileResolver } from "./resolvers/event-for-profile.resolver";
 import { MyEventsComponent } from "./pages/auth-page/my-events/my-events.component";
+import { EventDetailsComponent } from "./pages/events-page/event-details/event-details.component";
 
 const routes: Routes = [
   {
@@ -28,8 +29,10 @@ const routes: Routes = [
       { path: "", component: StartPageComponent, resolve: { appEvent: NextEventResolver } },
       {
         path: "events",
-        component: EventsPageComponent,
         children: [
+          { path: "", redirectTo: "overview", pathMatch: "full" },
+          { path: "overview", component: EventsPageComponent },
+          { path: "details/:id", component: EventDetailsComponent, resolve: { appEvent: EventByIdResolver } },
           { path: "edit", component: EventEditorComponent },
           {
             path: "edit/:id",

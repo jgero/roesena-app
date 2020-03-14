@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { environment } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
-import { AngularFireFunctionsModule, ORIGIN } from "@angular/fire/functions";
+import { AngularFireFunctionsModule } from "@angular/fire/functions";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -21,7 +21,8 @@ import { RegisterComponent } from "./pages/auth-page/register/register.component
 import { ChangeNameComponent } from "./pages/auth-page/change-name/change-name.component";
 import { AuthLevelManagerComponent } from "./pages/auth-page/auth-level-manager/auth-level-manager.component";
 import { MyEventsComponent } from "./pages/auth-page/my-events/my-events.component";
-import { LoadingPipe } from "./shared/pipes/loading.pipe";
+import { EventDetailsComponent } from "./pages/events-page/event-details/event-details.component";
+import { ParticipantComponent } from "./pages/events-page/event-details/participant/participant.component";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,9 @@ import { LoadingPipe } from "./shared/pipes/loading.pipe";
     RegisterComponent,
     ChangeNameComponent,
     AuthLevelManagerComponent,
-    MyEventsComponent
+    MyEventsComponent,
+    EventDetailsComponent,
+    ParticipantComponent
   ],
   imports: [
     BrowserModule,

@@ -22,7 +22,7 @@ export const deleteUser = functions.auth.user().onDelete(user => {
 
 export const respondToEvent = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
-    if (!(req.body.data && req.body.data.id && req.body.data.amount && req.body.data.amount >= 0)) {
+    if (!req.body.data || !req.body.data.id || req.body.data.amount === undefined || req.body.data.amount < 0) {
       res.status(400).send({ data: { error: "invalid request body" } });
       return;
     }

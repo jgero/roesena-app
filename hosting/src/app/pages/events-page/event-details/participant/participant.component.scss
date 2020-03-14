@@ -1,0 +1,28 @@
+:host {
+  padding: 1rem;
+  margin: 0.5rem;
+  display: flex;
+  width: max-content;
+  height: 3rem;
+  align-items: center;
+  border-radius: 1.5rem;
+  border: 1px solid transparent;
+
+  &.accepted {
+    background-color: var(--primary);
+    color: var(--on-primary);
+  }
+
+  &.rejected {
+    background-color: var(--error);
+    color: var(--on-error);
+  }
+
+  &.pending {
+    border-color: var(--primary);
+  }
+
+  .amount {
+    margin-left: 1rem;
+  }
+}

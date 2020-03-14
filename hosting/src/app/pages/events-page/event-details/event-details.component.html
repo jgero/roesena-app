@@ -1,0 +1,18 @@
+<h1>{{ event.title }}</h1>
+
+<div class="date">
+  <h4>
+    <time [dateTime]="event.startDate">{{ event.startDate | toLocalDateString }} {{ event.startDate | toLocalTimeString }}</time>
+  </h4>
+  <span> - </span>
+  <h4>
+    <time [dateTime]="event.endDate">{{ event.endDate | toLocalDateString }} {{ event.endDate | toLocalTimeString }}</time>
+  </h4>
+</div>
+
+<div class="content">
+  <p>{{ event.description }}</p>
+  <div class="participants">
+    <app-participant *ngFor="let participant of event.participants" [participant]="participant"></app-participant>
+  </div>
+</div>
