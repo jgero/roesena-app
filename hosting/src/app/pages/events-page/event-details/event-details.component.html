@@ -12,7 +12,7 @@
 
 <div class="content">
   <p>{{ event.description }}</p>
-  <div class="participants">
+  <div class="participants" *ngIf="auth.$user | async">
     <app-participant *ngFor="let participant of event.participants" [participant]="participant"></app-participant>
   </div>
 </div>
