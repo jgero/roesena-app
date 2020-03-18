@@ -1,8 +1,13 @@
-import { Component } from "@angular/core";
+import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-loading",
-  template: "",
-  styleUrls: ["./loading.component.scss"]
+  templateUrl: "./loading.component.html",
+  styleUrls: ["./loading.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoadingComponent {}
+export class LoadingComponent {
+  @Input()
+  $isLoading: Observable<boolean>;
+}

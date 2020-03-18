@@ -12,6 +12,7 @@ import { InputComponent } from "./components/input/input.component";
 import { DropdownComponent } from "./components/dropdown/dropdown.component";
 import { PersonManagerComponent } from "./components/person-manager/person-manager.component";
 import { TabBarComponent } from "./components/tab-bar/tab-bar.component";
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
 const components = [
   NavBarComponent,
@@ -25,7 +26,7 @@ const components = [
 const pipes = [ToLocalDateStringPipe, ToLocalTimeStringPipe];
 
 @NgModule({
-  declarations: [...components, ...pipes],
+  declarations: [...components, ...pipes, SnackbarComponent],
   imports: [CommonModule, RouterModule],
   exports: [...components, ...pipes]
 })
