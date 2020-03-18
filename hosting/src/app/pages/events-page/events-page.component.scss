@@ -3,6 +3,17 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  position: relative;
+
+  app-snackbar {
+    position: absolute;
+    bottom: 1rem;
+  }
+
+  app-loading {
+    width: 100%;
+    height: 5px;
+  }
 
   .eventWrapper {
     display: grid;

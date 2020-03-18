@@ -21,12 +21,12 @@ const components = [
   InputComponent,
   DropdownComponent,
   PersonManagerComponent,
-  TabBarComponent
+  TabBarComponent, SnackbarComponent
 ];
 const pipes = [ToLocalDateStringPipe, ToLocalTimeStringPipe];
 
 @NgModule({
-  declarations: [...components, ...pipes, SnackbarComponent],
+  declarations: [...components, ...pipes],
   imports: [CommonModule, RouterModule],
   exports: [...components, ...pipes]
 })
