@@ -1,14 +1,23 @@
 <input
-  [class.empty]="input.value.length === 0"
-  type="text"
-  [value]="value"
-  (change)="valueChange.emit(input.value)"
   #input
+  *ngIf="type !== 'area'; else area"
+  [class.empty]="input.value.length === 0"
+  [value]="value"
   [required]="required"
   [pattern]="pattern"
   [type]="type"
   (keyup)="onChange()"
   (blur)="propagateTouch()"
 />
+<ng-template #area>
+  <textarea
+    #input
+    rows="10"
+    [class.empty]="input.value.length === 0"
+    [value]="value"
+    (keyup)="onChange()"
+    (blur)="propagateTouch()"
+  ></textarea>
+</ng-template>
 <span [class.invalid]="!isValid">{{ label }}</span>
 <i class="material-icons" *ngIf="!isValid">report_problem</i>

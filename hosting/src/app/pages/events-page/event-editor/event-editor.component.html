@@ -14,6 +14,7 @@
   <app-input
     name="description"
     label="Beschreibung"
+    type="area"
     [ngModel]="initData.description"
     [style.grid-area]="'description'"
   ></app-input>
@@ -63,11 +64,8 @@
     label="Berechtigungsgruppe"
   ></app-dropdown>
 
-  <app-person-manager
-    name="participants"
-    [ngModel]="initData.participants"
-    [style.grid-area]="'participants'"
-  ></app-person-manager>
+  <app-person-manager name="participants" [ngModel]="initData.participants" [style.grid-area]="'participants'">
+  </app-person-manager>
 
   <button type="submit" class="save contained" [disabled]="eventForm.invalid" [style.grid-area]="'save'">
     <i class="material-icons">save</i>Speichern

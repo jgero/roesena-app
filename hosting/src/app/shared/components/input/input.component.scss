@@ -4,7 +4,12 @@
   font-size: $size;
   width: 100%;
 
-  input {
+  textarea {
+    resize: none;
+  }
+
+  input,
+  textarea {
     font-size: $size;
     padding: $size;
     width: 100%;
@@ -34,8 +39,8 @@
     }
   }
 
-  input:focus + span,
-  input:not(.empty) + span {
+  :focus + span,
+  :not(.empty) + span {
     top: -#{$size / 2};
     background-color: var(--surface);
   }
