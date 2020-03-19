@@ -1,23 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from "@angular/core";
 import { Observable, Subscription, BehaviorSubject } from "rxjs";
-import { trigger, transition, style, animate } from "@angular/animations";
+import { inOutAnimation } from 'src/app/utils/animations';
 
 @Component({
   selector: "app-snackbar",
   templateUrl: "./snackbar.component.html",
   styleUrls: ["./snackbar.component.scss"],
-  animations: [
-    trigger("inOutAnimation", [
-      transition(":enter", [
-        style({ transform: "translateY(100%)", opacity: 0 }),
-        animate("0.2s ease-out", style({ transform: "translateY(0)", opacity: 1 }))
-      ]),
-      transition(":leave", [
-        style({ transform: "translateY(0)", opacity: 1 }),
-        animate("0.2s ease-out", style({ transform: "translateY(100%)", opacity: 0 }))
-      ])
-    ])
-  ]
+  animations: [inOutAnimation]
 })
 export class SnackbarComponent implements OnInit, OnDestroy {
   @Input()
@@ -27,7 +16,7 @@ export class SnackbarComponent implements OnInit, OnDestroy {
   private sub: Subscription;
   $data = new BehaviorSubject<{ message: string; isVisible: boolean }>({ message: "", isVisible: false });
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.sub = this.message.subscribe(msg => {

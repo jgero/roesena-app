@@ -1,13 +1,11 @@
 <app-nav-bar></app-nav-bar>
-<img
-  src="assets/wappen.svg"
-  alt="RöSeNa-Wappen"
-  routerLink="/"
-  routerLinkActive="opac"
-  [routerLinkActiveOptions]="{ exact: true }"
-/>
-<main>
-  <router-outlet></router-outlet>
+<img src="assets/wappen.svg" alt="RöSeNa-Wappen" routerLink="/" routerLinkActive="opac"
+  [routerLinkActiveOptions]="{ exact: true }" />
+<main [@routeAnimation]="prepareRoute(outlet)">
+  <div class="loader" *ngIf="$isLoading | async">
+    <app-loading [$isLoading]="$isLoading"></app-loading>
+  </div>
+  <!-- <ng-template #outletTemp> -->
+  <router-outlet #outlet="outlet"></router-outlet>
+  <!-- </ng-template> -->
 </main>
-
-<app-loading *ngIf="(loading.$isLoading | async) > 0"></app-loading>

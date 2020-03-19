@@ -26,7 +26,7 @@ const routes: Routes = [
     path: "",
     canActivate: [LoadUserGuard],
     children: [
-      { path: "", component: StartPageComponent, resolve: { appEvent: NextEventResolver } },
+      { path: "", component: StartPageComponent, resolve: { appEvent: NextEventResolver }, data: { animation: "StartPage" } },
       {
         path: "events",
         children: [
@@ -39,12 +39,14 @@ const routes: Routes = [
             component: EventEditorComponent,
             resolve: { appEvent: EventByIdResolver }
           }
-        ]
+        ],
+        data: { animation: "EventsPage" }
       },
       {
         path: "calendar",
         component: CalendarPageComponent,
-        resolve: { calendarEvents: CalendarEventsResolver }
+        resolve: { calendarEvents: CalendarEventsResolver },
+        data: { animation: "CalendarPage" }
       },
       {
         path: "calendar/:id",
@@ -85,15 +87,16 @@ const routes: Routes = [
             path: "login",
             component: LoginComponent
           }
-        ]
+        ],
+        data: { animation: "AuthPage" }
       }
     ]
   },
-  { path: "**", component: NotFoundPageComponent, pathMatch: "full" }
+  { path: "**", component: NotFoundPageComponent, pathMatch: "full", data: { animation: "NotFoundPage" } }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
