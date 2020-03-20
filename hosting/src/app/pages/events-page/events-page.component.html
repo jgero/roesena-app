@@ -5,6 +5,6 @@
   <app-event-card *ngFor="let event of $events | async" [event]="event"></app-event-card>
 </div>
 
-<button routerLink="/events/edit" class="outlined"><i class="material-icons">add</i></button>
+<button routerLink="/events/edit" class="floating-action outlined"><i class="material-icons">add</i></button>
 
 <app-snackbar [message]="$errorMessage"></app-snackbar>

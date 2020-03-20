@@ -1,7 +1,12 @@
-body {
-  font-family: 'Roboto', sans-serif;
+@import "./app/shared/partials/button.scss";
+@import "./app/shared/partials/headings.scss";
+@import "./app/shared/partials/card.scss";
+
+:root {
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box;
 
+  // default theme
   --primary: #1a237e;
   --on-primary: #ffffff;
   --background: #ffffff;
@@ -11,41 +16,24 @@ body {
   --on-surface-light: #dddddd;
   --error: #ad150d;
   --on-error: #ffffff;
-}
 
-@import "src/app/shared/partials/button.scss";
-
-h1 {
-  background-color: var(--primary);
-  color: var(--on-primary);
-  margin: 0;
-  padding: 1rem;
-  font-size: 2rem;
-  width: 100%;
+  // spacing
+  --content-spacing: 0.5rem;
   @media only screen and (min-width: 1000px) {
-    font-size: 3rem;
+    --content-spacing: 2rem;
   }
-  text-align: center;
-  box-shadow: 0 0px 5px 0px var(--on-background);
-}
 
-h2 {
-  font-size: 1.8rem;
-  color: var(--primary);
-}
-
-h3 {
-  font-size: 1.4rem;
-  margin: 0.5rem;
-  margin-bottom: 0;
-}
-
-h4 {
-  margin: 0;
-  margin-left: 0.5rem;
-  font-size: 1.1rem;
-  color: var(--on-surface);
-  opacity: 0.6;
+  // card grid columns
+  --card-grid-columns: 1fr;
+  @media only screen and (min-width: 1000px) {
+    --card-grid-columns: 1fr 1fr;
+  }
+  @media only screen and (min-width: 1250px) {
+    --card-grid-columns: 1fr 1fr 1fr;
+  }
+  @media only screen and (min-width: 1700px) {
+    --card-grid-columns: 1fr 1fr 1fr 1fr;
+  }
 }
 
 html,

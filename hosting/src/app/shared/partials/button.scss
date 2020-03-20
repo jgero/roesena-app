@@ -57,4 +57,16 @@ button {
       color: var(--on-error);
     }
   }
+
+  &.floating-action {
+    $size: 4rem;
+    border-radius: #{$size / 2};
+    padding: 0;
+    margin: #{$size / 2};
+
+    i {
+      font-size: $size;
+      padding: 0;
+    }
+  }
 }

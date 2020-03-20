@@ -7,7 +7,7 @@
 <div class="calendar">
   <h2 *ngFor="let weekday of weekdayStrings" [style.grid-area]="weekday.area">{{ weekday.text }}</h2>
 
-  <div *ngFor="let day of dayTemplate" [style.grid-area]="day.gridArea" class="dayCard">
+  <div *ngFor="let day of dayTemplate" [style.grid-area]="day.gridArea" class="day card">
     <h3>{{ day.date }}</h3>
     <ul class="eventWrapper">
       <li *ngFor="let ev of day.events">{{ ev.title }}</li>

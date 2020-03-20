@@ -28,7 +28,7 @@
 
   .calendar {
     flex: 1;
-    padding: 2rem;
+    margin: var(--content-spacing);
     display: grid;
     grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
     row-gap: 0.5rem;
@@ -53,11 +53,7 @@
       border-radius: 0.5rem;
     }
 
-    .dayCard {
-      color: var(--on-surface);
-      background-color: var(--surface);
-      box-shadow: 0 2px 5px 0px var(--on-background);
-      border-radius: 0.5rem;
+    .day.card {
       padding: 0.5rem;
       display: flex;
       flex-direction: column;

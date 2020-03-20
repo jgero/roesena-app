@@ -1,0 +1,32 @@
+h1 {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  margin: 0;
+  padding: 1rem;
+  font-size: 2rem;
+  width: 100%;
+  @media only screen and (min-width: 1000px) {
+    font-size: 3rem;
+  }
+  text-align: center;
+  box-shadow: 0 0px 5px 0px var(--on-background);
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: var(--primary);
+}
+
+h3 {
+  font-size: 1.4rem;
+  margin: 0.5rem;
+  margin-bottom: 0;
+}
+
+h4 {
+  margin: 0;
+  margin-left: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--on-surface);
+  opacity: 0.6;
+}

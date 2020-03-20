@@ -2,6 +2,7 @@
   *ngFor="let event of $events"
   #amountForm="ngForm"
   (ngSubmit)="respondToEvent(event.id, amountForm.value); amountForm.reset()"
+  class="card"
 >
   <h3>{{ event.title }}</h3>
   <h4>

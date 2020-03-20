@@ -2,6 +2,7 @@
   *ngFor="let person of $persons | async"
   #authLevelForm="ngForm"
   (ngSubmit)="updateAuthLevel(person.id, authLevelForm.value.authLevel)"
+  class="card"
 >
   <h3>{{ person.name }}</h3>
   <app-dropdown

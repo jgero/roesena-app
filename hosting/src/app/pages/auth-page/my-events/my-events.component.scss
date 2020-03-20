@@ -1,21 +1,11 @@
+@import "../../../shared/partials/card.scss";
+
 :host {
   width: 100%;
-  padding: 0.5rem;
-  @media only screen and (min-width: 1000px) {
-    padding: 5rem;
-  }
+  padding: var(--content-spacing);
 
   display: grid;
-  grid-template-columns: 1fr;
-  @media only screen and (min-width: 1000px) {
-    grid-template-columns: 1fr 1fr;
-  }
-  @media only screen and (min-width: 1250px) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-  @media only screen and (min-width: 1700px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
+  grid-template-columns: var(--card-grid-columns);
   grid-auto-rows: min-content;
   row-gap: 1rem;
   column-gap: 1rem;
@@ -25,11 +15,6 @@
     grid-template-columns: 5fr 1fr;
     grid-template-rows: auto auto 1rem auto;
     grid-template-areas: "name button" "date ." ". ." "input input";
-
-    background-color: var(--surface);
-    box-shadow: 0 0px 5px 0px var(--on-background);
-    border-radius: 0.5rem;
-    padding: 1rem;
 
     h3 {
       grid-area: name;

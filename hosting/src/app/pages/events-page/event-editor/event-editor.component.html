@@ -1,8 +1,7 @@
-<button routerLink="/events" class="close text"><i class="material-icons">close</i>SCHLIESSEN</button>
-
 <h1>{{ title }}</h1>
 
-<form #eventForm="ngForm" (ngSubmit)="saveEvent(eventForm.value)">
+<form #eventForm="ngForm" (ngSubmit)="saveEvent(eventForm.value)" class="card">
+  <button routerLink="/events" class="close text"><i class="material-icons">close</i>SCHLIESSEN</button>
   <app-input
     name="title"
     label="Titel"
@@ -67,16 +66,8 @@
   <app-person-manager name="participants" [ngModel]="initData.participants" [style.grid-area]="'participants'">
   </app-person-manager>
 
-  <button type="submit" class="save contained" [disabled]="eventForm.invalid" [style.grid-area]="'save'">
-    <i class="material-icons">save</i>Speichern
-  </button>
-  <button
-    type="button"
-    [disabled]="!route.snapshot.paramMap.get('id')"
-    class="delete contained"
-    (click)="deleteEvent()"
-    [style.grid-area]="'delete'"
-  >
+  <button type="submit" class="save contained" [disabled]="eventForm.invalid"><i class="material-icons">save</i>Speichern</button>
+  <button type="button" [disabled]="!route.snapshot.paramMap.get('id')" class="delete contained" (click)="deleteEvent()">
     <i class="material-icons">delete</i>Löschen
   </button>
 </form>

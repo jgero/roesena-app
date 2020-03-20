@@ -10,7 +10,7 @@
   </h4>
 </div>
 
-<div class="content">
+<div class="content card">
   <p>{{ event.description }}</p>
   <div class="participants" *ngIf="auth.$user | async">
     <app-participant *ngFor="let participant of event.participants" [participant]="participant"></app-participant>

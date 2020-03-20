@@ -18,33 +18,8 @@
   .eventWrapper {
     display: grid;
     width: 100%;
-    grid-template-columns: 1fr;
+    padding: var(--content-spacing);
+    grid-template-columns: var(--card-grid-columns);
     grid-auto-rows: min-content;
-
-    @media only screen and (min-width: 1000px) {
-      grid-template-columns: 1fr 1fr;
-    }
-    @media only screen and (min-width: 1250px) {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-    @media only screen and (min-width: 1700px) {
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-    }
-  }
-
-  h1 {
-    grid-area: 1 / 1 / 1 / 5;
-  }
-
-  button {
-    $size: 4rem;
-    border-radius: #{$size / 2};
-    padding: 0;
-    margin: #{$size / 2};
-
-    i {
-      font-size: $size;
-      padding: 0;
-    }
   }
 }
