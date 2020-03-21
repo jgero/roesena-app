@@ -5,6 +5,12 @@
   grid-template-columns: 1fr;
   grid-template-areas: "main";
   grid-template-rows: 1fr;
+  position: relative;
+
+  app-snackbar {
+    position: absolute;
+    bottom: 1rem;
+  }
 
   .loader {
     z-index: 2;
@@ -15,14 +21,13 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.1);
-    
+
     app-loading {
       width: 10%;
       height: 5px;
       border: 1px solid var(--on-background);
     }
   }
-
 
   @media only screen and (min-width: 1000px) {
     grid-template-columns: 1fr 7fr;

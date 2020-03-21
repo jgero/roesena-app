@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { AuthService } from "../../../services/auth.service";
-import { LoadingService } from "src/app/shared/services/loading.service";
 
 @Component({
   selector: "app-register",
@@ -10,17 +9,17 @@ import { LoadingService } from "src/app/shared/services/loading.service";
   styleUrls: ["./register.component.scss"]
 })
 export class RegisterComponent {
-  constructor(public auth: AuthService, private router: Router, private load: LoadingService) {}
+  constructor(public auth: AuthService, private router: Router) {}
 
   public onSubmit(val: any) {
-    this.load.incLoading();
+    // this.load.incLoading();
     this.auth.register(val.email, val.password, val.name).subscribe({
       next: _ => {
-        this.load.decLoading();
+        // this.load.decLoading();
         this.router.navigate(["auth"]);
       },
       error: err => {
-        this.load.decLoading();
+        // this.load.decLoading();
         console.log(err);
       }
     });

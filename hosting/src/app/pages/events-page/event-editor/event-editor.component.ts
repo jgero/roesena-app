@@ -2,6 +2,9 @@ import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AuthService } from "src/app/services/auth.service";
+import { EventDALService } from "src/app/services/DAL/event-dal.service";
+import { Subscription } from "rxjs";
+import { appEvent } from "src/app/utils/interfaces";
 
 @Component({
   selector: "app-event-editor",
@@ -28,12 +31,14 @@ export class EventEditorComponent {
     { value: 4, label: "Admins" }
   ];
   title = "";
+  private subs: Subscription[] = [];
 
   constructor(
     private firestore: AngularFirestore,
     public route: ActivatedRoute,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private eventDAL: EventDALService
   ) {
     this.title = this.route.snapshot.paramMap.get("id") ? "Event bearbeiten" : "Event erstellen";
     if (this.route.snapshot.paramMap.get("id")) {
@@ -71,7 +76,8 @@ export class EventEditorComponent {
   }
 
   public saveEvent({ title, description, authLevel, startDate, startTime, endDate, endTime, participants }: any): void {
-    const updated = {
+    const updated: appEvent = {
+      id: this.route.snapshot.paramMap.get("id") ? this.route.snapshot.paramMap.get("id") : "",
       title,
       description,
       authLevel,
@@ -81,28 +87,15 @@ export class EventEditorComponent {
       // keep old owner id if there is one
       ownerId: this.initData.ownerId === "" ? this.auth.$user.getValue().id : this.initData.ownerId
     };
-    console.log(updated);
     if (this.route.snapshot.paramMap.get("id")) {
       // update existing event here
-      this.firestore
-        .collection("events")
-        .doc(this.route.snapshot.paramMap.get("id"))
-        .update(updated);
+      this.subs.push(this.eventDAL.update(updated).subscribe());
     } else {
       // insert new event
-      this.firestore.collection("events").add(updated);
+      this.subs.push(this.eventDAL.insert(updated).subscribe());
     }
     this.router.navigate(["events"]);
   }
-
-  // private idArrayToParticipants(ids: string[]): { id: string; amount: number }[] {
-  //   return ids.map(id => {
-  //     const amount = this.initData.participants.find(el => el.id === id)
-  //       ? this.initData.participants.find(el => el.id === id).amount
-  //       : -1;
-  //     return { id, amount };
-  //   });
-  // }
 
   public deleteEvent(): void {
     this.firestore

@@ -1,26 +1,20 @@
 import { Injectable } from "@angular/core";
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
-import { AngularFirestore } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 
 import { appEvent } from "../utils/interfaces";
 import { AuthService } from "../services/auth.service";
-import { convertEventsFromDocuments } from "../utils/eventConverter";
+import { EventDALService } from "../services/DAL/event-dal.service";
 
 @Injectable({ providedIn: "root" })
 export class CalendarEventsResolver implements Resolve<appEvent> {
-  constructor(private firestore: AngularFirestore, private auth: AuthService) {}
+  constructor(private evDAL: EventDALService, private auth: AuthService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return this.auth.getUserFromServer().pipe(
-      switchMap(user =>
-        this.firestore
-          .collection<appEvent>("events", qFn => qFn.where(`authLevel`, "<=", user ? user.authLevel : 0))
-          .get()
-      ),
-      // map documents to events
-      map(convertEventsFromDocuments),
+      // request user from db before switching to the event request
+      switchMap(user => this.evDAL.getByAuthLevel(user ? user.authLevel : 0)),
       // filter out all the ones that are after the month
       map(el =>
         el.filter(el =>

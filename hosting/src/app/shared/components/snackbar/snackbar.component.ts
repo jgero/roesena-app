@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from "@angular/core";
-import { Observable, Subscription, BehaviorSubject } from "rxjs";
-import { inOutAnimation } from 'src/app/utils/animations';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { Observable, Subscription, BehaviorSubject, merge } from "rxjs";
+import { inOutAnimation } from "src/app/utils/animations";
+import { map, tap, delay, filter } from "rxjs/operators";
 
 @Component({
   selector: "app-snackbar",
@@ -16,14 +17,18 @@ export class SnackbarComponent implements OnInit, OnDestroy {
   private sub: Subscription;
   $data = new BehaviorSubject<{ message: string; isVisible: boolean }>({ message: "", isVisible: false });
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.sub = this.message.subscribe(msg => {
+      if (msg === "") return;
       this.$data.next({ message: msg, isVisible: true });
+      // for some reason angular is not detecting changes here
+      this.cdr.detectChanges();
       setTimeout(() => {
         this.$data.next({ message: "", isVisible: false });
         this.confirm.emit(false);
+        this.cdr.detectChanges();
       }, 5000);
     });
   }
@@ -31,6 +36,7 @@ export class SnackbarComponent implements OnInit, OnDestroy {
   onConfirm() {
     this.$data.next({ message: "", isVisible: false });
     this.confirm.emit(true);
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {

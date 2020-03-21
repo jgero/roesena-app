@@ -1,11 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
-import { appEvent } from "src/app/utils/interfaces";
 import { ActivatedRoute } from "@angular/router";
-import { AuthService } from "src/app/services/auth.service";
 import { AngularFireFunctions } from "@angular/fire/functions";
-import { LoadingService } from "src/app/shared/services/loading.service";
-import { NgForm } from "@angular/forms";
+import { Observable } from "rxjs";
+
+import { appEvent } from "src/app/utils/interfaces";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-my-events",
@@ -15,26 +14,21 @@ import { NgForm } from "@angular/forms";
 export class MyEventsComponent {
   $events: Observable<appEvent[]>;
 
-  constructor(
-    route: ActivatedRoute,
-    private auth: AuthService,
-    private fns: AngularFireFunctions,
-    private loading: LoadingService
-  ) {
+  constructor(route: ActivatedRoute, private auth: AuthService, private fns: AngularFireFunctions) {
     this.$events = route.snapshot.data.events;
   }
 
   respondToEvent(eventId: string, formData: any) {
-    this.loading.incLoading();
+    // this.loading.incLoading();
     this.fns
       .httpsCallable("respondToEvent")({ id: eventId, amount: parseInt(formData.amount) })
       .subscribe({
         next: () => {
-          this.loading.decLoading();
+          // this.loading.decLoading();
         },
         error: err => {
           console.log(err);
-          this.loading.decLoading();
+          // this.loading.decLoading();
         }
       });
   }

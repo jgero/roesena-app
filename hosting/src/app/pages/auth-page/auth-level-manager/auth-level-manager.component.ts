@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { LoadingService } from "src/app/shared/services/loading.service";
 import { AuthService } from "src/app/services/auth.service";
 import { Observable } from "rxjs";
 import { AngularFirestore } from "@angular/fire/firestore";
@@ -18,7 +17,7 @@ export class AuthLevelManagerComponent {
     { value: 3, label: "Präsidium" },
     { value: 4, label: "Admin" }
   ];
-  constructor(public auth: AuthService, private loading: LoadingService, private firestore: AngularFirestore) {}
+  constructor(public auth: AuthService, private firestore: AngularFirestore) {}
   private persons: Observable<{ name: string; id: string; authLevel: number }[]>;
 
   public get $persons(): Observable<{ name: string; id: string; authLevel: number }[]> {
@@ -39,9 +38,9 @@ export class AuthLevelManagerComponent {
   }
 
   updateAuthLevel(id: string, level: number) {
-    this.loading.incLoading();
+    // this.loading.incLoading();
     this.auth.updateAuthLevel(id, level).subscribe({
-      next: () => this.loading.decLoading(),
+      // next: () => this.loading.decLoading(),
       error: err => console.log(err)
     });
   }

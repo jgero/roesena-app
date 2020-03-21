@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { AuthService } from "../../../services/auth.service";
 import { Router } from "@angular/router";
-import { LoadingService } from "src/app/shared/services/loading.service";
 import { BehaviorSubject } from "rxjs";
 
 @Component({
