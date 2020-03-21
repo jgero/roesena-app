@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { AngularFirestore } from "@angular/fire/firestore";
+import { Subscription } from "rxjs";
+
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { Subscription } from "rxjs";
 import { appEvent } from "src/app/utils/interfaces";
 
 @Component({
@@ -34,7 +34,6 @@ export class EventEditorComponent {
   private subs: Subscription[] = [];
 
   constructor(
-    private firestore: AngularFirestore,
     public route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
@@ -87,22 +86,24 @@ export class EventEditorComponent {
       // keep old owner id if there is one
       ownerId: this.initData.ownerId === "" ? this.auth.$user.getValue().id : this.initData.ownerId
     };
-    if (this.route.snapshot.paramMap.get("id")) {
-      // update existing event here
-      this.subs.push(this.eventDAL.update(updated).subscribe());
-    } else {
-      // insert new event
-      this.subs.push(this.eventDAL.insert(updated).subscribe());
-    }
-    this.router.navigate(["events"]);
+    const action = this.route.snapshot.paramMap.get("id") ? this.eventDAL.update(updated) : this.eventDAL.insert(updated);
+    this.subs.push(
+      action.subscribe({
+        next: () => {
+          this.router.navigate(["events"]);
+        }
+      })
+    );
   }
 
   public deleteEvent(): void {
-    this.firestore
-      .collection("events")
-      .doc(this.route.snapshot.paramMap.get("id"))
-      .delete();
-    this.router.navigate(["events"]);
+    this.subs.push(
+      this.eventDAL.delete(this.route.snapshot.paramMap.get("id")).subscribe({
+        next: () => {
+          this.router.navigate(["events"]);
+        }
+      })
+    );
   }
 
   private getDateFromDateAndTimeStrings(d: string, time: string): Date {

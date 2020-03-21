@@ -1,10 +1,7 @@
 <h1>Veranstaltungen und Termine</h1>
-<app-loading [$isLoading]="$isLoading"></app-loading>
 
 <div class="eventWrapper">
   <app-event-card *ngFor="let event of $events | async" [event]="event"></app-event-card>
 </div>
 
 <button routerLink="/events/edit" class="floating-action outlined"><i class="material-icons">add</i></button>
-
-<app-snackbar [message]="$errorMessage"></app-snackbar>

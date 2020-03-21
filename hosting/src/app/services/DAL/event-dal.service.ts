@@ -4,7 +4,11 @@ import { Observable, from, of } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
 
 import { appEvent } from "src/app/utils/interfaces";
-import { convertEventFromDocument, convertEventsFromDocuments } from "src/app/utils/eventConverter";
+import {
+  convertEventFromDocument,
+  convertEventsFromDocuments,
+  convertEventFromChangeActions
+} from "src/app/utils/eventConverter";
 import { TracingStateService } from "../tracing-state.service";
 
 @Injectable({
@@ -44,7 +48,25 @@ export class EventDALService {
           this.trace.$isLoading.next(false);
         }),
         catchError(err => {
-          this.trace.$isLoading.next(true);
+          this.trace.$isLoading.next(false);
+          this.trace.$snackbarMessage.next(`Events konnten nicht geladen werden: ${err}`);
+          return of([]);
+        })
+      );
+  }
+
+  getStreamByAuthLevel(level: number): Observable<appEvent[]> {
+    this.trace.$isLoading.next(true);
+    return this.firestore
+      .collection<appEvent>("events", qFn => qFn.where(`authLevel`, "<=", level))
+      .snapshotChanges()
+      .pipe(
+        map(convertEventFromChangeActions),
+        tap(() => {
+          this.trace.$isLoading.next(false);
+        }),
+        catchError(err => {
+          this.trace.$isLoading.next(false);
           this.trace.$snackbarMessage.next(`Events konnten nicht geladen werden: ${err}`);
           return of([]);
         })
@@ -64,9 +86,10 @@ export class EventDALService {
       map(() => true),
       tap(() => {
         this.trace.$isLoading.next(false);
+        this.trace.$snackbarMessage.next(`Gespeichert!`);
       }),
       catchError(err => {
-        this.trace.$isLoading.next(true);
+        this.trace.$isLoading.next(false);
         this.trace.$snackbarMessage.next(`Event konnte nicht gespeichert werden: ${err}`);
         return of(false);
       })
@@ -80,9 +103,10 @@ export class EventDALService {
       map(() => true),
       tap(() => {
         this.trace.$isLoading.next(false);
+        this.trace.$snackbarMessage.next(`Gespeichert!`);
       }),
       catchError(err => {
-        this.trace.$isLoading.next(true);
+        this.trace.$isLoading.next(false);
         this.trace.$snackbarMessage.next(`Event konnte nicht hinzugefügt werden: ${err}`);
         return of(false);
       })
@@ -100,9 +124,10 @@ export class EventDALService {
       map(() => true),
       tap(() => {
         this.trace.$isLoading.next(false);
+        this.trace.$snackbarMessage.next(`Gelöscht!`);
       }),
       catchError(err => {
-        this.trace.$isLoading.next(true);
+        this.trace.$isLoading.next(false);
         this.trace.$snackbarMessage.next(`Event konnte nicht gelöscht werden: ${err}`);
         return of(false);
       })
