@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { appEvent } from "../../utils/interfaces";
 import { Subscription } from "rxjs";
+
+import { appEvent } from "../../utils/interfaces";
 
 @Component({
   selector: "app-calendar-page",
