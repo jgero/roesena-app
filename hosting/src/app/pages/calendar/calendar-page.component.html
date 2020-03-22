@@ -10,7 +10,7 @@
   <div *ngFor="let day of dayTemplate" [style.grid-area]="day.gridArea" class="day card">
     <h3>{{ day.date }}</h3>
     <ul class="eventWrapper">
-      <li *ngFor="let ev of day.events">{{ ev.title }}</li>
+      <li [routerLink]="'/events/details/' + ev.id" *ngFor="let ev of day.events">{{ ev.title }}</li>
     </ul>
   </div>
 </div>

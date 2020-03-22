@@ -10,9 +10,11 @@ import { AngularFireFunctionsModule } from "@angular/fire/functions";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { SharedModule } from "./shared/shared.module";
 import { StartPageComponent } from "./pages/start-page/start-page.component";
 import { NotFoundPageComponent } from "./pages/not-found-page/not-found-page.component";
+import { TraceabilityModule } from "./shared/traceability/traceability.module";
+import { NavigationUtilsModule } from "./shared/navigation-utils/navigation-utils.module";
+import { CardsModule } from "./shared/cards/cards.module";
 
 @NgModule({
   declarations: [AppComponent, StartPageComponent, NotFoundPageComponent],
@@ -24,7 +26,9 @@ import { NotFoundPageComponent } from "./pages/not-found-page/not-found-page.com
     AngularFirestoreModule,
     AngularFireFunctionsModule,
     AppRoutingModule,
-    SharedModule
+    TraceabilityModule,
+    NavigationUtilsModule,
+    CardsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

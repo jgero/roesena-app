@@ -10,8 +10,10 @@ import { AuthPageComponent } from "./auth-page.component";
 import { ChangeNameComponent } from "./change-name/change-name.component";
 import { MyEventsComponent } from "./my-events/my-events.component";
 import { AuthLevelManagerComponent } from "./auth-level-manager/auth-level-manager.component";
-
-import { SharedModule } from "src/app/shared/shared.module";
+import { CustomFormElementsModule } from "src/app/shared/custom-form-elements/custom-form-elements.module";
+import { NavigationUtilsModule } from "src/app/shared/navigation-utils/navigation-utils.module";
+import { CardsModule } from "src/app/shared/cards/cards.module";
+import { ConvertersModule } from "src/app/shared/converters/converters.module";
 
 @NgModule({
   declarations: [
@@ -22,6 +24,14 @@ import { SharedModule } from "src/app/shared/shared.module";
     MyEventsComponent,
     AuthLevelManagerComponent
   ],
-  imports: [CommonModule, AuthRoutingModule, FormsModule, SharedModule]
+  imports: [
+    CommonModule,
+    AuthRoutingModule,
+    FormsModule,
+    CustomFormElementsModule,
+    NavigationUtilsModule,
+    CardsModule,
+    ConvertersModule
+  ]
 })
 export class AuthModule {}
