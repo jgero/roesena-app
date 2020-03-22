@@ -30,6 +30,9 @@
     E-Mail: info@mustermail.com
   </p>
   <ng-container *ngIf="auth.$user | async; else login">
+    <button class="text" routerLink="/auth/auth-level-manager" *ngIf="(auth.$user | async).authLevel >= 4">
+      Berechtigungs Manager
+    </button>
     <button class="text" routerLink="/auth"><i class="material-icons">account_box</i>Profil</button>
     <button class="text" (click)="logout()"><i class="material-icons">meeting_room</i>Logout</button>
   </ng-container>

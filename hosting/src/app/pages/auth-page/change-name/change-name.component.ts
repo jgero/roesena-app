@@ -1,4 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostBinding, OnDestroy } from "@angular/core";
+import { Subscription } from "rxjs";
+
 import { AuthService } from "src/app/services/auth.service";
 
 @Component({
@@ -6,14 +8,16 @@ import { AuthService } from "src/app/services/auth.service";
   templateUrl: "./change-name.component.html",
   styleUrls: ["./change-name.component.scss"]
 })
-export class ChangeNameComponent {
+export class ChangeNameComponent implements OnDestroy {
+  @HostBinding("class") classes = "card";
+  private sub: Subscription;
   constructor(public auth: AuthService) {}
 
   updateOwnName(val: any) {
-    // this.loading.incLoading();
-    this.auth.updateOwnName(val.newName).subscribe({
-      // next: () => this.loading.decLoading(),
-      error: err => console.log(err)
-    });
+    this.sub = this.auth.updateOwnName(val.newName).subscribe();
+  }
+
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
   }
 }

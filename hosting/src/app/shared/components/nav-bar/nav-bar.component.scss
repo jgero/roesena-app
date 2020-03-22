@@ -1,11 +1,10 @@
 :host {
   z-index: 1;
   display: block;
-  position: relative;
   color: var(--on-surface);
   background-color: var(--surface);
   box-shadow: 0 2px 5px 0px var(--on-background);
-  height: 100vh;
+  height: 100%;
 
   @media only screen and (max-width: 1000px) {
     position: fixed;
@@ -20,12 +19,8 @@
 
   nav {
     overflow-y: auto;
-    padding: 2rem;
+    padding: var(--content-spacing);
     height: 100%;
-  }
-
-  * {
-    outline: none;
   }
 
   .logo {
