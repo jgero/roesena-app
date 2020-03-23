@@ -15,16 +15,16 @@ export class PersonDalService {
   constructor(private firestore: AngularFirestore, private trace: TracingStateService, private fns: AngularFireFunctions) {}
 
   getPersonById(id: string): Observable<appPerson | null> {
-    this.trace.$isLoading.next(true);
+    this.trace.addLoading();
     return this.firestore
       .collection("persons")
       .doc(id)
       .get()
       .pipe(
         map(convertPersonFromDocument),
-        tap(() => this.trace.$isLoading.next(false)),
+        tap(() => this.trace.completeLoading()),
         catchError(err => {
-          this.trace.$isLoading.next(false);
+          this.trace.completeLoading();
           console.error(err);
           this.trace.$snackbarMessage.next(`Fehler beim laden von Person: ${err}`);
           return of(null);
@@ -33,7 +33,7 @@ export class PersonDalService {
   }
 
   getPersonStreamById(id: string): Observable<appPerson> {
-    this.trace.$isLoading.next(true);
+    this.trace.addLoading();
     return this.firestore
       .collection("persons")
       .doc(id)
@@ -44,9 +44,9 @@ export class PersonDalService {
           val.id = id;
           return val;
         }),
-        tap(() => this.trace.$isLoading.next(false)),
+        tap(() => this.trace.completeLoading()),
         catchError(err => {
-          this.trace.$isLoading.next(false);
+          this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Fehler beim laden von Person: ${err}`);
           return of(null);
         })
@@ -54,7 +54,7 @@ export class PersonDalService {
   }
 
   update(id: string, updated: any): Observable<boolean> {
-    this.trace.$isLoading.next(true);
+    this.trace.addLoading();
     return from(
       this.firestore
         .collection("persons")
@@ -63,11 +63,11 @@ export class PersonDalService {
     ).pipe(
       map(() => true),
       tap(() => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Gespeichert!`);
       }),
       catchError(err => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim speichern von Person: ${err}`);
         return of(false);
       })
@@ -75,17 +75,17 @@ export class PersonDalService {
   }
 
   respondToEvent(id: string, amount: number): Observable<boolean> {
-    this.trace.$isLoading.next(true);
+    this.trace.addLoading();
     return this.fns
       .httpsCallable("respondToEvent")({ id, amount })
       .pipe(
         map(() => true),
         tap(() => {
-          this.trace.$isLoading.next(false);
+          this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Gespeichert!`);
         }),
         catchError(err => {
-          this.trace.$isLoading.next(false);
+          this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Fehler beim Speichern der Anzahl: ${err}`);
           return of(false);
         })

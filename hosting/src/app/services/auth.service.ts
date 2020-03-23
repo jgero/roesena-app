@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   public login(email: string, password: string): Observable<null> {
-    this.trace.$isLoading.next(true);
+    this.trace.addLoading();
     return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(
       // get the user from the credentials
       map(userCredentials => userCredentials.user),
@@ -31,10 +31,10 @@ export class AuthService {
       // hide the data from the caller
       map(() => null),
       tap(() => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
       }),
       catchError(err => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim Einloggen: ${err}`);
         return of(false);
       })
@@ -42,14 +42,14 @@ export class AuthService {
   }
 
   public logout(): Observable<boolean> {
-    this.trace.$isLoading.next(true);
+    this.trace.addLoading();
     return from(this.auth.signOut()).pipe(
       map(() => true),
       tap(() => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
       }),
       catchError(err => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim Ausloggen: ${err}`);
         return of(false);
       })
@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   public register(email: string, password: string, name: string): Observable<null> {
-    this.trace.$isLoading.next(true);
+    this.trace.addLoading();
     return from(this.auth.createUserWithEmailAndPassword(email, password)).pipe(
       // wait until the person is created in the database
       switchMap(user => this.personDAO.getPersonStreamById(user.user.uid).pipe(take(1))),
@@ -68,10 +68,10 @@ export class AuthService {
       // remove the data from the observable
       map(() => null),
       tap(() => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
       }),
       catchError(err => {
-        this.trace.$isLoading.next(false);
+        this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim Registrieren: ${err}`);
         return of(null);
       })
@@ -79,7 +79,7 @@ export class AuthService {
   }
 
   public updateName(id: string, name: string): Observable<null> {
-    // this.trace.$isLoading.next(false);
+    // this.trace.completeLoading();
     return this.personDAO.update(id, { name }).pipe(
       // get the user data from the database
       switchMap(user => (user ? this.personDAO.getPersonById(id) : of(null))),
@@ -89,12 +89,7 @@ export class AuthService {
   }
 
   public updateAuthLevel(id: string, authLevel: number): Observable<null> {
-    return this.personDAO.update(id, { authLevel }).pipe(
-      // get the user data from the database
-      switchMap(user => (user ? this.personDAO.getPersonById(id) : of(null))),
-      tap((user: appPerson | null) => this.$user.next(user)),
-      map(() => null)
-    );
+    return this.personDAO.update(id, { authLevel }).pipe(map(() => null));
   }
 
   getAuthLevelText(level: number): string {

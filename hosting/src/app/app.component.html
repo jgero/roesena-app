@@ -7,7 +7,7 @@
   [routerLinkActiveOptions]="{ exact: true }"
 />
 <main [@routeAnimation]="prepareRoute(outlet)">
-  <div class="loader" *ngIf="trace.$isLoading | async">
+  <div class="loader" *ngIf="(trace.$isLoading | async) > 0">
     <app-loading [$isLoading]="trace.$isLoading"></app-loading>
   </div>
   <router-outlet #outlet="outlet"></router-outlet>
