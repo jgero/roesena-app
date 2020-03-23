@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { AngularFireFunctions } from "@angular/fire/functions";
 import { Observable } from "rxjs";
 
 import { appEvent } from "src/app/utils/interfaces";
 import { AuthService } from "src/app/services/auth.service";
+import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 
 @Component({
   selector: "app-my-events",
@@ -14,23 +14,12 @@ import { AuthService } from "src/app/services/auth.service";
 export class MyEventsComponent {
   $events: Observable<appEvent[]>;
 
-  constructor(route: ActivatedRoute, public auth: AuthService, private fns: AngularFireFunctions) {
+  constructor(route: ActivatedRoute, public auth: AuthService, private personDAO: PersonDalService) {
     this.$events = route.snapshot.data.events;
   }
 
   respondToEvent(eventId: string, formData: any) {
-    // this.loading.incLoading();
-    this.fns
-      .httpsCallable("respondToEvent")({ id: eventId, amount: parseInt(formData.amount) })
-      .subscribe({
-        next: () => {
-          // this.loading.decLoading();
-        },
-        error: err => {
-          console.log(err);
-          // this.loading.decLoading();
-        }
-      });
+    this.personDAO.respondToEvent(eventId, parseInt(formData.amount)).subscribe();
   }
 
   getAmountFromEvent(userId: string, ev: appEvent): number {

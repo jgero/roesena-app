@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore, DocumentSnapshot, DocumentData, DocumentChangeAction, Action } from "@angular/fire/firestore";
+import { AngularFireFunctions } from "@angular/fire/functions";
 import { Observable, of, from } from "rxjs";
 import { map, tap, catchError, filter } from "rxjs/operators";
 import "firebase/firestore";
@@ -11,7 +12,7 @@ import { TracingStateService } from "../tracing-state.service";
   providedIn: "root"
 })
 export class PersonDalService {
-  constructor(private firestore: AngularFirestore, private trace: TracingStateService) {}
+  constructor(private firestore: AngularFirestore, private trace: TracingStateService, private fns: AngularFireFunctions) {}
 
   getPersonById(id: string): Observable<appPerson | null> {
     this.trace.$isLoading.next(true);
@@ -71,6 +72,24 @@ export class PersonDalService {
         return of(false);
       })
     );
+  }
+
+  respondToEvent(id: string, amount: number): Observable<boolean> {
+    this.trace.$isLoading.next(true);
+    return this.fns
+      .httpsCallable("respondToEvent")({ id, amount })
+      .pipe(
+        map(() => true),
+        tap(() => {
+          this.trace.$isLoading.next(false);
+          this.trace.$snackbarMessage.next(`Gespeichert!`);
+        }),
+        catchError(err => {
+          this.trace.$isLoading.next(false);
+          this.trace.$snackbarMessage.next(`Fehler beim Speichern der Anzahl: ${err}`);
+          return of(false);
+        })
+      );
   }
 }
 
