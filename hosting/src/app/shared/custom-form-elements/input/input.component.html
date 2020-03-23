@@ -7,7 +7,7 @@
   [pattern]="pattern"
   [type]="type"
   (keyup)="onChange()"
-  (blur)="propagateTouch()"
+  (blur)="onTouch()"
 />
 <ng-template #area>
   <textarea
@@ -16,7 +16,7 @@
     [class.empty]="input.value.length === 0"
     [value]="value"
     (keyup)="onChange()"
-    (blur)="propagateTouch()"
+    (blur)="onTouch()"
   ></textarea>
 </ng-template>
 <span [class.invalid]="!isValid">{{ label }}</span>

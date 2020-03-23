@@ -5,14 +5,37 @@
   height: 100%;
   position: relative;
 
-  app-snackbar {
-    position: absolute;
-    bottom: 1rem;
+  .filteringWrapper,
+  .card.wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--content-spacing);
   }
 
-  app-loading {
-    width: 100%;
-    height: 5px;
+  .filteringWrapper {
+    padding-bottom: 0;
+
+    i {
+      font-size: 2rem;
+      padding: 0;
+      transition: transform 0.2s ease-out;
+
+      &.rotated {
+        transform: rotate(180deg);
+      }
+    }
+
+    button {
+      margin-right: 0.5rem;
+    }
+
+    .search,
+    .filter {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .eventWrapper {

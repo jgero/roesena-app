@@ -57,14 +57,31 @@ export class InputComponent implements AfterViewInit, ControlValueAccessor {
     this.isValid = this.inputRef.nativeElement.checkValidity();
     this.value = this.inputRef.nativeElement.value;
     this.valueChange.emit(this.inputRef.nativeElement.value);
-    this.propagateChange(this.value);
+    if (this.propagateChange) {
+      this.propagateChange(this.value);
+    }
+  }
+
+  onTouch() {
+    if (this.propagateTouch) {
+      this.propagateTouch();
+    }
   }
 
   writeValue(obj: string): void {
     if (obj) {
       this.inputRef.nativeElement.value = obj;
       this.isValid = this.inputRef.nativeElement.checkValidity();
+      this.value = obj;
+      this.valueChange.emit(this.inputRef.nativeElement.value);
     }
+  }
+
+  clear(): void {
+    this.inputRef.nativeElement.value = "";
+    this.isValid = this.inputRef.nativeElement.checkValidity();
+    this.value = "";
+    this.valueChange.emit(this.inputRef.nativeElement.value);
   }
 
   registerOnChange(fn: any): void {

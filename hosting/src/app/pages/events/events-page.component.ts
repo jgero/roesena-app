@@ -13,6 +13,7 @@ import { EventDALService } from "src/app/services/DAL/event-dal.service";
 })
 export class EventsPageComponent {
   $events: Observable<appEvent[]>;
+  descending = true;
 
   constructor(evDAO: EventDALService, auth: AuthService) {
     this.$events = auth.getUserFromServer().pipe(switchMap(user => evDAO.getStreamByAuthLevel(user ? user.authLevel : 0)));
