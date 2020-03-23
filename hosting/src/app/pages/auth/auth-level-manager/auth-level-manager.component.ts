@@ -1,8 +1,9 @@
 import { Component } from "@angular/core";
-import { AuthService } from "src/app/services/auth.service";
 import { Observable } from "rxjs";
-import { AngularFirestore } from "@angular/fire/firestore";
-import { map } from "rxjs/operators";
+
+import { appPerson } from "src/app/utils/interfaces";
+import { AuthService } from "src/app/services/auth.service";
+import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 
 @Component({
   selector: "app-auth-level-manager",
@@ -17,31 +18,17 @@ export class AuthLevelManagerComponent {
     { value: 3, label: "Präsidium" },
     { value: 4, label: "Admin" }
   ];
-  constructor(public auth: AuthService, private firestore: AngularFirestore) {}
-  private persons: Observable<{ name: string; id: string; authLevel: number }[]>;
+  private persons: Observable<appPerson[]>;
 
-  public get $persons(): Observable<{ name: string; id: string; authLevel: number }[]> {
+  constructor(public auth: AuthService, private personsDAO: PersonDalService) {}
+
+  public get $persons(): Observable<appPerson[]> {
     if (this.persons) return this.persons;
-    this.persons = this.firestore
-      .collection<{ name: string; authLevel: number }>("persons")
-      .snapshotChanges()
-      .pipe(
-        map(action =>
-          action.map(val => ({
-            name: val.payload.doc.data().name,
-            id: val.payload.doc.id,
-            authLevel: val.payload.doc.data().authLevel
-          }))
-        )
-      );
+    this.persons = this.personsDAO.getPersonsStream();
     return this.persons;
   }
 
   updateAuthLevel(id: string, level: number) {
-    // this.loading.incLoading();
-    this.auth.updateAuthLevel(id, level).subscribe({
-      // next: () => this.loading.decLoading(),
-      error: err => console.log(err)
-    });
+    this.auth.updateAuthLevel(id, level).subscribe();
   }
 }

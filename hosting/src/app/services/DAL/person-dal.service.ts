@@ -53,6 +53,24 @@ export class PersonDalService {
       );
   }
 
+  getPersonsStream(): Observable<appPerson[]> {
+    this.trace.addLoading();
+    return this.firestore
+      .collection<{ name: string; authLevel: number }>("persons")
+      .snapshotChanges()
+      .pipe(
+        map(convertPersonsFromChangeAction),
+        tap(() => {
+          this.trace.completeLoading();
+        }),
+        catchError(err => {
+          this.trace.completeLoading();
+          this.trace.$snackbarMessage.next(`Fehler beim laden von Personen: ${err}`);
+          return of([]);
+        })
+      );
+  }
+
   update(id: string, updated: any): Observable<boolean> {
     this.trace.addLoading();
     return from(
@@ -98,11 +116,10 @@ function convertPersonFromDocument(docSnapshot: DocumentSnapshot<DocumentData>):
   return { id: docSnapshot.id, name: docSnapshot.data().name, authLevel: docSnapshot.data().authLevel };
 }
 
-function convertPersonFromChangeAction(snapshot: Action<DocumentSnapshot<appPerson>>): appPerson {
-  console.log(snapshot.payload);
-  return {
-    id: snapshot.payload.id,
-    name: snapshot.payload.data().name,
-    authLevel: snapshot.payload.data().authLevel
-  };
+function convertPersonsFromChangeAction(snapshot: DocumentChangeAction<{ name: string; authLevel: number }>[]): appPerson[] {
+  return snapshot.map(val => ({
+    name: val.payload.doc.data().name,
+    id: val.payload.doc.id,
+    authLevel: val.payload.doc.data().authLevel
+  }));
 }
