@@ -8,9 +8,7 @@ export class TracingStateService {
   $isLoading = new BehaviorSubject<number>(0);
   $snackbarMessage = new BehaviorSubject<string>("");
 
-  constructor() {
-    this.$isLoading.subscribe(el => console.log(el));
-  }
+  constructor() {}
 
   addLoading(): void {
     this.$isLoading.next(this.$isLoading.getValue() + 1);

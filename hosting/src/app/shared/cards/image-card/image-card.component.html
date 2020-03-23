@@ -1,0 +1,5 @@
+<img [src]="$src | async" />
+<h3>{{ image.title }}</h3>
+<div class="tagWrapper">
+  <span *ngFor="let tag of image.tags">{{ tag }}</span>
+</div>

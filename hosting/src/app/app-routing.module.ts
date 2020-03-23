@@ -27,6 +27,11 @@ const routes: Routes = [
         path: "auth",
         loadChildren: () => import("./pages/auth/auth.module").then(m => m.AuthModule),
         data: { animation: "AuthPage" }
+      },
+      {
+        path: "images",
+        loadChildren: () => import("./pages/images/images.module").then(m => m.ImagesModule),
+        data: { animation: "ImagePage" }
       }
     ]
   },

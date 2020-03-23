@@ -7,6 +7,7 @@ import { environment } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireFunctionsModule } from "@angular/fire/functions";
+import { AngularFireStorageModule } from "@angular/fire/storage";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -25,6 +26,7 @@ import { CardsModule } from "./shared/cards/cards.module";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireFunctionsModule,
+    AngularFireStorageModule,
     AppRoutingModule,
     TraceabilityModule,
     NavigationUtilsModule,

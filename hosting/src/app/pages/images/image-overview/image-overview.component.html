@@ -1,0 +1,5 @@
+<h1>Bilder</h1>
+
+<div class="imageWrapper">
+  <app-image-card *ngFor="let image of $images | async" [image]="image"></app-image-card>
+</div>

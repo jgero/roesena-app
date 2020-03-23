@@ -5,8 +5,9 @@ import { RouterModule } from "@angular/router";
 import { EventCardComponent } from "./event-card/event-card.component";
 
 import { ConvertersModule } from "../converters/converters.module";
+import { ImageCardComponent } from "./image-card/image-card.component";
 
-const components = [EventCardComponent];
+const components = [EventCardComponent, ImageCardComponent];
 
 @NgModule({
   declarations: components,
