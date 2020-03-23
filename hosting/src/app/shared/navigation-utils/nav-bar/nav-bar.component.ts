@@ -1,6 +1,6 @@
 import { Component, HostBinding } from "@angular/core";
+
 import { AuthService } from "src/app/services/auth.service";
-import { Router } from "@angular/router";
 
 @Component({
   selector: "app-nav-bar",
@@ -8,14 +8,14 @@ import { Router } from "@angular/router";
   styleUrls: ["./nav-bar.component.scss"]
 })
 export class NavBarComponent {
-  constructor(public auth: AuthService, private router: Router) {}
+  constructor(public auth: AuthService) {}
 
   @HostBinding("class.visible") isVisible = true;
 
   public logout() {
     this.auth.logout().subscribe({
       next: () => {
-        this.router.navigate(["/"]);
+        location.reload();
       }
     });
   }

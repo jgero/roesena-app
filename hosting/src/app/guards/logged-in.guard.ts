@@ -13,10 +13,6 @@ export class LoggedInGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    // this.loading.incLoading();
-    return this.auth.getUserFromServer().pipe(
-      // tap(() => this.loading.decLoading()),
-      map(user => (user ? true : this.router.parseUrl("/auth/login")))
-    );
+    return this.auth.$user.getValue() ? true : this.router.parseUrl("/auth/login");
   }
 }

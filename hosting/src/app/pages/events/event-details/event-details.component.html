@@ -11,6 +11,9 @@
 </div>
 
 <div class="content card">
+  <button class="text" *ngIf="auth.$user | async" [routerLink]="'/events/edit/' + event.id">
+    <i class="material-icons">edit</i>
+  </button>
   <p>{{ event.description }}</p>
   <div class="participants" *ngIf="auth.$user | async">
     <app-participant *ngFor="let participant of event.participants" [participant]="participant"></app-participant>

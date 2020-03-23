@@ -36,16 +36,16 @@ const routes: Routes = [
         path: "rename",
         component: ChangeNameComponent,
         canActivate: [LoggedInGuard]
-      },
-      {
-        path: "register",
-        component: RegisterComponent
-      },
-      {
-        path: "login",
-        component: LoginComponent
       }
     ]
+  },
+  {
+    path: "register",
+    component: RegisterComponent
+  },
+  {
+    path: "login",
+    component: LoginComponent
   }
 ];
 

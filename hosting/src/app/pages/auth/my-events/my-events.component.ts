@@ -14,7 +14,7 @@ import { AuthService } from "src/app/services/auth.service";
 export class MyEventsComponent {
   $events: Observable<appEvent[]>;
 
-  constructor(route: ActivatedRoute, private auth: AuthService, private fns: AngularFireFunctions) {
+  constructor(route: ActivatedRoute, public auth: AuthService, private fns: AngularFireFunctions) {
     this.$events = route.snapshot.data.events;
   }
 
@@ -33,8 +33,8 @@ export class MyEventsComponent {
       });
   }
 
-  getAmountFromEvent(ev: appEvent): number {
-    const amount = ev.participants.find(participant => participant.id === this.auth.$user.getValue().id).amount;
+  getAmountFromEvent(userId: string, ev: appEvent): number {
+    const amount = ev.participants.find(participant => participant.id === userId).amount;
     return amount >= 0 ? amount : null;
   }
 }

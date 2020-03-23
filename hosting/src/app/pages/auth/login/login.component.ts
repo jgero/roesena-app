@@ -1,28 +1,28 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { Location } from "@angular/common";
+import { filter } from "rxjs/operators";
+
 import { AuthService } from "../../../services/auth.service";
-import { Router } from "@angular/router";
-import { BehaviorSubject } from "rxjs";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"]
 })
-export class LoginComponent {
-  $isLoading = new BehaviorSubject<boolean>(false);
-  constructor(public auth: AuthService, private router: Router) {}
+export class LoginComponent implements OnInit {
+  constructor(public auth: AuthService, private location: Location) {
+    this.auth.$user.pipe(filter(el => !!el)).subscribe({
+      next: () => location.back()
+    });
+  }
+
+  ngOnInit() {
+    if (this.auth.$user.getValue()) {
+      this.location.back();
+    }
+  }
 
   public onSubmit(val: any) {
-    this.$isLoading.next(true);
-    this.auth.login(val.email, val.password).subscribe({
-      next: _ => {
-        this.$isLoading.next(false);
-        this.router.navigate(["auth"]);
-      },
-      error: err => {
-        this.$isLoading.next(false);
-        console.log(err);
-      }
-    });
+    this.auth.login(val.email, val.password).subscribe();
   }
 }

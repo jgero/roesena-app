@@ -12,9 +12,7 @@ export class NextEventResolver implements Resolve<appEvent> {
   constructor(private evDAL: EventDALService, private auth: AuthService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<appEvent> | Promise<appEvent> | appEvent {
-    return this.auth.getUserFromServer().pipe(
-      // request user from db before switching to the event request
-      switchMap(user => this.evDAL.getByAuthLevel(user ? user.authLevel : 0)),
+    return this.evDAL.getByAuthLevel(this.auth.$user.getValue() ? this.auth.$user.getValue().authLevel : 0).pipe(
       // sort the events
       map(el => el.sort((a, b) => b.endDate.getTime() - a.endDate.getTime())),
       // filter out all the ones that are already over

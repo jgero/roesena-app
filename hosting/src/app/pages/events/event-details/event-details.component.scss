@@ -16,6 +16,13 @@
 
   .content {
     margin: var(--content-spacing);
+    position: relative;
+
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
 
     p {
       white-space: pre-line;

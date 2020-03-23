@@ -16,6 +16,6 @@ export class EventsPageComponent {
   descending = true;
 
   constructor(evDAO: EventDALService, auth: AuthService) {
-    this.$events = auth.getUserFromServer().pipe(switchMap(user => evDAO.getStreamByAuthLevel(user ? user.authLevel : 0)));
+    this.$events = evDAO.getStreamByAuthLevel(auth.$user.getValue() ? auth.$user.getValue().authLevel : 0);
   }
 }

@@ -12,9 +12,7 @@ export class CalendarEventsResolver implements Resolve<appEvent> {
   constructor(private evDAL: EventDALService, private auth: AuthService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    return this.auth.getUserFromServer().pipe(
-      // request user from db before switching to the event request
-      switchMap(user => this.evDAL.getByAuthLevel(user ? user.authLevel : 0)),
+    return this.evDAL.getByAuthLevel(this.auth.$user.getValue() ? this.auth.$user.getValue().authLevel : 0).pipe(
       // filter out all the ones that are after the month
       map(el =>
         el.filter(el =>

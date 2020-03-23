@@ -13,8 +13,8 @@ export class ChangeNameComponent implements OnDestroy {
   private sub: Subscription;
   constructor(public auth: AuthService) {}
 
-  updateOwnName(val: any) {
-    this.sub = this.auth.updateOwnName(val.newName).subscribe();
+  updateOwnName(id: string, newName: string) {
+    this.sub = this.auth.updateName(id, newName).subscribe();
   }
 
   ngOnDestroy() {

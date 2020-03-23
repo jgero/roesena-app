@@ -1,15 +1,12 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFirestore, QuerySnapshot, DocumentData, DocumentSnapshot, DocumentChangeAction } from "@angular/fire/firestore";
 import { Observable, from, of } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
 
 import { appEvent } from "src/app/utils/interfaces";
-import {
-  convertEventFromDocument,
-  convertEventsFromDocuments,
-  convertEventFromChangeActions
-} from "src/app/utils/eventConverter";
 import { TracingStateService } from "../tracing-state.service";
+
+import "firebase/firestore";
 
 @Injectable({
   providedIn: "root"
@@ -133,4 +130,33 @@ export class EventDALService {
       })
     );
   }
+}
+
+function convertEventsFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): appEvent[] {
+  let data: any[] = snapshot.docs.map(doc => {
+    let data: any = doc.data();
+    data.id = doc.id;
+    data.startDate = new Date(data.startDate.toDate());
+    data.endDate = new Date(data.endDate.toDate());
+    return data;
+  });
+  return data;
+}
+
+function convertEventFromDocument(snapshot: DocumentSnapshot<DocumentData>): appEvent {
+  let data = snapshot.data();
+  data.id = snapshot.id;
+  data.startDate = new Date(data.startDate.toDate());
+  data.endDate = new Date(data.endDate.toDate());
+  return data as appEvent;
+}
+
+function convertEventFromChangeActions(snapshot: DocumentChangeAction<appEvent>[]): appEvent[] {
+  return snapshot.map(action => {
+    let data: any = action.payload.doc.data();
+    data.id = action.payload.doc.id;
+    data.startDate = new Date(data.startDate.toDate());
+    data.endDate = new Date(data.endDate.toDate());
+    return data;
+  });
 }

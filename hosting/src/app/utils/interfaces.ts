@@ -8,3 +8,9 @@ export interface appEvent {
   authLevel: number;
   participants: { id: string; amount: number }[];
 }
+
+export interface appPerson {
+  id: string;
+  name: string;
+  authLevel: number;
+}
