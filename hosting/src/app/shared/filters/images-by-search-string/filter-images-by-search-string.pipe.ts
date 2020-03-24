@@ -7,6 +7,7 @@ import { appImage } from "src/app/utils/interfaces";
 })
 export class FilterImagesBySearchStringPipe implements PipeTransform {
   transform(values: appImage[], searchString: string): appImage[] {
+    if (!Array.isArray(values) || !searchString) return values;
     return values.filter(
       img =>
         img.title.toLowerCase().includes(searchString.toLowerCase()) ||

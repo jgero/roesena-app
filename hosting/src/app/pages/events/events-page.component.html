@@ -1,21 +1,10 @@
 <h1>Veranstaltungen und Termine</h1>
 
-<div class="filteringWrapper">
-  <div class="card wrapper">
-    <div class="search">
-      <app-input label="Suchbegriff" #searchInput></app-input>
-      <button class="text" (click)="searchInput.clear()"><i class="material-icons">clear</i></button>
-    </div>
-    <div class="filter">
-      <button class="text" (click)="descending = !descending"><i class="material-icons">filter_list</i></button>
-      <i class="material-icons" [class.rotated]="!descending">arrow_drop_down</i>
-    </div>
-  </div>
-</div>
+<app-search-sort [hasSorting]="true" #searchSort></app-search-sort>
 
 <div class="eventWrapper">
   <app-event-card
-    *ngFor="let event of $events | async | eventsByDate: searchInput.value:descending"
+    *ngFor="let event of $events | async | eventsByDate: searchSort.searchString:searchSort.descending"
     [event]="event"
   ></app-event-card>
 </div>
