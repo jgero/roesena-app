@@ -1,7 +1,17 @@
 <h1>Bilder</h1>
 
+<div class="search card">
+  <div class="wrapper">
+    <app-input label="Suchbegriff" #searchInput></app-input>
+    <button class="text icon" (click)="searchInput.clear()"><i class="material-icons">clear</i></button>
+  </div>
+</div>
+
 <div class="imageWrapper">
-  <app-image-card *ngFor="let image of $images | async" [image]="image"></app-image-card>
+  <app-image-card
+    *ngFor="let image of $images | async | filterImagesBySearchString: searchInput.value"
+    [image]="image"
+  ></app-image-card>
 </div>
 
 <button routerLink="/images/edit" class="floating-action outlined"><i class="material-icons">add</i></button>
