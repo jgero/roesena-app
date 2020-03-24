@@ -20,6 +20,14 @@ export const deleteUser = functions.auth.user().onDelete(user => {
     .delete();
 });
 
+export const deleteImages = functions.firestore.document("images/{imageId}").onDelete((snapshot, context) => {
+  const { imageId } = context.params;
+  return admin
+    .storage()
+    .bucket()
+    .deleteFiles({ prefix: `uploads/${imageId}` });
+});
+
 export const respondToEvent = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (!req.body.data || !req.body.data.id || req.body.data.amount === undefined || req.body.data.amount < 0) {

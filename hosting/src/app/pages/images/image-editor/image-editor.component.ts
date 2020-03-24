@@ -40,5 +40,7 @@ export class ImageEditorComponent {
     }
   }
 
-  onDelete() {}
+  onDelete() {
+    this.imageDAO.delete(this.id).subscribe({ next: () => this.router.navigate(["images", "overview"]) });
+  }
 }

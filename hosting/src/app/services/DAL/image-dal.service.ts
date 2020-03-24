@@ -106,6 +106,27 @@ export class ImageDalService {
       })
     );
   }
+
+  delete(id: string): Observable<boolean> {
+    this.trace.addLoading();
+    return from(
+      this.firestore
+        .collection("images")
+        .doc(id)
+        .delete()
+    ).pipe(
+      map(() => true),
+      tap(() => {
+        this.trace.completeLoading();
+        this.trace.$snackbarMessage.next(`Gelöscht!`);
+      }),
+      catchError(err => {
+        this.trace.completeLoading();
+        this.trace.$snackbarMessage.next(`Bild konnte nicht gelöscht werden: ${err}`);
+        return of(false);
+      })
+    );
+  }
 }
 
 function convertImagesFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): appImage[] {
