@@ -3,3 +3,10 @@
 <div class="tagWrapper">
   <span *ngFor="let tag of image.tags">{{ tag }}</span>
 </div>
+<span class="spacer"></span>
+<div class="buttonWrapper">
+  <button class="text more" [routerLink]="'/images/details/' + image.id">MEHR</button>
+  <button *ngIf="canEdit()" class="text icon" [routerLink]="'/images/edit/' + image.id">
+    <i class="material-icons">edit</i>
+  </button>
+</div>

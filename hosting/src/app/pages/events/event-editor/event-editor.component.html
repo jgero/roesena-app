@@ -66,8 +66,8 @@
   <app-person-manager name="participants" [ngModel]="initData.participants" [style.grid-area]="'participants'">
   </app-person-manager>
 
-  <button type="submit" class="save contained" [disabled]="eventForm.invalid"><i class="material-icons">save</i>Speichern</button>
-  <button type="button" [disabled]="!route.snapshot.paramMap.get('id')" class="delete contained" (click)="deleteEvent()">
-    <i class="material-icons">delete</i>Löschen
+  <button type="submit" class="save contained" [disabled]="eventForm.invalid"><i class="material-icons">save</i>SPEICHERN</button>
+  <button [disabled]="!route.snapshot.paramMap.get('id')" class="delete contained" (click)="deleteEvent()">
+    <i class="material-icons">delete</i>LÖSCHEN
   </button>
 </form>

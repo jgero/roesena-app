@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: var(--content-spacing);
+
+    img {
+      max-width: 100%;
+    }
+
+    .tagWrapper {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+
+      span {
+        height: 1.5rem;
+        padding: 0.5rem;
+        border-radius: calc(1.5rem / 2);
+        margin: 0 0.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary);
+        color: var(--on-primary);
+      }
+    }
+  }
+}

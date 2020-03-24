@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+
+  .tag {
+    display: flex;
+    align-items: center;
+    width: min-content;
+    height: 1.5rem;
+    background-color: var(--primary);
+    color: var(--on-primary);
+    padding: 0 0.5rem;
+    margin: 0 0.2rem;
+    border-radius: calc(1.5rem / 2);
+
+    i {
+      font-size: 1rem;
+      margin-left: 0.3rem;
+      cursor: pointer;
+    }
+  }
+}

@@ -23,21 +23,13 @@
     overflow: hidden;
   }
 
-  i {
-    margin: 0.2rem;
-    cursor: pointer;
-    transition: color ease-out 0.2s;
-
-    &:focus,
-    &:active,
-    &:hover {
-      color: var(--primary);
-    }
-  }
-
   .buttonWrapper {
     margin: 0.5rem;
     display: flex;
     justify-content: space-between;
+
+    .iconWrapper {
+      display: flex;
+    }
   }
 }

@@ -11,12 +11,17 @@
 <div class="buttonWrapper">
   <button class="text" [routerLink]="'/events/details/' + event.id">MEHR</button>
   <div class="iconWrapper">
-    <i class="material-icons" [routerLink]="'/calendar/' + event.startDate.toISOString()">event</i>
-    <i
-      class="material-icons"
-      *ngIf="(auth.$user | async) && event.authLevel <= (auth.$user | async).authLevel"
-      [routerLink]="'/events/edit/' + event.id"
-      >edit</i
-    >
+    <button class="text icon" [routerLink]="'/calendar/' + event.startDate.toISOString()">
+      <i class="material-icons">event</i>
+    </button>
+    <ng-container *ngIf="auth.$user | async as user">
+      <button
+        class="text icon"
+        *ngIf="event.ownerId === user.id || user.authLevel >= 4"
+        [routerLink]="'/events/edit/' + event.id"
+      >
+        <i class="material-icons">edit</i>
+      </button>
+    </ng-container>
   </div>
 </div>
