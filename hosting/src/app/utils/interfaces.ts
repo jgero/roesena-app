@@ -19,6 +19,5 @@ export interface appImage {
   id: string;
   title: string;
   tags: string[];
-  url: string;
   ownerId: string;
 }

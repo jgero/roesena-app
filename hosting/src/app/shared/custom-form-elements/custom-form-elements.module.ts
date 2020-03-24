@@ -6,8 +6,9 @@ import { DropdownComponent } from "./dropdown/dropdown.component";
 import { InputComponent } from "./input/input.component";
 import { PersonManagerComponent } from "./person-manager/person-manager.component";
 import { TagInputComponent } from "./tag-input/tag-input.component";
+import { FileInputComponent } from "./file-input/file-input.component";
 
-const components = [DropdownComponent, InputComponent, PersonManagerComponent, TagInputComponent];
+const components = [DropdownComponent, InputComponent, PersonManagerComponent, TagInputComponent, FileInputComponent];
 
 @NgModule({
   declarations: components,

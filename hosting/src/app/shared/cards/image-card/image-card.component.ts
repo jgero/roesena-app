@@ -26,6 +26,6 @@ export class ImageCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.$src = this.imageDAO.getDownloadURL(this.image.url);
+    this.$src = this.imageDAO.getDownloadURL(this.image.id);
   }
 }

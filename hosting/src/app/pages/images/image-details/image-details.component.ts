@@ -15,6 +15,6 @@ export class ImageDetailsComponent {
 
   constructor(route: ActivatedRoute, imgDAO: ImageDalService) {
     this.image = route.snapshot.data.appImage;
-    this.$src = imgDAO.getDownloadURL(this.image.url);
+    this.$src = imgDAO.getDownloadURL(this.image.id);
   }
 }

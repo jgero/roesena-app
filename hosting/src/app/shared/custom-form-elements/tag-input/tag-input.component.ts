@@ -50,9 +50,6 @@ export class TagInputComponent implements ControlValueAccessor {
   writeValue(obj: string[]): void {
     this.value = obj;
     this.valueChange.emit(this.value);
-    if (this.propagateChange) {
-      this.propagateChange(this.value);
-    }
   }
   registerOnChange(fn: any): void {
     this.propagateChange = fn;

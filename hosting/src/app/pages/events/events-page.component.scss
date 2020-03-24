@@ -44,5 +44,7 @@
     padding: var(--content-spacing);
     grid-template-columns: var(--card-grid-columns);
     grid-auto-rows: min-content;
+    row-gap: 1rem;
+    column-gap: 1rem;
   }
 }
