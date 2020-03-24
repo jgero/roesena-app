@@ -93,7 +93,8 @@ export class ImageDalService {
         .doc(id)
         .update(img)
     ).pipe(
-      switchMap(() => this.storage.ref(`uploads/${id}`).putString(file, "data_url")),
+      tap(() => console.log(file)),
+      switchMap(() => (file ? this.storage.ref(`uploads/${id}`).putString(file, "data_url") : of(true))),
       map(() => true),
       tap(() => {
         this.trace.completeLoading();

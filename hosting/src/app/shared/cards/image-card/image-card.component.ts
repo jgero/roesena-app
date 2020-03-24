@@ -19,9 +19,8 @@ export class ImageCardComponent implements OnInit {
 
   canEdit(): boolean {
     return (
-      !this.auth.$user.getValue() ||
-      this.auth.$user.getValue().id === this.image.ownerId ||
-      this.auth.$user.getValue().authLevel >= 4
+      this.auth.$user.getValue() &&
+      (this.auth.$user.getValue().id === this.image.ownerId || this.auth.$user.getValue().authLevel >= 4)
     );
   }
 

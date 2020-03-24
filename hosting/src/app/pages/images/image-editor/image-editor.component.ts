@@ -36,7 +36,10 @@ export class ImageEditorComponent {
     } else {
       this.image.title = title;
       this.image.tags = tags;
-      this.imageDAO.update(this.image, file).subscribe({ next: () => this.router.navigate(["images", "overview"]) });
+      this.imageDAO
+        // if the image was not changed the file is the id of the image
+        .update(this.image, file === this.id ? "" : file)
+        .subscribe({ next: () => this.router.navigate(["images", "overview"]) });
     }
   }
 
