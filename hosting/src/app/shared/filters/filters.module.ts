@@ -6,8 +6,9 @@ import { CustomFormElementsModule } from "../custom-form-elements/custom-form-el
 import { EventsByDatePipe } from "./events-by-date/events-by-date.pipe";
 import { FilterImagesBySearchStringPipe } from "./images-by-search-string/filter-images-by-search-string.pipe";
 import { SearchSortComponent } from "./search-sort/search-sort.component";
+import { ArticlesByDatePipe } from "./articles-by-date/articles-by-date.pipe";
 
-const pipes = [EventsByDatePipe, FilterImagesBySearchStringPipe];
+const pipes = [EventsByDatePipe, FilterImagesBySearchStringPipe, ArticlesByDatePipe];
 const components = [SearchSortComponent];
 
 @NgModule({
