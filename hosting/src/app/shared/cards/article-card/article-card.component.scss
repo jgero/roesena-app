@@ -1,6 +1,11 @@
 :host {
   display: block;
 
+  p {
+    max-height: 6rem;
+    overflow: hidden;
+  }
+
   .buttonWrapper {
     display: flex;
     justify-content: space-between;

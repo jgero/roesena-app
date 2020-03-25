@@ -3,5 +3,20 @@
   color: var(--on-surface);
   box-shadow: 0 0px 5px 0px var(--on-background);
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.5rem;
+
+  .fadeout {
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2.5rem;
+      background-image: linear-gradient(transparent, var(--surface));
+    }
+  }
 }

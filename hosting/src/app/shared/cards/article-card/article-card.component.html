@@ -3,7 +3,7 @@
   <time [dateTime]="article.created">{{ article.created | toLocalDateString }}</time>
 </h4>
 <span class="spacer"></span>
-<p>{{ article.content }}</p>
+<p class="fadeout">{{ article.content }}</p>
 <app-tags [tags]="article.tags"></app-tags>
 
 <div class="buttonWrapper">
