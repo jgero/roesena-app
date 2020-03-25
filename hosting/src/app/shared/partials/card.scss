@@ -3,7 +3,20 @@
   color: var(--on-surface);
   box-shadow: 0 0px 5px 0px var(--on-background);
   border-radius: 0.5rem;
-  padding: 0.5rem;
+
+  p {
+    margin: 0.5rem;
+    max-height: 6rem;
+    overflow: hidden;
+  }
+
+  .spacer {
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: var(--primary);
+    margin: 0.5rem 0;
+  }
 
   .fadeout {
     position: relative;

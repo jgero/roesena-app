@@ -1,9 +1,6 @@
 <img [src]="$src | async" />
 <h3>{{ image.title }}</h3>
-<div class="tagWrapper">
-  <span *ngFor="let tag of image.tags">{{ tag }}</span>
-</div>
-<span class="spacer"></span>
+<app-tags [tags]="image.tags"></app-tags>
 <div class="buttonWrapper">
   <button class="text more" [routerLink]="'/images/details/' + image.id">MEHR</button>
   <button *ngIf="canEdit()" class="text icon" [routerLink]="'/images/edit/' + image.id">

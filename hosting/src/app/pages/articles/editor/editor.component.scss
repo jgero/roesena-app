@@ -1,6 +1,9 @@
 :host {
-  // display: flex;
+  display: block;
+  margin-bottom: 6rem;
+
   form {
+    padding: 1rem;
     margin: var(--content-spacing);
     position: relative;
     display: grid;
