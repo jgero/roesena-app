@@ -5,3 +5,5 @@
 <div class="articleWrapper">
   <app-article-card *ngFor="let article of $articles | async" [article]="article"></app-article-card>
 </div>
+
+<button routerLink="/articles/edit" class="floating-action icon outlined"><i class="material-icons">add</i></button>

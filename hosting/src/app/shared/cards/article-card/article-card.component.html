@@ -1,3 +1,14 @@
-<p>
-  {{ article | json }}
-</p>
+<h3>{{ article.title }}</h3>
+<h4>
+  <time [dateTime]="article.created">{{ article.created | toLocalDateString }}</time>
+</h4>
+<span class="spacer"></span>
+<p>{{ article.content }}</p>
+<app-tags [tags]="article.tags"></app-tags>
+
+<div class="buttonWrapper">
+  <button class="text more" [routerLink]="'/articles/details/' + article.id">MEHR</button>
+  <button *ngIf="canEdit()" class="text icon" [routerLink]="'/articles/edit/' + article.id">
+    <i class="material-icons">edit</i>
+  </button>
+</div>

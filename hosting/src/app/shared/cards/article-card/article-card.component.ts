@@ -1,16 +1,25 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Input, HostBinding } from "@angular/core";
+
 import { appArticle } from "src/app/utils/interfaces";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-article-card",
   templateUrl: "./article-card.component.html",
   styleUrls: ["./article-card.component.scss"]
 })
-export class ArticleCardComponent implements OnInit {
+export class ArticleCardComponent {
   @Input()
   article: appArticle;
 
-  constructor() {}
+  @HostBinding("class") classes = "card";
 
-  ngOnInit(): void {}
+  constructor(public auth: AuthService) {}
+
+  canEdit(): boolean {
+    return (
+      this.auth.$user.getValue() &&
+      (this.auth.$user.getValue().id === this.article.ownerId || this.auth.$user.getValue().authLevel >= 4)
+    );
+  }
 }
