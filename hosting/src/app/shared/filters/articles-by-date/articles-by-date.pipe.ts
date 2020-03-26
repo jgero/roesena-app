@@ -12,7 +12,6 @@ export class ArticlesByDatePipe implements PipeTransform {
         art.title.toLowerCase().includes(searchString.toLowerCase()) ||
         art.tags.some(tag => tag.toLowerCase().includes(searchString.toLowerCase()))
     );
-    console.log(descending);
     if (descending) {
       return values.sort((a, b) => b.created.getTime() - a.created.getTime());
     } else {

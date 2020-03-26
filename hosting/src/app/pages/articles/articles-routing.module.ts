@@ -11,7 +11,7 @@ import { ArticleByIdResolver } from "src/app/resolvers/article-by-id.resolver";
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "overview" },
   { path: "overview", component: OverviewComponent },
-  { path: "detail/:id", component: DetailComponent, resolve: { appArticle: ArticleByIdResolver } },
+  { path: "details/:id", component: DetailComponent, resolve: { appArticle: ArticleByIdResolver } },
   { path: "edit", component: EditorComponent, canActivate: [LoggedInGuard] },
   { path: "edit/:id", component: EditorComponent, canActivate: [LoggedInGuard], resolve: { appArticle: ArticleByIdResolver } }
 ];

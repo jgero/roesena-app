@@ -4,6 +4,7 @@
     #searchInput
     [(value)]="searchString"
     (valueChange)="searchStringChange.emit(searchInput.value)"
+    (keydown.esc)="searchInput.clear()"
   ></app-input>
   <button class="text icon" (click)="searchInput.clear()"><i class="material-icons">clear</i></button>
 </div>

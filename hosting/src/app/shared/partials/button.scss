@@ -20,7 +20,7 @@ button {
 
     &:active,
     &:focus {
-      background-color: var(--on-surface-light);
+      background-color: var(--on-surface-inactive);
     }
   }
 
@@ -41,7 +41,7 @@ button {
 
     &:active,
     &:focus {
-      background-color: var(--on-surface-light);
+      background-color: var(--on-surface-inactive);
     }
   }
 
