@@ -26,7 +26,8 @@
 
     p {
       white-space: pre-line;
-      margin-top: 0;
+      padding-top: 0.5rem;
+      max-height: unset;
     }
 
     .participants {
