@@ -1,25 +1,25 @@
 <nav>
-  <div routerLink="/" class="logo">
+  <div (click)="isVisible = false" routerLink="/" class="logo">
     RöSeNa
   </div>
   <div class="separator">Veranstaltungen</div>
   <ul>
-    <li routerLink="events" routerLinkActive="active">Events</li>
-    <li routerLink="calendar" routerLinkActive="active">Kalender</li>
+    <li (click)="isVisible = false" routerLink="events" routerLinkActive="active">Events</li>
+    <li (click)="isVisible = false" routerLink="calendar" routerLinkActive="active">Kalender</li>
   </ul>
   <div class="separator">Über uns</div>
   <ul>
-    <li routerLink="groups" routerLinkActive="active">Gruppen</li>
-    <li routerLink="images" routerLinkActive="active">Bilder</li>
-    <li routerLink="articles" routerLinkActive="active">Artikel</li>
-    <li routerLink="archive" routerLinkActive="active">Archiv</li>
+    <li (click)="isVisible = false" routerLink="groups" routerLinkActive="active">Gruppen</li>
+    <li (click)="isVisible = false" routerLink="images" routerLinkActive="active">Bilder</li>
+    <li (click)="isVisible = false" routerLink="articles" routerLinkActive="active">Artikel</li>
+    <li (click)="isVisible = false" routerLink="archive" routerLinkActive="active">Archiv</li>
   </ul>
   <div class="separator">Externes</div>
   <ul>
-    <li routerLink="press" routerLinkActive="active">Presse</li>
-    <li routerLink="references" routerLinkActive="active">Impressum</li>
-    <li routerLink="links" routerLinkActive="active">Links</li>
-    <li routerLink="help" routerLinkActive="active">Hilfe</li>
+    <li (click)="isVisible = false" routerLink="press" routerLinkActive="active">Presse</li>
+    <li (click)="isVisible = false" routerLink="references" routerLinkActive="active">Impressum</li>
+    <li (click)="isVisible = false" routerLink="links" routerLinkActive="active">Links</li>
+    <li (click)="isVisible = false" routerLink="help" routerLinkActive="active">Hilfe</li>
   </ul>
   <div class="separator">Inhaber</div>
   <p>
@@ -31,14 +31,19 @@
     E-Mail: info@mustermail.com
   </p>
   <ng-container *ngIf="auth.$user | async; else login">
-    <button class="text" routerLink="/auth/auth-level-manager" *ngIf="(auth.$user | async).authLevel >= 4">
+    <button
+      class="text"
+      (click)="isVisible = false"
+      routerLink="/auth/auth-level-manager"
+      *ngIf="(auth.$user | async).authLevel >= 4"
+    >
       Berechtigungs Manager
     </button>
-    <button class="text" routerLink="/auth"><i class="material-icons">account_box</i>Profil</button>
+    <button class="text" (click)="isVisible = false" routerLink="/auth"><i class="material-icons">account_box</i>Profil</button>
     <button class="text" (click)="logout()"><i class="material-icons">meeting_room</i>Logout</button>
   </ng-container>
   <ng-template #login>
-    <button class="text" routerLink="/auth/login"><i class="material-icons">input</i>Login</button>
+    <button class="text" (click)="isVisible = false" routerLink="/auth/login"><i class="material-icons">input</i>Login</button>
   </ng-template>
 </nav>
 <div class="burger" (click)="isVisible = !isVisible">

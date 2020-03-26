@@ -13,6 +13,7 @@ export class NavBarComponent {
   @HostBinding("class.visible") isVisible = true;
 
   public logout() {
+    this.isVisible = false;
     this.auth.logout().subscribe({
       next: () => {
         location.reload();
