@@ -16,9 +16,11 @@
     grid-template-rows: min-content min-content;
     grid-template-areas: "name name" ". .";
     row-gap: 1rem;
+    padding: 0.5rem;
 
     h3 {
       grid-area: name;
+      margin: 0;
     }
 
     button {

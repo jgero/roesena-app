@@ -11,7 +11,11 @@
 </div>
 
 <div class="content card">
-  <button class="text" *ngIf="auth.$user | async" [routerLink]="'/events/edit/' + event.id">
+  <button
+    class="text"
+    *ngIf="auth.$user.getValue() && (auth.$user.getValue().authLevel >= 4 || auth.$user.getValue().id === event.ownerId)"
+    [routerLink]="'/events/edit/' + event.id"
+  >
     <i class="material-icons">edit</i>
   </button>
   <p>{{ event.description }}</p>

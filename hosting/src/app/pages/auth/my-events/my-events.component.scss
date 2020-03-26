@@ -16,13 +16,16 @@
     grid-template-columns: 5fr 1fr;
     grid-template-rows: auto auto 1rem auto;
     grid-template-areas: "name button" "date ." ". ." "input input";
+    padding: 0.5rem;
 
     h3 {
       grid-area: name;
+      margin: 0;
     }
 
     h4 {
       grid-area: date;
+      margin: 0;
     }
 
     app-input {

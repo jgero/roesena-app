@@ -1,8 +1,13 @@
 <h1>{{ image.title }}</h1>
 
 <div class="body card">
+  <button
+    class="text icon"
+    *ngIf="auth.$user.getValue() && (auth.$user.getValue().id === image.ownerId || auth.$user.getValue().authLevel >= 4)"
+    [routerLink]="'/images/edit/' + image.id"
+  >
+    <i class="material-icons">edit</i>
+  </button>
   <img [src]="$src | async" />
-  <div class="tagWrapper">
-    <span *ngFor="let tag of image.tags">{{ tag }}</span>
-  </div>
+  <app-tags [tags]="image.tags"></app-tags>
 </div>

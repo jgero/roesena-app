@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   margin: var(--content-spacing);
+  padding: 0.5rem;
 
-  div {
+  & > div {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -20,8 +21,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    & > * {
-      margin: 1rem;
+
+    button {
+      margin-top: 1rem;
     }
   }
 }
