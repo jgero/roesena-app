@@ -16,6 +16,7 @@ import { NotFoundPageComponent } from "./pages/not-found-page/not-found-page.com
 import { TraceabilityModule } from "./shared/traceability/traceability.module";
 import { NavigationUtilsModule } from "./shared/navigation-utils/navigation-utils.module";
 import { CardsModule } from "./shared/cards/cards.module";
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent, StartPageComponent, NotFoundPageComponent],
@@ -30,7 +31,8 @@ import { CardsModule } from "./shared/cards/cards.module";
     AppRoutingModule,
     TraceabilityModule,
     NavigationUtilsModule,
-    CardsModule
+    CardsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

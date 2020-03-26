@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef } from "@angular/core";
-import { Observable, Subscription, BehaviorSubject, merge } from "rxjs";
+import { Observable, Subscription, BehaviorSubject } from "rxjs";
 import { inOutAnimation } from "src/app/utils/animations";
-import { map, tap, delay, filter } from "rxjs/operators";
 
 @Component({
   selector: "app-snackbar",
