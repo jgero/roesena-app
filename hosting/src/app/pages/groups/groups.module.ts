@@ -9,6 +9,7 @@ import { MaennerballettComponent } from "./maennerballett/maennerballett.compone
 import { RoehlingStonesComponent } from "./roehling-stones/roehling-stones.component";
 import { BrandjoggalaComponent } from "./brandjoggala/brandjoggala.component";
 import { NavigationUtilsModule } from "src/app/shared/navigation-utils/navigation-utils.module";
+import { CardsModule } from "src/app/shared/cards/cards.module";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,6 @@ import { NavigationUtilsModule } from "src/app/shared/navigation-utils/navigatio
     RoehlingStonesComponent,
     BrandjoggalaComponent
   ],
-  imports: [CommonModule, GroupsRoutingModule, NavigationUtilsModule]
+  imports: [CommonModule, GroupsRoutingModule, NavigationUtilsModule, CardsModule]
 })
 export class GroupsModule {}

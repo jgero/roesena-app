@@ -59,6 +59,25 @@ export class ImageDalService {
       );
   }
 
+  getByTags(tags: string[], limit: number = 1): Observable<appImage[]> {
+    this.trace.addLoading();
+    return this.firestore
+      .collection<appImage>("images", qFn => qFn.where("tags", "array-contains-any", tags).limit(limit))
+      .get()
+      .pipe(
+        map(convertImagesFromDocuments),
+        tap(() => {
+          this.trace.completeLoading();
+        }),
+        catchError(err => {
+          console.log(err);
+          this.trace.completeLoading();
+          this.trace.$snackbarMessage.next(`Bilder konnten nicht geladen werden: ${err}`);
+          return of([]);
+        })
+      );
+  }
+
   getDownloadURL(id: string): Observable<string | null> {
     return this.storage
       .ref("uploads")
