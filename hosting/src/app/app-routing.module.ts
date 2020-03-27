@@ -37,6 +37,11 @@ const routes: Routes = [
         path: "articles",
         loadChildren: () => import("./pages/articles/articles.module").then(m => m.ArticlesModule),
         data: { animation: "ArticlePage" }
+      },
+      {
+        path: "groups",
+        loadChildren: () => import("./pages/groups/groups.module").then(m => m.GroupsModule),
+        data: { animation: "GroupsPage" }
       }
     ]
   },
