@@ -1,0 +1,31 @@
+:host {
+  margin: var(--content-spacing);
+  display: block;
+
+  .table {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .card {
+      padding: 0.5rem;
+      margin: 0.5rem;
+      max-width: 25rem;
+      position: relative;
+
+      button {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+
+      h4 {
+        display: inline;
+
+        &.title {
+          color: var(--on-surface);
+        }
+      }
+    }
+  }
+}

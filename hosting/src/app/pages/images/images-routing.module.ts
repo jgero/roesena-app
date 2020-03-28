@@ -9,6 +9,7 @@ import { ImageByIdResolver } from "src/app/resolvers/image-by-id.resolver";
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "overview" },
   { path: "overview", component: ImageOverviewComponent },
+  { path: "overview/:searchString", component: ImageOverviewComponent },
   { path: "details/:id", component: ImageDetailsComponent, resolve: { appImage: ImageByIdResolver } },
   { path: "edit", component: ImageEditorComponent },
   { path: "edit/:id", component: ImageEditorComponent, resolve: { appImage: ImageByIdResolver } }

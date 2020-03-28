@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Observable, Subscription } from "rxjs";
+
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
-import { Observable } from "rxjs";
 import { appImage } from "src/app/utils/interfaces";
 
 @Component({
@@ -8,12 +10,21 @@ import { appImage } from "src/app/utils/interfaces";
   templateUrl: "./image-overview.component.html",
   styleUrls: ["./image-overview.component.scss"]
 })
-export class ImageOverviewComponent implements OnInit {
+export class ImageOverviewComponent implements OnDestroy {
   $images: Observable<appImage[]>;
+  searchString: string = "";
+  private sub: Subscription;
 
-  constructor(public imageDAO: ImageDalService) {
+  constructor(route: ActivatedRoute, public imageDAO: ImageDalService) {
+    this.sub = route.paramMap.subscribe(paramMap => {
+      const s = paramMap.get("searchString");
+      if (!s) return;
+      this.searchString = s;
+    });
     this.$images = imageDAO.getImages();
   }
 
-  ngOnInit(): void {}
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
+  }
 }
