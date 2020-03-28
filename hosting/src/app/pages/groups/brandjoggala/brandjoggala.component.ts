@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { ImageDalService } from "src/app/services/DAL/image-dal.service";
+import { Observable } from "rxjs";
+import { appImage } from "src/app/utils/interfaces";
+import { map, tap } from "rxjs/operators";
 
 @Component({
-  selector: 'app-brandjoggala',
-  templateUrl: './brandjoggala.component.html',
-  styleUrls: ['./brandjoggala.component.scss']
+  selector: "app-brandjoggala",
+  templateUrl: "./brandjoggala.component.html",
+  styleUrls: ["./brandjoggala.component.scss"]
 })
 export class BrandjoggalaComponent implements OnInit {
+  $images: Observable<appImage[]>;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(imageDAO: ImageDalService) {
+    this.$images = imageDAO.getByTags(["Brandjoggala"], 2);
   }
 
+  ngOnInit(): void {}
 }
