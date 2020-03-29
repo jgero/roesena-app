@@ -17,7 +17,7 @@ export interface appPerson {
 
 export interface appImage {
   id: string;
-  title: string;
+  created: Date;
   tags: string[];
   ownerId: string;
 }

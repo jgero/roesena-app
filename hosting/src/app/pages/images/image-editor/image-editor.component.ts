@@ -24,17 +24,16 @@ export class ImageEditorComponent {
         id: "",
         ownerId: "",
         tags: [],
-        title: ""
+        created: null
       };
       this.isNew = true;
     }
   }
 
-  onSubmit({ title, file, tags }: any) {
+  onSubmit({ file, tags }: any) {
     if (this.isNew) {
-      this.imageDAO.insert(title, file, tags).subscribe({ next: () => this.router.navigate(["images", "overview"]) });
+      this.imageDAO.insert(file, tags).subscribe({ next: () => this.router.navigate(["images", "overview"]) });
     } else {
-      this.image.title = title;
       this.image.tags = tags;
       this.imageDAO
         // if the image was not changed the file is the id of the image

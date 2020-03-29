@@ -93,10 +93,12 @@ export class ImageDalService {
       .getDownloadURL();
   }
 
-  insert(title: string, file: string, tags: string[]): Observable<boolean> {
+  insert(file: string, tags: string[]): Observable<boolean> {
     this.trace.addLoading();
     return from(
-      this.firestore.collection("images").add({ title, tags: tagArrayToMap(tags), ownerId: this.auth.$user.getValue().id })
+      this.firestore
+        .collection("images")
+        .add({ tags: tagArrayToMap(tags), ownerId: this.auth.$user.getValue().id, created: new Date() })
     ).pipe(
       switchMap(docRef => this.storage.ref(`uploads/${docRef.id}`).putString(file, "data_url")),
       map(() => true),
@@ -164,6 +166,7 @@ function convertImagesFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): ap
   let data: any[] = snapshot.docs.map(doc => {
     let data: any = doc.data();
     data.tags = tagMapToArray(data.tags);
+    data.created = new Date(data.created.toDate());
     data.id = doc.id;
     return data;
   });
@@ -173,6 +176,7 @@ function convertImagesFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): ap
 function convertImageFromDocument(snapshot: DocumentSnapshot<DocumentData>): appImage {
   let data = snapshot.data();
   data.tags = tagMapToArray(data.tags);
+  data.created = new Date(data.created.toDate());
   data.id = snapshot.id;
   return data as appImage;
 }

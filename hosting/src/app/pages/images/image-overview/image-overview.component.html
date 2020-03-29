@@ -1,10 +1,10 @@
 <h1>Bilder</h1>
 
-<app-search-sort [(searchString)]="searchString" [hasSorting]="false" #searchSort></app-search-sort>
+<app-search-sort [(searchString)]="searchString" [(descending)]="descending" [hasSorting]="true" #searchSort></app-search-sort>
 
 <div class="imageWrapper">
   <app-image-card
-    *ngFor="let image of $images | async | filterImagesBySearchString: searchString"
+    *ngFor="let image of $images | async | filterImagesBySearchString: searchString:descending"
     [image]="image"
   ></app-image-card>
 </div>

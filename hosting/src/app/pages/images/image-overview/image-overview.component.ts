@@ -13,6 +13,7 @@ import { appImage } from "src/app/utils/interfaces";
 export class ImageOverviewComponent implements OnDestroy {
   $images: Observable<appImage[]>;
   searchString: string = "";
+  descending: boolean;
   private sub: Subscription;
 
   constructor(route: ActivatedRoute, public imageDAO: ImageDalService) {

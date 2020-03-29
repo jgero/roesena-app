@@ -2,7 +2,6 @@
 
 <form class="card" #imageForm="ngForm" (ngSubmit)="onSubmit(imageForm.value)">
   <button type="button" routerLink="/images/overview" class="text close"><i class="material-icons">close</i>SCHLIESSEN</button>
-  <app-input name="title" label="Titel" [required]="true" [style.grid-area]="'title'" [ngModel]="image.title"></app-input>
   <app-file-input name="file" [style.grid-area]="'fileChooser'" [ngModel]="image.id" [required]="true"></app-file-input>
   <app-tag-input name="tags" [ngModel]="image.tags" [style.grid-area]="'tags'"></app-tag-input>
   <button type="submit" [disabled]="imageForm.invalid" class="contained" [style.grid-area]="'save'">

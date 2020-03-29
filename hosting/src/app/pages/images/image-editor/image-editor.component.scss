@@ -8,9 +8,9 @@
     position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1rem 4rem min-content min-content 4rem;
+    grid-template-rows: 1rem min-content min-content 4rem;
     row-gap: 1rem;
-    grid-template-areas: ". ." "title title" "fileChooser fileChooser" "tags tags" "save delete";
+    grid-template-areas: ". ." "fileChooser fileChooser" "tags tags" "save delete";
 
     & > * {
       align-self: center;
