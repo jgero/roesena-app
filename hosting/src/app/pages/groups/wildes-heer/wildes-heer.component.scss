@@ -13,4 +13,16 @@
     grid-template-rows: auto auto auto;
     grid-template-areas: "t1 t1 img1" "img2 t2 t2" "t3 img3 t4";
   }
+
+  button {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  div,
+  p {
+    align-self: center;
+    justify-self: center;
+  }
 }

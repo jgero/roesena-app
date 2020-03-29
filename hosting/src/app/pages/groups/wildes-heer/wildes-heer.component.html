@@ -1,6 +1,9 @@
 <app-image-card [style.grid-area]="'img1'" *ngIf="$images | async as images" [image]="images[0]"></app-image-card>
 <app-image-card [style.grid-area]="'img2'" *ngIf="$images | async as images" [image]="images[1]"></app-image-card>
 <app-image-card [style.grid-area]="'img3'" *ngIf="$narrengericht | async as images" [image]="images[0]"></app-image-card>
+<button class="text icon">
+  <a href="http://www.daswildeheer.de/"><i class="material-icons">link</i></a>
+</button>
 <p [style.grid-area]="'t1'">
   Der grüne Jäger ist eine Sagenfigur aus dem Umfeld von Röhlingen, der mit einer Horde wilder Gesellen, dem Wilden Heer, durch
   Wälder zieht, daß es ein Graus ist. Er gräbt oft mit Schaufel und Haue, aber er bringt kein Stäubchen Erde weg. <br />
