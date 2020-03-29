@@ -13,7 +13,7 @@ export class BrandjoggalaComponent implements OnInit {
   $images: Observable<appImage[]>;
 
   constructor(imageDAO: ImageDalService) {
-    this.$images = imageDAO.getByTags(["Brandjoggala"], 2);
+    this.$images = imageDAO.getByTags(["Brandjoggala", "Gruppenseite"], 2);
   }
 
   ngOnInit(): void {}
