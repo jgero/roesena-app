@@ -10,7 +10,8 @@
       ngModel
     ></app-input>
     <app-input name="password" label="Passwort" [required]="true" type="password" [style.grid-area]="'pw'" ngModel></app-input>
-    <button type="submit" class="contained" [disabled]="loginForm.invalid">LOGIN</button>
-    <button class="text" routerLink="/auth/register">Neues Konto erstellen?</button>
+    <button [style.grid-area]="'login'" type="submit" class="contained" [disabled]="loginForm.invalid">LOGIN</button>
+    <button [style.grid-area]="'new'" type="button" class="text" routerLink="/auth/register">Neues Konto erstellen?</button>
+    <button [style.grid-area]="'reset'" type="button" class="text" routerLink="/auth/reset">Passwort vergessen?</button>
   </form>
 </div>

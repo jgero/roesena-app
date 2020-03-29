@@ -14,6 +14,7 @@ import { CustomFormElementsModule } from "src/app/shared/custom-form-elements/cu
 import { NavigationUtilsModule } from "src/app/shared/navigation-utils/navigation-utils.module";
 import { CardsModule } from "src/app/shared/cards/cards.module";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
+import { ResetComponent } from './reset/reset.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ConvertersModule } from "src/app/shared/converters/converters.module";
     RegisterComponent,
     ChangeNameComponent,
     MyEventsComponent,
-    AuthLevelManagerComponent
+    AuthLevelManagerComponent,
+    ResetComponent
   ],
   imports: [
     CommonModule,

@@ -10,6 +10,7 @@ import { AuthLevelManagerComponent } from "./auth-level-manager/auth-level-manag
 import { ChangeNameComponent } from "./change-name/change-name.component";
 import { RegisterComponent } from "./register/register.component";
 import { MyEventsComponent } from "./my-events/my-events.component";
+import { ResetComponent } from "./reset/reset.component";
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent
+  },
+  {
+    path: "reset",
+    component: ResetComponent
   }
 ];
 

@@ -1,0 +1,29 @@
+<h1>Passwort zurücksetzen</h1>
+<div class="wrapper">
+  <form *ngIf="!hasCode; else changePw" #resetForm="ngForm" (ngSubmit)="sendResetMail(resetForm.value)">
+    <app-input
+      name="email"
+      label="E-Mail"
+      [required]="true"
+      pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+      [style.grid-area]="'input'"
+      ngModel
+    ></app-input>
+    <button [style.grid-area]="'b1'" type="submit" class="contained" [disabled]="resetForm.invalid">RESET</button>
+    <button [style.grid-area]="'b2'" type="button" class="text" routerLink="/auth/login">Einloggen?</button>
+  </form>
+  <ng-template #changePw>
+    <form #changePwForm="ngForm" (ngSubmit)="updatePassword(changePwForm.value)">
+      <app-input
+        name="password"
+        label="neues Passwort"
+        [required]="true"
+        type="password"
+        [style.grid-area]="'input'"
+        ngModel
+      ></app-input>
+      <button [style.grid-area]="'b1'" type="submit" class="contained" [disabled]="changePwForm.invalid">RESET</button>
+      <button [style.grid-area]="'b2'" type="button" class="text" routerLink="/auth/login">Einloggen?</button>
+    </form>
+  </ng-template>
+</div>

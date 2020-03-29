@@ -41,6 +41,38 @@ export class AuthService {
     );
   }
 
+  public sendResetPasswordMail(email: string): Observable<null> {
+    this.trace.addLoading();
+    return from(this.auth.sendPasswordResetEmail(email)).pipe(
+      map(() => null),
+      tap(() => {
+        this.trace.completeLoading();
+        this.trace.$snackbarMessage.next(`Reset Mail wurde versendet`);
+      }),
+      catchError(err => {
+        this.trace.completeLoading();
+        this.trace.$snackbarMessage.next(`Fehler beim senden der Mail: ${err}`);
+        return of(null);
+      })
+    );
+  }
+
+  public changePasswordWithResetCode(pw: string, code: string): Observable<null> {
+    this.trace.addLoading();
+    return from(this.auth.confirmPasswordReset(code, pw)).pipe(
+      map(() => null),
+      tap(() => {
+        this.trace.completeLoading();
+        this.trace.$snackbarMessage.next(`Passwort geändert!`);
+      }),
+      catchError(err => {
+        this.trace.completeLoading();
+        this.trace.$snackbarMessage.next(`Fehler beim Passwort ändern: ${err}`);
+        return of(null);
+      })
+    );
+  }
+
   public logout(): Observable<boolean> {
     this.trace.addLoading();
     return from(this.auth.signOut()).pipe(
