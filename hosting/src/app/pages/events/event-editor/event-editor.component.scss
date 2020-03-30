@@ -5,7 +5,7 @@
   form {
     position: relative;
     display: grid;
-    grid-template-rows: 1rem 4rem auto 2rem repeat(2, 4rem) 2rem 3rem 4rem 4rem;
+    grid-template-rows: 1rem 4rem auto 2rem repeat(2, 4rem) 2rem 4rem 4rem 4rem 4rem 4rem;
     grid-template-columns: 1fr 1fr;
     margin: var(--content-spacing);
     padding: 1rem;
@@ -18,9 +18,11 @@
       "s-label e-label"
       "s-date e-date"
       "s-time e-time"
-      "a-label a-label"
-      "a-el a-el"
+      "a-label d-label"
+      "a-el d-date"
+      ". d-time"
       "participants participants"
+      "tags tags"
       "save delete";
 
     span {

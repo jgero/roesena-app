@@ -5,6 +5,8 @@ export interface appEvent {
   description: string;
   startDate: Date;
   endDate: Date;
+  deadline: Date | null;
+  tags: string[];
   authLevel: number;
   participants: { id: string; amount: number }[];
 }

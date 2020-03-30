@@ -20,6 +20,9 @@ export class EventEditorComponent {
     startTime: this.getTimeStringFromDate(new Date()),
     endDate: this.getDateStringFromDate(new Date()),
     endTime: this.getTimeStringFromDate(new Date()),
+    deadlineDate: "",
+    deadlineTime: "",
+    tags: [],
     participants: [],
     ownerId: ""
   };
@@ -42,7 +45,17 @@ export class EventEditorComponent {
     this.title = this.route.snapshot.paramMap.get("id") ? "Event bearbeiten" : "Event erstellen";
     if (this.route.snapshot.paramMap.get("id")) {
       // save already existing event in here so it can be edited
-      const { title, description, authLevel, startDate, endDate, participants, ownerId } = route.snapshot.data.appEvent;
+      const {
+        title,
+        description,
+        authLevel,
+        startDate,
+        endDate,
+        deadline,
+        tags,
+        participants,
+        ownerId
+      } = route.snapshot.data.appEvent;
       this.initData = {
         title,
         description,
@@ -51,9 +64,13 @@ export class EventEditorComponent {
         startTime: this.getTimeStringFromDate(startDate),
         endDate: this.getDateStringFromDate(endDate),
         endTime: this.getTimeStringFromDate(endDate),
+        deadlineDate: this.getDateStringFromDate(deadline),
+        deadlineTime: this.getTimeStringFromDate(deadline),
+        tags,
         participants,
         ownerId
       };
+      console.log(this.initData);
     }
   }
 
@@ -74,7 +91,19 @@ export class EventEditorComponent {
       .padStart(2, "0")}`;
   }
 
-  public saveEvent({ title, description, authLevel, startDate, startTime, endDate, endTime, participants }: any): void {
+  public saveEvent({
+    title,
+    description,
+    authLevel,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    deadlineDate,
+    deadlineTime,
+    tags,
+    participants
+  }: any): void {
     const updated: appEvent = {
       id: this.route.snapshot.paramMap.get("id") ? this.route.snapshot.paramMap.get("id") : "",
       title,
@@ -82,6 +111,8 @@ export class EventEditorComponent {
       authLevel,
       startDate: this.getDateFromDateAndTimeStrings(startDate, startTime),
       endDate: this.getDateFromDateAndTimeStrings(endDate, endTime),
+      deadline: this.getDateFromDateAndTimeStrings(deadlineDate, deadlineTime),
+      tags,
       participants,
       // keep old owner id if there is one
       ownerId: this.initData.ownerId === "" ? this.auth.$user.getValue().id : this.initData.ownerId

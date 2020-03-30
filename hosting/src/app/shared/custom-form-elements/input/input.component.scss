@@ -33,10 +33,6 @@
     top: $size;
     left: $size;
     transition: all ease-out 0.2s;
-
-    &.invalid {
-      color: var(--error);
-    }
   }
 
   :focus + span,
@@ -45,8 +41,19 @@
     background-color: var(--surface);
   }
 
+  &.ng-invalid {
+    span {
+      color: var(--error);
+    }
+
+    i {
+      visibility: visible;
+    }
+  }
+
   i {
     position: absolute;
+    visibility: hidden;
     font-size: $size;
     top: $size;
     right: #{$size / 2};

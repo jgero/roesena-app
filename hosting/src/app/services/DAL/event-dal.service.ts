@@ -7,6 +7,7 @@ import { appEvent } from "src/app/utils/interfaces";
 import { TracingStateService } from "../tracing-state.service";
 
 import "firebase/firestore";
+import { tagMapToArray, tagArrayToMap } from "src/app/utils/tag-converters";
 
 @Injectable({
   providedIn: "root"
@@ -73,6 +74,7 @@ export class EventDALService {
   update(updated: appEvent): Observable<boolean> {
     this.trace.addLoading();
     const id = updated.id;
+    (updated.tags as any) = tagArrayToMap(updated.tags);
     delete updated.id;
     return from(
       this.firestore
@@ -95,6 +97,7 @@ export class EventDALService {
 
   insert(newEv: appEvent): Observable<boolean> {
     this.trace.addLoading();
+    (newEv.tags as any) = tagArrayToMap(newEv.tags);
     delete newEv.id;
     return from(this.firestore.collection("events").add(newEv)).pipe(
       map(() => true),
@@ -138,6 +141,8 @@ function convertEventsFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): ap
     data.id = doc.id;
     data.startDate = new Date(data.startDate.toDate());
     data.endDate = new Date(data.endDate.toDate());
+    data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
+    data.tags = tagMapToArray(data.tags);
     return data;
   });
   return data;
@@ -148,6 +153,8 @@ function convertEventFromDocument(snapshot: DocumentSnapshot<DocumentData>): app
   data.id = snapshot.id;
   data.startDate = new Date(data.startDate.toDate());
   data.endDate = new Date(data.endDate.toDate());
+  data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
+  data.tags = tagMapToArray(data.tags);
   return data as appEvent;
 }
 
@@ -157,6 +164,8 @@ function convertEventFromChangeActions(snapshot: DocumentChangeAction<appEvent>[
     data.id = action.payload.doc.id;
     data.startDate = new Date(data.startDate.toDate());
     data.endDate = new Date(data.endDate.toDate());
+    data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
+    data.tags = tagMapToArray(data.tags);
     return data;
   });
 }
