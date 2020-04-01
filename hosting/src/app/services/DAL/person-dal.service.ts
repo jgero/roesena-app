@@ -104,7 +104,7 @@ export class PersonDalService {
         }),
         catchError(err => {
           this.trace.completeLoading();
-          this.trace.$snackbarMessage.next(`Fehler beim Speichern der Anzahl: ${err}`);
+          this.trace.$snackbarMessage.next(`Fehler beim Speichern der Anzahl, wahrscheinlich ist die Deadline vorbei: ${err}`);
           return of(false);
         })
       );

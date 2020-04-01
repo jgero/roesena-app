@@ -1,19 +1,21 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore, QuerySnapshot, DocumentData, DocumentSnapshot, DocumentChangeAction } from "@angular/fire/firestore";
 import { Observable, from, of } from "rxjs";
-import { map, catchError, tap } from "rxjs/operators";
+import { map, catchError, tap, filter } from "rxjs/operators";
 
 import { appEvent } from "src/app/utils/interfaces";
 import { TracingStateService } from "../tracing-state.service";
 
 import "firebase/firestore";
 import { tagMapToArray, tagArrayToMap } from "src/app/utils/tag-converters";
+import { AuthService } from "../auth.service";
+import { participantArrayToMap, participantMapToArray } from "src/app/utils/participant-converters";
 
 @Injectable({
   providedIn: "root"
 })
 export class EventDALService {
-  constructor(private firestore: AngularFirestore, private trace: TracingStateService) {}
+  constructor(private firestore: AngularFirestore, private trace: TracingStateService, private auth: AuthService) {}
 
   getById(id: string): Observable<appEvent> {
     this.trace.addLoading();
@@ -53,6 +55,37 @@ export class EventDALService {
       );
   }
 
+  getRespondables(): Observable<appEvent[]> {
+    this.trace.addLoading();
+    const user = this.auth.$user.getValue();
+    if (!user) return of([]);
+    return this.firestore
+      .collection<appEvent>("events", qFn =>
+        qFn
+          // .where(`authLevel`, "<=", user.authLevel)
+          .where(`deadline`, ">=", new Date())
+          // .where(`participants.${user.id}`, ">=", -1)
+          // .orderBy(`participants.${user.id}`)
+          .orderBy("deadline")
+      )
+      .get()
+      .pipe(
+        // map documents to events
+        map(convertEventsFromDocuments),
+        // only use events where the currently logged-in user is invited
+        map(events => events.filter(ev => ev.participants.findIndex(participant => participant.id === user.id) >= 0)),
+        tap(() => {
+          this.trace.completeLoading();
+        }),
+        catchError(err => {
+          console.log(err);
+          this.trace.completeLoading();
+          this.trace.$snackbarMessage.next(`Events konnten nicht geladen werden: ${err}`);
+          return of([]);
+        })
+      );
+  }
+
   getStreamByAuthLevel(level: number): Observable<appEvent[]> {
     this.trace.addLoading();
     return this.firestore
@@ -75,6 +108,7 @@ export class EventDALService {
     this.trace.addLoading();
     const id = updated.id;
     (updated.tags as any) = tagArrayToMap(updated.tags);
+    (updated.participants as any) = participantArrayToMap(updated.participants);
     delete updated.id;
     return from(
       this.firestore
@@ -98,6 +132,7 @@ export class EventDALService {
   insert(newEv: appEvent): Observable<boolean> {
     this.trace.addLoading();
     (newEv.tags as any) = tagArrayToMap(newEv.tags);
+    (newEv.participants as any) = participantArrayToMap(newEv.participants);
     delete newEv.id;
     return from(this.firestore.collection("events").add(newEv)).pipe(
       map(() => true),
@@ -143,6 +178,7 @@ function convertEventsFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): ap
     data.endDate = new Date(data.endDate.toDate());
     data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
     data.tags = tagMapToArray(data.tags);
+    data.participants = participantMapToArray(data.participants);
     return data;
   });
   return data;
@@ -155,6 +191,7 @@ function convertEventFromDocument(snapshot: DocumentSnapshot<DocumentData>): app
   data.endDate = new Date(data.endDate.toDate());
   data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
   data.tags = tagMapToArray(data.tags);
+  data.participants = participantMapToArray(data.participants);
   return data as appEvent;
 }
 
@@ -166,6 +203,7 @@ function convertEventFromChangeActions(snapshot: DocumentChangeAction<appEvent>[
     data.endDate = new Date(data.endDate.toDate());
     data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
     data.tags = tagMapToArray(data.tags);
+    data.participants = participantMapToArray(data.participants);
     return data;
   });
 }

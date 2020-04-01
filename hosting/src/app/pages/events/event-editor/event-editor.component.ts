@@ -64,8 +64,8 @@ export class EventEditorComponent {
         startTime: this.getTimeStringFromDate(startDate),
         endDate: this.getDateStringFromDate(endDate),
         endTime: this.getTimeStringFromDate(endDate),
-        deadlineDate: this.getDateStringFromDate(deadline),
-        deadlineTime: this.getTimeStringFromDate(deadline),
+        deadlineDate: deadline ? this.getDateStringFromDate(deadline) : "",
+        deadlineTime: deadline ? this.getTimeStringFromDate(deadline) : "",
         tags,
         participants,
         ownerId
