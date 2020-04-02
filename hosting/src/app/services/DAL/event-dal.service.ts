@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore, QuerySnapshot, DocumentData, DocumentSnapshot, DocumentChangeAction } from "@angular/fire/firestore";
-import { Observable, from, of } from "rxjs";
-import { map, catchError, tap, filter } from "rxjs/operators";
+import { Observable, from, of, merge, zip, combineLatest } from "rxjs";
+import { map, catchError, tap, filter, mergeAll } from "rxjs/operators";
 
 import { appEvent } from "src/app/utils/interfaces";
 import { TracingStateService } from "../tracing-state.service";
@@ -36,23 +36,61 @@ export class EventDALService {
       );
   }
 
-  getByAuthLevel(level: number): Observable<appEvent[]> {
+  getNextPublicEvents(): Observable<appEvent[]> {
     this.trace.addLoading();
     return this.firestore
-      .collection<appEvent>("events", qFn => qFn.where(`authLevel`, "<=", level))
+      .collection("events", qFn =>
+        qFn
+          .where(`participants`, "==", {})
+          .where("endDate", ">=", new Date())
+          .orderBy("endDate")
+          .limit(3)
+      )
       .get()
       .pipe(
-        // map documents to events
         map(convertEventsFromDocuments),
         tap(() => {
           this.trace.completeLoading();
         }),
         catchError(err => {
           this.trace.completeLoading();
-          this.trace.$snackbarMessage.next(`Events konnten nicht geladen werden: ${err}`);
-          return of([]);
+          this.trace.$snackbarMessage.next(`Event konnte nicht geladen werden: ${err}`);
+          return of(null);
         })
       );
+  }
+
+  getAllEvents(): Observable<appEvent[]> {
+    const user = this.auth.$user.getValue();
+    let obs: Observable<appEvent[]> = this.firestore
+      .collection("events", qFn => qFn.where(`participants`, "==", {}))
+      .snapshotChanges()
+      .pipe(map(convertEventFromChangeActions));
+    if (user) {
+      obs = combineLatest(
+        obs,
+        // merge the public events with the events where the user is invited
+        this.firestore
+          .collection("events", qFn => qFn.where(`participants.${user.id}`, ">=", -1))
+          .snapshotChanges()
+          .pipe(map(convertEventFromChangeActions))
+      ).pipe(
+        // merge the resulting arrays
+        map(el => [...el[0], ...el[1]])
+      );
+    }
+    // add loading and error handling
+    this.trace.addLoading();
+    return obs.pipe(
+      tap(() => {
+        this.trace.completeLoading();
+      }),
+      catchError(err => {
+        this.trace.completeLoading();
+        this.trace.$snackbarMessage.next(`Events konnten nicht geladen werden: ${err}`);
+        return of([]);
+      })
+    );
   }
 
   getRespondables(): Observable<appEvent[]> {
@@ -60,14 +98,7 @@ export class EventDALService {
     const user = this.auth.$user.getValue();
     if (!user) return of([]);
     return this.firestore
-      .collection<appEvent>("events", qFn =>
-        qFn
-          // .where(`authLevel`, "<=", user.authLevel)
-          .where(`deadline`, ">=", new Date())
-          // .where(`participants.${user.id}`, ">=", -1)
-          // .orderBy(`participants.${user.id}`)
-          .orderBy("deadline")
-      )
+      .collection<appEvent>("events", qFn => qFn.where(`deadline`, ">=", new Date()).orderBy("deadline"))
       .get()
       .pipe(
         // map documents to events
@@ -79,24 +110,6 @@ export class EventDALService {
         }),
         catchError(err => {
           console.log(err);
-          this.trace.completeLoading();
-          this.trace.$snackbarMessage.next(`Events konnten nicht geladen werden: ${err}`);
-          return of([]);
-        })
-      );
-  }
-
-  getStreamByAuthLevel(level: number): Observable<appEvent[]> {
-    this.trace.addLoading();
-    return this.firestore
-      .collection<appEvent>("events", qFn => qFn.where(`authLevel`, "<=", level))
-      .snapshotChanges()
-      .pipe(
-        map(convertEventFromChangeActions),
-        tap(() => {
-          this.trace.completeLoading();
-        }),
-        catchError(err => {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Events konnten nicht geladen werden: ${err}`);
           return of([]);

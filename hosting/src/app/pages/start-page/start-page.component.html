@@ -6,6 +6,8 @@
 <div class="contentWrapper">
   <div class="upcomingEvent">
     <h3>Nächstes Event:</h3>
-    <app-event-card [event]="eventForCard"></app-event-card>
+    <ng-container *ngFor="let event of eventCards">
+      <app-event-card [event]="event"></app-event-card>
+    </ng-container>
   </div>
 </div>

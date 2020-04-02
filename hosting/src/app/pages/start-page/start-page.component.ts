@@ -10,9 +10,10 @@ import { appEvent } from "../../utils/interfaces";
   styleUrls: ["./start-page.component.scss"]
 })
 export class StartPageComponent {
-  public eventForCard: Observable<appEvent>;
+  public eventCards: appEvent[];
 
   constructor(route: ActivatedRoute) {
-    this.eventForCard = route.snapshot.data.appEvent;
+    this.eventCards = route.snapshot.data.appEvent;
+    console.log("i am constructed");
   }
 }

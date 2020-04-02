@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { Observable } from "rxjs";
-import { switchMap } from "rxjs/operators";
 
 import { appEvent } from "../../utils/interfaces";
 import { AuthService } from "../../services/auth.service";
@@ -16,6 +15,6 @@ export class EventsPageComponent {
   descending = true;
 
   constructor(evDAO: EventDALService, auth: AuthService) {
-    this.$events = evDAO.getStreamByAuthLevel(auth.$user.getValue() ? auth.$user.getValue().authLevel : 0);
+    this.$events = evDAO.getAllEvents();
   }
 }

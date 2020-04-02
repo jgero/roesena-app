@@ -15,7 +15,6 @@ export class EventEditorComponent {
   initData = {
     title: "",
     description: "",
-    authLevel: 0,
     startDate: this.getDateStringFromDate(new Date()),
     startTime: this.getTimeStringFromDate(new Date()),
     endDate: this.getDateStringFromDate(new Date()),
@@ -45,21 +44,10 @@ export class EventEditorComponent {
     this.title = this.route.snapshot.paramMap.get("id") ? "Event bearbeiten" : "Event erstellen";
     if (this.route.snapshot.paramMap.get("id")) {
       // save already existing event in here so it can be edited
-      const {
-        title,
-        description,
-        authLevel,
-        startDate,
-        endDate,
-        deadline,
-        tags,
-        participants,
-        ownerId
-      } = route.snapshot.data.appEvent;
+      const { title, description, startDate, endDate, deadline, tags, participants, ownerId } = route.snapshot.data.appEvent;
       this.initData = {
         title,
         description,
-        authLevel,
         startDate: this.getDateStringFromDate(startDate),
         startTime: this.getTimeStringFromDate(startDate),
         endDate: this.getDateStringFromDate(endDate),
@@ -94,7 +82,6 @@ export class EventEditorComponent {
   public saveEvent({
     title,
     description,
-    authLevel,
     startDate,
     startTime,
     endDate,
@@ -108,7 +95,6 @@ export class EventEditorComponent {
       id: this.route.snapshot.paramMap.get("id") ? this.route.snapshot.paramMap.get("id") : "",
       title,
       description,
-      authLevel,
       startDate: this.getDateFromDateAndTimeStrings(startDate, startTime),
       endDate: this.getDateFromDateAndTimeStrings(endDate, endTime),
       deadline: this.getDateFromDateAndTimeStrings(deadlineDate, deadlineTime),
@@ -138,6 +124,7 @@ export class EventEditorComponent {
   }
 
   private getDateFromDateAndTimeStrings(d: string, time: string): Date {
+    if (d === "" || time === "") return null;
     let res = new Date();
     const dparts: number[] = d.split(".").map(el => parseInt(el));
     res.setDate(dparts[0]);

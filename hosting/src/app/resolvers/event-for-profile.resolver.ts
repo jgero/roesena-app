@@ -13,9 +13,5 @@ export class EventForProfileResolver implements Resolve<appEvent[]> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return this.evDAL.getRespondables();
-    // return this.evDAL.getByAuthLevel(this.auth.$user.getValue() ? this.auth.$user.getValue().authLevel : 0).pipe(
-    //   // only take the events where the current user is participant
-    //   map(el => el.filter(ev => !!ev.participants.find(participant => participant.id === this.auth.$user.getValue().id)))
-    // );
   }
 }
