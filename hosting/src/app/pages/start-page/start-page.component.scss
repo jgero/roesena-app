@@ -1,29 +1,49 @@
 :host {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: grid;
+  grid-template-columns: var(--content-spacing) auto var(--content-spacing);
+  grid-template-rows: min-content min-content var(--content-spacing) repeat(8, min-content) var(--content-spacing);
+  grid-template-areas:
+    "title title title"
+    "subtitle subtitle subtitle"
+    ". . ."
+    ". ev-header ."
+    ". event-1 ."
+    ". event-2 ."
+    ". event-3 ."
+    ". art-header ."
+    ". article-1 ."
+    ". article-2 ."
+    ". article-3 ."
+    ". . .";
 
-  .subtitle {
-    display: flex;
-    justify-content: center;
-    background: var(--surface);
-    box-shadow: 0 0px 5px 0px var(--on-background);
-    padding: 0.5rem 0;
+  @media only screen and (min-width: 600px) {
+    grid-template-columns: var(--content-spacing) 2fr 1fr 2fr 0fr var(--content-spacing);
+    grid-template-rows: min-content min-content var(--content-spacing) repeat(4, min-content) var(--content-spacing);
+    grid-template-areas:
+      "title title title title title title"
+      "subtitle subtitle subtitle subtitle subtitle subtitle"
+      ". . . . . ."
+      ". ev-header . art-header . ."
+      ". event-1 . article-1 . ."
+      ". event-2 . article-2 . ."
+      ". event-3 . article-3 . ."
+      ". . . . . . ";
+  }
+  @media only screen and (min-width: 1000px) {
+    grid-template-columns: var(--content-spacing) 2fr 1fr 2fr 2fr var(--content-spacing);
+  }
+  @media only screen and (min-width: 1400px) {
+    grid-template-columns: var(--content-spacing) 2fr 1fr 2fr 5fr var(--content-spacing);
   }
 
-  .contentWrapper {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 15% min-content auto;
-    grid-template-rows: 30% min-content auto;
-    grid-template-areas: ". . ." ". event ." ". . .";
+  app-event-card,
+  app-article-card {
+    margin-top: 1rem;
+  }
 
-    .upcomingEvent {
-      grid-area: event;
-
-      h3 {
-        text-align: center;
-      }
+  @media only screen and (max-width: 600px) {
+    h3 {
+      margin-top: 2rem;
     }
   }
 }

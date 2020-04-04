@@ -2,7 +2,9 @@ import { Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs";
 
-import { appEvent } from "../../utils/interfaces";
+import { appEvent, appArticle } from "../../utils/interfaces";
+import { EventDALService } from "src/app/services/DAL/event-dal.service";
+import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 
 @Component({
   selector: "app-start-page",
@@ -10,10 +12,13 @@ import { appEvent } from "../../utils/interfaces";
   styleUrls: ["./start-page.component.scss"]
 })
 export class StartPageComponent {
-  public eventCards: appEvent[];
+  public eventCards: Observable<appEvent[]>;
+  public articleCards: Observable<appArticle[]>;
 
-  constructor(route: ActivatedRoute) {
-    this.eventCards = route.snapshot.data.appEvent;
-    console.log("i am constructed");
+  constructor(eventDAO: EventDALService, articleDAO: ArticleDalService) {
+    this.eventCards = eventDAO.getNextPublicEvents();
+    this.articleCards = articleDAO.getLatestArticles();
+    // this.eventCards = route.snapshot.data.appEvent;
+    // console.log("i am constructed");
   }
 }

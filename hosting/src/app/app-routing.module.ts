@@ -5,14 +5,13 @@ import { LoadUserGuard } from "./guards/load-user.guard";
 
 import { StartPageComponent } from "./pages/start-page/start-page.component";
 import { NotFoundPageComponent } from "./pages/not-found-page/not-found-page.component";
-import { NextEventResolver } from "./resolvers/next-event.resolver";
 
 const routes: Routes = [
   {
     path: "",
     canActivate: [LoadUserGuard],
     children: [
-      { path: "", component: StartPageComponent, resolve: { appEvent: NextEventResolver }, data: { animation: "StartPage" } },
+      { path: "", component: StartPageComponent, data: { animation: "StartPage" } },
       {
         path: "events",
         loadChildren: () => import("./pages/events/events.module").then(m => m.EventsModule),

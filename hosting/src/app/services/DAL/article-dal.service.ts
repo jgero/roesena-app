@@ -52,6 +52,24 @@ export class ArticleDalService {
       );
   }
 
+  getLatestArticles(): Observable<appArticle[]> {
+    this.trace.addLoading();
+    return this.firestore
+      .collection("articles", qFn => qFn.orderBy("created", "desc").limit(3))
+      .get()
+      .pipe(
+        map(convertArticlesFromDocuments),
+        tap(() => {
+          this.trace.completeLoading();
+        }),
+        catchError(err => {
+          this.trace.completeLoading();
+          this.trace.$snackbarMessage.next(`Artikel konnten nicht geladen werden: ${err}`);
+          return of([]);
+        })
+      );
+  }
+
   insert(article: appArticle): Observable<boolean> {
     this.trace.addLoading();
     delete article.id;
