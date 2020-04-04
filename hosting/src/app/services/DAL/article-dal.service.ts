@@ -7,6 +7,7 @@ import "firebase/firestore";
 import { appArticle } from "src/app/utils/interfaces";
 import { TracingStateService } from "../tracing-state.service";
 import { AuthService } from "../auth.service";
+import { tagMapToArray, tagArrayToMap } from "src/app/utils/tag-converters";
 
 @Injectable({
   providedIn: "root"
@@ -56,6 +57,7 @@ export class ArticleDalService {
     delete article.id;
     article.ownerId = this.auth.$user.getValue().id;
     article.created = new Date();
+    (article.tags as any) = tagArrayToMap(article.tags);
     return from(this.firestore.collection("articles").add(article)).pipe(
       map(() => true),
       tap(() => {
@@ -74,6 +76,7 @@ export class ArticleDalService {
     this.trace.addLoading();
     const id = updated.id;
     delete updated.id;
+    (updated.tags as any) = tagArrayToMap(updated.tags);
     return from(
       this.firestore
         .collection("articles")
@@ -120,6 +123,7 @@ function convertArticlesFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): 
     let data: any = doc.data();
     data.id = doc.id;
     data.created = new Date(data.created.toDate());
+    data.tags = tagMapToArray(data.tags);
     return data;
   });
   return data;
@@ -129,5 +133,6 @@ function convertArticleFromDocument(doc: DocumentSnapshot<DocumentData>): appArt
   let data: any = doc.data();
   data.id = doc.id;
   data.created = new Date(data.created.toDate());
+  data.tags = tagMapToArray(data.tags);
   return data;
 }
