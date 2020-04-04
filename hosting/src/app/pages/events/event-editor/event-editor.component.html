@@ -81,7 +81,12 @@
     [style.grid-area]="'d-time'"
   ></app-input>
 
-  <app-person-manager name="participants" [ngModel]="initData.participants" [style.grid-area]="'participants'">
+  <app-person-manager
+    name="participants"
+    [mustContainCurrentUser]="true"
+    [ngModel]="initData.participants"
+    [style.grid-area]="'participants'"
+  >
   </app-person-manager>
 
   <app-tag-input name="tags" [ngModel]="initData.tags" [style.grid-area]="'tags'"></app-tag-input>

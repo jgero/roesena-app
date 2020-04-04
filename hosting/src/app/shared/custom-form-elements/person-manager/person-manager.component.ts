@@ -1,8 +1,10 @@
 import { Component, Input, Output, EventEmitter, forwardRef } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl } from "@angular/forms";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { PersonDalService } from "src/app/services/DAL/person-dal.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-person-manager",
@@ -12,6 +14,11 @@ import { map } from "rxjs/operators";
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PersonManagerComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: PersonManagerComponent,
       multi: true
     }
   ]
@@ -24,15 +31,14 @@ export class PersonManagerComponent implements ControlValueAccessor {
   public value: { id: string; amount: number }[] = [];
   @Output()
   public valueChange = new EventEmitter<{ id: string; amount: number }[]>();
+  @Input()
+  mustContainCurrentUser = false;
 
   private propagateChange: (_: any) => {};
   private propagateTouch: () => {};
 
-  constructor(firestore: AngularFirestore) {
-    this.$persons = firestore
-      .collection<{ name: string; authLevel: number }>("persons")
-      .get()
-      .pipe(map(el => el.docs.map(doc => ({ id: doc.id, name: doc.data().name }))));
+  constructor(personsDAO: PersonDalService, public auth: AuthService) {
+    this.$persons = personsDAO.getPersonsStream();
   }
 
   public toggleId(id: string) {
@@ -52,6 +58,15 @@ export class PersonManagerComponent implements ControlValueAccessor {
     return !!this.value.find(el => id === el.id);
   }
 
+  validate({ value }: FormControl) {
+    if (!this.mustContainCurrentUser) return { invalid: false };
+    if (!value) return { invalid: true };
+    return (
+      !((value as { id: string; amount: number }[]).findIndex(el => el.id === this.auth.$user.getValue().id) >= 0) && {
+        invalid: true
+      }
+    );
+  }
   writeValue(obj: any): void {
     if (!obj) return;
     this.value = obj;
