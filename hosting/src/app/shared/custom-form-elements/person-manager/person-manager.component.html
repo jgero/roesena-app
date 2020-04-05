@@ -1,5 +1,10 @@
-<ul>
-  <li *ngFor="let person of $persons | async" (click)="toggleId(person.id)" [class.selected]="isSelected(person.id)">
-    <span>{{ person.name }}</span>
+<ul *ngIf="$persons | async as persons">
+  <li *ngFor="let group of groups" (click)="addGroupMembers(group, persons)" class="group">
+    <span>{{ group }} </span>
   </li>
+  <ng-container *ngFor="let person of persons">
+    <li *ngIf="person.isConfirmedMember" (click)="toggleId(person.id)" [class.selected]="isSelected(person.id)">
+      <span>{{ person.name }}</span>
+    </li>
+  </ng-container>
 </ul>

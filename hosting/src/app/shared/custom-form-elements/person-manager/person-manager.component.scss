@@ -26,6 +26,11 @@
         background-color: var(--primary);
         color: var(--on-primary);
       }
+
+      &.group {
+        border-color: var(--error);
+        color: var(--error);
+      }
     }
   }
 }

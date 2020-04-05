@@ -3,7 +3,7 @@
     <span class="static">Anzeigename:</span><span class="dynamic">{{ user.name }}</span>
   </div>
   <div>
-    <span class="static">Berechtigungsgruppe:</span><span class="dynamic">{{ auth.getAuthLevelText(user.authLevel) }}</span>
+    <span class="static">Gruppen:</span><span class="dynamic">{{ user.groups.join(", ") }}</span>
   </div>
   <form #changeNameForm="ngForm" (ngSubmit)="updateOwnName(user.id, changeNameForm.value.newName)">
     <app-input name="newName" label="neuer Name" pattern="^[a-zA-ZäöüÄÖÜ -]+$" [required]="true" ngModel></app-input>

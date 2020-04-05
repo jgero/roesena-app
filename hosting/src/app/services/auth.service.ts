@@ -118,21 +118,4 @@ export class AuthService {
       map(() => null)
     );
   }
-
-  getAuthLevelText(level: number): string {
-    switch (level) {
-      case 0:
-        return "Gast";
-      case 1:
-        return "Mitglied";
-      case 2:
-        return "Gruppenleiter/Elferrat";
-      case 3:
-        return "Präsidium";
-      case 4:
-        return "Admin";
-      default:
-        return "Fehler";
-    }
-  }
 }

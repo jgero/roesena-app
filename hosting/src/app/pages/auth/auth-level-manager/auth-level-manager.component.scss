@@ -27,7 +27,7 @@
       justify-self: right;
     }
 
-    app-dropdown.ng-pristine + button {
+    &.ng-pristine button {
       visibility: hidden;
     }
   }
