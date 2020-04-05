@@ -13,7 +13,7 @@
 <div class="content card">
   <button
     class="text icon"
-    *ngIf="auth.$user.getValue() && (auth.$user.getValue().authLevel >= 4 || auth.$user.getValue().id === event.ownerId)"
+    *ngIf="auth.$user.getValue() && auth.$user.getValue().id === event.ownerId"
     [routerLink]="'/events/edit/' + event.id"
   >
     <i class="material-icons">edit</i>

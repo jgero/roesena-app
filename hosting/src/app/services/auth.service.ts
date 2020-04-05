@@ -8,16 +8,16 @@ import { PersonDalService } from "./DAL/person-dal.service";
 import { TracingStateService } from "./tracing-state.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AuthService {
   $user = new BehaviorSubject<appPerson | null>(null);
 
   constructor(public auth: AngularFireAuth, private personDAO: PersonDalService, private trace: TracingStateService) {
-    this.auth.authState.pipe(switchMap(user => (user ? this.personDAO.getPersonById(user.uid) : of(null)))).subscribe({
-      next: user => {
+    this.auth.authState.pipe(switchMap((user) => (user ? this.personDAO.getPersonById(user.uid) : of(null)))).subscribe({
+      next: (user) => {
         this.$user.next(user);
-      }
+      },
     });
   }
 
@@ -25,15 +25,15 @@ export class AuthService {
     this.trace.addLoading();
     return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(
       // get the user from the credentials
-      map(userCredentials => userCredentials.user),
+      map((userCredentials) => userCredentials.user),
       // get the user data from the database
-      switchMap(user => (user ? this.personDAO.getPersonById(user.uid) : of(null))),
+      switchMap((user) => (user ? this.personDAO.getPersonById(user.uid) : of(null))),
       // hide the data from the caller
       map(() => null),
       tap(() => {
         this.trace.completeLoading();
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim Einloggen: ${err}`);
         return of(false);
@@ -49,7 +49,7 @@ export class AuthService {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Reset Mail wurde versendet`);
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim senden der Mail: ${err}`);
         return of(null);
@@ -65,7 +65,7 @@ export class AuthService {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Passwort geändert!`);
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim Passwort ändern: ${err}`);
         return of(null);
@@ -80,7 +80,7 @@ export class AuthService {
       tap(() => {
         this.trace.completeLoading();
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim Ausloggen: ${err}`);
         return of(false);
@@ -92,9 +92,9 @@ export class AuthService {
     this.trace.addLoading();
     return from(this.auth.createUserWithEmailAndPassword(email, password)).pipe(
       // wait until the person is created in the database
-      switchMap(user => this.personDAO.getPersonStreamById(user.user.uid).pipe(take(1))),
+      switchMap((user) => this.personDAO.getPersonStreamById(user.user.uid).pipe(take(1))),
       // update to the provided name
-      switchMap(person => this.updateName(person.id, name)),
+      switchMap((person) => this.updateName(person.id, name)),
       // then sign in the newly registered user
       switchMap(() => from(this.auth.signInWithEmailAndPassword(email, password))),
       // remove the data from the observable
@@ -102,7 +102,7 @@ export class AuthService {
       tap(() => {
         this.trace.completeLoading();
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim Registrieren: ${err}`);
         return of(null);
@@ -111,17 +111,12 @@ export class AuthService {
   }
 
   public updateName(id: string, name: string): Observable<null> {
-    // this.trace.completeLoading();
-    return this.personDAO.update(id, { name }).pipe(
+    return this.personDAO.update(id, { name } as appPerson).pipe(
       // get the user data from the database
-      switchMap(user => (user ? this.personDAO.getPersonById(id) : of(null))),
+      switchMap((user) => (user ? this.personDAO.getPersonById(id) : of(null))),
       tap((user: appPerson | null) => this.$user.next(user)),
       map(() => null)
     );
-  }
-
-  public updateAuthLevel(id: string, authLevel: number): Observable<null> {
-    return this.personDAO.update(id, { authLevel }).pipe(map(() => null));
   }
 
   getAuthLevelText(level: number): string {

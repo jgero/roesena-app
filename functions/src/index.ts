@@ -4,20 +4,12 @@ import admin = require("firebase-admin");
 admin.initializeApp();
 
 // set to eur3 somehow
-export const createUser = functions.auth.user().onCreate(user => {
-  return admin
-    .firestore()
-    .collection("persons")
-    .doc(user.uid)
-    .set({ authLevel: 0, name: user.email });
+export const createUser = functions.auth.user().onCreate((user) => {
+  return admin.firestore().collection("persons").doc(user.uid).set({ isConfirmedMember: false, name: user.email, groups: {} });
 });
 
-export const deleteUser = functions.auth.user().onDelete(user => {
-  return admin
-    .firestore()
-    .collection("persons")
-    .doc(user.uid)
-    .delete();
+export const deleteUser = functions.auth.user().onDelete((user) => {
+  return admin.firestore().collection("persons").doc(user.uid).delete();
 });
 
 export const deleteImages = functions.firestore.document("images/{imageId}").onDelete((snapshot, context) => {
@@ -41,13 +33,7 @@ export const respondToEvent = functions.https.onRequest((req, res) => {
     }
     const tokenId = authToken.split("Bearer ")[1];
     const decoded = await admin.auth().verifyIdToken(tokenId);
-    const doc = (
-      await admin
-        .firestore()
-        .collection("events")
-        .doc(req.body.data.id)
-        .get()
-    ).data();
+    const doc = (await admin.firestore().collection("events").doc(req.body.data.id).get()).data();
     // update the doc with the new amount
     if (!doc) {
       res.status(400).send("invalid request id");

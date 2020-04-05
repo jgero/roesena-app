@@ -3,7 +3,7 @@
 
 <div class="content card">
   <button
-    *ngIf="auth.$user.getValue() && (auth.$user.getValue().authLevel >= 4 || auth.$user.getValue().id === article.ownerId)"
+    *ngIf="auth.$user.getValue() && auth.$user.getValue().id === article.ownerId"
     class="icon text"
     [routerLink]="'/articles/edit/' + article.id"
   >

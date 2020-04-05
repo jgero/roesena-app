@@ -7,9 +7,10 @@ import "firebase/firestore";
 
 import { appPerson } from "src/app/utils/interfaces";
 import { TracingStateService } from "../tracing-state.service";
+import { mapToArray, arrayToMap } from "src/app/utils/converters";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class PersonDalService {
   constructor(private firestore: AngularFirestore, private trace: TracingStateService, private fns: AngularFireFunctions) {}
@@ -23,7 +24,7 @@ export class PersonDalService {
       .pipe(
         map(convertPersonFromDocument),
         tap(() => this.trace.completeLoading()),
-        catchError(err => {
+        catchError((err) => {
           this.trace.completeLoading();
           console.error(err);
           this.trace.$snackbarMessage.next(`Fehler beim laden von Person: ${err}`);
@@ -39,13 +40,13 @@ export class PersonDalService {
       .doc(id)
       .valueChanges()
       .pipe(
-        filter(el => !!el),
+        filter((el) => !!el),
         map((val: any) => {
           val.id = id;
           return val;
         }),
         tap(() => this.trace.completeLoading()),
-        catchError(err => {
+        catchError((err) => {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Fehler beim laden von Person: ${err}`);
           return of(null);
@@ -56,14 +57,14 @@ export class PersonDalService {
   getPersonsStream(): Observable<appPerson[]> {
     this.trace.addLoading();
     return this.firestore
-      .collection<{ name: string; authLevel: number }>("persons")
+      .collection<{ name: string; groups: { [key: string]: boolean } }>("persons")
       .snapshotChanges()
       .pipe(
         map(convertPersonsFromChangeAction),
         tap(() => {
           this.trace.completeLoading();
         }),
-        catchError(err => {
+        catchError((err) => {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Fehler beim laden von Personen: ${err}`);
           return of([]);
@@ -71,20 +72,17 @@ export class PersonDalService {
       );
   }
 
-  update(id: string, updated: any): Observable<boolean> {
+  update(id: string, updated: appPerson): Observable<boolean> {
     this.trace.addLoading();
-    return from(
-      this.firestore
-        .collection("persons")
-        .doc(id)
-        .update(updated)
-    ).pipe(
+    delete updated.id;
+    if (updated.groups) (updated.groups as any) = arrayToMap(updated.groups);
+    return from(this.firestore.collection("persons").doc(id).update(updated)).pipe(
       map(() => true),
       tap(() => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Gespeichert!`);
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim speichern von Person: ${err}`);
         return of(false);
@@ -102,7 +100,7 @@ export class PersonDalService {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Gespeichert!`);
         }),
-        catchError(err => {
+        catchError((err) => {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Fehler beim Speichern der Anzahl, wahrscheinlich ist die Deadline vorbei: ${err}`);
           return of(false);
@@ -113,13 +111,21 @@ export class PersonDalService {
 
 function convertPersonFromDocument(docSnapshot: DocumentSnapshot<DocumentData>): appPerson | null {
   if (!docSnapshot.data()) return null;
-  return { id: docSnapshot.id, name: docSnapshot.data().name, authLevel: docSnapshot.data().authLevel };
+  return {
+    id: docSnapshot.id,
+    name: docSnapshot.data().name,
+    groups: mapToArray(docSnapshot.data().groups),
+    isConfirmedMember: docSnapshot.data().isConfirmedMember,
+  };
 }
 
-function convertPersonsFromChangeAction(snapshot: DocumentChangeAction<{ name: string; authLevel: number }>[]): appPerson[] {
-  return snapshot.map(val => ({
+function convertPersonsFromChangeAction(
+  snapshot: DocumentChangeAction<{ name: string; groups: { [key: string]: boolean }; isConfirmedMember: boolean }>[]
+): appPerson[] {
+  return snapshot.map((val) => ({
     name: val.payload.doc.data().name,
     id: val.payload.doc.id,
-    authLevel: val.payload.doc.data().authLevel
+    groups: mapToArray(val.payload.doc.data().groups),
+    isConfirmedMember: val.payload.doc.data().isConfirmedMember,
   }));
 }

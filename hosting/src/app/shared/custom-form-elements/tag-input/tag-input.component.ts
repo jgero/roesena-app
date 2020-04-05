@@ -9,13 +9,15 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TagInputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class TagInputComponent implements ControlValueAccessor {
   @Input()
   value: string[] = [];
+  @Input()
+  label = "Tags";
   @Output()
   valueChange = new EventEmitter<string[]>();
 
@@ -34,7 +36,7 @@ export class TagInputComponent implements ControlValueAccessor {
   }
 
   popTag(tag: string) {
-    this.value = this.value.filter(t => t !== tag);
+    this.value = this.value.filter((t) => t !== tag);
     this.valueChange.emit(this.value);
     if (this.propagateChange) {
       this.propagateChange(this.value);

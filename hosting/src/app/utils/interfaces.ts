@@ -13,7 +13,8 @@ export interface appEvent {
 export interface appPerson {
   id: string;
   name: string;
-  authLevel: number;
+  groups: string[];
+  isConfirmedMember: boolean;
 }
 
 export interface appImage {

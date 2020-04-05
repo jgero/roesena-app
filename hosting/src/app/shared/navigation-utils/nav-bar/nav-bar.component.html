@@ -35,9 +35,9 @@
       class="text"
       (click)="isVisible = false"
       routerLink="/auth/auth-level-manager"
-      *ngIf="(auth.$user | async).authLevel >= 4"
+      *ngIf="(auth.$user | async).groups.includes('admins')"
     >
-      Berechtigungs Manager
+      Gruppen Manager
     </button>
     <button class="text" (click)="isVisible = false" routerLink="/auth"><i class="material-icons">account_box</i>Profil</button>
     <button class="text" (click)="logout()"><i class="material-icons">meeting_room</i>Logout</button>

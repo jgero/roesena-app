@@ -1,4 +1,4 @@
-<span class="label">Tags</span>
+<span class="label">{{ label }}</span>
 <span class="tag" *ngFor="let tag of value">{{ tag }} <i (click)="popTag(tag)" class="material-icons">cancel</i></span>
 <input
   #newTag

@@ -9,9 +9,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DropdownComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class DropdownComponent implements ControlValueAccessor {
   @Input()
@@ -21,7 +21,7 @@ export class DropdownComponent implements ControlValueAccessor {
   activeIndex = 0;
   @Input()
   set value(arg: any) {
-    const index = this.items.findIndex(el => el.value === arg);
+    const index = this.items.findIndex((el) => el.value === arg);
     if (index < 0) throw new Error("set dropdown to invalid value");
     this.activeIndex = index;
   }

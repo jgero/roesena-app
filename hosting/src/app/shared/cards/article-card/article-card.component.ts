@@ -6,7 +6,7 @@ import { AuthService } from "src/app/services/auth.service";
 @Component({
   selector: "app-article-card",
   templateUrl: "./article-card.component.html",
-  styleUrls: ["./article-card.component.scss"]
+  styleUrls: ["./article-card.component.scss"],
 })
 export class ArticleCardComponent {
   @Input()
@@ -17,9 +17,6 @@ export class ArticleCardComponent {
   constructor(public auth: AuthService) {}
 
   canEdit(): boolean {
-    return (
-      this.auth.$user.getValue() &&
-      (this.auth.$user.getValue().id === this.article.ownerId || this.auth.$user.getValue().authLevel >= 4)
-    );
+    return this.auth.$user.getValue() && this.auth.$user.getValue().id === this.article.ownerId;
   }
 }

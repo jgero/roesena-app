@@ -7,7 +7,7 @@ import { AuthService } from "src/app/services/auth.service";
 @Component({
   selector: "app-image-card",
   templateUrl: "./image-card.component.html",
-  styleUrls: ["./image-card.component.scss"]
+  styleUrls: ["./image-card.component.scss"],
 })
 export class ImageCardComponent implements OnInit {
   @Input()
@@ -18,10 +18,7 @@ export class ImageCardComponent implements OnInit {
   constructor(private imageDAO: ImageDalService, public auth: AuthService) {}
 
   canEdit(): boolean {
-    return (
-      this.auth.$user.getValue() &&
-      (this.auth.$user.getValue().id === this.image.ownerId || this.auth.$user.getValue().authLevel >= 4)
-    );
+    return this.auth.$user.getValue() && this.auth.$user.getValue().id === this.image.ownerId;
   }
 
   ngOnInit(): void {

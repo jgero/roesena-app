@@ -8,15 +8,12 @@ import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 @Component({
   selector: "app-auth-level-manager",
   templateUrl: "./auth-level-manager.component.html",
-  styleUrls: ["./auth-level-manager.component.scss"]
+  styleUrls: ["./auth-level-manager.component.scss"],
 })
 export class AuthLevelManagerComponent {
   dropdownItems = [
-    { value: 0, label: "Gast" },
-    { value: 1, label: "Mitglied" },
-    { value: 2, label: "Gruppenleiter" },
-    { value: 3, label: "Präsidium" },
-    { value: 4, label: "Admin" }
+    { value: false, label: "Nein" },
+    { value: true, label: "Ja" },
   ];
   private persons: Observable<appPerson[]>;
 
@@ -28,7 +25,8 @@ export class AuthLevelManagerComponent {
     return this.persons;
   }
 
-  updateAuthLevel(id: string, level: number) {
-    this.auth.updateAuthLevel(id, level).subscribe();
+  updatePerson(id: string, isConfirmedMember: boolean, groups: string[]) {
+    console.log(id, isConfirmedMember, groups);
+    return this.personsDAO.update(id, { isConfirmedMember, groups } as appPerson).subscribe();
   }
 }

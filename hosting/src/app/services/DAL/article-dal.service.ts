@@ -7,10 +7,10 @@ import "firebase/firestore";
 import { appArticle } from "src/app/utils/interfaces";
 import { TracingStateService } from "../tracing-state.service";
 import { AuthService } from "../auth.service";
-import { tagMapToArray, tagArrayToMap } from "src/app/utils/tag-converters";
+import { arrayToMap, mapToArray } from "src/app/utils/converters";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class ArticleDalService {
   constructor(private trace: TracingStateService, private firestore: AngularFirestore, private auth: AuthService) {}
@@ -25,7 +25,7 @@ export class ArticleDalService {
         tap(() => {
           this.trace.completeLoading();
         }),
-        catchError(err => {
+        catchError((err) => {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Artikel konnten nicht geladen werden: ${err}`);
           return of([]);
@@ -44,7 +44,7 @@ export class ArticleDalService {
         tap(() => {
           this.trace.completeLoading();
         }),
-        catchError(err => {
+        catchError((err) => {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Artikel konnte nicht geladen werden: ${err}`);
           return of(null);
@@ -55,14 +55,14 @@ export class ArticleDalService {
   getLatestArticles(): Observable<appArticle[]> {
     this.trace.addLoading();
     return this.firestore
-      .collection("articles", qFn => qFn.orderBy("created", "desc").limit(3))
+      .collection("articles", (qFn) => qFn.orderBy("created", "desc").limit(3))
       .get()
       .pipe(
         map(convertArticlesFromDocuments),
         tap(() => {
           this.trace.completeLoading();
         }),
-        catchError(err => {
+        catchError((err) => {
           this.trace.completeLoading();
           this.trace.$snackbarMessage.next(`Artikel konnten nicht geladen werden: ${err}`);
           return of([]);
@@ -75,14 +75,14 @@ export class ArticleDalService {
     delete article.id;
     article.ownerId = this.auth.$user.getValue().id;
     article.created = new Date();
-    (article.tags as any) = tagArrayToMap(article.tags);
+    (article.tags as any) = arrayToMap(article.tags);
     return from(this.firestore.collection("articles").add(article)).pipe(
       map(() => true),
       tap(() => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Gespeichert!`);
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Artikel konnte nicht hinzugefügt werden: ${err}`);
         return of(false);
@@ -94,19 +94,14 @@ export class ArticleDalService {
     this.trace.addLoading();
     const id = updated.id;
     delete updated.id;
-    (updated.tags as any) = tagArrayToMap(updated.tags);
-    return from(
-      this.firestore
-        .collection("articles")
-        .doc(id)
-        .update(updated)
-    ).pipe(
+    (updated.tags as any) = arrayToMap(updated.tags);
+    return from(this.firestore.collection("articles").doc(id).update(updated)).pipe(
       map(() => true),
       tap(() => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Gespeichert!`);
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Artikel konnte nicht gespeichert werden: ${err}`);
         return of(false);
@@ -116,18 +111,13 @@ export class ArticleDalService {
 
   delete(id: string): Observable<boolean> {
     this.trace.addLoading();
-    return from(
-      this.firestore
-        .collection("articles")
-        .doc(id)
-        .delete()
-    ).pipe(
+    return from(this.firestore.collection("articles").doc(id).delete()).pipe(
       map(() => true),
       tap(() => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Gelöscht!`);
       }),
-      catchError(err => {
+      catchError((err) => {
         this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Artikel konnte nicht gelöscht werden: ${err}`);
         return of(false);
@@ -137,11 +127,11 @@ export class ArticleDalService {
 }
 
 function convertArticlesFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): appArticle[] {
-  let data: any[] = snapshot.docs.map(doc => {
+  let data: any[] = snapshot.docs.map((doc) => {
     let data: any = doc.data();
     data.id = doc.id;
     data.created = new Date(data.created.toDate());
-    data.tags = tagMapToArray(data.tags);
+    data.tags = mapToArray(data.tags);
     return data;
   });
   return data;
@@ -151,6 +141,6 @@ function convertArticleFromDocument(doc: DocumentSnapshot<DocumentData>): appArt
   let data: any = doc.data();
   data.id = doc.id;
   data.created = new Date(data.created.toDate());
-  data.tags = tagMapToArray(data.tags);
+  data.tags = mapToArray(data.tags);
   return data;
 }

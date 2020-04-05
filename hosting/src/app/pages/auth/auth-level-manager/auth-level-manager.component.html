@@ -1,16 +1,16 @@
 <form
   *ngFor="let person of $persons | async"
   #authLevelForm="ngForm"
-  (ngSubmit)="updateAuthLevel(person.id, authLevelForm.value.authLevel)"
+  (ngSubmit)="updatePerson(person.id, authLevelForm.value.confirmed, authLevelForm.value.groups)"
   class="card"
 >
   <h3>{{ person.name }}</h3>
+  <app-tag-input [style.grid-area]="'groups'" name="groups" label="Gruppen" [ngModel]="person.groups"></app-tag-input>
   <app-dropdown
-    #authInput
     [items]="dropdownItems"
-    name="authLevel"
-    label="Berechtigungsgruppe"
-    [ngModel]="person.authLevel"
+    name="confirmed"
+    label="Bestätigtes Mitglied"
+    [ngModel]="person.isConfirmedMember"
   ></app-dropdown>
   <button class="text" type="submit">Speichern</button>
 </form>
