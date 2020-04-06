@@ -2,6 +2,13 @@
   display: block;
   margin-bottom: 6rem;
 
+  &.public .content {
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "text text"
+      "tags tags";
+  }
+
   .date {
     display: flex;
     justify-content: center;
@@ -16,7 +23,17 @@
 
   .content {
     margin: var(--content-spacing);
+    padding: 1rem;
     position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+      "text text"
+      "tags tags"
+      "part part"
+      "responded amount";
 
     button {
       position: absolute;
@@ -28,11 +45,24 @@
       white-space: pre-line;
       padding-top: 0.5rem;
       max-height: unset;
+      grid-area: text;
+      margin: 0;
     }
 
     .participants {
       display: flex;
       flex-wrap: wrap;
+      grid-area: part;
+    }
+
+    .responded {
+      grid-area: responded;
+      justify-self: center;
+    }
+
+    .amount {
+      grid-area: amount;
+      justify-self: center;
     }
   }
 }

@@ -19,7 +19,16 @@
     <i class="material-icons">edit</i>
   </button>
   <p>{{ event.description }}</p>
-  <div class="participants" *ngIf="auth.$user | async">
-    <app-participant *ngFor="let participant of event.participants" [participant]="participant"></app-participant>
-  </div>
+  <app-tags [style.grid-area]="'tags'" [tags]="event.tags"></app-tags>
+
+  <ng-container *ngIf="event.participants.length > 0">
+    <div class="participants" *ngIf="auth.$user | async">
+      <app-participant
+        *ngFor="let participant of event.participants | sortParticipants"
+        [participant]="participant"
+      ></app-participant>
+    </div>
+    <h4 class="responded">Rückgemeldet: {{ respondedPercent }}% / {{ respondedAmount }} Personen</h4>
+    <h4 class="amount">Teilnehmer gesamt: {{ amountAccumulated }} Personen</h4>
+  </ng-container>
 </div>
