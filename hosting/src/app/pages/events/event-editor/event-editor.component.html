@@ -22,6 +22,7 @@
   <app-input
     name="startDate"
     label="Datum"
+    helpText="DD.MM.YYY"
     [required]="true"
     pattern="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$"
     [ngModel]="initData.startDate"
@@ -30,6 +31,7 @@
   <app-input
     name="startTime"
     label="Zeit"
+    helpText="HH:MM"
     [required]="true"
     pattern="^([01][0-9]|2[0-3]):([0-5][0-9])$"
     [ngModel]="initData.startTime"
@@ -40,6 +42,7 @@
   <app-input
     name="endDate"
     label="Datum"
+    helpText="DD.MM.YYY"
     [required]="true"
     pattern="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$"
     [ngModel]="initData.endDate"
@@ -48,20 +51,12 @@
   <app-input
     name="endTime"
     label="Zeit"
+    helpText="HH:MM"
     [required]="true"
     pattern="^([01][0-9]|2[0-3]):([0-5][0-9])$"
     [ngModel]="initData.endTime"
     [style.grid-area]="'e-time'"
   ></app-input>
-
-  <!-- <span [style.grid-area]="'a-label'">Sichtbar für</span>
-  <app-dropdown
-    name="authLevel"
-    [ngModel]="dropdownItems[initData.authLevel].value"
-    [style.grid-area]="'a-el'"
-    [items]="dropdownItems"
-    label="Berechtigungsgruppe"
-  ></app-dropdown> -->
 
   <span [style.grid-area]="'d-label'">Deadline</span>
   <app-input
@@ -69,12 +64,14 @@
     label="Datum"
     [required]="initData.participants.length > 0"
     pattern="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$"
+    helpText="DD.MM.YYY"
     [ngModel]="initData.deadlineDate"
     [style.grid-area]="'d-date'"
   ></app-input>
   <app-input
     name="deadlineTime"
     label="Zeit"
+    helpText="HH:MM"
     [required]="initData.participants.length > 0"
     pattern="^([01][0-9]|2[0-3]):([0-5][0-9])$"
     [ngModel]="initData.deadlineTime"

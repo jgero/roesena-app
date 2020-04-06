@@ -7,7 +7,7 @@ import {
   ElementRef,
   AfterViewInit,
   ChangeDetectorRef,
-  forwardRef
+  forwardRef,
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
@@ -19,9 +19,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class InputComponent implements AfterViewInit, ControlValueAccessor {
   @ViewChild("input")
@@ -39,6 +39,8 @@ export class InputComponent implements AfterViewInit, ControlValueAccessor {
   disabled: boolean = false;
   @Input()
   type: string = "text";
+  @Input()
+  helpText: string = "";
   @Output()
   valueChange = new EventEmitter<string>();
 

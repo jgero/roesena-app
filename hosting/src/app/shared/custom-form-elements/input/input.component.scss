@@ -25,7 +25,7 @@
     }
   }
 
-  span {
+  .label {
     color: var(--primary);
     pointer-events: none;
     padding: 0 0.2rem;
@@ -35,20 +35,33 @@
     transition: all ease-out 0.2s;
   }
 
-  :focus + span,
-  :not(.empty) + span {
+  :focus + .label,
+  :not(.empty) + .label {
     top: -#{$size / 2};
     background-color: var(--surface);
   }
 
   &.ng-invalid {
-    span {
+    .label {
       color: var(--error);
+    }
+
+    .helpText {
+      visibility: visible;
     }
 
     i {
       visibility: visible;
     }
+  }
+
+  .helpText {
+    visibility: hidden;
+    position: absolute;
+    top: $size;
+    right: #{2.5 * $size};
+    color: var(--error);
+    background-color: var(--surface);
   }
 
   i {

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, forwardRef } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl } from "@angular/forms";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, ValidationErrors } from "@angular/forms";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
@@ -86,14 +86,19 @@ export class PersonManagerComponent implements ControlValueAccessor {
     return !!this.value.find((el) => id === el.id);
   }
 
-  validate({ value }: FormControl) {
-    if (!this.mustContainCurrentUser) return { invalid: false };
-    if (!value) return { invalid: true };
-    return (
-      !((value as { id: string; amount: number }[]).findIndex((el) => el.id === this.auth.$user.getValue().id) >= 0) && {
-        invalid: true,
-      }
-    );
+  validate({ value }: FormControl): ValidationErrors | null {
+    // value has to be an array
+    if (!Array.isArray(value)) return { invalid: true };
+    // empty selection is allowed
+    if (value.length === 0) return null;
+    // check if current user is in the selection if it's required
+    if (
+      this.mustContainCurrentUser &&
+      !((value as { id: string; amount: number }[]).findIndex((el) => el.id === this.auth.$user.getValue().id) >= 0)
+    )
+      return { invalid: true };
+    // otherwise the value is valid
+    return null;
   }
   writeValue(obj: any): void {
     if (!obj) return;
