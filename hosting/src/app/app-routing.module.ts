@@ -14,41 +14,46 @@ const routes: Routes = [
       { path: "", component: StartPageComponent, data: { animation: "StartPage" } },
       {
         path: "events",
-        loadChildren: () => import("./pages/events/events.module").then(m => m.EventsModule),
-        data: { animation: "EventsPage" }
+        loadChildren: () => import("./pages/events/events.module").then((m) => m.EventsModule),
+        data: { animation: "EventsPage" },
       },
       {
         path: "calendar",
-        loadChildren: () => import("./pages/calendar/calendar.module").then(m => m.CalendarModule),
-        data: { animation: "CalendarPage" }
+        loadChildren: () => import("./pages/calendar/calendar.module").then((m) => m.CalendarModule),
+        data: { animation: "CalendarPage" },
       },
       {
         path: "auth",
-        loadChildren: () => import("./pages/auth/auth.module").then(m => m.AuthModule),
-        data: { animation: "AuthPage" }
+        loadChildren: () => import("./pages/auth/auth.module").then((m) => m.AuthModule),
+        data: { animation: "AuthPage" },
       },
       {
         path: "images",
-        loadChildren: () => import("./pages/images/images.module").then(m => m.ImagesModule),
-        data: { animation: "ImagePage" }
+        loadChildren: () => import("./pages/images/images.module").then((m) => m.ImagesModule),
+        data: { animation: "ImagePage" },
       },
       {
         path: "articles",
-        loadChildren: () => import("./pages/articles/articles.module").then(m => m.ArticlesModule),
-        data: { animation: "ArticlePage" }
+        loadChildren: () => import("./pages/articles/articles.module").then((m) => m.ArticlesModule),
+        data: { animation: "ArticlePage" },
       },
       {
         path: "groups",
-        loadChildren: () => import("./pages/groups/groups.module").then(m => m.GroupsModule),
-        data: { animation: "GroupsPage" }
-      }
-    ]
+        loadChildren: () => import("./pages/groups/groups.module").then((m) => m.GroupsModule),
+        data: { animation: "GroupsPage" },
+      },
+      {
+        path: "help",
+        loadChildren: () => import("./pages/help/help.module").then((m) => m.HelpModule),
+        data: { animation: "HelpPage" },
+      },
+    ],
   },
-  { path: "**", component: NotFoundPageComponent, pathMatch: "full", data: { animation: "NotFoundPage" } }
+  { path: "**", component: NotFoundPageComponent, pathMatch: "full", data: { animation: "NotFoundPage" } },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

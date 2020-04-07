@@ -10,6 +10,11 @@ button {
   border-radius: 0.5rem;
   transition: all ease-out 0.2s;
 
+  // hide firefox dotted lines
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
   i {
     padding-right: 0.5rem;
   }

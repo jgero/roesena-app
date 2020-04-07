@@ -17,9 +17,14 @@
   <div class="separator">Externes</div>
   <ul>
     <li (click)="isVisible = false" routerLink="press" routerLinkActive="active">Presse</li>
-    <li (click)="isVisible = false" routerLink="references" routerLinkActive="active">Impressum</li>
     <li (click)="isVisible = false" routerLink="links" routerLinkActive="active">Links</li>
-    <li (click)="isVisible = false" routerLink="help" routerLinkActive="active">Hilfe</li>
+  </ul>
+  <div class="separator">Sonstiges</div>
+  <ul>
+    <li (click)="isVisible = false" (click)="onHelpClick()" routerLinkActive="active">
+      <i class="material-icons">help</i> Hilfe
+    </li>
+    <li (click)="isVisible = false" routerLink="references" routerLinkActive="active">Impressum</li>
   </ul>
   <div class="separator">Inhaber</div>
   <p>

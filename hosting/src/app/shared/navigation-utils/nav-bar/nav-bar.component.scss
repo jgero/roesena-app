@@ -61,6 +61,10 @@
       &.active {
         border-color: var(--primary);
       }
+
+      i {
+        margin-right: 0.5rem;
+      }
     }
   }
 }
