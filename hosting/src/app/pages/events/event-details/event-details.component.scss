@@ -26,14 +26,16 @@
     padding: 1rem;
     position: relative;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 3fr;
     row-gap: 1rem;
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto auto;
     grid-template-areas:
       "text text"
       "tags tags"
-      "part part"
-      "responded amount";
+      "acc-l acc-p"
+      "rej-l rej-p"
+      "pend-l pend-p"
+      ". responded";
 
     button {
       position: absolute;
@@ -52,17 +54,11 @@
     .participants {
       display: flex;
       flex-wrap: wrap;
-      grid-area: part;
+      align-self: center;
     }
 
-    .responded {
-      grid-area: responded;
-      justify-self: center;
-    }
-
-    .amount {
-      grid-area: amount;
-      justify-self: center;
+    h3 {
+      margin: 0;
     }
   }
 }

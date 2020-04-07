@@ -21,14 +21,28 @@
   <p>{{ event.description }}</p>
   <app-tags [style.grid-area]="'tags'" [tags]="event.tags"></app-tags>
 
-  <ng-container *ngIf="event.participants.length > 0">
-    <div class="participants" *ngIf="auth.$user | async">
-      <app-participant
-        *ngFor="let participant of event.participants | sortParticipants"
-        [participant]="participant"
-      ></app-participant>
+  <ng-container *ngIf="event.participants.length > 0 && auth.$user | async">
+    <h4 [style.grid-area]="'responded'">Rückgemeldet: {{ respondedPercent }}% / {{ respondedAmount }} Personen</h4>
+
+    <h3 [style.grid-area]="'acc-l'">Angenommen: {{ amountAccumulated }} Personen</h3>
+    <div [style.grid-area]="'acc-p'" class="participants">
+      <ng-container *ngFor="let participant of event.participants | sortParticipants">
+        <app-participant *ngIf="participant.amount > 0" [participant]="participant"></app-participant>
+      </ng-container>
     </div>
-    <h4 class="responded">Rückgemeldet: {{ respondedPercent }}% / {{ respondedAmount }} Personen</h4>
-    <h4 class="amount">Teilnehmer gesamt: {{ amountAccumulated }} Personen</h4>
+
+    <h3 [style.grid-area]="'rej-l'">Abgelehnt:</h3>
+    <div [style.grid-area]="'rej-p'" class="participants">
+      <ng-container *ngFor="let participant of event.participants | sortParticipants">
+        <app-participant *ngIf="participant.amount === 0" [participant]="participant"></app-participant>
+      </ng-container>
+    </div>
+
+    <h3 [style.grid-area]="'pend-l'">Ausstehend:</h3>
+    <div [style.grid-area]="'pend-p'" class="participants">
+      <ng-container *ngFor="let participant of event.participants | sortParticipants">
+        <app-participant *ngIf="participant.amount < 0" [participant]="participant"></app-participant>
+      </ng-container>
+    </div>
   </ng-container>
 </div>
