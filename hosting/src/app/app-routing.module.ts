@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { LoadUserGuard } from "./guards/load-user.guard";
 
-import { StartPageComponent } from "./pages/start-page/start-page.component";
+import { StartPageComponent } from "./app-root/start-page/start-page.component";
 import { NotFoundPageComponent } from "./pages/not-found-page/not-found-page.component";
 
 const routes: Routes = [

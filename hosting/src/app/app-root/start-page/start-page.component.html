@@ -1,0 +1,9 @@
+<div class="cardContainer">
+  <h2>Nächste Events</h2>
+  <app-event-card *ngFor="let event of eventCards | async" [event]="event"></app-event-card>
+</div>
+
+<div class="cardContainer">
+  <h2>Neueste Artikel</h2>
+  <app-article-card *ngFor="let article of articleCards | async" [article]="article"></app-article-card>
+</div>

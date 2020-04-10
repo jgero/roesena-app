@@ -1,14 +1,14 @@
-<h3>{{ article.title }}</h3>
-<h4>
-  <time [dateTime]="article.created">{{ article.created | toLocalDateString }}</time>
-</h4>
-<span class="spacer"></span>
-<p class="fadeout">{{ article.content }}</p>
-<app-tags [tags]="article.tags"></app-tags>
-
-<div class="buttonWrapper">
-  <button class="text more" [routerLink]="'/articles/details/' + article.id">MEHR</button>
-  <button *ngIf="canEdit()" class="text icon" [routerLink]="'/articles/edit/' + article.id">
-    <i class="material-icons">edit</i>
-  </button>
-</div>
+<mat-card>
+  <mat-card-title> {{ article.title }} </mat-card-title>
+  <mat-card-subtitle>{{ article.created | toLocalDateString }}</mat-card-subtitle>
+  <mat-card-content>
+    {{ article.content.substring(0, 100) }}...
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of article.tags">{{ tag }}</mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-button [routerLink]="'/articles/details/' + article.id">MEHR</a>
+    <a mat-icon-button *ngIf="canEdit()" [routerLink]="'/articles/edit/' + article.id"><mat-icon>edit</mat-icon></a>
+  </mat-card-actions>
+</mat-card>

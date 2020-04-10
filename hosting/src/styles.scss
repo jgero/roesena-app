@@ -1,52 +1,61 @@
-@import "./app/shared/partials/button.scss";
-@import "./app/shared/partials/headings.scss";
-@import "./app/shared/partials/card.scss";
+// @import "./app/shared/partials/button.scss";
+// @import "./app/shared/partials/headings.scss";
+// @import "./app/shared/partials/card.scss";
 
-:root {
-  font-family: "Roboto", sans-serif;
-  box-sizing: border-box;
+// :root {
+//   font-family: "Roboto", sans-serif;
+//   box-sizing: border-box;
 
-  // default theme
-  --primary: #1a237e;
-  --on-primary: #ffffff;
-  --background: #ffffff;
-  --on-background: #000000;
-  --surface: #ffffff;
-  --on-surface: #000000;
-  --on-surface-light: #727272;
-  --on-surface-inactive: #dddddd;
-  --error: #ad150d;
-  --on-error: #ffffff;
+//   // default theme
+//   --primary: #1a237e;
+//   --on-primary: #ffffff;
+//   --background: #ffffff;
+//   --on-background: #000000;
+//   --surface: #ffffff;
+//   --on-surface: #000000;
+//   --on-surface-light: #727272;
+//   --on-surface-inactive: #dddddd;
+//   --error: #ad150d;
+//   --on-error: #ffffff;
 
-  // spacing
-  --content-spacing: 0.5rem;
-  @media only screen and (min-width: 1000px) {
-    --content-spacing: 2rem;
-  }
+//   // spacing
+//   --content-spacing: 0.5rem;
+//   @media only screen and (min-width: 1000px) {
+//     --content-spacing: 2rem;
+//   }
 
-  // card grid columns
-  --card-grid-columns: 1fr;
-  @media only screen and (min-width: 1000px) {
-    --card-grid-columns: 1fr 1fr;
-  }
-  @media only screen and (min-width: 1250px) {
-    --card-grid-columns: 1fr 1fr 1fr;
-  }
-  @media only screen and (min-width: 1700px) {
-    --card-grid-columns: 1fr 1fr 1fr 1fr;
-  }
-}
+//   // card grid columns
+//   --card-grid-columns: 1fr;
+//   @media only screen and (min-width: 1000px) {
+//     --card-grid-columns: 1fr 1fr;
+//   }
+//   @media only screen and (min-width: 1250px) {
+//     --card-grid-columns: 1fr 1fr 1fr;
+//   }
+//   @media only screen and (min-width: 1700px) {
+//     --card-grid-columns: 1fr 1fr 1fr 1fr;
+//   }
+// }
+
+// html,
+// body {
+//   width: 100%;
+//   margin: 0;
+//   padding: 0;
+//   height: 100%;
+//   overflow: hidden;
+// }
+
+// * {
+//   box-sizing: inherit;
+//   outline: none;
+// }
 
 html,
 body {
-  width: 100%;
-  margin: 0;
-  padding: 0;
   height: 100%;
-  overflow: hidden;
 }
-
-* {
-  box-sizing: inherit;
-  outline: none;
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

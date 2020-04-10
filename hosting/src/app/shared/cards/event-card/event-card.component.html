@@ -1,27 +1,17 @@
-<h3>{{ event.title }}</h3>
-<h4>
-  <time [dateTime]="event.startDate">{{ event.startDate | toLocalDateString }}</time
-  >-<time [dateTime]="event.endDate">{{ event.endDate | toLocalDateString }}</time>
-</h4>
-
-<span class="spacer"></span>
-
-<p class="fadeout">{{ event.description }}</p>
-
-<div class="buttonWrapper">
-  <button class="text" [routerLink]="'/events/details/' + event.id">MEHR</button>
-  <div class="iconWrapper">
-    <button class="text icon" [routerLink]="'/calendar/' + event.startDate.toISOString()">
-      <i class="material-icons">event</i>
-    </button>
-    <ng-container *ngIf="auth.$user | async as user">
-      <button
-        class="text icon"
-        *ngIf="event.ownerId === user.id || user.authLevel >= 4"
-        [routerLink]="'/events/edit/' + event.id"
-      >
-        <i class="material-icons">edit</i>
-      </button>
-    </ng-container>
-  </div>
-</div>
+<mat-card>
+  <mat-card-title>{{ event.title }}</mat-card-title>
+  <mat-card-subtitle> {{ event.startDate | toLocalDateString }} - {{ event.endDate | toLocalDateString }} </mat-card-subtitle>
+  <mat-card-content>
+    {{ event.description.substring(0, 100) }}...
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of event.tags">{{ tag }}</mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-button [routerLink]="'/events/details/' + event.id">MEHR</a>
+    <a mat-icon-button [routerLink]="'/calendar/' + event.startDate.toISOString()"><mat-icon>event</mat-icon></a>
+    <a mat-icon-button *ngIf="(auth.$user | async)?.id === event.ownerId" [routerLink]="'/events/edit/' + event.id"
+      ><mat-icon>edit</mat-icon></a
+    >
+  </mat-card-actions>
+</mat-card>

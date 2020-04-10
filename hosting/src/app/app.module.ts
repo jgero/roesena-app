@@ -11,12 +11,12 @@ import { AngularFireStorageModule } from "@angular/fire/storage";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { StartPageComponent } from "./pages/start-page/start-page.component";
+import { StartPageComponent } from "./app-root/start-page/start-page.component";
 import { NotFoundPageComponent } from "./pages/not-found-page/not-found-page.component";
 import { TraceabilityModule } from "./shared/traceability/traceability.module";
 import { NavigationUtilsModule } from "./shared/navigation-utils/navigation-utils.module";
 import { CardsModule } from "./shared/cards/cards.module";
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModule } from "@angular/service-worker";
 
 @NgModule({
   declarations: [AppComponent, StartPageComponent, NotFoundPageComponent],
@@ -32,9 +32,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     TraceabilityModule,
     NavigationUtilsModule,
     CardsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register("ngsw-worker.js", { enabled: environment.production }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
