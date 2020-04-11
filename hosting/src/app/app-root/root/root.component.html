@@ -7,7 +7,9 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>Menü</mat-toolbar>
+    <!-- <mat-toolbar color="primary">
+      <a mat-button routerLink="/">RöSeNa</a>
+    </mat-toolbar> -->
     <mat-nav-list>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -38,11 +40,12 @@
         <a mat-list-item routerLink="/links">Links</a>
         <a mat-list-item routerLink="/press">Presse</a>
       </mat-expansion-panel>
-      <mat-toolbar>
-        <button type="button" aria-label="help" mat-icon-button>
+      <div class="button-container">
+        <button aria-label="help" mat-icon-button (click)="onHelpClick()">
           <mat-icon aria-label="help icon">help</mat-icon>
         </button>
-      </mat-toolbar>
+        <a mat-icon-button [routerLink]="'/'" aria-label="home"><mat-icon aria-label="home icon">home</mat-icon></a>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -50,9 +53,8 @@
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Röhlinger Sechtanarren e.V. 1970</span>
+      <span>RöSeNa</span>
     </mat-toolbar>
-    <!-- Add Content Here -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

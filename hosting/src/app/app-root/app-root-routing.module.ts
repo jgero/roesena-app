@@ -9,10 +9,8 @@ const routes: Routes = [
     path: "",
     canActivateChild: [LoadUserGuard],
     children: [
-      {
-        path: "",
-        component: StartPageComponent,
-      },
+      { path: "", component: StartPageComponent },
+      { path: "events", loadChildren: () => import("../pages/events/events.module").then((m) => m.EventsModule) },
     ],
   },
 ];

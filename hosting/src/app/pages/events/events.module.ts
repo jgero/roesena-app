@@ -2,27 +2,32 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { EventsRoutingModule } from "./events-routing.module";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatGridListModule } from "@angular/material/grid-list";
 
-import { EventsPageComponent } from "./events-page.component";
-import { EventDetailsComponent } from "./event-details/event-details.component";
-import { ParticipantComponent } from "./event-details/participant/participant.component";
-import { EventEditorComponent } from "./event-editor/event-editor.component";
-import { CustomFormElementsModule } from "src/app/shared/custom-form-elements/custom-form-elements.module";
-import { ConvertersModule } from "src/app/shared/converters/converters.module";
+import { EventsRoutingModule } from "./events-routing.module";
+import { OverviewComponent } from "./overview/overview.component";
 import { CardsModule } from "src/app/shared/cards/cards.module";
 import { FiltersModule } from "src/app/shared/filters/filters.module";
 
 @NgModule({
-  declarations: [EventDetailsComponent, EventsPageComponent, ParticipantComponent, EventEditorComponent],
+  declarations: [OverviewComponent],
   imports: [
     CommonModule,
-    EventsRoutingModule,
     FormsModule,
-    CustomFormElementsModule,
-    ConvertersModule,
+    EventsRoutingModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSlideToggleModule,
+    MatGridListModule,
     CardsModule,
-    FiltersModule
-  ]
+    FiltersModule,
+  ],
 })
 export class EventsModule {}

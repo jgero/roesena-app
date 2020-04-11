@@ -2,14 +2,14 @@ import { Pipe, PipeTransform } from "@angular/core";
 import { appEvent } from "src/app/utils/interfaces";
 
 @Pipe({
-  name: "eventsByDate"
+  name: "eventsByDate",
 })
 export class EventsByDatePipe implements PipeTransform {
   transform(value: appEvent[], searchString: string = "", descending: boolean = true): appEvent[] {
     if (!Array.isArray(value)) return value;
     if (searchString !== "") {
       value = value.filter(
-        ev =>
+        (ev) =>
           ev.title.toLowerCase().includes(searchString.toLowerCase()) ||
           ev.description.toLowerCase().includes(searchString.toLowerCase())
       );
