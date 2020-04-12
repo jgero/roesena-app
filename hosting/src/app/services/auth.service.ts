@@ -11,7 +11,7 @@ import { TracingStateService } from "./tracing-state.service";
   providedIn: "root",
 })
 export class AuthService {
-  $user = new BehaviorSubject<appPerson | null>(null);
+  $user = new BehaviorSubject<appPerson | null>(undefined);
 
   constructor(public auth: AngularFireAuth, private personDAO: PersonDalService, private trace: TracingStateService) {
     this.auth.authState.pipe(switchMap((user) => (user ? this.personDAO.getPersonById(user.uid) : of(null)))).subscribe({

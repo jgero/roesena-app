@@ -1,0 +1,3 @@
+<mat-chip *ngIf="$person | async as person" (click)="onParticipantClick(person.id)" [color]="color" [selected]="!!color">
+  {{ person.name }} <span *ngIf="value.amount > 0"> {{ value.amount }} </span>
+</mat-chip>

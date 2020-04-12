@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from "@angular/router";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, filter } from "rxjs/operators";
 
 import { AuthService } from "../services/auth.service";
 
@@ -14,6 +14,9 @@ export class LoadUserGuard implements CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.$user.pipe(map(() => true));
+    return this.auth.$user.pipe(
+      filter((el) => el !== undefined),
+      map(() => true)
+    );
   }
 }

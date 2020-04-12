@@ -1,0 +1,48 @@
+<ng-container *ngIf="$data | async as ev; else loading">
+  <mat-toolbar [color]="'accent'"> {{ ev.title }} </mat-toolbar>
+  <mat-toolbar
+    ><span>
+      <time [dateTime]="ev.startDate">{{ ev.startDate | toLocalDateString }} {{ ev.startDate | toLocalTimeString }}</time>
+      <span> - </span>
+      <time [dateTime]="ev.endDate">{{ ev.endDate | toLocalDateString }} {{ ev.endDate | toLocalTimeString }}</time>
+    </span>
+  </mat-toolbar>
+  <main>
+    <p>{{ ev.description }}</p>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of ev.tags"> {{ tag }} </mat-chip>
+    </mat-chip-list>
+    <mat-list *ngIf="ev.participants.length > 0 && auth.$user | async as user">
+      <mat-divider></mat-divider>
+      <div mat-subheader>Rückmeldungen: Deadline {{ ev.deadline | toLocalDateString }} {{ ev.deadline | toLocalTimeString }}</div>
+      <mat-list-item>
+        <div mat-line>Angenommen: {{ getAmountAccumulated(ev) }} Personen</div>
+        <mat-chip-list mat-line>
+          <ng-container *ngFor="let participant of ev.participants">
+            <app-participant-chip [value]="participant" [color]="'primary'" *ngIf="participant.amount > 0"></app-participant-chip>
+          </ng-container>
+        </mat-chip-list>
+      </mat-list-item>
+      <mat-list-item>
+        <div mat-line>Abgelehnt:</div>
+        <mat-chip-list mat-line>
+          <ng-container *ngFor="let participant of ev.participants">
+            <app-participant-chip [value]="participant" [color]="'warn'" *ngIf="participant.amount === 0"></app-participant-chip>
+          </ng-container>
+        </mat-chip-list>
+      </mat-list-item>
+      <mat-list-item>
+        <div mat-line>Ausstehend: {{ getPendingPercent(ev) }}% / {{ getPendingAmount(ev) }} Personen</div>
+        <mat-chip-list mat-line>
+          <ng-container *ngFor="let participant of ev.participants">
+            <app-participant-chip [value]="participant" *ngIf="participant.amount < 0"></app-participant-chip>
+          </ng-container>
+        </mat-chip-list>
+      </mat-list-item>
+    </mat-list>
+  </main>
+</ng-container>
+
+<ng-template #loading>
+  <mat-spinner [color]="'accent'"></mat-spinner>
+</ng-template>

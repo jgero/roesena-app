@@ -8,14 +8,20 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatGridListModule } from "@angular/material/grid-list";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatListModule } from "@angular/material/list";
 
 import { EventsRoutingModule } from "./events-routing.module";
 import { OverviewComponent } from "./overview/overview.component";
 import { CardsModule } from "src/app/shared/cards/cards.module";
 import { FiltersModule } from "src/app/shared/filters/filters.module";
+import { DetailsComponent } from "./details/details.component";
+import { ConvertersModule } from "src/app/shared/converters/converters.module";
+import { ParticipantChipComponent } from './details/participant-chip/participant-chip.component';
 
 @NgModule({
-  declarations: [OverviewComponent],
+  declarations: [OverviewComponent, DetailsComponent, ParticipantChipComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -26,8 +32,12 @@ import { FiltersModule } from "src/app/shared/filters/filters.module";
     MatButtonModule,
     MatSlideToggleModule,
     MatGridListModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatListModule,
     CardsModule,
     FiltersModule,
+    ConvertersModule,
   ],
 })
 export class EventsModule {}

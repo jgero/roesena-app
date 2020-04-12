@@ -1,0 +1,16 @@
+main {
+  padding: 0 16px;
+
+  p {
+    white-space: pre-line;
+  }
+
+  .mat-list-item {
+    height: min-content;
+    margin-bottom: 1em;
+  }
+
+  .mat-chip-list {
+    outline: none;
+  }
+}
