@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form {
+  display: grid;
+  width: 100%;
+  max-width: 800px;
+  padding: 8px;
+  box-sizing: border-box;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  grid-template-rows: auto auto auto auto auto auto;
+  grid-template-areas:
+    ". close"
+    "title title"
+    "description description"
+    "start-date start-time"
+    "end-date end-time"
+    "tags tags"
+    "deadline-date deadline-time";
+
+  a {
+    justify-self: right;
+  }
+
+  .date-time {
+    max-width: 300px;
+    justify-self: center;
+  }
+}

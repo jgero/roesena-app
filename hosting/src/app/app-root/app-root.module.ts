@@ -21,6 +21,7 @@ import { AppRootRoutingModule } from "./app-root-routing.module";
 import { RootComponent } from "./root/root.component";
 import { StartPageComponent } from "./start-page/start-page.component";
 import { CardsModule } from "../shared/cards/cards.module";
+import { MatNativeDateModule, MAT_DATE_LOCALE } from "@angular/material/core";
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent],
@@ -41,9 +42,10 @@ import { CardsModule } from "../shared/cards/cards.module";
     MatIconModule,
     MatListModule,
     MatExpansionModule,
+    MatNativeDateModule,
     CardsModule,
   ],
-  providers: [],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: "de" }],
   bootstrap: [RootComponent],
 })
 export class AppRootModule {}

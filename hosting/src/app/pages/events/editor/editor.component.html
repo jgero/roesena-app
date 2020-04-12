@@ -1,0 +1,69 @@
+<mat-toolbar [color]="'accent'">Event Bearbeiten</mat-toolbar>
+<form *ngIf="$data | async" [formGroup]="eventForm">
+  <a [style.grid-area]="'close'" mat-icon-button [routerLink]="'/events/overview'"><mat-icon>close</mat-icon></a>
+
+  <mat-form-field [style.grid-area]="'title'">
+    <mat-label>Titel</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
+
+  <mat-form-field class="description" [style.grid-area]="'description'">
+    <mat-label>Beschreibung</mat-label>
+    <textarea matInput [rows]="5" formControlName="description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="date-time" [style.grid-area]="'start-date'">
+    <mat-label>Start-Datum</mat-label>
+    <input matInput placeholder="DD.MM.YYYY" [matDatepicker]="picker1" formControlName="startDate" />
+    <mat-error *ngIf="eventForm.controls.startDate.invalid"> {{ getErrorMessage(eventForm.controls.startDate) }} </mat-error>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="date-time" [style.grid-area]="'start-time'">
+    <mat-label>Start-Zeit</mat-label>
+    <input matInput placeholder="HH:MM" formControlName="startTime" />
+    <mat-error *ngIf="eventForm.controls.startTime.invalid"> {{ getErrorMessage(eventForm.controls.startTime) }} </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="date-time" [style.grid-area]="'end-date'">
+    <mat-label>End-Datum</mat-label>
+    <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker2" formControlName="endDate" />
+    <mat-error *ngIf="eventForm.controls.endDate.invalid"> {{ getErrorMessage(eventForm.controls.endDate) }} </mat-error>
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="date-time" [style.grid-area]="'end-time'">
+    <mat-label>End-Zeit</mat-label>
+    <input matInput placeholder="HH:MM" formControlName="endTime" />
+    <mat-error *ngIf="eventForm.controls.endTime.invalid"> {{ getErrorMessage(eventForm.controls.endTime) }} </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="date-time" [style.grid-area]="'deadline-date'">
+    <mat-label>Deadline-Datum</mat-label>
+    <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker3" />
+    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+    <mat-datepicker #picker3></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="date-time" [style.grid-area]="'deadline-time'">
+    <mat-label>Deadline-Zeit</mat-label>
+    <input matInput pattern />
+  </mat-form-field>
+
+  <mat-form-field [style.grid-area]="'tags'">
+    <mat-chip-list #chipList aria-label="tag Auswahl">
+      <mat-chip *ngFor="let tag of event.tags" (removed)="removeTag(tag)">
+        {{ tag }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Tags"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addTag($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
+</form>
