@@ -12,7 +12,8 @@ form {
   box-sizing: border-box;
   grid-template-columns: 1fr 1fr;
   column-gap: 16px;
-  grid-template-rows: auto auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto auto;
+  row-gap: 16px;
   grid-template-areas:
     ". close"
     "title title"
@@ -20,7 +21,8 @@ form {
     "start-date start-time"
     "end-date end-time"
     "tags tags"
-    "deadline-date deadline-time";
+    "deadline deadline"
+    "save delete";
 
   a {
     justify-self: right;
@@ -29,5 +31,20 @@ form {
   .date-time {
     max-width: 300px;
     justify-self: center;
+  }
+
+  ::ng-deep.mat-expansion-panel-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 16px;
+    grid-template-areas:
+      ". ."
+      "participants participants";
+  }
+  .mat-expansion-panel {
+    &.ng-invalid .mat-expansion-panel-header-description {
+      color: red;
+    }
   }
 }

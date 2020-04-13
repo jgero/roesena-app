@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatListModule } from "@angular/material/list";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 import { EventsRoutingModule } from "./events-routing.module";
 import { OverviewComponent } from "./overview/overview.component";
@@ -39,6 +40,7 @@ import { EditorComponent } from "./editor/editor.component";
     MatChipsModule,
     MatListModule,
     MatDatepickerModule,
+    MatExpansionModule,
     CardsModule,
     FiltersModule,
     ConvertersModule,
