@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, AfterViewInit, ViewChildren, QueryList } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { FormControl, Validators, FormGroup, AbstractControl, ValidatorFn } from "@angular/forms";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { MatChipInputEvent } from "@angular/material/chips";
 import { Observable, of, Subscription, combineLatest } from "rxjs";
+import { tap, map } from "rxjs/operators";
+
 import { appEvent, appPerson } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { ActivatedRoute } from "@angular/router";
-import { tap, skipUntil, map } from "rxjs/operators";
-import { MatChipInputEvent, MatChipSelectionChange, MatChipListChange, MatChip } from "@angular/material/chips";
-import { FormControl, Validators, Form, FormGroup, AbstractControl, ValidatorFn } from "@angular/forms";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { AuthService } from "src/app/services/auth.service";
-import { MatSelectionListChange } from "@angular/material/list";
 
 @Component({
   selector: "app-editor",
