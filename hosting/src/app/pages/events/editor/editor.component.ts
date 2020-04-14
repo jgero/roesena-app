@@ -98,7 +98,8 @@ export class EditorComponent implements OnDestroy {
       participants: this.eventForm.get("deadline").get("participants").value,
     };
     const action = this.route.snapshot.paramMap.get("id") ? this.eventDAO.update(updated) : this.eventDAO.insert(updated);
-    this.subs.push(action.subscribe());
+    // save and set the form back to prestine when saving was successfull
+    this.subs.push(action.subscribe({ next: () => this.eventForm.markAsPristine() }));
   }
 
   deleteEvent(): void {

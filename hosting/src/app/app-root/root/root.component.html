@@ -42,6 +42,22 @@
         <a mat-list-item routerLink="/links">Links</a>
         <a mat-list-item routerLink="/press">Presse</a>
       </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Account
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngIf="auth.$user | async as user; else authenticate">
+          <a mat-list-item routerLink="/auth/profile">Profil</a>
+          <a mat-list-item routerLink="/auth/my-events">Meine Events</a>
+          <a mat-list-item *ngIf="user.groups.includes('admins')" routerLink="/auth/group-manager">Gruppen Manager</a>
+        </ng-container>
+        <ng-template #authenticate>
+          <a mat-list-item routerLink="/auth/login">Login</a>
+          <a mat-list-item routerLink="/auth/register">Registrieren</a>
+        </ng-template>
+      </mat-expansion-panel>
       <div class="button-container">
         <button aria-label="help" mat-icon-button (click)="onHelpClick()">
           <mat-icon aria-label="help icon">help</mat-icon>

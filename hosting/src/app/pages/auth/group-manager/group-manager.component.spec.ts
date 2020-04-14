@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChangeNameComponent } from './change-name.component';
+import { GroupManagerComponent } from './group-manager.component';
 
-describe('ChangeNameComponent', () => {
-  let component: ChangeNameComponent;
-  let fixture: ComponentFixture<ChangeNameComponent>;
+describe('GroupManagerComponent', () => {
+  let component: GroupManagerComponent;
+  let fixture: ComponentFixture<GroupManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChangeNameComponent ]
+      declarations: [ GroupManagerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChangeNameComponent);
+    fixture = TestBed.createComponent(GroupManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

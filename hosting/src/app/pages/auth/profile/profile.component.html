@@ -1,0 +1,29 @@
+<mat-toolbar [color]="'accent'">Profil</mat-toolbar>
+
+<main *ngIf="auth.$user | async as user">
+  <mat-list>
+    <div mat-subheader>Meine Daten</div>
+    <mat-list-item>
+      <div mat-line mat-header><strong>Anzeigename</strong></div>
+      <div mat-line>{{ user.name }}</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line><strong>Gruppen</strong></div>
+      <div mat-line>{{ user.groups.join(", ") }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Name ändern</div>
+    <form [formGroup]="updateNameForm" (ngSubmit)="onUpdateNameSubmit()">
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>neuer Name</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error *ngIf="updateNameForm.get('name').invalid"> {{ getErrorMessage(updateNameForm.get("name")) }} </mat-error>
+        </mat-form-field>
+        <button mat-stroked-button type="submit" [color]="'primary'" [disabled]="updateNameForm.invalid || !updateNameForm.dirty">
+          <mat-icon>save</mat-icon> SPEICHERN
+        </button>
+      </mat-list-item>
+    </form>
+  </mat-list>
+</main>

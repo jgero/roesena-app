@@ -1,5 +1,5 @@
 <mat-toolbar [color]="'accent'">Event Bearbeiten</mat-toolbar>
-<form *ngIf="$data | async" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+<form *ngIf="$data | async; else loading" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
   <a [style.grid-area]="'close'" mat-icon-button [routerLink]="'/events/overview'"><mat-icon>close</mat-icon></a>
 
   <mat-form-field [style.grid-area]="'title'">
@@ -103,7 +103,13 @@
       </mat-error>
     </mat-form-field>
   </mat-expansion-panel>
-  <button mat-raised-button type="submit" [color]="'primary'" [style.grid-area]="'save'" [disabled]="eventForm.invalid">
+  <button
+    mat-raised-button
+    type="submit"
+    [color]="'primary'"
+    [style.grid-area]="'save'"
+    [disabled]="eventForm.invalid || !eventForm.dirty"
+  >
     <mat-icon>save</mat-icon> SPEICHERN
   </button>
   <button
@@ -116,3 +122,7 @@
     <mat-icon>delete</mat-icon> LÖSCHEN
   </button>
 </form>
+
+<ng-template #loading>
+  <mat-progress-spinner></mat-progress-spinner>
+</ng-template>

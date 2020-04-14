@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-root",
@@ -15,7 +16,7 @@ export class RootComponent {
     shareReplay()
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router) {}
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router, public auth: AuthService) {}
 
   onHelpClick() {
     // navigate to the current route and add the 'help' prefix
