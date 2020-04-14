@@ -12,13 +12,15 @@ export class ProfileComponent implements OnDestroy {
   updateNameForm = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.pattern("^[a-zA-ZäöüÄÖÜ -]+$")]),
   });
-  private sub: Subscription;
+  private subs: Subscription[] = [];
   constructor(public auth: AuthService) {}
 
   onUpdateNameSubmit() {
-    this.sub = this.auth
-      .updateName(this.auth.$user.getValue().id, this.updateNameForm.get("name").value)
-      .subscribe({ next: () => this.updateNameForm.markAsPristine() });
+    this.subs.push(
+      this.auth
+        .updateName(this.auth.$user.getValue().id, this.updateNameForm.get("name").value)
+        .subscribe({ next: () => this.updateNameForm.markAsPristine() })
+    );
   }
 
   getErrorMessage(ctrl: AbstractControl): string {
@@ -27,7 +29,17 @@ export class ProfileComponent implements OnDestroy {
     return "";
   }
 
+  logout() {
+    this.subs.push(
+      this.auth.logout().subscribe({
+        next: () => {
+          location.reload();
+        },
+      })
+    );
+  }
+
   ngOnDestroy() {
-    if (this.sub) this.sub.unsubscribe();
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 }

@@ -1,1 +1,18 @@
-<p>login works!</p>
+<mat-toolbar [color]="'accent'">Login</mat-toolbar>
+<main>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field [style.grid-area]="'email'">
+      <mat-label>E-Mail</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="loginForm.get('email').invalid"> {{ getErrorMessage(loginForm.get("email")) }} </mat-error>
+    </mat-form-field>
+    <mat-form-field [style.grid-area]="'password'">
+      <mat-label>Passwort</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-error *ngIf="loginForm.get('password').invalid"> {{ getErrorMessage(loginForm.get("password")) }} </mat-error>
+    </mat-form-field>
+    <button mat-flat-button [color]="'primary'" type="submit" [disabled]="loginForm.invalid" [style.grid-area]="'button'">
+      LOGIN
+    </button>
+  </form>
+</main>

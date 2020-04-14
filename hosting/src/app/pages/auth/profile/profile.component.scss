@@ -4,6 +4,11 @@
   align-items: center;
 }
 
+.mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
 main {
   max-width: 800px;
   width: 100%;
