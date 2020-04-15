@@ -15,7 +15,7 @@ import { AuthService } from "src/app/services/auth.service";
 export class LoginComponent implements OnDestroy {
   loginForm = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", [Validators.required, Validators.minLength(6)]),
+    password: new FormControl("", [Validators.required]),
   });
   private subs: Subscription[] = [];
 

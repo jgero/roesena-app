@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+main {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 16px;
+
+  table {
+    width: 100%;
+
+    .mat-form-field {
+      width: 100px;
+    }
+
+    ::ng-deep.mat-badge.hide-text .mat-badge-content {
+      color: transparent;
+    }
+
+    button {
+      margin-left: 8px;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore, QuerySnapshot, DocumentData, DocumentSnapshot, DocumentChangeAction } from "@angular/fire/firestore";
 import { Observable, from, of, combineLatest } from "rxjs";
-import { map, catchError, tap } from "rxjs/operators";
+import { map, catchError, tap, filter, switchMap } from "rxjs/operators";
 import "firebase/firestore";
 
 import { appEvent } from "src/app/utils/interfaces";
@@ -90,15 +90,16 @@ export class EventDALService {
   getRespondables(): Observable<appEvent[]> {
     this.trace.addLoading();
     const user = this.auth.$user.getValue();
+    console.log(user);
     if (!user) return of([]);
     return this.firestore
-      .collection<appEvent>("events", (qFn) => qFn.where(`deadline`, ">=", new Date()).orderBy("deadline"))
-      .get()
+      .collection<appEvent>("events", (qFn) =>
+        qFn.where(`deadline`, ">=", new Date()).where("participantsArray", "array-contains", user.id).orderBy("deadline")
+      )
+      .snapshotChanges()
       .pipe(
         // map documents to events
-        map(convertEventsFromDocuments),
-        // only use events where the currently logged-in user is invited
-        map((events) => events.filter((ev) => ev.participants.findIndex((participant) => participant.id === user.id) >= 0)),
+        map(convertEventFromChangeActions),
         tap(() => {
           this.trace.completeLoading();
         }),
@@ -114,6 +115,7 @@ export class EventDALService {
   update(updated: appEvent): Observable<boolean> {
     this.trace.addLoading();
     const id = updated.id;
+    (updated as any).participantsArray = updated.participants.map((el) => el.id);
     (updated.tags as any) = arrayToMap(updated.tags);
     (updated.participants as any) = participantArrayToMap(updated.participants);
     delete updated.id;
@@ -133,6 +135,7 @@ export class EventDALService {
 
   insert(newEv: appEvent): Observable<boolean> {
     this.trace.addLoading();
+    (newEv as any).participantsArray = newEv.participants.map((el) => el.id);
     (newEv.tags as any) = arrayToMap(newEv.tags);
     (newEv.participants as any) = participantArrayToMap(newEv.participants);
     delete newEv.id;
@@ -171,6 +174,7 @@ function convertEventsFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): ap
   let data: any[] = snapshot.docs.map((doc) => {
     let data: any = doc.data();
     data.id = doc.id;
+    delete data.participantsArray;
     data.startDate = new Date(data.startDate.toDate());
     data.endDate = new Date(data.endDate.toDate());
     data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
@@ -184,6 +188,7 @@ function convertEventsFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): ap
 function convertEventFromDocument(snapshot: DocumentSnapshot<DocumentData>): appEvent {
   let data = snapshot.data();
   data.id = snapshot.id;
+  delete data.participantsArray;
   data.startDate = new Date(data.startDate.toDate());
   data.endDate = new Date(data.endDate.toDate());
   data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;
@@ -196,6 +201,7 @@ function convertEventFromChangeActions(snapshot: DocumentChangeAction<appEvent>[
   return snapshot.map((action) => {
     let data: any = action.payload.doc.data();
     data.id = action.payload.doc.id;
+    delete data.participantsArray;
     data.startDate = new Date(data.startDate.toDate());
     data.endDate = new Date(data.endDate.toDate());
     data.deadline = data.deadline ? new Date(data.deadline.toDate()) : null;

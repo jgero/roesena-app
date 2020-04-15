@@ -9,6 +9,7 @@ import { AngularFireFunctionsModule } from "@angular/fire/functions";
 import { AngularFireStorageModule } from "@angular/fire/storage";
 import { ServiceWorkerModule } from "@angular/service-worker";
 
+import { MatNativeDateModule, MAT_DATE_LOCALE } from "@angular/material/core";
 import { LayoutModule } from "@angular/cdk/layout";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
@@ -16,12 +17,13 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { AppRootRoutingModule } from "./app-root-routing.module";
 import { RootComponent } from "./root/root.component";
 import { StartPageComponent } from "./start-page/start-page.component";
 import { CardsModule } from "../shared/cards/cards.module";
-import { MatNativeDateModule, MAT_DATE_LOCALE } from "@angular/material/core";
+import { MatBadgeModule } from "@angular/material/badge";
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent],
@@ -43,6 +45,8 @@ import { MatNativeDateModule, MAT_DATE_LOCALE } from "@angular/material/core";
     MatListModule,
     MatExpansionModule,
     MatNativeDateModule,
+    MatSnackBarModule,
+    MatBadgeModule,
     CardsModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: "de" }],
