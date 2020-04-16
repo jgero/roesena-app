@@ -18,7 +18,7 @@ export class OverviewComponent {
   }
 
   constructor(evDAO: EventDALService, public auth: AuthService) {
-    this.$events = evDAO.getAllEvents();
+    this.$events = evDAO.getEvents();
   }
 
   runSearch() {}

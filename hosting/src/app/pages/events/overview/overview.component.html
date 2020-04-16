@@ -1,31 +1,27 @@
-<mat-toolbar class="header">
-  <mat-toolbar-row class="upper">
-    <div>
-      <span class="title">Events</span>
-      <a mat-icon-button [routerLink]="'/events/edit'" *ngIf="auth.$user | async">
-        <mat-icon>add</mat-icon>
-      </a>
-    </div>
-    <mat-slide-toggle [checked]="true" #toggle>Aufsteigend</mat-slide-toggle>
-  </mat-toolbar-row>
-  <mat-toolbar-row class="lower">
-    <div>
-      <mat-form-field class="search-field">
-        <mat-label>Suchbegriff</mat-label>
-        <input matInput type="text" [(ngModel)]="searchString" />
-        <button *ngIf="searchString" matSuffix mat-icon-button aria-label="clear" (click)="searchString = ''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-      <button mat-icon-button aria-label="search" (click)="runSearch()">
-        <mat-icon>search</mat-icon>
+<mat-toolbar class="header" [color]="'accent'">
+  <div>
+    <span class="title">Events</span>
+    <a mat-icon-button [routerLink]="'/events/edit'" *ngIf="auth.$user | async">
+      <mat-icon>add</mat-icon>
+    </a>
+  </div>
+  <div class="spacer"></div>
+  <div>
+    <mat-form-field class="search-field">
+      <mat-label>Suchbegriff</mat-label>
+      <input matInput type="text" [(ngModel)]="searchString" />
+      <button *ngIf="searchString" matSuffix mat-icon-button aria-label="clear" (click)="searchString = ''">
+        <mat-icon>close</mat-icon>
       </button>
-    </div>
-  </mat-toolbar-row>
+    </mat-form-field>
+    <button mat-icon-button aria-label="search" (click)="runSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
-<mat-grid-list class="content" [cols]="cols" [rowHeight]="'250px'" [gutterSize]="'1rem'">
-  <mat-grid-tile *ngFor="let event of $events | async | eventsByDate: '':!toggle.checked">
+<mat-grid-list class="content" [cols]="cols" [rowHeight]="'300px'" [gutterSize]="'16px'">
+  <mat-grid-tile *ngFor="let event of $events | async">
     <app-event-card [event]="event"></app-event-card>
   </mat-grid-tile>
 </mat-grid-list>
