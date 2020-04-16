@@ -9,6 +9,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTableModule } from "@angular/material/table";
 import { MatBadgeModule } from "@angular/material/badge";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 import { AuthRoutingModule } from "./auth-routing.module";
 import { LoginComponent } from "./login/login.component";
@@ -34,6 +36,8 @@ import { ConvertersModule } from "src/app/shared/converters/converters.module";
     MatProgressSpinnerModule,
     MatTableModule,
     MatBadgeModule,
+    MatChipsModule,
+    MatCheckboxModule,
     ConvertersModule,
   ],
 })

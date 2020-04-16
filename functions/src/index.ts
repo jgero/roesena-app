@@ -39,8 +39,12 @@ export const respondToEvent = functions.https.onRequest((req, res) => {
       res.status(400).send("invalid request id");
       return;
     }
-    // if there is no deadline or it is already over
-    if (!doc.deadline || new Date(doc.deadline.toDate()).getTime() < new Date().getTime()) {
+    if (!doc.deadline) {
+      res.status(400).send("event does not have a deadline");
+      return;
+    }
+    // if deadline is already over
+    if (new Date(doc.deadline.toDate()).getTime() < new Date().getTime()) {
       res.status(400).send("dedline already over");
       return;
     }

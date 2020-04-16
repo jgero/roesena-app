@@ -1,1 +1,27 @@
-<p>reset works!</p>
+<mat-toolbar [color]="'accent'">Passwort zurücksetzen</mat-toolbar>
+<main>
+  <form *ngIf="!code; else newPassword" [formGroup]="resetForm" (ngSubmit)="onResetSubmit()">
+    <mat-form-field [style.grid-area]="'input'">
+      <mat-label>E-Mail</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="resetForm.get('email').invalid"> E-Mail ungültig </mat-error>
+    </mat-form-field>
+    <button mat-flat-button [color]="'primary'" type="submit" [disabled]="resetForm.invalid" [style.grid-area]="'button'">
+      ZURÜCKSETZEN
+    </button>
+    <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">Ich habe bereits ein Konto</a>
+  </form>
+  <ng-template #newPassword>
+    <form [formGroup]="newPasswordForm" (ngSubmit)="onNewPasswordSubmit()">
+      <mat-form-field [style.grid-area]="'input'">
+        <mat-label>Passwort</mat-label>
+        <input matInput formControlName="password" />
+        <mat-error *ngIf="newPasswordForm.get('password').invalid"> Passwort ungültig </mat-error>
+      </mat-form-field>
+      <button mat-flat-button [color]="'primary'" type="submit" [disabled]="newPasswordForm.invalid" [style.grid-area]="'button'">
+        PASSWORT ÄNDERN
+      </button>
+      <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">Ich habe bereits ein Konto</a>
+    </form>
+  </ng-template>
+</main>

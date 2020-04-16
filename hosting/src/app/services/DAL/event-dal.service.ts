@@ -88,9 +88,7 @@ export class EventDALService {
   }
 
   getRespondables(): Observable<appEvent[]> {
-    this.trace.addLoading();
     const user = this.auth.$user.getValue();
-    console.log(user);
     if (!user) return of([]);
     return this.firestore
       .collection<appEvent>("events", (qFn) =>

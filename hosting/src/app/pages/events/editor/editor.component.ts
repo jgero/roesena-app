@@ -131,10 +131,6 @@ export class EditorComponent implements OnDestroy {
     };
   }
 
-  test(val: any) {
-    console.log(val);
-  }
-
   getParticipantFormValidatorFn(): ValidatorFn {
     return (ctrl: AbstractControl) => {
       const value = ctrl.value as { id: string; amount: number }[];
@@ -163,6 +159,7 @@ export class EditorComponent implements OnDestroy {
     }
     // manually run the validity check after a person was clicked
     this.eventForm.get("deadline").get("participants").updateValueAndValidity();
+    this.eventForm.get("deadline").get("participants").markAsDirty();
   }
 
   getErrorMessage(ctrl: AbstractControl): string {
@@ -180,6 +177,7 @@ export class EditorComponent implements OnDestroy {
       (this.eventForm.get("tags").value as string[]).findIndex((el) => el === tag),
       1
     );
+    this.eventForm.get("tags").markAsDirty();
   }
 
   addTag(event: MatChipInputEvent) {
@@ -188,6 +186,7 @@ export class EditorComponent implements OnDestroy {
       (this.eventForm.get("tags").value as string[]).push(event.value);
     }
     event.input.value = "";
+    this.eventForm.get("tags").markAsDirty();
   }
 
   ngOnDestroy() {

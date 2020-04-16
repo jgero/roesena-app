@@ -1,1 +1,33 @@
-<p>group-manager works!</p>
+<mat-toolbar [color]="'accent'">Gruppen-Manager</mat-toolbar>
+<main>
+  <ng-container *ngFor="let person of $persons | async">
+    <form
+      [formGroup]="person.form"
+      (ngSubmit)="onSubmit(person.id, person.form.get('confirmed').value, person.form.get('groups').value)"
+    >
+      <mat-toolbar>
+        <span>{{ person.name }}</span>
+        <div class="content-spacer"></div>
+        <button mat-flat-button [color]="'primary'" type="submit" [disabled]="person.form.invalid || !person.form.dirty">
+          <mat-icon>save</mat-icon>SPEICHERN
+        </button>
+      </mat-toolbar>
+      <mat-checkbox formControlName="confirmed">Bestätigtes Mitglied</mat-checkbox>
+
+      <mat-form-field>
+        <mat-chip-list #chipList formControlName="groups">
+          <mat-chip *ngFor="let group of this.person.form.get('groups').value" (removed)="removeGroup(group, person.form)">
+            {{ group }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Gruppen"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addGroup($event, person.form)"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+    </form>
+  </ng-container>
+</main>

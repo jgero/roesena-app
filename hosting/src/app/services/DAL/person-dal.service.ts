@@ -73,17 +73,14 @@ export class PersonDalService {
   }
 
   update(id: string, updated: appPerson): Observable<boolean> {
-    this.trace.addLoading();
     delete updated.id;
     if (updated.groups) (updated.groups as any) = arrayToMap(updated.groups);
     return from(this.firestore.collection("persons").doc(id).update(updated)).pipe(
       map(() => true),
       tap(() => {
-        this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Gespeichert!`);
       }),
       catchError((err) => {
-        this.trace.completeLoading();
         this.trace.$snackbarMessage.next(`Fehler beim speichern von Person: ${err}`);
         return of(false);
       })
