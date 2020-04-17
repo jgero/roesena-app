@@ -2,10 +2,11 @@ import { Router } from "@angular/router";
 import { Component } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
-import { map, shareReplay, filter, switchMap } from "rxjs/operators";
+import { map, shareReplay, filter, switchMap, tap } from "rxjs/operators";
 
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-root",
@@ -23,7 +24,8 @@ export class RootComponent {
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     public auth: AuthService,
-    eventDAO: EventDALService
+    eventDAO: EventDALService,
+    snackbar: MatSnackBar
   ) {
     this.$badgeContentStream = auth.$user.pipe(
       // listen to user updates and only trigger on new users
@@ -36,7 +38,15 @@ export class RootComponent {
         return vals.filter((val) => val.participants.find((paricipant) => paricipant.id === id).amount < 0);
       }),
       // only keep the amount of events
-      map((vals) => (vals.length > 0 ? vals.length : null))
+      map((vals) => (vals.length > 0 ? vals.length : null)),
+      tap((unresponded) => {
+        if (unresponded) {
+          snackbar
+            .open(`Unbeantwortete Termine: ${unresponded}`, "ANTWORTEN")
+            .onAction()
+            .subscribe({ next: () => this.router.navigate(["auth", "my-events"]) });
+        }
+      })
     );
   }
 
