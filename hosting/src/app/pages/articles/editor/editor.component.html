@@ -1,1 +1,54 @@
-<p>editor works!</p>
+<mat-toolbar [color]="'accent'">Artikel Bearbeiten</mat-toolbar>
+<form *ngIf="$data | async as article; else loading" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+  <a [style.grid-area]="'close'" mat-icon-button [routerLink]="'/articles/overview'"><mat-icon>close</mat-icon></a>
+
+  <mat-form-field [style.grid-area]="'title'">
+    <mat-label>Titel</mat-label>
+    <input matInput formControlName="title" />
+    <mat-error *ngIf="articleForm.controls.title.invalid"> {{ getErrorMessage(articleForm.controls.title) }} </mat-error>
+  </mat-form-field>
+
+  <mat-form-field [style.grid-area]="'content'">
+    <mat-label>Inhalt</mat-label>
+    <textarea matInput [rows]="10" formControlName="content"></textarea>
+  </mat-form-field>
+
+  <mat-form-field [style.grid-area]="'tags'">
+    <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
+      <mat-chip *ngFor="let tag of articleForm.get('tags').value" (removed)="removeTag(tag)">
+        {{ tag }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Tags"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addTag($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    type="submit"
+    [color]="'primary'"
+    [style.grid-area]="'save'"
+    [disabled]="articleForm.invalid || !articleForm.dirty"
+  >
+    <mat-icon>save</mat-icon> SPEICHERN
+  </button>
+  <button
+    mat-raised-button
+    type="button"
+    [color]="'warn'"
+    [style.grid-area]="'delete'"
+    [disabled]="article.id === ''"
+    (click)="deleteArticle()"
+  >
+    <mat-icon>delete</mat-icon> LÖSCHEN
+  </button>
+</form>
+
+<ng-template #loading>
+  <mat-progress-spinner></mat-progress-spinner>
+</ng-template>

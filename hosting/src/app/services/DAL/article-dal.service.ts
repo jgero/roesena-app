@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import {
   AngularFirestore,
-  QuerySnapshot,
-  DocumentData,
   DocumentSnapshot,
   Action,
   DocumentChangeAction,
@@ -16,7 +14,6 @@ import * as fbs from "firebase/app";
 import "firebase/firestore";
 
 import { appArticle } from "src/app/utils/interfaces";
-import { TracingStateService } from "../tracing-state.service";
 import { AuthService } from "../auth.service";
 import { arrayToMap, mapToArray } from "src/app/utils/converters";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -69,15 +66,15 @@ export class ArticleDalService {
       );
   }
 
-  insert(article: appArticle): Observable<boolean> {
+  insert(article: appArticle): Observable<string | null> {
     return from(this.firestore.collection("articles").add(toStorableArticle(article))).pipe(
-      map(() => true),
+      map((el) => el.id),
       tap(() => {
         this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
         this.snackbar.open(`Artikel konnte nicht hinzugefügt werden: ${err}`, "OK");
-        return of(false);
+        return of(null);
       })
     );
   }

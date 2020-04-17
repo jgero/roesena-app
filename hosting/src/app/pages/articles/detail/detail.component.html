@@ -1,1 +1,14 @@
-<p>detail works!</p>
+<ng-container *ngIf="$article | async as article; else loading">
+  <mat-toolbar [color]="'accent'"> {{ article.title }} </mat-toolbar>
+  <mat-toolbar> {{ article.created | toLocalDateString }} </mat-toolbar>
+  <main>
+    <p>{{ article.content }}</p>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of article.tags"> {{ tag }} </mat-chip>
+    </mat-chip-list>
+  </main>
+</ng-container>
+
+<ng-template #loading>
+  <mat-progress-spinner></mat-progress-spinner>
+</ng-template>

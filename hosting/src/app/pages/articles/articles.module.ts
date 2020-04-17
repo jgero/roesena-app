@@ -12,6 +12,9 @@ import { CardsModule } from "src/app/shared/cards/cards.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { ConvertersModule } from "src/app/shared/converters/converters.module";
+import { MatChipsModule } from "@angular/material/chips";
 
 @NgModule({
   declarations: [OverviewComponent, EditorComponent, DetailComponent],
@@ -25,7 +28,10 @@ import { MatButtonModule } from "@angular/material/button";
     MatInputModule,
     MatButtonModule,
     MatGridListModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
     CardsModule,
+    ConvertersModule,
   ],
 })
 export class ArticlesModule {}
