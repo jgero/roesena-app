@@ -17,8 +17,6 @@ export class StartPageComponent {
 
   constructor(eventDAO: EventDALService, articleDAO: ArticleDalService) {
     this.eventCards = eventDAO.getEvents(3);
-    this.articleCards = articleDAO.getLatestArticles();
-    // this.eventCards = route.snapshot.data.appEvent;
-    // console.log("i am constructed");
+    this.articleCards = articleDAO.getArticles(3);
   }
 }

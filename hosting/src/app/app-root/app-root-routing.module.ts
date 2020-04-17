@@ -12,6 +12,7 @@ const routes: Routes = [
       { path: "", component: StartPageComponent },
       { path: "events", loadChildren: () => import("../pages/events/events.module").then((m) => m.EventsModule) },
       { path: "auth", loadChildren: () => import("../pages/auth/auth.module").then((m) => m.AuthModule) },
+      { path: "articles", loadChildren: () => import("../pages/articles/articles.module").then((m) => m.ArticlesModule) },
     ],
   },
 ];

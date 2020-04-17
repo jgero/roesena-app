@@ -165,6 +165,7 @@ export class EventDALService {
     );
   }
 }
+
 function toStorableEvent(app: appEvent): storeableEvent {
   const { title, description, ownerId } = app;
   return {
