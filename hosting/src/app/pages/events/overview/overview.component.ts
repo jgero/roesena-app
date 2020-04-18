@@ -21,5 +21,11 @@ export class OverviewComponent {
     this.$events = evDAO.getEvents();
   }
 
+  canCreate(): boolean {
+    const user = this.auth.$user.getValue();
+    // owner and admins can edit
+    return user && (user.groups.includes("Autor") || user.groups.includes("admin"));
+  }
+
   runSearch() {}
 }

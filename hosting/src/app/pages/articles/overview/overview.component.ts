@@ -20,6 +20,12 @@ export class OverviewComponent implements OnInit {
     this.$articles = articleDAO.getArticles();
   }
 
+  canCreate(): boolean {
+    const user = this.auth.$user.getValue();
+    // owner and admins can edit
+    return user && (user.groups.includes("Autor") || user.groups.includes("admin"));
+  }
+
   runSearch() {}
 
   ngOnInit(): void {}

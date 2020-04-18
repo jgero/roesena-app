@@ -1,7 +1,7 @@
 <mat-toolbar class="header" [color]="'accent'">
   <div>
     <span class="title">Bilder</span>
-    <a mat-icon-button [routerLink]="'/images/edit'" *ngIf="auth.$user | async">
+    <a mat-icon-button [routerLink]="'/images/edit'" *ngIf="canCreate()">
       <mat-icon>add</mat-icon>
     </a>
   </div>
