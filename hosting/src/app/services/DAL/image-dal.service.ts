@@ -65,7 +65,6 @@ export class ImageDalService {
         this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
-        console.log(err);
         this.snackbar.open(`Bild konnte nicht hinzugefügt werden: ${err}`, "OK");
         return of(null);
       })
@@ -82,7 +81,6 @@ export class ImageDalService {
         this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
-        console.log(err);
         this.snackbar.open(`Bild konnte nicht bearbeitet werden: ${err}`, "OK");
         return of(false);
       })

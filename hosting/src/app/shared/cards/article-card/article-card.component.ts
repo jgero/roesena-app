@@ -17,6 +17,8 @@ export class ArticleCardComponent {
   constructor(public auth: AuthService) {}
 
   canEdit(): boolean {
-    return this.auth.$user.getValue() && this.auth.$user.getValue().id === this.article.ownerId;
+    const user = this.auth.$user.getValue();
+    // owner and admins can edit
+    return user && (user.id === this.article.ownerId || user.groups.includes("admin"));
   }
 }

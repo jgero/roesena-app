@@ -19,4 +19,10 @@ export class ImageCardComponent implements OnInit {
   ngOnInit(): void {
     this.$src = this.imageDAO.getDownloadURL(this.image.id);
   }
+
+  canEdit(): boolean {
+    const user = this.auth.$user.getValue();
+    // owner and admins can edit
+    return user && (user.id === this.image.ownerId || user.groups.includes("admin"));
+  }
 }

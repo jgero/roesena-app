@@ -48,7 +48,6 @@ export class PersonDalService {
       .collection<storeablePerson>("persons", (qFn) => {
         let query: CollectionReference | Query = qFn;
         if (onlyConfirmed === true) {
-          console.log("yay");
           query = query.where("isConfirmedMember", "==", true);
         }
         return query;
@@ -56,7 +55,6 @@ export class PersonDalService {
       .snapshotChanges()
       .pipe(
         map(convertMany),
-        tap((el) => console.log(el)),
         catchError((err) => {
           this.snackbar.open(`Fehler beim laden von Personen: ${err}`, "OK");
           return of([]);

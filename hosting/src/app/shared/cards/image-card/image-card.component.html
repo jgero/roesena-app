@@ -7,8 +7,6 @@
   </mat-card-content>
   <mat-card-actions>
     <a mat-button [routerLink]="'/images/details/' + image.id">MEHR</a>
-    <a mat-icon-button *ngIf="(auth.$user | async)?.id === image.ownerId" [routerLink]="'/images/edit/' + image.id"
-      ><mat-icon>edit</mat-icon></a
-    >
+    <a mat-icon-button *ngIf="canEdit()" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>
   </mat-card-actions>
 </mat-card>

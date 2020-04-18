@@ -90,7 +90,6 @@ export class EventDALService {
     }
     // add error handling and apply limit
     return stream.pipe(
-      // tap((events) => console.log(events)),
       map((events) => {
         // sort the events first, because after the merging of the observables order could be mixed up
         events.sort((a, b) => a.endDate.getTime() - b.endDate.getTime());
@@ -101,7 +100,6 @@ export class EventDALService {
         return events;
       }),
       catchError((err) => {
-        console.log(err);
         this.snackbar.open(`Events konnten nicht geladen werden: ${err}`, "OK");
         return of([]);
       })
@@ -146,7 +144,7 @@ export class EventDALService {
         this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
-        this.snackbar.open(`Event konnte nicht hinzugefügt werden: ${err}`);
+        this.snackbar.open(`Event konnte nicht hinzugefügt werden: ${err}`, "OK");
         return of(false);
       })
     );

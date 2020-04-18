@@ -51,7 +51,7 @@
         <ng-container *ngIf="auth.$user | async as user; else authenticate">
           <a mat-list-item routerLink="/auth/profile">Profil</a>
           <a mat-list-item [matBadge]="$badgeContentStream | async" routerLink="/auth/my-events">Meine Events</a>
-          <a mat-list-item *ngIf="user.groups.includes('admins')" routerLink="/auth/group-manager">Gruppen Manager</a>
+          <a mat-list-item *ngIf="user.groups.includes('admin')" routerLink="/auth/group-manager">Gruppen Manager</a>
         </ng-container>
         <ng-template #authenticate>
           <a mat-list-item routerLink="/auth/login">Login</a>

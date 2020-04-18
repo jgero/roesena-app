@@ -13,4 +13,10 @@ export class EventCardComponent {
   public event: appEvent;
 
   constructor(public auth: AuthService) {}
+
+  canEdit(): boolean {
+    const user = this.auth.$user.getValue();
+    // owner and admins can edit
+    return user && (user.id === this.event.ownerId || user.groups.includes("admin"));
+  }
 }
