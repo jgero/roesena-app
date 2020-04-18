@@ -13,13 +13,8 @@ export class ImageCardComponent implements OnInit {
   @Input()
   image: appImage;
   $src: Observable<string | null>;
-  @HostBinding("class") classes = "card";
 
   constructor(private imageDAO: ImageDalService, public auth: AuthService) {}
-
-  canEdit(): boolean {
-    return this.auth.$user.getValue() && this.auth.$user.getValue().id === this.image.ownerId;
-  }
 
   ngOnInit(): void {
     this.$src = this.imageDAO.getDownloadURL(this.image.id);

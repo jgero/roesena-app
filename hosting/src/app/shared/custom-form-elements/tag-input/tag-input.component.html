@@ -1,8 +1,0 @@
-<span class="label">{{ label }}</span>
-<span class="tag" *ngFor="let tag of value">{{ tag }} <i (click)="popTag(tag)" class="material-icons">cancel</i></span>
-<input
-  #newTag
-  type="text"
-  (keydown.enter)="$event.preventDefault(); addTag(newTag.value); newTag.value = ''"
-  (blur)="onTouch(); newTag.value = ''"
-/>

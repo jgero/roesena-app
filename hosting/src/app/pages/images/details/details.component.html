@@ -1,0 +1,7 @@
+<ng-container *ngIf="$image | async as image; else loading">
+  <mat-toolbar [color]="'accent'"> {{ image.tags.join(", ") }} </mat-toolbar>
+  <img [attr.src]="image.url" alt="Bild Detailansicht" />
+</ng-container>
+<ng-template #loading>
+  <mat-progress-spinner></mat-progress-spinner>
+</ng-template>

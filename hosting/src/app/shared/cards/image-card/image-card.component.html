@@ -1,8 +1,14 @@
-<img [src]="$src | async" />
-<app-tags [tags]="image.tags"></app-tags>
-<div class="buttonWrapper">
-  <button class="text more" [routerLink]="'/images/details/' + image.id">MEHR</button>
-  <button *ngIf="canEdit()" class="text icon" [routerLink]="'/images/edit/' + image.id">
-    <i class="material-icons">edit</i>
-  </button>
-</div>
+<mat-card>
+  <img mat-card-image [src]="$src | async" />
+  <mat-card-content>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of image.tags">{{ tag }}</mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-button [routerLink]="'/images/details/' + image.id">MEHR</a>
+    <a mat-icon-button *ngIf="(auth.$user | async)?.id === image.ownerId" [routerLink]="'/images/edit/' + image.id"
+      ><mat-icon>edit</mat-icon></a
+    >
+  </mat-card-actions>
+</mat-card>

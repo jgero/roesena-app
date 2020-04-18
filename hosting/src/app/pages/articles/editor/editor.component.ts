@@ -21,12 +21,7 @@ export class EditorComponent implements OnDestroy {
   articleForm: FormGroup;
   private subs: Subscription[] = [];
 
-  constructor(
-    private articleDAO: ArticleDalService,
-    public route: ActivatedRoute,
-    private auth: AuthService,
-    private router: Router
-  ) {
+  constructor(private articleDAO: ArticleDalService, route: ActivatedRoute, private auth: AuthService, private router: Router) {
     const id = route.snapshot.paramMap.get("id");
     this.$data = (id
       ? this.articleDAO.getArticleById(id)

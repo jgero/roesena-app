@@ -1,87 +1,62 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
-import { QuerySnapshot, DocumentData, DocumentSnapshot, CollectionReference, Query } from "@angular/fire/firestore/interfaces";
+import {
+  QuerySnapshot,
+  DocumentData,
+  DocumentSnapshot,
+  CollectionReference,
+  Query,
+  Action,
+  DocumentChangeAction,
+  QueryDocumentSnapshot,
+} from "@angular/fire/firestore/interfaces";
 import { Observable, of, from } from "rxjs";
 import { tap, catchError, map, switchMap } from "rxjs/operators";
+import * as fbs from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { TracingStateService } from "../tracing-state.service";
 import { appImage } from "src/app/utils/interfaces";
 import { AuthService } from "../auth.service";
 import { arrayToMap, mapToArray } from "src/app/utils/converters";
+import { MatSnackBar } from "@angular/material/snack-bar";
+
+interface storeableImage {
+  ownerId: string;
+  created: fbs.firestore.Timestamp;
+  tags: { [key: string]: boolean };
+}
 
 @Injectable({
   providedIn: "root",
 })
 export class ImageDalService {
-  constructor(
-    private firestore: AngularFirestore,
-    private storage: AngularFireStorage,
-    private trace: TracingStateService,
-    private auth: AuthService
-  ) {}
+  constructor(private firestore: AngularFirestore, private storage: AngularFireStorage, private snackbar: MatSnackBar) {}
 
   getImages(): Observable<appImage[]> {
-    this.trace.addLoading();
     return this.firestore
-      .collection<appImage>("images")
-      .get()
+      .collection<storeableImage>("images")
+      .snapshotChanges()
       .pipe(
-        map(convertImagesFromDocuments),
-        tap(() => {
-          this.trace.completeLoading();
-        }),
+        map(convertMany),
         catchError((err) => {
-          this.trace.completeLoading();
-          this.trace.$snackbarMessage.next(`Bilder konnten nicht geladen werden: ${err}`);
+          this.snackbar.open(`Bilder konnten nicht geladen werden: ${err}`, "OK");
           return of([]);
         })
       );
   }
 
-  getById(id: string): Observable<appImage> {
-    this.trace.addLoading();
+  getById(id: string): Observable<appImage | null> {
     return this.firestore
-      .collection<appImage>("images")
-      .doc(id)
-      .get()
+      .collection<storeableImage>("images")
+      .doc<storeableImage>(id)
+      .snapshotChanges()
       .pipe(
-        map(convertImageFromDocument),
-        tap(() => {
-          this.trace.completeLoading();
-        }),
+        map(convertOne),
         catchError((err) => {
-          this.trace.completeLoading();
-          this.trace.$snackbarMessage.next(`Bild konnte nicht geladen werden: ${err}`);
+          this.snackbar.open(`Bild konnte nicht geladen werden: ${err}`, "OK");
           return of(null);
-        })
-      );
-  }
-
-  getByTags(tags: string[], limit: number = 1): Observable<appImage[]> {
-    this.trace.addLoading();
-    return this.firestore
-      .collection<appImage>("images", (qFn) => {
-        let query: CollectionReference | Query = qFn;
-        tags.forEach((tag) => {
-          query = query.where(`tags.${tag}`, "==", true);
-        });
-        query = query.limit(limit);
-        return query;
-      })
-      .get()
-      .pipe(
-        map(convertImagesFromDocuments),
-        tap(() => {
-          this.trace.completeLoading();
-        }),
-        catchError((err) => {
-          console.log(err);
-          this.trace.completeLoading();
-          this.trace.$snackbarMessage.next(`Bilder konnten nicht geladen werden: ${err}`);
-          return of([]);
         })
       );
   }
@@ -90,80 +65,82 @@ export class ImageDalService {
     return this.storage.ref("uploads").child(id).getDownloadURL();
   }
 
-  insert(file: string, tags: string[]): Observable<boolean> {
-    this.trace.addLoading();
-    return from(
-      this.firestore
-        .collection("images")
-        .add({ tags: arrayToMap(tags), ownerId: this.auth.$user.getValue().id, created: new Date() })
-    ).pipe(
+  insert(img: appImage, file: string): Observable<string | null> {
+    let id: string;
+    return from(this.firestore.collection<storeableImage>("images").add(toStorableImage(img))).pipe(
+      tap((docRef) => (id = docRef.id)),
       switchMap((docRef) => this.storage.ref(`uploads/${docRef.id}`).putString(file, "data_url")),
-      map(() => true),
+      map(() => id),
       tap(() => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Gespeichert!`);
+        this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Bild konnte nicht hinzugefügt werden: ${err}`);
-        return of(false);
+        console.log(err);
+        this.snackbar.open(`Bild konnte nicht hinzugefügt werden: ${err}`, "OK");
+        return of(null);
       })
     );
   }
 
   update(img: appImage, file: string): Observable<boolean> {
-    this.trace.addLoading();
-    const id = img.id;
-    (img.tags as any) = arrayToMap(img.tags);
-    delete img.id;
-    return from(this.firestore.collection("images").doc(id).update(img)).pipe(
-      tap(() => console.log(file)),
-      switchMap(() => (file ? this.storage.ref(`uploads/${id}`).putString(file, "data_url") : of(true))),
+    return from(
+      this.firestore.collection<storeableImage>("images").doc<storeableImage>(img.id).update(toStorableImage(img))
+    ).pipe(
+      switchMap(() => (file ? this.storage.ref(`uploads/${img.id}`).putString(file, "data_url") : of(true))),
       map(() => true),
       tap(() => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Gespeichert!`);
+        this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Bild konnte nicht bearbeitet werden: ${err}`);
+        console.log(err);
+        this.snackbar.open(`Bild konnte nicht bearbeitet werden: ${err}`, "OK");
         return of(false);
       })
     );
   }
 
   delete(id: string): Observable<boolean> {
-    this.trace.addLoading();
-    return from(this.firestore.collection("images").doc(id).delete()).pipe(
+    return from(this.firestore.collection<storeableImage>("images").doc<storeableImage>(id).delete()).pipe(
       map(() => true),
       tap(() => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Gelöscht!`);
+        this.snackbar.open(`Gelöscht!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Bild konnte nicht gelöscht werden: ${err}`);
+        this.snackbar.open(`Bild konnte nicht gelöscht werden: ${err}`, "OK");
         return of(false);
       })
     );
   }
 }
 
-function convertImagesFromDocuments(snapshot: QuerySnapshot<DocumentData[]>): appImage[] {
-  let data: any[] = snapshot.docs.map((doc) => {
-    let data: any = doc.data();
-    data.tags = mapToArray(data.tags);
-    data.created = new Date(data.created.toDate());
-    data.id = doc.id;
-    return data;
-  });
-  return data;
+function toStorableImage(app: appImage): storeableImage {
+  const { ownerId } = app;
+  return {
+    ownerId,
+    tags: arrayToMap(app.tags),
+    created: fbs.firestore.Timestamp.fromDate(app.created),
+  };
 }
 
-function convertImageFromDocument(snapshot: DocumentSnapshot<DocumentData>): appImage {
-  let data = snapshot.data();
-  data.tags = mapToArray(data.tags);
-  data.created = new Date(data.created.toDate());
-  data.id = snapshot.id;
-  return data as appImage;
+function convertOne(action: Action<DocumentSnapshot<storeableImage>>): appImage | null {
+  return convertSnapshot(action.payload);
+}
+
+function convertMany(action: DocumentChangeAction<storeableImage>[]): appImage[] {
+  // convert all snapshots to data
+  let result = action.map((action) => convertSnapshot(action.payload.doc));
+  // filter out the 'null' elements if there are some
+  result = result.filter((val) => !!val);
+  return result;
+}
+
+function convertSnapshot(snapshot: DocumentSnapshot<storeableImage> | QueryDocumentSnapshot<storeableImage>): appImage | null {
+  if (!snapshot.data()) return null;
+  const { ownerId } = snapshot.data();
+  return {
+    ownerId,
+    id: snapshot.id,
+    tags: mapToArray(snapshot.data().tags),
+    created: snapshot.data().created.toDate(),
+  };
 }
