@@ -16,11 +16,9 @@ export class ProfileComponent implements OnDestroy {
   constructor(public auth: AuthService) {}
 
   onUpdateNameSubmit() {
-    this.subs.push(
-      this.auth
-        .updateName(this.auth.$user.getValue().id, this.updateNameForm.get("name").value)
-        .subscribe({ next: () => this.updateNameForm.markAsPristine() })
-    );
+    let user = this.auth.$user.getValue();
+    user.name = this.updateNameForm.get("name").value;
+    this.subs.push(this.auth.updateName(user).subscribe({ next: () => this.updateNameForm.markAsPristine() }));
   }
 
   getErrorMessage(ctrl: AbstractControl): string {

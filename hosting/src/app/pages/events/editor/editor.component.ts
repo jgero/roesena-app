@@ -32,7 +32,7 @@ export class EditorComponent implements OnDestroy {
   ) {
     const id = route.snapshot.paramMap.get("id");
     this.$data = combineLatest([
-      personDAO.getPersonsStream().pipe(tap((persons) => (this.persons = persons))),
+      personDAO.getPersons(true).pipe(tap((persons) => (this.persons = persons))),
       (id
         ? eventDAO.getById(id)
         : of({

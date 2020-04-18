@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable, from, of, BehaviorSubject } from "rxjs";
-import { map, switchMap, filter, tap, take, catchError } from "rxjs/operators";
+import { map, switchMap, tap, take, catchError } from "rxjs/operators";
 
 import { appPerson } from "../utils/interfaces";
 import { PersonDalService } from "./DAL/person-dal.service";
-import { TracingStateService } from "./tracing-state.service";
 
 @Injectable({
   providedIn: "root",
@@ -13,7 +13,7 @@ import { TracingStateService } from "./tracing-state.service";
 export class AuthService {
   $user = new BehaviorSubject<appPerson | null>(undefined);
 
-  constructor(public auth: AngularFireAuth, private personDAO: PersonDalService, private trace: TracingStateService) {
+  constructor(public auth: AngularFireAuth, private personDAO: PersonDalService, private snackbar: MatSnackBar) {
     this.auth.authState.pipe(switchMap((user) => (user ? this.personDAO.getPersonById(user.uid) : of(null)))).subscribe({
       next: (user) => {
         this.$user.next(user);
@@ -22,7 +22,6 @@ export class AuthService {
   }
 
   public login(email: string, password: string): Observable<null> {
-    this.trace.addLoading();
     return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(
       // get the user from the credentials
       map((userCredentials) => userCredentials.user),
@@ -30,92 +29,81 @@ export class AuthService {
       switchMap((user) => (user ? this.personDAO.getPersonById(user.uid) : of(null))),
       // hide the data from the caller
       map(() => null),
-      tap(() => {
-        this.trace.completeLoading();
-      }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Fehler beim Einloggen: ${err}`);
-        return of(false);
+        this.snackbar.open(`Fehler beim Einloggen: ${err}`, "OK");
+        return of(null);
       })
     );
   }
 
   public sendResetPasswordMail(email: string): Observable<null> {
-    this.trace.addLoading();
     return from(this.auth.sendPasswordResetEmail(email)).pipe(
       map(() => null),
       tap(() => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Reset Mail wurde versendet`);
+        this.snackbar.open(`Reset Mail wurde versendet`, "OK");
       }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Fehler beim senden der Mail: ${err}`);
+        this.snackbar.open(`Fehler beim senden der Mail: ${err}`, "OK");
         return of(null);
       })
     );
   }
 
   public changePasswordWithResetCode(pw: string, code: string): Observable<null> {
-    this.trace.addLoading();
     return from(this.auth.confirmPasswordReset(code, pw)).pipe(
       map(() => null),
       tap(() => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Passwort geändert!`);
+        this.snackbar.open(`Passwort geändert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Fehler beim Passwort ändern: ${err}`);
+        this.snackbar.open(`Fehler beim Passwort ändern: ${err}`, "OK");
         return of(null);
       })
     );
   }
 
   public logout(): Observable<boolean> {
-    this.trace.addLoading();
     return from(this.auth.signOut()).pipe(
       map(() => true),
-      tap(() => {
-        this.trace.completeLoading();
-      }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Fehler beim Ausloggen: ${err}`);
+        this.snackbar.open(`Fehler beim Ausloggen: ${err}`, "OK");
         return of(false);
       })
     );
   }
 
   public register(email: string, password: string, name: string): Observable<null> {
-    this.trace.addLoading();
     return from(this.auth.createUserWithEmailAndPassword(email, password)).pipe(
       // wait until the person is created in the database
-      switchMap((user) => this.personDAO.getPersonStreamById(user.user.uid).pipe(take(1))),
+      switchMap((user) => this.personDAO.getPersonById(user.user.uid).pipe(take(1))),
       // update to the provided name
-      switchMap((person) => this.updateName(person.id, name)),
+      switchMap((person) =>
+        this.updateName({ name, id: person.id, groups: person.groups, isConfirmedMember: person.isConfirmedMember })
+      ),
       // then sign in the newly registered user
       switchMap(() => from(this.auth.signInWithEmailAndPassword(email, password))),
       // remove the data from the observable
       map(() => null),
-      tap(() => {
-        this.trace.completeLoading();
-      }),
       catchError((err) => {
-        this.trace.completeLoading();
-        this.trace.$snackbarMessage.next(`Fehler beim Registrieren: ${err}`);
+        this.snackbar.open(`Fehler beim Registrieren: ${err}`, "OK");
         return of(null);
       })
     );
   }
 
-  public updateName(id: string, name: string): Observable<null> {
-    return this.personDAO.update(id, { name } as appPerson).pipe(
+  public updateName(person: appPerson): Observable<null> {
+    return this.personDAO.update(person).pipe(
       // get the user data from the database
-      switchMap((user) => (user ? this.personDAO.getPersonById(id) : of(null))),
+      switchMap((user) => (user ? this.personDAO.getPersonById(person.id) : of(null))),
       tap((user: appPerson | null) => this.$user.next(user)),
-      map(() => null)
+      tap(() => {
+        this.snackbar.open(`Name geändert!`, "OK", { duration: 2000 });
+      }),
+      map(() => null),
+      catchError((err) => {
+        this.snackbar.open(`Fehler beim Name ändern: ${err}`, "OK");
+        return of(null);
+      })
     );
   }
 }

@@ -1,16 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
-import {
-  QuerySnapshot,
-  DocumentData,
-  DocumentSnapshot,
-  CollectionReference,
-  Query,
-  Action,
-  DocumentChangeAction,
-  QueryDocumentSnapshot,
-} from "@angular/fire/firestore/interfaces";
+import { DocumentSnapshot, Action, DocumentChangeAction, QueryDocumentSnapshot } from "@angular/fire/firestore/interfaces";
 import { Observable, of, from } from "rxjs";
 import { tap, catchError, map, switchMap } from "rxjs/operators";
 import * as fbs from "firebase/app";
@@ -18,7 +9,6 @@ import "firebase/firestore";
 import "firebase/storage";
 
 import { appImage } from "src/app/utils/interfaces";
-import { AuthService } from "../auth.service";
 import { arrayToMap, mapToArray } from "src/app/utils/converters";
 import { MatSnackBar } from "@angular/material/snack-bar";
 

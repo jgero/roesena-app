@@ -20,7 +20,7 @@ export class ParticipantChipComponent implements OnInit {
   constructor(public auth: AuthService, public router: Router, private personDAO: PersonDalService) {}
 
   ngOnInit(): void {
-    this.$person = this.personDAO.getPersonStreamById(this.value.id);
+    this.$person = this.personDAO.getPersonById(this.value.id);
   }
 
   onParticipantClick(id: string) {

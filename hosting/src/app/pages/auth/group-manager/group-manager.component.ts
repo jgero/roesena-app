@@ -23,7 +23,7 @@ export class GroupManagerComponent implements OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private personsDAO: PersonDalService) {
-    this.$persons = this.personsDAO.getPersonsStream().pipe(
+    this.$persons = this.personsDAO.getPersons().pipe(
       map((persons) => {
         persons = persons.map((person) => ({
           ...person,
@@ -37,8 +37,8 @@ export class GroupManagerComponent implements OnDestroy {
     );
   }
 
-  onSubmit(id: string, isConfirmedMember: boolean, groups: string[]) {
-    this.personsDAO.update(id, { isConfirmedMember, groups } as appPerson).subscribe();
+  onSubmit(id: string, isConfirmedMember: boolean, groups: string[], name: string) {
+    this.personsDAO.update({ id, isConfirmedMember, groups, name }).subscribe();
   }
 
   removeGroup(tag: string, form: FormGroup) {

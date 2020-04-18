@@ -3,7 +3,7 @@
   <ng-container *ngFor="let person of $persons | async">
     <form
       [formGroup]="person.form"
-      (ngSubmit)="onSubmit(person.id, person.form.get('confirmed').value, person.form.get('groups').value)"
+      (ngSubmit)="onSubmit(person.id, person.form.get('confirmed').value, person.form.get('groups').value, person.name)"
     >
       <mat-toolbar>
         <span>{{ person.name }}</span>
