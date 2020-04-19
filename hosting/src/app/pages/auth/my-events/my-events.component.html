@@ -8,7 +8,7 @@
         <a
           mat-flat-button
           class="hide-text"
-          matBadge="{{ event.form.get('amount').value ? '' : 'a' }}"
+          matBadge="{{ event.form.get('amount').value === '' ? 'a' : '' }}"
           matBadgeSize="small"
           [routerLink]="'/events/details/' + event.id"
         >

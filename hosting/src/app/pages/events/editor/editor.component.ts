@@ -20,6 +20,7 @@ export class EditorComponent implements OnDestroy {
   $data: Observable<boolean>;
   event: appEvent;
   persons: appPerson[];
+  groups: string[];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   eventForm: FormGroup;
   private subs: Subscription[] = [];
@@ -32,7 +33,19 @@ export class EditorComponent implements OnDestroy {
   ) {
     const id = route.snapshot.paramMap.get("id");
     this.$data = combineLatest([
-      personDAO.getPersons(true).pipe(tap((persons) => (this.persons = persons))),
+      personDAO.getPersons(true).pipe(
+        tap((persons) => (this.persons = persons)),
+        tap((persons) => {
+          this.groups = [];
+          persons.forEach((person) => {
+            person.groups.forEach((group) => {
+              if (!this.groups.includes(group)) {
+                this.groups.push(group);
+              }
+            });
+          });
+        })
+      ),
       (id
         ? eventDAO.getById(id)
         : of({
@@ -80,6 +93,42 @@ export class EditorComponent implements OnDestroy {
         })
       ),
     ]).pipe(map(() => true));
+  }
+
+  onAddGroup(group: string) {
+    this.persons
+      .filter((person) => person.groups.includes(group))
+      .forEach((person) => {
+        const id = person.id;
+        const index = (this.eventForm.get("deadline").get("participants").value as { id: string; amount: number }[]).findIndex(
+          (part) => part.id === id
+        );
+        if (index < 0) {
+          // add the person as participant
+          (this.eventForm.get("deadline").get("participants").value as { id: string; amount: number }[]).push({ id, amount: -1 });
+        }
+      });
+    // manually run the validity check after a person was clicked
+    this.eventForm.get("deadline").get("participants").updateValueAndValidity();
+    this.eventForm.get("deadline").get("participants").markAsDirty();
+  }
+
+  onRemoveGroup(group: string) {
+    this.persons
+      .filter((person) => person.groups.includes(group))
+      .forEach((person) => {
+        const id = person.id;
+        const index = (this.eventForm.get("deadline").get("participants").value as { id: string; amount: number }[]).findIndex(
+          (part) => part.id === id
+        );
+        if (index >= 0) {
+          // remove the participant from the array of participants
+          (this.eventForm.get("deadline").get("participants").value as { id: string; amount: number }[]).splice(index, 1);
+        }
+      });
+    // manually run the validity check after a person was clicked
+    this.eventForm.get("deadline").get("participants").updateValueAndValidity();
+    this.eventForm.get("deadline").get("participants").markAsDirty();
   }
 
   onSubmit() {

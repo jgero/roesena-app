@@ -84,6 +84,19 @@
       </mat-error>
     </mat-form-field>
 
+    <mat-chip-list [style.grid-area]="'groups'">
+      <mat-chip
+        *ngFor="let group of groups"
+        [color]="'accent'"
+        [selected]="true"
+        (click)="onAddGroup(group)"
+        (removed)="onRemoveGroup(group)"
+      >
+        {{ group }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+
     <mat-form-field [style.grid-area]="'participants'">
       <mat-chip-list [selectable]="true" [multiple]="true" formControlName="participants">
         <!-- for some strange reason the selected class of the chip has to be set manually here -->

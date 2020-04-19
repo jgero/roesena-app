@@ -30,7 +30,7 @@ export class MyEventsComponent implements OnDestroy {
           return {
             ...event,
             form: new FormGroup({
-              amount: new FormControl(participant.amount >= 0 ? participant.amount : null, [
+              amount: new FormControl(participant.amount >= 0 ? participant.amount : "", [
                 Validators.required,
                 Validators.pattern("^[0-9]*$"),
               ]),
@@ -41,8 +41,8 @@ export class MyEventsComponent implements OnDestroy {
     );
   }
 
-  onSubmit(eventId: string, amount: number, form: FormGroup) {
-    this.subs.push(this.personDAO.respondToEvent(eventId, amount).subscribe({ next: () => form.markAsPristine() }));
+  onSubmit(eventId: string, amount: string, form: FormGroup) {
+    this.subs.push(this.personDAO.respondToEvent(eventId, parseInt(amount)).subscribe({ next: () => form.markAsPristine() }));
   }
 
   ngOnDestroy() {
