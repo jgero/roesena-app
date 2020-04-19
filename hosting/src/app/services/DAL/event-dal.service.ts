@@ -50,14 +50,14 @@ export class EventDALService {
       );
   }
 
-  getEvents(limit?: number): Observable<appEvent[]> {
+  getEvents(limit: number = undefined, cutoffDate: Date = new Date()): Observable<appEvent[]> {
     // only return events that are not already over here!
     const user = this.auth.$user.getValue();
     // query for the public events
     let stream: Observable<appEvent[]> = this.firestore
       .collection<storeableEvent>("events", (qFn) => {
         let query: CollectionReference | Query = qFn;
-        query = query.where(`participants`, "==", {}).where("endDate", ">=", new Date()).orderBy("endDate");
+        query = query.where(`participants`, "==", {}).where("endDate", ">=", cutoffDate).orderBy("endDate");
         if (limit) {
           query = query.limit(limit);
         }
