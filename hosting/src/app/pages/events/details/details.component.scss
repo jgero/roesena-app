@@ -5,8 +5,9 @@
 }
 
 main {
-  padding: 0 16px;
+  padding: 8px;
   max-width: 800px;
+  width: calc(100% - 16px);
 
   p {
     white-space: pre-line;
