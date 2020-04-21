@@ -52,7 +52,16 @@ export class ImageDalService {
   }
 
   getDownloadURL(id: string): Observable<string | null> {
-    return this.storage.ref("uploads").child(id).getDownloadURL();
+    return this.storage
+      .ref("uploads")
+      .child(id)
+      .getDownloadURL()
+      .pipe(
+        catchError((err) => {
+          this.snackbar.open(`Bild URL konnte nicht geladen werden: ${err}`, "OK");
+          return of(null);
+        })
+      );
   }
 
   insert(img: appImage, file: string): Observable<string | null> {

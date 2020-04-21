@@ -6,6 +6,7 @@ import { appEvent, appPerson } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { AuthService } from "src/app/services/auth.service";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: "app-details",
@@ -23,7 +24,13 @@ export class DetailsComponent {
     public auth: AuthService,
     public router: Router
   ) {
-    this.$data = eventDAO.getById(route.snapshot.paramMap.get("id"));
+    this.$data = eventDAO.getById(route.snapshot.paramMap.get("id")).pipe(
+      tap((event) => {
+        if (!event) {
+          this.router.navigate(["events", "overview"]);
+        }
+      })
+    );
   }
 
   onParticipantClick(id: string) {

@@ -28,11 +28,14 @@ export class EditorComponent implements OnDestroy {
 
   constructor(route: ActivatedRoute, private imageDAO: ImageDalService, private router: Router, auth: AuthService) {
     const id = route.snapshot.paramMap.get("id");
-
-    // , imageDAO.getDownloadURL(id))
-
     this.$image = (id
-      ? this.imageDAO.getById(id)
+      ? this.imageDAO.getById(id).pipe(
+          tap((event) => {
+            if (!event) {
+              router.navigate(["images", "overview"]);
+            }
+          })
+        )
       : of<appImage>({ created: new Date(), ownerId: auth.$user.getValue().id, id: "", tags: [] })
     ).pipe(
       tap((image) => {
@@ -57,7 +60,7 @@ export class EditorComponent implements OnDestroy {
       ? this.imageDAO.update(updated, this.imageForm.get("image").value).pipe(tap(() => this.imageForm.markAsPristine()))
       : this.imageDAO
           .insert(updated, this.imageForm.get("image").value)
-          .pipe(tap((newId) => this.router.navigate(["articles", "edit", newId])));
+          .pipe(tap((newId) => this.router.navigate(["images", "edit", newId])));
     this.subs.push(action.subscribe(null, null, null));
   }
 

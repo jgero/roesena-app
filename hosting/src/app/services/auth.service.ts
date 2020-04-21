@@ -29,7 +29,6 @@ export class AuthService implements OnDestroy {
   }
 
   public login(email: string, password: string): Observable<null> {
-    console.log("login");
     return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(
       // get the user from the credentials
       map((userCredentials) => userCredentials.user),

@@ -138,15 +138,15 @@ export class EventDALService {
     );
   }
 
-  insert(newEv: appEvent): Observable<boolean> {
+  insert(newEv: appEvent): Observable<string | null> {
     return from(this.firestore.collection<storeableEvent>("events").add(toStorableEvent(newEv))).pipe(
-      map(() => true),
+      map((docRef) => docRef.id),
       tap(() => {
         this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
       }),
       catchError((err) => {
         this.snackbar.open(`Event konnte nicht hinzugefügt werden: ${err}`, "OK");
-        return of(false);
+        return of(null);
       })
     );
   }

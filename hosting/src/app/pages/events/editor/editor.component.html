@@ -130,7 +130,8 @@
     type="button"
     [color]="'warn'"
     [style.grid-area]="'delete'"
-    [disabled]="!route.snapshot.paramMap.get('id')"
+    [disabled]="!event.id"
+    (click)="deleteEvent()"
   >
     <mat-icon>delete</mat-icon> LÖSCHEN
   </button>
