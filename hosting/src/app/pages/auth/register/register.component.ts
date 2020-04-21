@@ -29,7 +29,7 @@ export class RegisterComponent implements OnDestroy {
           this.registerForm.get("name").value
         )
         .subscribe({
-          next: () => this.router.navigate(["auth"]),
+          next: () => this.router.navigate(["auth", "profile"]),
         })
     );
   }

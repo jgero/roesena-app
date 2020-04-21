@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Observable, from, of, BehaviorSubject } from "rxjs";
-import { map, switchMap, tap, take, catchError } from "rxjs/operators";
+import { Observable, from, of, BehaviorSubject, Subscription } from "rxjs";
+import { map, switchMap, tap, take, catchError, filter, delay } from "rxjs/operators";
 
 import { appPerson } from "../utils/interfaces";
 import { PersonDalService } from "./DAL/person-dal.service";
@@ -10,18 +10,26 @@ import { PersonDalService } from "./DAL/person-dal.service";
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   $user = new BehaviorSubject<appPerson | null>(undefined);
+  private subs: Subscription[] = [];
 
   constructor(public auth: AngularFireAuth, private personDAO: PersonDalService, private snackbar: MatSnackBar) {
-    this.auth.authState.pipe(switchMap((user) => (user ? this.personDAO.getPersonById(user.uid) : of(null)))).subscribe({
-      next: (user) => {
-        this.$user.next(user);
-      },
-    });
+    this.subs.push(
+      this.auth.authState.pipe(switchMap((user) => (!!user ? this.personDAO.getPersonById(user.uid) : of(null)))).subscribe({
+        next: (user) => {
+          this.$user.next(user);
+        },
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 
   public login(email: string, password: string): Observable<null> {
+    console.log("login");
     return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(
       // get the user from the credentials
       map((userCredentials) => userCredentials.user),
@@ -75,13 +83,21 @@ export class AuthService {
   public register(email: string, password: string, name: string): Observable<null> {
     return from(this.auth.createUserWithEmailAndPassword(email, password)).pipe(
       // wait until the person is created in the database
-      switchMap((user) => this.personDAO.getPersonById(user.user.uid).pipe(take(1))),
+      switchMap((user) =>
+        this.personDAO.getPersonById(user.user.uid).pipe(
+          filter((el) => !!el),
+          take(1)
+        )
+      ),
       // update to the provided name
       switchMap((person) =>
-        this.updateName({ name, id: person.id, groups: person.groups, isConfirmedMember: person.isConfirmedMember })
+        this.updateName({
+          name,
+          id: person.id,
+          groups: person.groups,
+          isConfirmedMember: person.isConfirmedMember,
+        })
       ),
-      // then sign in the newly registered user
-      switchMap(() => from(this.auth.signInWithEmailAndPassword(email, password))),
       // remove the data from the observable
       map(() => null),
       catchError((err) => {

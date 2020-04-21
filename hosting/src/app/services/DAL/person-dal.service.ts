@@ -37,6 +37,7 @@ export class PersonDalService {
       .pipe(
         map(convertOne),
         catchError((err) => {
+          console.log("get error");
           this.snackbar.open(`Fehler beim laden von Person: ${err}`, "OK");
           return of(null);
         })
@@ -68,6 +69,7 @@ export class PersonDalService {
     ).pipe(
       map(() => true),
       catchError((err) => {
+        console.log("update error");
         this.snackbar.open(`Fehler beim speichern von Person: ${err}`, "OK");
         return of(false);
       })

@@ -30,6 +30,7 @@ export class RootComponent {
     this.$badgeContentStream = auth.$user.pipe(
       // listen to user updates and only trigger on new users
       filter((val) => !!val),
+      tap(() => console.log("i am getting badge stuff")),
       // then request events
       switchMap(() => eventDAO.getRespondables()),
       // filter out events that are already responded

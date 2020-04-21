@@ -65,7 +65,7 @@ export class EventDALService {
       })
       .snapshotChanges()
       .pipe(map(convertMany));
-    if (user) {
+    if (user && user.isConfirmedMember) {
       stream = combineLatest(
         stream,
         // merge the public events with the events where the user is invited
@@ -108,7 +108,8 @@ export class EventDALService {
 
   getRespondables(): Observable<appEvent[]> {
     const user = this.auth.$user.getValue();
-    if (!user) return of([]);
+    // nothing to return if user is not logged in or is not confirmed yet
+    if (!user || !user.isConfirmedMember) return of([]);
     return this.firestore
       .collection<storeableEvent>("events", (qFn) =>
         qFn.where(`deadline`, ">=", new Date()).where("participantsArray", "array-contains", user.id).orderBy("deadline")
