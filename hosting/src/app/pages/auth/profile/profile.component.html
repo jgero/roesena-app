@@ -23,9 +23,15 @@
           <input matInput formControlName="name" />
           <mat-error *ngIf="updateNameForm.get('name').invalid"> {{ getErrorMessage(updateNameForm.get("name")) }} </mat-error>
         </mat-form-field>
-        <button mat-stroked-button type="submit" [color]="'primary'" [disabled]="updateNameForm.invalid || !updateNameForm.dirty">
+        <button
+          mat-stroked-button
+          type="submit"
+          [color]="'primary'"
+          [disabled]="updateNameForm.invalid || !updateNameForm.dirty || updateNameForm.disabled"
+        >
           <mat-icon>save</mat-icon> SPEICHERN
         </button>
+        <mat-spinner *ngIf="updateNameForm.disabled" [color]="'accent'" [diameter]="36"></mat-spinner>
       </mat-list-item>
     </form>
   </mat-list>

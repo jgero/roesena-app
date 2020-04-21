@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from "@angular/core";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
-import { Observable, Subscription } from "rxjs";
+import { Observable, Subscription, of } from "rxjs";
 import { map, tap } from "rxjs/operators";
 
 import { appEvent } from "src/app/utils/interfaces";

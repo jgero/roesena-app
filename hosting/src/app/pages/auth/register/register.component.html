@@ -16,8 +16,18 @@
       <input matInput type="password" formControlName="password" />
       <mat-error *ngIf="registerForm.get('password').invalid"> {{ getErrorMessage(registerForm.get("password")) }} </mat-error>
     </mat-form-field>
-    <button mat-flat-button [color]="'primary'" type="submit" [disabled]="registerForm.invalid" [style.grid-area]="'button'">
+    <button
+      mat-flat-button
+      *ngIf="!registerForm.disabled; else loading"
+      [color]="'primary'"
+      type="submit"
+      [disabled]="registerForm.invalid"
+      [style.grid-area]="'button'"
+    >
       REGISTRIEREN
     </button>
+    <ng-template #loading>
+      <mat-spinner [style.grid-area]="'button'" [color]="'accent'" [diameter]="36"></mat-spinner>
+    </ng-template>
   </form>
 </main>

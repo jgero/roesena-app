@@ -11,9 +11,19 @@
       <input matInput type="password" formControlName="password" />
       <mat-error *ngIf="loginForm.get('password').invalid"> {{ getErrorMessage(loginForm.get("password")) }} </mat-error>
     </mat-form-field>
-    <button mat-flat-button [color]="'primary'" type="submit" [disabled]="loginForm.invalid" [style.grid-area]="'button'">
+    <button
+      mat-flat-button
+      *ngIf="!loginForm.disabled; else loading"
+      [color]="'primary'"
+      type="submit"
+      [disabled]="loginForm.invalid"
+      [style.grid-area]="'button'"
+    >
       LOGIN
     </button>
+    <ng-template #loading>
+      <mat-spinner *ngIf="loginForm.disabled" [style.grid-area]="'button'" [color]="'accent'" [diameter]="36"></mat-spinner>
+    </ng-template>
     <a [style.grid-area]="'reset'" mat-button [color]="'primary'" [routerLink]="'/auth/reset'">Passwort vergessen</a>
   </form>
 </main>

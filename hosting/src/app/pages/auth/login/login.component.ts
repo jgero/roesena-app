@@ -44,7 +44,12 @@ export class LoginComponent implements OnDestroy {
   }
 
   onSubmit() {
-    this.subs.push(this.auth.login(this.loginForm.get("email").value, this.loginForm.get("password").value).subscribe());
+    this.loginForm.disable();
+    this.subs.push(
+      this.auth
+        .login(this.loginForm.get("email").value, this.loginForm.get("password").value)
+        .subscribe({ next: () => this.loginForm.enable() })
+    );
   }
 
   ngOnDestroy() {

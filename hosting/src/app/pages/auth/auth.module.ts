@@ -11,6 +11,8 @@ import { MatTableModule } from "@angular/material/table";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 import { AuthRoutingModule } from "./auth-routing.module";
 import { LoginComponent } from "./login/login.component";
@@ -19,7 +21,6 @@ import { RegisterComponent } from "./register/register.component";
 import { MyEventsComponent } from "./my-events/my-events.component";
 import { ResetComponent } from "./reset/reset.component";
 import { GroupManagerComponent } from "./group-manager/group-manager.component";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
 
 @NgModule({
@@ -38,6 +39,7 @@ import { ConvertersModule } from "src/app/shared/converters/converters.module";
     MatBadgeModule,
     MatChipsModule,
     MatCheckboxModule,
+    MatProgressBarModule,
     ConvertersModule,
   ],
 })

@@ -1,14 +1,23 @@
 <mat-toolbar [color]="'accent'">Gruppen-Manager</mat-toolbar>
-<main>
-  <ng-container *ngFor="let person of $persons | async">
+
+<main *ngIf="$persons | async as persons; else loading">
+  <ng-container *ngFor="let person of persons">
     <form
       [formGroup]="person.form"
-      (ngSubmit)="onSubmit(person.id, person.form.get('confirmed').value, person.form.get('groups').value, person.name)"
+      (ngSubmit)="
+        onSubmit(person.id, person.form.get('confirmed').value, person.form.get('groups').value, person.name, person.form)
+      "
     >
       <mat-toolbar>
         <span>{{ person.name }}</span>
         <div class="content-spacer"></div>
-        <button mat-flat-button [color]="'primary'" type="submit" [disabled]="person.form.invalid || !person.form.dirty">
+        <mat-spinner *ngIf="person.form.disabled" [color]="'accent'" [diameter]="36"></mat-spinner>
+        <button
+          mat-flat-button
+          [color]="'primary'"
+          type="submit"
+          [disabled]="person.form.invalid || !person.form.dirty || person.form.disabled"
+        >
           <mat-icon>save</mat-icon>SPEICHERN
         </button>
       </mat-toolbar>
@@ -31,3 +40,7 @@
     </form>
   </ng-container>
 </main>
+
+<ng-template #loading>
+  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
+</ng-template>

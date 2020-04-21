@@ -10,7 +10,7 @@ import {
   QueryDocumentSnapshot,
 } from "@angular/fire/firestore";
 import { Observable, from, of, combineLatest } from "rxjs";
-import { map, catchError, tap } from "rxjs/operators";
+import { map, catchError, tap, delay } from "rxjs/operators";
 import * as fbs from "firebase/app";
 import "firebase/firestore";
 

@@ -37,8 +37,14 @@ export class GroupManagerComponent implements OnDestroy {
     );
   }
 
-  onSubmit(id: string, isConfirmedMember: boolean, groups: string[], name: string) {
-    this.personsDAO.update({ id, isConfirmedMember, groups, name }).subscribe();
+  onSubmit(id: string, isConfirmedMember: boolean, groups: string[], name: string, form: FormGroup) {
+    form.disable();
+    this.personsDAO.update({ id, isConfirmedMember, groups, name }).subscribe({
+      next: () => {
+        form.markAsPristine();
+        form.enable();
+      },
+    });
   }
 
   removeGroup(tag: string, form: FormGroup) {

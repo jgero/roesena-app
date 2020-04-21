@@ -21,6 +21,7 @@ export class RegisterComponent implements OnDestroy {
   constructor(private auth: AuthService, private router: Router) {}
 
   onSubmit() {
+    this.registerForm.disable();
     this.subs.push(
       this.auth
         .register(
@@ -29,7 +30,10 @@ export class RegisterComponent implements OnDestroy {
           this.registerForm.get("name").value
         )
         .subscribe({
-          next: () => this.router.navigate(["auth", "profile"]),
+          next: () => {
+            this.registerForm.enable();
+            this.router.navigate(["auth", "profile"]);
+          },
         })
     );
   }
