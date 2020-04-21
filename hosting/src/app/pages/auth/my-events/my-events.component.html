@@ -34,10 +34,11 @@
             mat-stroked-button
             type="submit"
             [color]="'primary'"
-            [disabled]="event.form.get('amount').invalid || !event.form.dirty"
+            [disabled]="event.form.get('amount').invalid || !event.form.dirty || event.form.disabled"
           >
             <mat-icon>save</mat-icon> SPEICHERN
           </button>
+          <mat-spinner *ngIf="event.form.disabled" [color]="'accent'" [diameter]="36"></mat-spinner>
         </form>
       </td>
     </ng-container>

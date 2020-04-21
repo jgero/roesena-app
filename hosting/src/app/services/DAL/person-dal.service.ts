@@ -80,7 +80,7 @@ export class PersonDalService {
       .pipe(
         map(() => true),
         tap(() => {
-          this.snackbar.open(`Gespeichert!`, "OK", { duration: 2000 });
+          this.snackbar.open("Gespeichert!", "OK", { duration: 2000 });
         }),
         catchError((err) => {
           this.snackbar.open(`Fehler beim Speichern der Anzahl, wahrscheinlich ist die Deadline vorbei: ${err}`, "OK");

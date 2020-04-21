@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from "@angular/core";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 
 import { appEvent } from "src/app/utils/interfaces";
 import { AuthService } from "src/app/services/auth.service";
@@ -42,7 +42,16 @@ export class MyEventsComponent implements OnDestroy {
   }
 
   onSubmit(eventId: string, amount: string, form: FormGroup) {
-    this.subs.push(this.personDAO.respondToEvent(eventId, parseInt(amount)).subscribe({ next: () => form.markAsPristine() }));
+    console.log("submitted");
+    form.disable();
+    this.subs.push(
+      this.personDAO.respondToEvent(eventId, parseInt(amount)).subscribe({
+        next: () => {
+          form.markAsPristine();
+          form.enable();
+        },
+      })
+    );
   }
 
   ngOnDestroy() {
