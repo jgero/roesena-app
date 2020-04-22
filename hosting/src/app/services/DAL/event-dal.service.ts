@@ -14,7 +14,7 @@ import { map, catchError, tap, delay } from "rxjs/operators";
 import * as fbs from "firebase/app";
 import "firebase/firestore";
 
-import { appEvent } from "src/app/utils/interfaces";
+import { appEvent, appElementDAL } from "src/app/utils/interfaces";
 import { AuthService } from "../auth.service";
 import { arrayToMap, participantArrayToMap, mapToArray, participantMapToArray } from "src/app/utils/converters";
 
@@ -33,7 +33,7 @@ interface storeableEvent {
 @Injectable({
   providedIn: "root",
 })
-export class EventDALService {
+export class EventDALService implements appElementDAL {
   constructor(private firestore: AngularFirestore, private snackbar: MatSnackBar, private auth: AuthService) {}
 
   getById(id: string): Observable<appEvent | null> {
@@ -50,7 +50,49 @@ export class EventDALService {
       );
   }
 
-  getEvents(limit: number = undefined, cutoffDate: Date = new Date()): Observable<appEvent[]> {
+  getByTags(tags: string[]): Observable<appEvent[]> {
+    const user = this.auth.$user.getValue();
+    let stream = this.firestore
+      .collection<storeableEvent>("events", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        query = query.where(`participants`, "==", {});
+        tags.forEach((tag) => {
+          query = query.where(`tags.${tag}`, "==", true);
+        });
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(map(convertMany));
+    if (user && user.isConfirmedMember) {
+      stream = combineLatest(
+        stream,
+        // merge the public events with the events where the user is invited
+        this.firestore
+          .collection<storeableEvent>("events", (qFn) => {
+            let query: CollectionReference | Query = qFn;
+            query = query.where("participantsArray", "array-contains", user.id);
+            tags.forEach((tag) => {
+              query = query.where(`tags.${tag}`, "==", true);
+            });
+            return query;
+          })
+          .snapshotChanges()
+          .pipe(map(convertMany))
+      ).pipe(
+        // merge the resulting arrays
+        map((el) => [...el[0], ...el[1]])
+      );
+    }
+    // add error handling and apply limit
+    return stream.pipe(
+      catchError((err) => {
+        this.snackbar.open(`Events konnten nicht geladen werden: ${err}`, "OK");
+        return of([]);
+      })
+    );
+  }
+
+  getAll(limit: number = undefined, cutoffDate: Date = new Date()): Observable<appEvent[]> {
     // only return events that are not already over here!
     const user = this.auth.$user.getValue();
     // query for the public events

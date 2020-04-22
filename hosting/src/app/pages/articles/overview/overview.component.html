@@ -27,7 +27,7 @@
 </mat-toolbar>
 
 <mat-grid-list
-  *ngIf="$articles | async as articles; else loading"
+  *ngIf="$data | async as articles; else loading"
   class="content"
   [cols]="cols"
   [rowHeight]="'300px'"

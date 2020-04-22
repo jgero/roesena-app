@@ -6,8 +6,9 @@ import { EditorComponent } from "./editor/editor.component";
 import { LoggedInGuard } from "src/app/guards/logged-in.guard";
 
 const routes: Routes = [
-  { path: "", redirectTo: "overview" },
+  { path: "", redirectTo: "overview", pathMatch: "full" },
   { path: "overview", component: OverviewComponent },
+  { path: "overview/:searchString", component: OverviewComponent },
   { path: "details/:id", component: DetailsComponent },
   { path: "edit", component: EditorComponent, canActivate: [LoggedInGuard] },
   { path: "edit/:id", component: EditorComponent, canActivate: [LoggedInGuard] },

@@ -24,7 +24,7 @@ export class CalendarComponent implements OnDestroy {
       // save the date for later user
       tap((date) => (currentDate = date)),
       // request some events starting from that specific date
-      switchMap((date) => eventDAO.getEvents(10, date)),
+      switchMap((date) => eventDAO.getAll(10, date)),
       // distribute the events into the day 2D-Array
       map((events) => {
         // empty array with the length of the current month

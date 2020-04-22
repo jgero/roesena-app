@@ -16,7 +16,7 @@ export class StartPageComponent {
   public articleCards: Observable<appArticle[]>;
 
   constructor(eventDAO: EventDALService, articleDAO: ArticleDalService) {
-    this.eventCards = eventDAO.getEvents(3);
-    this.articleCards = articleDAO.getArticles(3);
+    this.eventCards = eventDAO.getAll(3);
+    this.articleCards = articleDAO.getAll(3);
   }
 }

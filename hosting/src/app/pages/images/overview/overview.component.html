@@ -9,19 +9,19 @@
   <div>
     <mat-form-field class="search-field">
       <mat-label>Suchbegriff</mat-label>
-      <input matInput type="text" [(ngModel)]="searchString" />
+      <input matInput type="text" [(ngModel)]="searchString" (keydown.enter)="searchButton._elementRef.nativeElement.click()" />
       <button *ngIf="searchString" matSuffix mat-icon-button aria-label="clear" (click)="searchString = ''">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-    <button mat-icon-button aria-label="search" (click)="runSearch()">
+    <button #searchButton mat-icon-button aria-label="search" (click)="onSearchClick()">
       <mat-icon>search</mat-icon>
     </button>
   </div>
 </mat-toolbar>
 
 <mat-grid-list
-  *ngIf="$images | async as images; else loading"
+  *ngIf="$data | async as images; else loading"
   class="content"
   [cols]="cols"
   [rowHeight]="'700px'"

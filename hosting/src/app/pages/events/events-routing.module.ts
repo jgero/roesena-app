@@ -10,6 +10,7 @@ import { EditorComponent } from "./editor/editor.component";
 const routes: Routes = [
   { path: "", redirectTo: "overview", pathMatch: "full" },
   { path: "overview", component: OverviewComponent },
+  { path: "overview/:searchString", component: OverviewComponent },
   { path: "details/:id", component: DetailsComponent },
   { path: "edit", component: EditorComponent, canActivate: [LoggedInGuard] },
   { path: "edit/:id", component: EditorComponent, canActivate: [LoggedInGuard] },

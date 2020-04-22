@@ -1,14 +1,21 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
-import { DocumentSnapshot, Action, DocumentChangeAction, QueryDocumentSnapshot } from "@angular/fire/firestore/interfaces";
+import {
+  DocumentSnapshot,
+  Action,
+  DocumentChangeAction,
+  QueryDocumentSnapshot,
+  CollectionReference,
+  Query,
+} from "@angular/fire/firestore/interfaces";
 import { Observable, of, from } from "rxjs";
 import { tap, catchError, map, switchMap } from "rxjs/operators";
 import * as fbs from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { appImage } from "src/app/utils/interfaces";
+import { appImage, appElementDAL } from "src/app/utils/interfaces";
 import { arrayToMap, mapToArray } from "src/app/utils/converters";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
@@ -21,12 +28,31 @@ interface storeableImage {
 @Injectable({
   providedIn: "root",
 })
-export class ImageDalService {
+export class ImageDalService implements appElementDAL {
   constructor(private firestore: AngularFirestore, private storage: AngularFireStorage, private snackbar: MatSnackBar) {}
 
-  getImages(): Observable<appImage[]> {
+  getAll(): Observable<appImage[]> {
     return this.firestore
       .collection<storeableImage>("images")
+      .snapshotChanges()
+      .pipe(
+        map(convertMany),
+        catchError((err) => {
+          this.snackbar.open(`Bilder konnten nicht geladen werden: ${err}`, "OK");
+          return of([]);
+        })
+      );
+  }
+
+  getByTags(tags: string[]): Observable<appImage[]> {
+    return this.firestore
+      .collection<storeableImage>("images", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        tags.forEach((tag) => {
+          query = query.where(`tags.${tag}`, "==", true);
+        });
+        return query;
+      })
       .snapshotChanges()
       .pipe(
         map(convertMany),

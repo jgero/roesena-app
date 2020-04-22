@@ -1,14 +1,4 @@
-export interface appEvent {
-  id: string;
-  ownerId: string;
-  title: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  deadline: Date | null;
-  tags: string[];
-  participants: { id: string; amount: number }[];
-}
+import { Observable } from "rxjs";
 
 export interface appPerson {
   id: string;
@@ -17,18 +7,32 @@ export interface appPerson {
   isConfirmedMember: boolean;
 }
 
-export interface appImage {
-  id: string;
-  created: Date;
-  tags: string[];
-  ownerId: string;
+export interface appElementDAL {
+  getByTags(tags: string[]): Observable<appElement[]>;
+  getAll(limit?: number);
 }
 
-export interface appArticle {
+export interface appElement {
   id: string;
   ownerId: string;
+  tags: string[];
+}
+
+export interface appEvent extends appElement {
+  title: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  deadline: Date | null;
+  participants: { id: string; amount: number }[];
+}
+
+export interface appImage extends appElement {
+  created: Date;
+}
+
+export interface appArticle extends appElement {
   created: Date;
   title: string;
   content: string;
-  tags: string[];
 }
