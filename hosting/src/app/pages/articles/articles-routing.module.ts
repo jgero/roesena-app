@@ -5,8 +5,9 @@ import { DetailsComponent } from "./details/details.component";
 import { EditorComponent } from "./editor/editor.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "overview" },
+  { path: "", pathMatch: "full", redirectTo: "overview" },
   { path: "overview", component: OverviewComponent },
+  { path: "overview/:searchString", component: OverviewComponent },
   { path: "details/:id", component: DetailsComponent },
   { path: "edit", component: EditorComponent },
   { path: "edit/:id", component: EditorComponent },

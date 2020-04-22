@@ -46,6 +46,25 @@ export class ArticleDalService {
       );
   }
 
+  getArticlesByTags(tags: string[]): Observable<appArticle[]> {
+    return this.firestore
+      .collection<storeableArticle>("articles", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        tags.forEach((tag) => {
+          query = query.where(`tags.${tag}`, "==", true);
+        });
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(
+        map(convertMany),
+        catchError((err) => {
+          this.snackbar.open(`Artikel konnten nicht geladen werden: ${err}`, "OK");
+          return of([]);
+        })
+      );
+  }
+
   getArticles(limit?: number): Observable<appArticle[]> {
     return this.firestore
       .collection<storeableArticle>("articles", (qFn) => {
