@@ -4,7 +4,7 @@ import { FormControl, Validators, FormGroup, AbstractControl, ValidatorFn } from
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { Observable, of, Subscription, combineLatest } from "rxjs";
-import { tap, map } from "rxjs/operators";
+import { tap, map, delay } from "rxjs/operators";
 
 import { appEvent, appPerson } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
@@ -139,6 +139,7 @@ export class EditorComponent implements OnDestroy {
   }
 
   onSubmit() {
+    this.eventForm.disable();
     const updated: appEvent = {
       id: this.event.id,
       ownerId: this.event.ownerId,
@@ -154,8 +155,9 @@ export class EditorComponent implements OnDestroy {
       participants: this.eventForm.get("deadline").get("participants").value,
     };
     const action = this.event.id
-      ? // save and set the form back to prestine when saving was successfull
-        this.eventDAO.update(updated).pipe(tap(() => this.eventForm.markAsPristine()))
+      ? // when saving worked the observable will fire again with the updated data and create a new form
+        // this is effectively the same as setting the form to prestine
+        this.eventDAO.update(updated)
       : // save and go to edit event with id
         this.eventDAO.insert(updated).pipe(tap((newId) => this.router.navigate(["events", "edit", newId])));
     this.subs.push(action.subscribe(null, null, null));

@@ -33,6 +33,10 @@ form {
     justify-self: center;
   }
 
+  .mat-spinner {
+    justify-self: center;
+  }
+
   ::ng-deep.mat-expansion-panel-body {
     display: grid;
     grid-template-columns: 1fr 1fr;

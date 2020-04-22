@@ -22,6 +22,7 @@ import { DetailsComponent } from "./details/details.component";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { ParticipantChipComponent } from "./details/participant-chip/participant-chip.component";
 import { EditorComponent } from "./editor/editor.component";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [OverviewComponent, DetailsComponent, ParticipantChipComponent, EditorComponent],
@@ -37,6 +38,7 @@ import { EditorComponent } from "./editor/editor.component";
     MatSlideToggleModule,
     MatGridListModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatChipsModule,
     MatListModule,
     MatDatepickerModule,

@@ -117,6 +117,7 @@
     </mat-form-field>
   </mat-expansion-panel>
   <button
+    *ngIf="!eventForm.disabled; else saveSpinner"
     mat-raised-button
     type="submit"
     [color]="'primary'"
@@ -125,6 +126,9 @@
   >
     <mat-icon>save</mat-icon> SPEICHERN
   </button>
+  <ng-template #saveSpinner>
+    <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
+  </ng-template>
   <button
     mat-raised-button
     type="button"
@@ -138,5 +142,5 @@
 </form>
 
 <ng-template #loading>
-  <mat-progress-spinner></mat-progress-spinner>
+  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 </ng-template>
