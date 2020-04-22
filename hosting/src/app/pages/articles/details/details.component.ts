@@ -8,10 +8,10 @@ import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-detail",
-  templateUrl: "./detail.component.html",
-  styleUrls: ["./detail.component.scss"],
+  templateUrl: "./details.component.html",
+  styleUrls: ["./details.component.scss"],
 })
-export class DetailComponent implements OnInit {
+export class DetailsComponent implements OnInit {
   $article: Observable<appArticle>;
 
   constructor(route: ActivatedRoute, articleDAO: ArticleDalService, router: Router, public auth: AuthService) {
