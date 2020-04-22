@@ -4,6 +4,7 @@ import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { appImage } from "src/app/utils/interfaces";
 import { Observable, zip } from "rxjs";
 import { switchMap, map, tap } from "rxjs/operators";
+import { AuthService } from "src/app/services/auth.service";
 
 interface appImageWithUrl extends appImage {
   url: string;
@@ -16,7 +17,7 @@ interface appImageWithUrl extends appImage {
 })
 export class DetailsComponent {
   $image: Observable<appImageWithUrl>;
-  constructor(route: ActivatedRoute, imageDAO: ImageDalService, router: Router) {
+  constructor(route: ActivatedRoute, imageDAO: ImageDalService, router: Router, private auth: AuthService) {
     this.$image = zip(
       imageDAO.getById(route.snapshot.paramMap.get("id")).pipe(
         tap((event) => {
@@ -27,5 +28,10 @@ export class DetailsComponent {
       ),
       imageDAO.getDownloadURL(route.snapshot.paramMap.get("id"))
     ).pipe(map((values) => ({ ...values[0], url: values[1] })));
+  }
+
+  canEdit(image: appImage): boolean {
+    const user = this.auth.$user.getValue();
+    return user && (user.id === image.ownerId || user.groups.includes("admin"));
   }
 }

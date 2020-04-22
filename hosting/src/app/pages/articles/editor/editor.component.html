@@ -1,7 +1,5 @@
 <mat-toolbar [color]="'accent'">Artikel Bearbeiten</mat-toolbar>
 <form *ngIf="$data | async as article; else loading" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
-  <a [style.grid-area]="'close'" mat-icon-button [routerLink]="'/articles/overview'"><mat-icon>close</mat-icon></a>
-
   <mat-form-field [style.grid-area]="'title'">
     <mat-label>Titel</mat-label>
     <input matInput formControlName="title" />

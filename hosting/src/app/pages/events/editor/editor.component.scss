@@ -12,10 +12,9 @@ form {
   box-sizing: border-box;
   grid-template-columns: 1fr 1fr;
   column-gap: 16px;
-  grid-template-rows: auto auto auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto;
   row-gap: 16px;
   grid-template-areas:
-    ". close"
     "title title"
     "description description"
     "start-date start-time"
@@ -23,10 +22,6 @@ form {
     "tags tags"
     "deadline deadline"
     "save delete";
-
-  a {
-    justify-self: right;
-  }
 
   .date-time {
     width: 150px;

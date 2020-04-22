@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.spacer {
+  flex: 1 1 auto;
+}
+
 img {
   width: calc(100% - 16px);
   max-width: 800px;

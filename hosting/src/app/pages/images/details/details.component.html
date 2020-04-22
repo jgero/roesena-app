@@ -1,5 +1,9 @@
 <ng-container *ngIf="$image | async as image; else loading">
-  <mat-toolbar [color]="'accent'"> {{ image.tags.join(", ") }} </mat-toolbar>
+  <mat-toolbar [color]="'accent'">
+    <div>{{ image.tags.join(", ") }}</div>
+    <div class="spacer"></div>
+    <a mat-icon-button *ngIf="canEdit(image)" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>
+  </mat-toolbar>
   <img [attr.src]="image.url" alt="Bild Detailansicht" />
 </ng-container>
 <ng-template #loading>

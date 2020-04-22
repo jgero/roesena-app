@@ -1,5 +1,9 @@
 <ng-container *ngIf="$data | async as ev; else loading">
-  <mat-toolbar [color]="'accent'"> {{ ev.title }} </mat-toolbar>
+  <mat-toolbar [color]="'accent'">
+    <div>{{ ev.title }}</div>
+    <div class="spacer"></div>
+    <a mat-icon-button *ngIf="canEdit(ev)" [routerLink]="'/events/edit/' + ev.id"><mat-icon>edit</mat-icon></a>
+  </mat-toolbar>
   <mat-toolbar
     ><span>
       <time [dateTime]="ev.startDate">{{ ev.startDate | toLocalDateString }} {{ ev.startDate | toLocalTimeString }}</time>

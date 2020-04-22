@@ -4,6 +4,7 @@ import { appArticle } from "src/app/utils/interfaces";
 import { Observable } from "rxjs";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { tap } from "rxjs/operators";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-detail",
@@ -13,7 +14,7 @@ import { tap } from "rxjs/operators";
 export class DetailComponent implements OnInit {
   $article: Observable<appArticle>;
 
-  constructor(route: ActivatedRoute, articleDAO: ArticleDalService, router: Router) {
+  constructor(route: ActivatedRoute, articleDAO: ArticleDalService, router: Router, public auth: AuthService) {
     this.$article = articleDAO.getArticleById(route.snapshot.paramMap.get("id")).pipe(
       tap((article) => {
         if (!article) {
@@ -21,6 +22,11 @@ export class DetailComponent implements OnInit {
         }
       })
     );
+  }
+
+  canEdit(article: appArticle): boolean {
+    const user = this.auth.$user.getValue();
+    return user && (user.id === article.ownerId || user.groups.includes("admin"));
   }
 
   ngOnInit(): void {}

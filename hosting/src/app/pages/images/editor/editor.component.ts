@@ -9,10 +9,6 @@ import { AuthService } from "src/app/services/auth.service";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { ENTER, COMMA } from "@angular/cdk/keycodes";
 
-interface appImageWithUrl extends appImage {
-  url: string;
-}
-
 @Component({
   selector: "app-editor",
   templateUrl: "./editor.component.html",

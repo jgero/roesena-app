@@ -33,6 +33,11 @@ export class DetailsComponent {
     );
   }
 
+  canEdit(event: appEvent): boolean {
+    const user = this.auth.$user.getValue();
+    return user && (user.id === event.ownerId || user.groups.includes("admin"));
+  }
+
   onParticipantClick(id: string) {
     if (id === this.auth.$user.getValue().id) {
       this.router.navigate(["/auth/my-events"]);
