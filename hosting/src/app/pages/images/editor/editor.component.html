@@ -21,9 +21,18 @@
     </mat-chip-list>
   </mat-form-field>
   <div class="button-box">
-    <button mat-flat-button type="submit" [disabled]="imageForm.invalid || !imageForm.dirty" [color]="'primary'">
+    <button
+      mat-flat-button
+      *ngIf="!imageForm.disabled; else saveSpinner"
+      type="submit"
+      [disabled]="imageForm.invalid || !imageForm.dirty"
+      [color]="'primary'"
+    >
       <mat-icon>save</mat-icon>SPEICHERN
     </button>
+    <ng-template #saveSpinner>
+      <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
+    </ng-template>
     <div class="spacer"></div>
     <button mat-flat-button type="button" [disabled]="!image.id" [color]="'warn'" (click)="onDelete()">
       <mat-icon>delete</mat-icon>LÖSCHEN
@@ -31,5 +40,5 @@
   </div>
 </form>
 <ng-template #loading>
-  <mat-progress-spinner></mat-progress-spinner>
+  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 </ng-template>

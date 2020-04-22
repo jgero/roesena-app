@@ -4,7 +4,7 @@ import { appImage } from "src/app/utils/interfaces";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { FormGroup, FormControl } from "@angular/forms";
-import { tap, map } from "rxjs/operators";
+import { tap, map, delay } from "rxjs/operators";
 import { AuthService } from "src/app/services/auth.service";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { ENTER, COMMA } from "@angular/cdk/keycodes";
@@ -54,10 +54,16 @@ export class EditorComponent implements OnDestroy {
   }
 
   onSubmit() {
+    this.imageForm.disable();
     let updated = this.image;
     updated.tags = this.imageForm.get("tags").value;
     const action = this.image.id
-      ? this.imageDAO.update(updated, this.imageForm.get("image").value).pipe(tap(() => this.imageForm.markAsPristine()))
+      ? this.imageDAO.update(updated, this.imageForm.get("image").value).pipe(
+          tap(() => {
+            this.imageForm.enable();
+            this.imageForm.markAsPristine();
+          })
+        )
       : this.imageDAO
           .insert(updated, this.imageForm.get("image").value)
           .pipe(tap((newId) => this.router.navigate(["images", "edit", newId])));

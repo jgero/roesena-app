@@ -3,5 +3,5 @@
   <img [attr.src]="image.url" alt="Bild Detailansicht" />
 </ng-container>
 <ng-template #loading>
-  <mat-progress-spinner></mat-progress-spinner>
+  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 </ng-template>

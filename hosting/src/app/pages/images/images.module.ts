@@ -14,6 +14,7 @@ import { CardsModule } from "src/app/shared/cards/cards.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [OverviewComponent, DetailsComponent, EditorComponent],
@@ -28,6 +29,7 @@ import { MatChipsModule } from "@angular/material/chips";
     MatIconModule,
     MatGridListModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatChipsModule,
     CardsModule,
   ],

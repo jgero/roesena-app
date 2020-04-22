@@ -20,8 +20,18 @@
   </div>
 </mat-toolbar>
 
-<mat-grid-list class="content" [cols]="cols" [rowHeight]="'700px'" [gutterSize]="'16px'">
-  <mat-grid-tile *ngFor="let image of $images | async">
+<mat-grid-list
+  *ngIf="$images | async as images; else loading"
+  class="content"
+  [cols]="cols"
+  [rowHeight]="'700px'"
+  [gutterSize]="'16px'"
+>
+  <mat-grid-tile *ngFor="let image of images">
     <app-image-card [image]="image"></app-image-card>
   </mat-grid-tile>
 </mat-grid-list>
+
+<ng-template #loading>
+  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
+</ng-template>

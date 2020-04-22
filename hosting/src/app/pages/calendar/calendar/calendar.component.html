@@ -3,7 +3,7 @@
   <div class="spacer"></div>
   <div class="change-month-buttons"></div
 ></mat-toolbar>
-<main *ngIf="$activeMonth | async as month">
+<main *ngIf="$activeMonth | async as month; else loading">
   <mat-toolbar>
     <div class="spacer"></div>
     <div class="title-container">
@@ -24,3 +24,7 @@
     </mat-grid-tile>
   </mat-grid-list>
 </main>
+
+<ng-template #loading>
+  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
+</ng-template>

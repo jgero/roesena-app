@@ -6,7 +6,7 @@ import { FormGroup, FormControl, Validators, AbstractControl } from "@angular/fo
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
-import { tap, map } from "rxjs/operators";
+import { tap, map, delay } from "rxjs/operators";
 import { MatChipInputEvent } from "@angular/material/chips";
 
 @Component({
@@ -46,12 +46,18 @@ export class EditorComponent implements OnDestroy {
   }
 
   onSubmit() {
+    this.articleForm.disable();
     let updated = this.article;
     updated.title = this.articleForm.get("title").value;
     updated.content = this.articleForm.get("content").value;
     updated.tags = this.articleForm.get("tags").value;
     const action = this.article.id
-      ? this.articleDAO.update(updated).pipe(tap(() => this.articleForm.markAsPristine()))
+      ? this.articleDAO.update(updated).pipe(
+          tap(() => {
+            this.articleForm.enable();
+            this.articleForm.markAsPristine();
+          })
+        )
       : this.articleDAO.insert(updated).pipe(tap((newId) => this.router.navigate(["articles", "edit", newId])));
     // save
     // when saving worked the query in constructor will fire again, reset the form and event can be saved again, becaus id will then be set
