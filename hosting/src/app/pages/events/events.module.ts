@@ -17,7 +17,6 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { EventsRoutingModule } from "./events-routing.module";
 import { OverviewComponent } from "./overview/overview.component";
 import { CardsModule } from "src/app/shared/cards/cards.module";
-import { FiltersModule } from "src/app/shared/filters/filters.module";
 import { DetailsComponent } from "./details/details.component";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { ParticipantChipComponent } from "./details/participant-chip/participant-chip.component";
@@ -44,7 +43,6 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
     MatDatepickerModule,
     MatExpansionModule,
     CardsModule,
-    FiltersModule,
     ConvertersModule,
   ],
 })
