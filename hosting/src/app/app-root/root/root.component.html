@@ -60,11 +60,11 @@
           <a mat-list-item routerLink="/auth/register">Registrieren</a>
         </ng-template>
       </mat-expansion-panel>
-      <div class="button-container">
-        <button aria-label="help" mat-icon-button (click)="onHelpClick()">
-          <mat-icon aria-label="help icon">help</mat-icon>
-        </button>
-        <a mat-icon-button [routerLink]="'/'" aria-label="home"><mat-icon aria-label="home icon">home</mat-icon></a>
+      <div class="link-container">
+        <a mat-button [routerLink]="'/about'" aria-label="Impressum"
+          ><mat-icon aria-label="impressum icon">info</mat-icon> IMPRESSUM</a
+        >
+        <a mat-button [routerLink]="'/'" aria-label="home"><mat-icon aria-label="home icon">home</mat-icon> STARTSEITE</a>
       </div>
     </mat-nav-list>
   </mat-sidenav>

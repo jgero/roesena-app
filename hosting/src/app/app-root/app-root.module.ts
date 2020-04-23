@@ -24,9 +24,11 @@ import { RootComponent } from "./root/root.component";
 import { StartPageComponent } from "./start-page/start-page.component";
 import { CardsModule } from "../shared/cards/cards.module";
 import { MatBadgeModule } from "@angular/material/badge";
+import { AboutComponent } from './about/about.component';
+import { MissingPageComponent } from './missing-page/missing-page.component';
 
 @NgModule({
-  declarations: [RootComponent, StartPageComponent],
+  declarations: [RootComponent, StartPageComponent, AboutComponent, MissingPageComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
