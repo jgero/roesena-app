@@ -1,0 +1,76 @@
+<mat-toolbar [color]="'accent'"
+  ><div>Brandjoggala</div>
+  <div class="spacer"></div>
+  <a mat-icon-button [routerLink]="'/images/overview/Brandjoggala'"> <mat-icon>image</mat-icon> </a>
+  <a mat-icon-button href="http://www.brandjoggala.de"> <mat-icon>link</mat-icon> </a>
+</mat-toolbar>
+
+<mat-grid-list [cols]="cols" [rowHeight]="'150px'" [gutterSize]="'16px'">
+  <mat-grid-tile>
+    <p>
+      I ben heit obend dohanna en Narrastall komma,<br />
+      aus am Amtsblättle hen Ihr`s ja au scho vernomma,<br />
+      om Eich a nuia Massgagrubba zu präsendiera. <br />
+      Sia isch richdig schea......wiascht, des koa i Eich garandiera. <br />
+      „Dia Brand-Joggala“ wird osr Noama sei,<br />
+      mitmacha kennat älle, ob jong odr alt, groaß odr kloi.
+    </p>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="4">
+    <app-image-card *ngIf="$data | async as images" [image]="images[0]"></app-image-card>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="4">
+    <app-image-card *ngIf="$data | async as images" [image]="images[1]"></app-image-card>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="3">
+    <p>
+      Dr Sage noch war er a ganz bäser Mo, <br />
+      was ma an osrer Mask au deitlich säa ko! <br />
+      Er war Jäger ond Köhler ond lebte em Wald <br />
+      Ond war wirklich a graussliga Gestalt. <br />
+      Seine Dienschtherra dia ärgert er oft bis aufs Bluat, <br />
+      ond seine Mägd ond Knecht ploagt´r, wenn´r nachts om ois no zendla duat. <br />
+      Er war wiascht ond a ganz hagabiachigr Mo, <br />
+      drom zendat ma au noch seim Dod sei`n ganza Bäddl oa. <br />
+      Ma mecht ällas äba, Hof ond Guat, <br />
+      em Glauba, dass der Kerl dann au a Ruah gäba duat. <br />
+      Doch weit gefählt, der spukt heit no en de Wälder rom; <br />
+      Drom a guadr Rat: Guggat Eich em Wald efders mol om, <br />
+      denn z´moal schdoad er hendr Eich, der bäse Mo <br />
+      ond moalt Eich an schwarza Bagga noa. <br />
+      Doch nun laß i Eich net länger verharra, <br />
+      begrüßat mit mir ein Brand-Joggale der Röhlinger Sechtanarra.
+    </p>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <p>
+      Auf dia Brand-Joggala drei kräftige <br />
+      <strong>Brand - Joggala</strong> <br />
+      <strong>Brand - Joggala</strong> <br />
+      <strong>Brand - Joggala</strong>
+    </p>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="2">
+    <p>
+      Da der Brandjoggale ein Köhler war und die Sage des Brandjoggales mit Feuer und Ruß zu tun hat, kam die Idee auf, die
+      Fasnacht am Dienstagabend mit der Verbrennung des Narrenbaumes gemeinsam mit allen Gruppen der RöSeNa ausklingen zu lassen,
+      wozu natürlich die gesamte Bevölkerung eingeladen ist. <br />
+      <br />
+      So schließt sich der Kreis und es kann im neuen Jahr von vorn beginnen...
+    </p>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="2">
+    <p>
+      <strong>Gründungsmitglieder</strong> <br />
+      <br />
+      Manuela Huppenberger (Vorstand) <br />
+      Werner Huppenberger (Kassierer) <br />
+      Thomas Eiberger (Maskenmeister) <br />
+      Iris Eiberger (Schriftführerin) <br />
+      Dietmar Becker (Kassenprüfer) <br />
+      Alexandra Becker (2. Vorstand) <br />
+      Dazu gehören noch: <br />
+      Franz Brenner jun., Susanne Brenner und 7 Kinder und viele weitere, die sich uns inzwischen angeschlossen haben.
+    </p>
+  </mat-grid-tile>
+</mat-grid-list>

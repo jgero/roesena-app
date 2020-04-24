@@ -1,5 +1,13 @@
 import { Observable } from "rxjs";
 
+export interface GardeDef {
+  year: number;
+  active: string[];
+  leaders: string[];
+  title: string;
+  show: string;
+}
+
 export interface appPerson {
   id: string;
   name: string;
@@ -8,7 +16,7 @@ export interface appPerson {
 }
 
 export interface appElementDAL {
-  getByTags(tags: string[]): Observable<appElement[]>;
+  getByTags(tags: string[], limit?: number): Observable<appElement[]>;
   getAll(limit?: number);
 }
 

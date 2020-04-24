@@ -19,7 +19,17 @@
             Über uns
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <a mat-list-item routerLink="/groups">Gruppen</a>
+        <mat-expansion-panel mat-list-item>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Gruppen</mat-panel-title>
+          </mat-expansion-panel-header>
+          <a mat-list-item routerLink="/groups/brandjoggala">Brandjoggala</a>
+          <a mat-list-item routerLink="/groups/garden">Garden</a>
+          <a mat-list-item routerLink="/groups/maennerballett">Männerballett</a>
+          <a mat-list-item routerLink="/groups/roehling-stones">Röhling Stones</a>
+          <a mat-list-item routerLink="/groups/sechtafeger">Sechtafeger</a>
+          <a mat-list-item routerLink="/groups/wildes-heer">Das Wilde Heer</a>
+        </mat-expansion-panel>
         <a mat-list-item routerLink="/images">Bilder</a>
         <a mat-list-item routerLink="/articles">Artikel</a>
         <a mat-list-item routerLink="/archive">Archiv</a>

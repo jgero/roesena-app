@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table {
+  margin: 8px;
+  width: calc(100% - 16px);
+  max-width: 800px;
+}
+
+tr.detail-row {
+  height: 0;
+}
+
+.mat-cell {
+  padding-right: 8px;
+}
+
+.element-row td {
+  border-bottom-width: 0;
+}
+
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.cdk-column-Leitung,
+.cdk-column-Showtanz {
+  white-space: nowrap;
+}

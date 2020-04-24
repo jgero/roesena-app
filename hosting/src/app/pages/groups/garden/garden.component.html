@@ -1,0 +1,7 @@
+<mat-tab-group [color]="'accent'" [backgroundColor]="'accent'">
+  <mat-tab *ngFor="let element of data" [label]="element.tabname">
+    <ng-template matTabContent>
+      <app-garde-table [defs]="element.defs"></app-garde-table>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

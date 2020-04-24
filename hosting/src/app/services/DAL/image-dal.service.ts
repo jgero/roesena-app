@@ -44,13 +44,16 @@ export class ImageDalService implements appElementDAL {
       );
   }
 
-  getByTags(tags: string[]): Observable<appImage[]> {
+  getByTags(tags: string[], limit?: number): Observable<appImage[]> {
     return this.firestore
       .collection<storeableImage>("images", (qFn) => {
         let query: CollectionReference | Query = qFn;
         tags.forEach((tag) => {
           query = query.where(`tags.${tag}`, "==", true);
         });
+        if (limit) {
+          query = query.limit(limit);
+        }
         return query;
       })
       .snapshotChanges()
