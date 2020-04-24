@@ -24,11 +24,11 @@ import { RootComponent } from "./root/root.component";
 import { StartPageComponent } from "./start-page/start-page.component";
 import { CardsModule } from "../shared/cards/cards.module";
 import { MatBadgeModule } from "@angular/material/badge";
-import { AboutComponent } from './about/about.component';
-import { MissingPageComponent } from './missing-page/missing-page.component';
+import { AboutComponent } from "./about/about.component";
+import { NotFoundComponent } from "./not-found/not-found.component";
 
 @NgModule({
-  declarations: [RootComponent, StartPageComponent, AboutComponent, MissingPageComponent],
+  declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
