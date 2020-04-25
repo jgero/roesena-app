@@ -1,0 +1,11 @@
+<mat-toolbar [color]="'accent'"
+  ><div>{{ groupName }}</div>
+  <div class="spacer"></div>
+  <a mat-icon-button [routerLink]="'/images/overview/' + groupName"> <mat-icon>image</mat-icon> </a>
+  <a mat-icon-button *ngIf="externalPageLink" href="{{ externalPageLink }}"> <mat-icon>link</mat-icon> </a>
+</mat-toolbar>
+
+<main>
+  <app-image-card *ngIf="$imageData | async as image" [image]="image"></app-image-card>
+  <div class="markdown-generated" *ngIf="$textData | async as text" [innerHTML]="text.content | markdown"></div>
+</main>

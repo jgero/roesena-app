@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WildesHeerComponent } from './wildes-heer.component';
+import { CommonComponent } from './common.component';
 
-describe('WildesHeerComponent', () => {
-  let component: WildesHeerComponent;
-  let fixture: ComponentFixture<WildesHeerComponent>;
+describe('CommonComponent', () => {
+  let component: CommonComponent;
+  let fixture: ComponentFixture<CommonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WildesHeerComponent ]
+      declarations: [ CommonComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WildesHeerComponent);
+    fixture = TestBed.createComponent(CommonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

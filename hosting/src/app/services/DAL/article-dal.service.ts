@@ -46,13 +46,16 @@ export class ArticleDalService implements appElementDAL {
       );
   }
 
-  getByTags(tags: string[]): Observable<appArticle[]> {
+  getByTags(tags: string[], limit?: number): Observable<appArticle[]> {
     return this.firestore
       .collection<storeableArticle>("articles", (qFn) => {
         let query: CollectionReference | Query = qFn;
         tags.forEach((tag) => {
           query = query.where(`tags.${tag}`, "==", true);
         });
+        if (limit) {
+          query = query.limit(limit);
+        }
         return query;
       })
       .snapshotChanges()

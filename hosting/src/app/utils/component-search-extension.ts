@@ -29,7 +29,10 @@ export abstract class SearchableComponent implements OnDestroy {
   }
 
   private runSearch() {
-    const tags = this.searchString.trim().split(" ");
+    const tags = this.searchString
+      .trim()
+      .split(",")
+      .map((tag) => tag.trim());
     this.$data = this.DAO.getByTags(tags);
   }
 

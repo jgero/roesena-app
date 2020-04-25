@@ -8,8 +8,12 @@
   flex: 1 1 auto;
 }
 
-.mat-grid-list {
+main {
   max-width: 800px;
   width: calc(100% - 16px);
   margin: 8px;
+
+  div {
+    margin-top: 16px;
+  }
 }

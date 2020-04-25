@@ -1,7 +1,14 @@
-<mat-tab-group [color]="'accent'" [backgroundColor]="'accent'">
-  <mat-tab *ngFor="let element of data" [label]="element.tabname">
-    <ng-template matTabContent>
-      <app-garde-table [defs]="element.defs"></app-garde-table>
-    </ng-template>
-  </mat-tab>
-</mat-tab-group>
+<nav mat-tab-nav-bar [color]="'accent'" [backgroundColor]="'accent'">
+  <a
+    mat-tab-link
+    *ngFor="let link of navLinks"
+    [routerLink]="link.path"
+    routerLinkActive
+    #rla="routerLinkActive"
+    [active]="rla.isActive"
+  >
+    {{ link.label }}
+  </a>
+</nav>
+
+<router-outlet></router-outlet>
