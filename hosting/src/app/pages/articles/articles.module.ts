@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MarkdownModule } from "ngx-markdown";
 
 @NgModule({
   declarations: [OverviewComponent, EditorComponent, DetailsComponent],
@@ -34,6 +35,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
     MatProgressBarModule,
     CardsModule,
     ConvertersModule,
+    MarkdownModule,
   ],
 })
 export class ArticlesModule {}

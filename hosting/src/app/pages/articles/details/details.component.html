@@ -6,7 +6,7 @@
   </mat-toolbar>
   <mat-toolbar> {{ article.created | toLocalDateString }} </mat-toolbar>
   <main>
-    <p>{{ article.content }}</p>
+    <div class="markdown-generated" [innerHTML]="article.content | markdown"></div>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of article.tags"> {{ tag }} </mat-chip>
     </mat-chip-list>

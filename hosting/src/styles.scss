@@ -6,3 +6,16 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.markdown-generated {
+  table {
+    th {
+      text-align: left;
+      padding: 0 8px;
+    }
+    td {
+      padding: 8px;
+      vertical-align: top;
+    }
+  }
+}
