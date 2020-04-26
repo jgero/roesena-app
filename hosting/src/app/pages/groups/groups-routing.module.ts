@@ -14,6 +14,7 @@ const routes: Routes = [
     path: "garden",
     component: GardenComponent,
     children: [
+      { path: "", pathMatch: "full", redirectTo: "maeusegarde" },
       { path: "maeusegarde", component: CommonComponent, data: { groupName: "Mäusegarde" } },
       { path: "minigarde", component: CommonComponent, data: { groupName: "Minigarde" } },
       { path: "kindergarde", component: CommonComponent, data: { groupName: "Kindergarde" } },

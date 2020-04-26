@@ -2,9 +2,9 @@
   <mat-card-title> {{ article.title }} </mat-card-title>
   <mat-card-subtitle>{{ article.created | toLocalDateString }}</mat-card-subtitle>
   <mat-card-content>
-    {{ article.content.substring(0, 100) }}...
+    <div class="content-preview">{{ article.content }}</div>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of article.tags">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of article.tags" [routerLink]="'/articles/overview/' + tag">{{ tag }}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
   <mat-card-actions>

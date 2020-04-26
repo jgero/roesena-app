@@ -17,6 +17,7 @@ import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MarkdownModule } from "ngx-markdown";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [OverviewComponent, EditorComponent, DetailsComponent],
@@ -33,6 +34,7 @@ import { MarkdownModule } from "ngx-markdown";
     MatProgressSpinnerModule,
     MatChipsModule,
     MatProgressBarModule,
+    MatTooltipModule,
     CardsModule,
     ConvertersModule,
     MarkdownModule,

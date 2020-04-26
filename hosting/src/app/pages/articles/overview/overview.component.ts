@@ -1,15 +1,17 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component } from "@angular/core";
 import { AuthService } from "src/app/services/auth.service";
-import { Observable, Subscription } from "rxjs";
+import { Observable } from "rxjs";
 import { appArticle } from "src/app/utils/interfaces";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SearchableComponent } from "src/app/utils/component-search-extension";
+import { cardFlyIn } from "src/app/utils/animations";
 
 @Component({
   selector: "app-overview",
   templateUrl: "./overview.component.html",
   styleUrls: ["./overview.component.scss"],
+  animations: [cardFlyIn],
 })
 export class OverviewComponent extends SearchableComponent {
   $data: Observable<appArticle[]>;
