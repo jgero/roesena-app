@@ -2,7 +2,7 @@
   <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
-  <span>RöSeNa</span>
+  <span [routerLink]="'/'">RöSeNa</span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
@@ -13,45 +13,23 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-nav-list>
-      <mat-expansion-panel>
+      <a mat-list-item routerLink="/events">Events</a>
+      <a mat-list-item routerLink="/articles">Artikel</a>
+      <a mat-list-item routerLink="/images">Bilder</a>
+      <a mat-list-item routerLink="/calendar">Kalender</a>
+
+      <mat-expansion-panel mat-list-item>
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            Über uns
-          </mat-panel-title>
+          <mat-panel-title>Gruppen</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-expansion-panel mat-list-item>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Gruppen</mat-panel-title>
-          </mat-expansion-panel-header>
-          <a mat-list-item routerLink="/groups/brandjoggala">Brandjoggala</a>
-          <a mat-list-item routerLink="/groups/garden">Garden</a>
-          <a mat-list-item routerLink="/groups/maennerballett">Männerballett</a>
-          <a mat-list-item routerLink="/groups/roehling-stones">Röhling Stones</a>
-          <a mat-list-item routerLink="/groups/sechtafeger">Sechtafeger</a>
-          <a mat-list-item routerLink="/groups/wildes-heer">Das Wilde Heer</a>
-        </mat-expansion-panel>
-        <a mat-list-item routerLink="/images">Bilder</a>
-        <a mat-list-item routerLink="/articles">Artikel</a>
-        <a mat-list-item routerLink="/archive">Archiv</a>
+        <a mat-list-item routerLink="/groups/brandjoggala">Brandjoggala</a>
+        <a mat-list-item routerLink="/groups/garden">Garden</a>
+        <a mat-list-item routerLink="/groups/maennerballett">Männerballett</a>
+        <a mat-list-item routerLink="/groups/roehling-stones">Röhling Stones</a>
+        <a mat-list-item routerLink="/groups/sechtafeger">Sechtafeger</a>
+        <a mat-list-item routerLink="/groups/wildes-heer">Das Wilde Heer</a>
       </mat-expansion-panel>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Veranstaltungen
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <a mat-list-item routerLink="/events">Events</a>
-        <a mat-list-item routerLink="/calendar">Kalender</a>
-      </mat-expansion-panel>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Externes
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <a mat-list-item routerLink="/links">Links</a>
-        <a mat-list-item routerLink="/press">Presse</a>
-      </mat-expansion-panel>
+
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -70,12 +48,7 @@
           <a mat-list-item routerLink="/auth/register">Registrieren</a>
         </ng-template>
       </mat-expansion-panel>
-      <div class="link-container">
-        <a mat-button [routerLink]="'/about'" aria-label="Impressum"
-          ><mat-icon aria-label="impressum icon">info</mat-icon> IMPRESSUM</a
-        >
-        <a mat-button [routerLink]="'/'" aria-label="home"><mat-icon aria-label="home icon">home</mat-icon> STARTSEITE</a>
-      </div>
+      <a mat-list-item [routerLink]="'/about'" aria-label="Impressum">Impressum</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
