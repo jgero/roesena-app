@@ -13,7 +13,7 @@
     </span>
   </mat-toolbar>
   <main>
-    <p>{{ ev.description }}</p>
+    <div class="markdown-generated" [innerHTML]="ev.description | markdown"></div>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of ev.tags"> {{ tag }} </mat-chip>
     </mat-chip-list>

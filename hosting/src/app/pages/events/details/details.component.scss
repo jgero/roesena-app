@@ -9,10 +9,6 @@ main {
   max-width: 800px;
   width: calc(100% - 16px);
 
-  p {
-    white-space: pre-line;
-  }
-
   .mat-list-item {
     height: min-content;
     margin-bottom: 1em;

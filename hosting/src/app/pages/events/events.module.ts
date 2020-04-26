@@ -23,6 +23,7 @@ import { ParticipantChipComponent } from "./details/participant-chip/participant
 import { EditorComponent } from "./editor/editor.component";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MarkdownModule } from "ngx-markdown";
 
 @NgModule({
   declarations: [OverviewComponent, DetailsComponent, ParticipantChipComponent, EditorComponent],
@@ -46,6 +47,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MatTooltipModule,
     CardsModule,
     ConvertersModule,
+    MarkdownModule,
   ],
 })
 export class EventsModule {}

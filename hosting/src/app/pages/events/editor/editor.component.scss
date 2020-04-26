@@ -1,6 +1,7 @@
 @import "~@angular/material/theming";
 @include mat-core();
 $warn: mat-palette($mat-red);
+$secondary: mat-palette($mat-blue-gray);
 
 :host {
   display: flex;
@@ -16,10 +17,11 @@ form {
   box-sizing: border-box;
   grid-template-columns: 1fr 1fr;
   column-gap: 16px;
-  grid-template-rows: auto auto auto auto auto auto;
+  grid-template-rows: auto minmax(0, 300px) auto auto auto auto auto;
   row-gap: 16px;
   grid-template-areas:
     "title title"
+    "preview preview"
     "description description"
     "start-date start-time"
     "end-date end-time"
@@ -30,6 +32,13 @@ form {
   .date-time {
     width: 150px;
     justify-self: center;
+  }
+
+  .preview {
+    overflow: auto;
+    border: 1px solid mat-color($secondary, 200);
+    padding: 8px;
+    border-radius: 4px;
   }
 
   .mat-spinner {
