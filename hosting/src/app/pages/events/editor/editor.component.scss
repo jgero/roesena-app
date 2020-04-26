@@ -1,3 +1,7 @@
+@import "~@angular/material/theming";
+@include mat-core();
+$warn: mat-palette($mat-red);
+
 :host {
   display: flex;
   flex-direction: column;
@@ -44,7 +48,7 @@ form {
   }
   .mat-expansion-panel {
     &.ng-invalid .mat-expansion-panel-header-description {
-      color: red;
+      color: mat-color($warn, 500);
     }
   }
 }
