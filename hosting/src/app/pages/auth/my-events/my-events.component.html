@@ -26,7 +26,7 @@
         <form [formGroup]="event.form" (ngSubmit)="onSubmit(event.id, event.form.get('amount').value, event.form)">
           <mat-form-field>
             <mat-label>Teilnehmerzahl</mat-label>
-            <input #input matInput formControlName="amount" />
+            <input #input matInput matTooltip="Mit 0 rückmelden = Absage" formControlName="amount" />
             <mat-error *ngIf="event.form.get('amount').invalid"> Bitte Rückmelden </mat-error>
           </mat-form-field>
 
