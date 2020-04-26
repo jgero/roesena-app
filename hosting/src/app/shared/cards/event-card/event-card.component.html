@@ -2,7 +2,9 @@
   <mat-card-title>{{ event.title }}</mat-card-title>
   <mat-card-subtitle> {{ event.startDate | toLocalDateString }} - {{ event.endDate | toLocalDateString }} </mat-card-subtitle>
   <mat-card-content>
-    {{ event.description.substring(0, 100) }}...
+    <div class="content-preview">
+      {{ event.description }}
+    </div>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of event.tags" [routerLink]="'/events/overview/' + tag">{{ tag }}</mat-chip>
     </mat-chip-list>

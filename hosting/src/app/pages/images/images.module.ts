@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [OverviewComponent, DetailsComponent, EditorComponent],
@@ -30,6 +31,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
     MatGridListModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatTooltipModule,
     MatChipsModule,
     CardsModule,
   ],

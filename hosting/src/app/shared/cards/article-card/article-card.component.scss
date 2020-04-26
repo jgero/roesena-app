@@ -40,17 +40,4 @@ $background: mat-palette($mat-grey);
       }
     }
   }
-
-  p {
-    max-height: 6rem;
-    overflow: hidden;
-  }
-
-  .buttonWrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0.5rem;
-    margin-top: 0;
-  }
 }

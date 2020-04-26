@@ -6,11 +6,13 @@ import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SearchableComponent } from "src/app/utils/component-search-extension";
+import { cardFlyIn } from "src/app/utils/animations";
 
 @Component({
   selector: "app-overview",
   templateUrl: "./overview.component.html",
   styleUrls: ["./overview.component.scss"],
+  animations: [cardFlyIn],
 })
 export class OverviewComponent extends SearchableComponent implements OnDestroy {
   $data: Observable<appEvent[]>;

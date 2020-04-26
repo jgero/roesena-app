@@ -9,7 +9,13 @@
   <div>
     <mat-form-field class="search-field">
       <mat-label>Suchbegriff</mat-label>
-      <input matInput type="text" [(ngModel)]="searchString" (keydown.enter)="searchButton._elementRef.nativeElement.click()" />
+      <input
+        matInput
+        matTooltip="Suchbegriffe durch Komma trennen"
+        type="text"
+        [(ngModel)]="searchString"
+        (keydown.enter)="searchButton._elementRef.nativeElement.click()"
+      />
       <button *ngIf="searchString" matSuffix mat-icon-button aria-label="clear" (click)="searchString = ''">
         <mat-icon>close</mat-icon>
       </button>
@@ -26,6 +32,7 @@
   [cols]="cols"
   [rowHeight]="'450px'"
   [gutterSize]="'16px'"
+  @cardFlyIn
 >
   <mat-grid-tile *ngFor="let image of images">
     <app-image-card [image]="image"></app-image-card>
