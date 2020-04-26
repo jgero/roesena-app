@@ -2,16 +2,7 @@
   class="card-expansion-wrapper"
   [@expandCollapse]="{
     value: isPopupVisible ? 'expanded' : 'collapsed',
-    params: {
-      height: height,
-      width: width,
-      top: top,
-      left: left,
-      calendarLeft: calendarLeft,
-      calendarWidth: calendarWidth,
-      calendarTop: calendarTop,
-      calendarHeight: calendarHeight
-    }
+    params: params
   }"
 >
   <mat-card #cardInCalendar (click)="onCardClick()" [class.collapsed]="!isPopupVisible">
@@ -23,8 +14,11 @@
         matBadgePosition="below"
         >{{ day }}</mat-card-title
       >
+      <button *ngIf="isPopupVisible" mat-icon-button [color]="'accent'" (click)="onClose($event)">
+        <mat-icon>cancel</mat-icon>
+      </button>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content *ngIf="isPopupVisible">
       <mat-list role="list">
         <ng-container *ngIf="events.length > 0">
           <div mat-subheader>Events</div>
@@ -34,8 +28,5 @@
         </ng-container>
       </mat-list>
     </mat-card-content>
-    <mat-card-actions *ngIf="isPopupVisible">
-      <button mat-button [color]="'accent'" (click)="onClose($event)">SCHLIESSEN</button>
-    </mat-card-actions>
   </mat-card>
 </div>

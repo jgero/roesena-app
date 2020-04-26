@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef } from "@angular/core";
+import { Component, Input, ElementRef } from "@angular/core";
 import { appEvent } from "src/app/utils/interfaces";
 import { expandCollapseAnimation } from "./expand-collapse.animation";
 
@@ -8,56 +8,39 @@ import { expandCollapseAnimation } from "./expand-collapse.animation";
   templateUrl: "./day.component.html",
   styleUrls: ["./day.component.scss"],
 })
-export class DayComponent implements OnInit {
+export class DayComponent {
   @Input()
   day: number;
   @Input()
   events: appEvent[];
   isPopupVisible = false;
 
-  get calendarLeft(): string {
-    return (
-      (window.pageXOffset || document.documentElement.scrollLeft) +
-      document.getElementById("calendar").getBoundingClientRect().left +
-      "px"
-    );
-  }
-  get calendarWidth(): string {
-    return document.getElementById("calendar").clientWidth + "px";
-  }
-  get calendarTop(): string {
-    return (
-      (window.pageXOffset || document.documentElement.scrollLeft) +
-      document.getElementById("calendar").getBoundingClientRect().top +
-      "px"
-    );
-  }
-  get calendarHeight(): string {
-    return document.getElementById("calendar").clientHeight + "px";
-  }
-
-  get left(): string {
-    return (
-      (window.pageXOffset || document.documentElement.scrollLeft) +
-      this.calendarCardRef.nativeElement.getBoundingClientRect().left +
-      "px"
-    );
-  }
-  get top(): string {
-    return (
-      (window.pageYOffset || document.documentElement.scrollLeft) +
-      this.calendarCardRef.nativeElement.getBoundingClientRect().top +
-      "px"
-    );
-  }
-  get width(): string {
-    return this.calendarCardRef.nativeElement.clientWidth - 12 + "px";
-  }
-  get height(): string {
-    return this.calendarCardRef.nativeElement.clientHeight - 12 + "px";
+  get params(): any {
+    return {
+      height: this.calendarCardRef.nativeElement.clientHeight - 12 + "px",
+      width: this.calendarCardRef.nativeElement.clientWidth - 12 + "px",
+      top:
+        (window.pageYOffset || document.documentElement.scrollLeft) +
+        this.calendarCardRef.nativeElement.getBoundingClientRect().top +
+        "px",
+      left:
+        (window.pageXOffset || document.documentElement.scrollLeft) +
+        this.calendarCardRef.nativeElement.getBoundingClientRect().left +
+        "px",
+      calendarLeft:
+        (window.pageXOffset || document.documentElement.scrollLeft) +
+        document.getElementById("calendar").getBoundingClientRect().left +
+        "px",
+      calendarTop:
+        (window.pageXOffset || document.documentElement.scrollLeft) +
+        document.getElementById("calendar").getBoundingClientRect().top +
+        "px",
+      calendarWidth: document.getElementById("calendar").clientWidth + "px",
+      calendarHeight: document.getElementById("calendar").clientHeight + "px",
+    };
   }
 
-  constructor(private calendarCardRef: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {}
+  constructor(private calendarCardRef: ElementRef<HTMLElement>) {}
 
   onCardClick() {
     if (!this.isPopupVisible) {
@@ -69,13 +52,4 @@ export class DayComponent implements OnInit {
     this.isPopupVisible = false;
     ev.stopPropagation();
   }
-
-  // onClick() {
-  //   const rect = this.calendarCardRef.nativeElement.getBoundingClientRect();
-  //   const left = (window.pageXOffset || document.documentElement.scrollLeft) + rect.left;
-  //   const top = (window.pageYOffset || document.documentElement.scrollTop) + rect.top;
-  //   console.log(left, top);
-  // }
-
-  ngOnInit(): void {}
 }
