@@ -2,7 +2,7 @@
   <img mat-card-image [src]="$src | async" />
   <mat-card-content>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of image.tags">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of image.tags" [routerLink]="'/images/overview/' + tag">{{ tag }}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
   <mat-card-actions>

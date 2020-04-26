@@ -1,4 +1,8 @@
-<mat-toolbar [color]="'accent'">Event Bearbeiten</mat-toolbar>
+<mat-toolbar [color]="'accent'">
+  <div>Event Bearbeiten</div>
+  <div class="spacer"></div>
+  <a mat-icon-button [routerLink]="'/events/overview'"><mat-icon>apps</mat-icon></a>
+</mat-toolbar>
 <form *ngIf="$data | async; else loading" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
   <mat-form-field [style.grid-area]="'title'">
     <mat-label>Titel</mat-label>

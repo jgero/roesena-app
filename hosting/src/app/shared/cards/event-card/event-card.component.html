@@ -4,7 +4,7 @@
   <mat-card-content>
     {{ event.description.substring(0, 100) }}...
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of event.tags">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of event.tags" [routerLink]="'/events/overview/' + tag">{{ tag }}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
   <mat-card-actions>

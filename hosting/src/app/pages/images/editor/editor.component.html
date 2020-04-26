@@ -1,4 +1,8 @@
-<mat-toolbar [color]="'accent'">Bild bearbeiten</mat-toolbar>
+<mat-toolbar [color]="'accent'">
+  <div>Bild bearbeiten</div>
+  <div class="spacer"></div>
+  <a mat-icon-button [routerLink]="'/images/overview'"><mat-icon>apps</mat-icon></a>
+</mat-toolbar>
 <form *ngIf="$image | async as image; else loading" [formGroup]="imageForm" (ngSubmit)="onSubmit()">
   <img [attr.src]="$url | async" />
   <input hidden #imageInput type="file" (change)="onImageChange($event.target.files[0])" />
