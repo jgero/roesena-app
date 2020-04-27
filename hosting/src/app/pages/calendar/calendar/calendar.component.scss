@@ -2,6 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  & > .mat-toolbar {
+    position: relative;
+
+    .mat-progress-bar {
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+  }
 }
 
 main {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from "@angular/core";
 import { Subscription, Observable } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
-import { map, tap, switchMap } from "rxjs/operators";
+import { map, tap, switchMap, take } from "rxjs/operators";
 import { appEvent } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 
@@ -12,11 +12,13 @@ import { EventDALService } from "src/app/services/DAL/event-dal.service";
 })
 export class CalendarComponent implements OnDestroy {
   $activeMonth: Observable<{ date: Date; days: appEvent[][] }>;
+  loading = false;
   private subs: Subscription[] = [];
 
   constructor(route: ActivatedRoute, eventDAO: EventDALService) {
     let currentDate: Date;
     this.$activeMonth = route.paramMap.pipe(
+      tap(() => (this.loading = true)),
       // convert paramMap to date
       map((map) => new Date(map.get("date"))),
       // convert it to the first day of the month
@@ -24,7 +26,9 @@ export class CalendarComponent implements OnDestroy {
       // save the date for later user
       tap((date) => (currentDate = date)),
       // request some events starting from that specific date
-      switchMap((date) => eventDAO.getAll(10, date)),
+      // switchMap((date) => eventDAO.getAll(10, date)),
+      switchMap((date) => eventDAO.getForMonth(date.getFullYear(), date.getMonth())),
+      tap((results) => console.log(results)),
       // distribute the events into the day 2D-Array
       map((events) => {
         // empty array with the length of the current month
@@ -43,7 +47,8 @@ export class CalendarComponent implements OnDestroy {
           return eventsForDay;
         });
       }),
-      map((days) => ({ date: currentDate, days }))
+      map((days) => ({ date: currentDate, days })),
+      tap(() => (this.loading = false))
     );
   }
 

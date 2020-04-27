@@ -8,9 +8,11 @@ import {
   DocumentSnapshot,
   Action,
   QueryDocumentSnapshot,
+  QuerySnapshot,
+  DocumentData,
 } from "@angular/fire/firestore";
 import { Observable, from, of, combineLatest } from "rxjs";
-import { map, catchError, tap, delay } from "rxjs/operators";
+import { map, catchError, tap, delay, take, switchMap } from "rxjs/operators";
 import * as fbs from "firebase/app";
 import "firebase/firestore";
 
@@ -48,6 +50,39 @@ export class EventDALService implements appElementDAL {
           return of(null);
         })
       );
+  }
+
+  getForMonth(year: number, month: number): Observable<appEvent[]> {
+    let results: appEvent[] = [];
+    const nextEvent = (last: QueryDocumentSnapshot<storeableEvent>) =>
+      this.firestore
+        .collection<storeableEvent>("events", (qFn) => qFn.orderBy("endDate").startAfter(last).limit(1))
+        .get()
+        .pipe(
+          map((el: any) => el.docs[0]),
+          switchMap((current) => {
+            if (current && convertSnapshot(current).startDate.getTime() <= new Date(year, month + 1, 0).getTime()) {
+              results.push(convertSnapshot(current));
+              return nextEvent(current);
+            } else {
+              return of(results);
+            }
+          })
+        );
+    return this.firestore
+      .collection<storeableEvent>("events", (qFn) => qFn.where("endDate", ">=", new Date(year, month, 1)).limit(1))
+      .get()
+      .pipe(
+        map((el: any) => el.docs[0]),
+        switchMap((current) => {
+          if (current && convertSnapshot(current).startDate.getTime() <= new Date(year, month + 1, 0).getTime()) {
+            results.push(convertSnapshot(current));
+            return nextEvent(current);
+          } else {
+            return of(results);
+          }
+        })
+      ) as Observable<appEvent[]>;
   }
 
   getByTags(tags: string[]): Observable<appEvent[]> {
