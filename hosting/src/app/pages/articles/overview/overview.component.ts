@@ -1,11 +1,12 @@
-import { Component } from "@angular/core";
-import { AuthService } from "src/app/services/auth.service";
-import { Observable } from "rxjs";
-import { appArticle } from "src/app/utils/interfaces";
-import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { SearchableComponent } from "src/app/utils/component-search-extension";
+import { Component } from "@angular/core";
+import { Observable } from "rxjs";
+
+import { AuthService } from "src/app/services/auth.service";
+import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { cardFlyIn } from "src/app/utils/animations";
+import { appArticle } from "src/app/utils/interfaces";
+import { Overview } from "src/app/utils/abstract-overview";
 
 @Component({
   selector: "app-overview",
@@ -13,13 +14,10 @@ import { cardFlyIn } from "src/app/utils/animations";
   styleUrls: ["./overview.component.scss"],
   animations: [cardFlyIn],
 })
-export class OverviewComponent extends SearchableComponent {
+export class OverviewComponent extends Overview {
   $data: Observable<appArticle[]>;
-  get cols(): number {
-    return Math.ceil(window.innerWidth / 500);
-  }
 
-  constructor(public auth: AuthService, articleDAO: ArticleDalService, route: ActivatedRoute, router: Router) {
+  constructor(private auth: AuthService, articleDAO: ArticleDalService, route: ActivatedRoute, router: Router) {
     super(articleDAO, router, route, "articles");
   }
 

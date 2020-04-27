@@ -29,6 +29,16 @@ export const cardFlyIn = trigger("cardFlyIn", [
       { optional: true }
     ),
   ]),
+  transition("* => *", [
+    query(
+      ":leave",
+      [
+        style({ transform: "translateY(0)", opacity: 1 }),
+        stagger(70, [animate("0.2s ease-out", style({ transform: "translateY(100%)", opacity: 0 }))]),
+      ],
+      { optional: true }
+    ),
+  ]),
 ]);
 
 export const fadeInOut = trigger("inout", [

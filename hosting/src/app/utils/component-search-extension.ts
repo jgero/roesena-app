@@ -17,7 +17,7 @@ export abstract class SearchableComponent implements OnDestroy {
       this.searchString = initialSearchString;
       this.runSearch();
     } else {
-      this.$data = DAO.getAll();
+      // this.$data = DAO.getAll();
     }
     this.paramSub = route.paramMap.subscribe((map) => {
       const searchString = map.get("searchString");

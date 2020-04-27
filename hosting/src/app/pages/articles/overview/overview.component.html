@@ -29,7 +29,6 @@
 
 <mat-grid-list
   *ngIf="$data | async as articles; else loading"
-  class="content"
   [cols]="cols"
   [rowHeight]="'300px'"
   [gutterSize]="'16px'"
@@ -39,6 +38,14 @@
     <app-article-card [article]="article"></app-article-card>
   </mat-grid-tile>
 </mat-grid-list>
+<mat-paginator
+  *ngIf="!searchString"
+  [pageSize]="limit"
+  [pageIndex]="pageIndex"
+  [hidePageSize]="true"
+  [length]="$dataLength | async"
+  (page)="onPage($event)"
+></mat-paginator>
 
 <ng-template #loading>
   <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>

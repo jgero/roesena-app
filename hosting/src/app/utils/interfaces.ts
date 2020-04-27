@@ -1,4 +1,5 @@
 import { Observable } from "rxjs";
+import { Direction } from "./enums";
 
 export interface GardeDef {
   year: number;
@@ -16,8 +17,11 @@ export interface appPerson {
 }
 
 export interface appElementDAL {
-  getByTags(tags: string[], limit?: number): Observable<appElement[]>;
-  getAll(limit?: number);
+  getByTags?(tags: string[], limit?: number): Observable<appElement[]>;
+  // getAll is deprecated
+  getAll?(limit?: number);
+  getDocCount?(): Observable<number>;
+  getPage?(limit: number, dir: Direction, tags?: string[]): Observable<appElement[]>;
 }
 
 export interface appElement {
