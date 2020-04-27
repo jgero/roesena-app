@@ -52,6 +52,27 @@ export const cropImage = functions.storage.object().onFinalize(async (object) =>
   return fs.unlinkSync(tempFilePath);
 });
 
+export const personWriteListener = functions.firestore.document("persons/{documentUid}").onWrite((change) => {
+  if (!change.before.exists) {
+    // New document Created : add one to count
+    return admin
+      .firestore()
+      .collection("meta")
+      .doc("persons")
+      .update({ amount: admin.firestore.FieldValue.increment(1) });
+  } else if (change.before.exists && change.after.exists) {
+    // Updating existing document : Do nothing
+  } else if (!change.after.exists) {
+    // Deleting document : subtract one from count
+    return admin
+      .firestore()
+      .collection("meta")
+      .doc("persons")
+      .update({ amount: admin.firestore.FieldValue.increment(-1) });
+  }
+  return false;
+});
+
 // set to eur3 somehow
 export const createUser = functions.auth.user().onCreate((user) => {
   return admin.firestore().collection("persons").doc(user.uid).set({ isConfirmedMember: false, name: user.email, groups: {} });

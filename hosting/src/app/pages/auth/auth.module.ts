@@ -23,6 +23,7 @@ import { ResetComponent } from "./reset/reset.component";
 import { GroupManagerComponent } from "./group-manager/group-manager.component";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 @NgModule({
   declarations: [LoginComponent, ProfileComponent, RegisterComponent, MyEventsComponent, ResetComponent, GroupManagerComponent],
@@ -42,6 +43,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MatCheckboxModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatPaginatorModule,
     ConvertersModule,
   ],
 })

@@ -54,6 +54,7 @@ export class EventDALService implements appElementDAL {
 
   getForMonth(year: number, month: number): Observable<appEvent[]> {
     let results: appEvent[] = [];
+    // get the next event starting from the last returned one
     const nextEvent = (last: QueryDocumentSnapshot<storeableEvent>) =>
       this.firestore
         .collection<storeableEvent>("events", (qFn) => qFn.orderBy("endDate").startAfter(last).limit(1))
@@ -67,8 +68,13 @@ export class EventDALService implements appElementDAL {
             } else {
               return of(results);
             }
+          }),
+          catchError((err) => {
+            this.snackbar.open(`Events konnten nicht geladen werden: ${err}`, "OK");
+            return of([]);
           })
         );
+    // query the first event starting from the current month
     return this.firestore
       .collection<storeableEvent>("events", (qFn) => qFn.where("endDate", ">=", new Date(year, month, 1)).limit(1))
       .get()
@@ -81,6 +87,10 @@ export class EventDALService implements appElementDAL {
           } else {
             return of(results);
           }
+        }),
+        catchError((err) => {
+          this.snackbar.open(`Events konnten nicht geladen werden: ${err}`, "OK");
+          return of([]);
         })
       ) as Observable<appEvent[]>;
   }

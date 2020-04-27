@@ -10,12 +10,13 @@ import {
   CollectionReference,
   Query,
 } from "@angular/fire/firestore";
-import { Observable, of, from } from "rxjs";
+import { Observable, of, from, BehaviorSubject, Subject, combineLatest } from "rxjs";
 import { map, tap, catchError } from "rxjs/operators";
 import "firebase/firestore";
 
 import { appPerson } from "src/app/utils/interfaces";
 import { mapToArray, arrayToMap } from "src/app/utils/converters";
+import { Direction } from "src/app/utils/enums";
 
 interface storeablePerson {
   groups: { [key: string]: boolean };
@@ -27,6 +28,8 @@ interface storeablePerson {
   providedIn: "root",
 })
 export class PersonDalService {
+  private pageFirst: QueryDocumentSnapshot<storeablePerson>;
+  private pageLast: QueryDocumentSnapshot<storeablePerson>;
   constructor(private firestore: AngularFirestore, private fns: AngularFireFunctions, private snackbar: MatSnackBar) {}
 
   getPersonById(id: string): Observable<appPerson | null> {
@@ -43,7 +46,7 @@ export class PersonDalService {
       );
   }
 
-  getPersons(onlyConfirmed?: boolean): Observable<appPerson[]> {
+  getAll(onlyConfirmed?: boolean): Observable<appPerson[]> {
     return this.firestore
       .collection<storeablePerson>("persons", (qFn) => {
         let query: CollectionReference | Query = qFn;
@@ -54,6 +57,52 @@ export class PersonDalService {
       })
       .snapshotChanges()
       .pipe(
+        map(convertMany),
+        catchError((err) => {
+          this.snackbar.open(`Fehler beim laden von Personen: ${err}`, "OK");
+          return of([]);
+        })
+      );
+  }
+
+  getPersonAmount(): Observable<number> {
+    return this.firestore
+      .collection("meta")
+      .doc("persons")
+      .snapshotChanges()
+      .pipe(
+        map((el) => (el.payload.data() as { amount: number }).amount),
+        catchError((err) => {
+          this.snackbar.open(`Fehler beim laden der Personenzahl: ${err}`, "OK");
+          return of(0);
+        })
+      );
+  }
+
+  getPage(limit: number, dir: Direction): Observable<appPerson[]> {
+    return this.firestore
+      .collection<storeablePerson>("persons", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        switch (dir) {
+          case Direction.initial:
+            query = query.orderBy("name").limit(limit);
+            break;
+          case Direction.forward:
+            query = query.orderBy("name").startAfter(this.pageLast).limit(limit);
+            break;
+          case Direction.back:
+            query = query.orderBy("name").endBefore(this.pageFirst).limitToLast(limit);
+            break;
+        }
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(
+        tap((el) => {
+          if (el.length === 0) throw new Error("empty result");
+          this.pageFirst = el[0].payload.doc;
+          this.pageLast = el[el.length - 1].payload.doc;
+        }),
         map(convertMany),
         catchError((err) => {
           this.snackbar.open(`Fehler beim laden von Personen: ${err}`, "OK");

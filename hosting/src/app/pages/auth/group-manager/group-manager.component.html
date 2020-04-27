@@ -39,6 +39,13 @@
       </mat-form-field>
     </form>
   </ng-container>
+  <mat-paginator
+    [pageSize]="10"
+    [pageIndex]="pageIndex"
+    [hidePageSize]="true"
+    [length]="$count | async"
+    (page)="onPage($event)"
+  ></mat-paginator>
 </main>
 
 <ng-template #loading>
