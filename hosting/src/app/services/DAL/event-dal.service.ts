@@ -23,6 +23,7 @@ import { Direction } from "src/app/utils/enums";
 
 interface storeableEvent {
   ownerId: string;
+  ownerName: string;
   title: string;
   description: string;
   startDate: fbs.firestore.Timestamp;
@@ -291,11 +292,12 @@ export class EventDALService implements appElementDAL {
 }
 
 function toStorableEvent(app: appEvent): storeableEvent {
-  const { title, description, ownerId } = app;
+  const { title, description, ownerId, ownerName } = app;
   return {
     title,
     description,
     ownerId,
+    ownerName,
     startDate: fbs.firestore.Timestamp.fromDate(app.startDate),
     endDate: fbs.firestore.Timestamp.fromDate(app.endDate),
     tags: arrayToMap(app.tags),
@@ -319,11 +321,12 @@ function convertMany(action: DocumentChangeAction<storeableEvent>[]): appEvent[]
 
 function convertSnapshot(snapshot: DocumentSnapshot<storeableEvent> | QueryDocumentSnapshot<storeableEvent>): appEvent | null {
   if (!snapshot.data()) return null;
-  const { title, description, ownerId } = snapshot.data();
+  const { title, description, ownerId, ownerName } = snapshot.data();
   return {
     title,
     description,
     ownerId,
+    ownerName,
     id: snapshot.id,
     startDate: new Date(snapshot.data().startDate.toDate()),
     endDate: new Date(snapshot.data().endDate.toDate()),

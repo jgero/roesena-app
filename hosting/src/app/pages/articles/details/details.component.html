@@ -5,7 +5,11 @@
     <a mat-icon-button [routerLink]="'/articles/overview'"><mat-icon>apps</mat-icon></a>
     <a mat-icon-button *ngIf="canEdit(article)" [routerLink]="'/articles/edit/' + article.id"><mat-icon>edit</mat-icon></a>
   </mat-toolbar>
-  <mat-toolbar> {{ article.created | toLocalDateString }} </mat-toolbar>
+  <mat-toolbar>
+    <div>{{ article.created | toLocalDateString }}</div>
+    <div class="spacer"></div>
+    <div>{{ article.ownerName }}</div>
+  </mat-toolbar>
   <main>
     <div class="markdown-generated" [innerHTML]="article.content | markdown"></div>
     <mat-chip-list>

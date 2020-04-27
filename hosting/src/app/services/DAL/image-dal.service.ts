@@ -22,6 +22,7 @@ import { Direction } from "src/app/utils/enums";
 
 interface storeableImage {
   ownerId: string;
+  ownerName: string;
   created: fbs.firestore.Timestamp;
   tags: { [key: string]: boolean };
 }
@@ -202,9 +203,10 @@ export class ImageDalService implements paginatedDAL {
 }
 
 function toStorableImage(app: appImage): storeableImage {
-  const { ownerId } = app;
+  const { ownerId, ownerName } = app;
   return {
     ownerId,
+    ownerName,
     tags: arrayToMap(app.tags),
     created: fbs.firestore.Timestamp.fromDate(app.created),
   };
@@ -224,9 +226,10 @@ function convertMany(action: DocumentChangeAction<storeableImage>[]): appImage[]
 
 function convertSnapshot(snapshot: DocumentSnapshot<storeableImage> | QueryDocumentSnapshot<storeableImage>): appImage | null {
   if (!snapshot.data()) return null;
-  const { ownerId } = snapshot.data();
+  const { ownerId, ownerName } = snapshot.data();
   return {
     ownerId,
+    ownerName,
     id: snapshot.id,
     tags: mapToArray(snapshot.data().tags),
     created: snapshot.data().created.toDate(),

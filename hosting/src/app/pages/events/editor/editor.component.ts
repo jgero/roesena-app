@@ -6,7 +6,7 @@ import { MatChipInputEvent } from "@angular/material/chips";
 import { Observable, of, Subscription, combineLatest } from "rxjs";
 import { tap, map, delay } from "rxjs/operators";
 
-import { appEvent, appPerson } from "src/app/utils/interfaces";
+import { appEvent, appPerson, appElement } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { AuthService } from "src/app/services/auth.service";
@@ -55,9 +55,10 @@ export class EditorComponent implements OnDestroy {
               }
             })
           )
-        : of({
+        : of<appEvent>({
             id: "",
             ownerId: auth.$user.getValue().id,
+            ownerName: auth.$user.getValue().name,
             title: "",
             description: "",
             startDate: new Date(),
@@ -65,7 +66,7 @@ export class EditorComponent implements OnDestroy {
             tags: [],
             deadline: null,
             participants: [],
-          } as appEvent)
+          })
       ).pipe(
         tap((ev) => {
           this.event = ev;
@@ -143,6 +144,7 @@ export class EditorComponent implements OnDestroy {
     const updated: appEvent = {
       id: this.event.id,
       ownerId: this.event.ownerId,
+      ownerName: this.event.ownerName,
       title: this.eventForm.get("title").value,
       description: this.eventForm.get("description").value,
       tags: this.eventForm.get("tags").value,

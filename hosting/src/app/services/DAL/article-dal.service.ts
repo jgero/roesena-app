@@ -20,6 +20,7 @@ import { Direction } from "src/app/utils/enums";
 
 interface storeableArticle {
   ownerId: string;
+  ownerName: string;
   created: fbs.firestore.Timestamp;
   title: string;
   content: string;
@@ -188,11 +189,12 @@ export class ArticleDalService implements paginatedDAL {
 }
 
 function toStorableArticle(app: appArticle): storeableArticle {
-  const { title, content, ownerId } = app;
+  const { title, content, ownerId, ownerName } = app;
   return {
     title,
     content,
     ownerId,
+    ownerName,
     tags: arrayToMap(app.tags),
     created: fbs.firestore.Timestamp.fromDate(app.created),
   };
@@ -214,10 +216,11 @@ function convertSnapshot(
   snapshot: DocumentSnapshot<storeableArticle> | QueryDocumentSnapshot<storeableArticle>
 ): appArticle | null {
   if (!snapshot.data()) return null;
-  const { title, ownerId, content } = snapshot.data();
+  const { title, ownerId, content, ownerName } = snapshot.data();
   return {
     title,
     ownerId,
+    ownerName,
     content,
     id: snapshot.id,
     tags: mapToArray(snapshot.data().tags),

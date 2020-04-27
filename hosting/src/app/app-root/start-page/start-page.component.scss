@@ -1,16 +1,19 @@
 :host {
-  background-image: url("src/assets/icon.svg");
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  background-position: right;
-  background-repeat: no-repeat;
   margin: 0 8px;
+  height: calc(100% - 16px);
 
-  .cardContainer > * {
-    display: block;
-    max-width: 400px;
-    max-height: 270px;
+  .cardContainer {
+    display: flex;
     margin-top: 16px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+
+    & > * {
+      max-height: 270px;
+    }
   }
 }

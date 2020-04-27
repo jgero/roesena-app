@@ -1,6 +1,6 @@
 <ng-container *ngIf="$image | async as image; else loading">
   <mat-toolbar [color]="'accent'">
-    <div>{{ image.tags.join(", ") }}</div>
+    <div ngPreserveWhitespaces>{{ image.tags.join(", ") }} - {{ image.ownerName }}</div>
     <div class="spacer"></div>
     <a mat-icon-button [routerLink]="'/images/overview'"><mat-icon>apps</mat-icon></a>
     <a mat-icon-button *ngIf="canEdit(image)" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>

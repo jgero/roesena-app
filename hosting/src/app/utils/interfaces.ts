@@ -29,6 +29,7 @@ export interface paginatedDAL extends appElementDAL {
 export interface appElement {
   id: string;
   ownerId: string;
+  ownerName: string;
   tags: string[];
 }
 

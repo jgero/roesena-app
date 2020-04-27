@@ -31,7 +31,15 @@ export class EditorComponent implements OnDestroy {
             }
           })
         )
-      : of<appArticle>({ id: "", title: "", content: "", ownerId: this.auth.$user.getValue().id, created: new Date(), tags: [] })
+      : of<appArticle>({
+          id: "",
+          title: "",
+          content: "",
+          ownerId: this.auth.$user.getValue().id,
+          ownerName: this.auth.$user.getValue().name,
+          created: new Date(),
+          tags: [],
+        })
     ).pipe(
       tap((article: appArticle) => {
         if (article === null) return;

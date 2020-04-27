@@ -32,7 +32,13 @@ export class EditorComponent implements OnDestroy {
             }
           })
         )
-      : of<appImage>({ created: new Date(), ownerId: auth.$user.getValue().id, id: "", tags: [] })
+      : of<appImage>({
+          created: new Date(),
+          ownerId: auth.$user.getValue().id,
+          ownerName: auth.$user.getValue().name,
+          id: "",
+          tags: [],
+        })
     ).pipe(
       tap((image) => {
         if (image === null) this.router.navigate(["images", "overview"]);

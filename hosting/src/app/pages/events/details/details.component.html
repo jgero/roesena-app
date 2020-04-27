@@ -11,6 +11,8 @@
       <span> - </span>
       <time [dateTime]="ev.endDate">{{ ev.endDate | toLocalDateString }} {{ ev.endDate | toLocalTimeString }}</time>
     </span>
+    <div class="spacer"></div>
+    <div>{{ ev.ownerName }}</div>
   </mat-toolbar>
   <main>
     <div class="markdown-generated" [innerHTML]="ev.description | markdown"></div>
