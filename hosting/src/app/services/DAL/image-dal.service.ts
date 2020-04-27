@@ -15,9 +15,10 @@ import * as fbs from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { appImage, appElementDAL } from "src/app/utils/interfaces";
+import { appImage, appElementDAL, paginatedDAL } from "src/app/utils/interfaces";
 import { arrayToMap, mapToArray } from "src/app/utils/converters";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Direction } from "src/app/utils/enums";
 
 interface storeableImage {
   ownerId: string;
@@ -28,7 +29,9 @@ interface storeableImage {
 @Injectable({
   providedIn: "root",
 })
-export class ImageDalService implements appElementDAL {
+export class ImageDalService implements paginatedDAL {
+  private pageFirst: QueryDocumentSnapshot<storeableImage>;
+  private pageLast: QueryDocumentSnapshot<storeableImage>;
   constructor(private firestore: AngularFirestore, private storage: AngularFireStorage, private snackbar: MatSnackBar) {}
 
   getAll(): Observable<appImage[]> {
@@ -39,6 +42,55 @@ export class ImageDalService implements appElementDAL {
         map(convertMany),
         catchError((err) => {
           this.snackbar.open(`Bilder konnten nicht geladen werden: ${err}`, "OK");
+          return of([]);
+        })
+      );
+  }
+
+  getDocCount(): Observable<number> {
+    return this.firestore
+      .collection("meta")
+      .doc("images")
+      .snapshotChanges()
+      .pipe(
+        map((el) => (el.payload.data() as { amount: number }).amount),
+        catchError((err) => {
+          this.snackbar.open(`Fehler beim laden der Bilderzahl: ${err}`, "OK");
+          return of(0);
+        })
+      );
+  }
+
+  getPage(limit: number, dir: Direction): Observable<appImage[]> {
+    return this.firestore
+      .collection<storeableImage>("images", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        // always order by creation date
+        query = query.orderBy("created", "desc");
+        // paginate the data
+        switch (dir) {
+          case Direction.initial:
+            query = query.limit(limit);
+            break;
+          case Direction.forward:
+            query = query.startAfter(this.pageLast).limit(limit);
+            break;
+          case Direction.back:
+            query = query.endBefore(this.pageFirst).limitToLast(limit);
+            break;
+        }
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(
+        tap((el) => {
+          if (el.length === 0) throw new Error("empty result");
+          this.pageFirst = el[0].payload.doc;
+          this.pageLast = el[el.length - 1].payload.doc;
+        }),
+        map(convertMany),
+        catchError((err) => {
+          this.snackbar.open(`Fehler beim laden von Bildern: ${err}`, "OK");
           return of([]);
         })
       );
