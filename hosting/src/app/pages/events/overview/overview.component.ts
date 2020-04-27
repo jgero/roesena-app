@@ -5,8 +5,8 @@ import { appEvent } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { SearchableComponent } from "src/app/utils/component-search-extension";
 import { cardFlyIn } from "src/app/utils/animations";
+import { SearchableOverview } from "src/app/utils/abstract-overview";
 
 @Component({
   selector: "app-overview",
@@ -14,14 +14,12 @@ import { cardFlyIn } from "src/app/utils/animations";
   styleUrls: ["./overview.component.scss"],
   animations: [cardFlyIn],
 })
-export class OverviewComponent extends SearchableComponent implements OnDestroy {
+export class OverviewComponent extends SearchableOverview implements OnDestroy {
   $data: Observable<appEvent[]>;
-  get cols(): number {
-    return Math.ceil(window.innerWidth / 500);
-  }
 
   constructor(evDAO: EventDALService, public auth: AuthService, route: ActivatedRoute, router: Router) {
-    super(evDAO, router, route, "events");
+    super("events", evDAO, route, router);
+    super.initDataStream();
   }
 
   canCreate(): boolean {

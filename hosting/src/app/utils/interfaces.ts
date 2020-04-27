@@ -17,11 +17,13 @@ export interface appPerson {
 }
 
 export interface appElementDAL {
-  getByTags?(tags: string[], limit?: number): Observable<appElement[]>;
-  // getAll is deprecated
-  getAll?(limit?: number);
-  getDocCount?(): Observable<number>;
-  getPage?(limit: number, dir: Direction, tags?: string[]): Observable<appElement[]>;
+  getByTags(tags: string[], limit?: number): Observable<appElement[]>;
+  getAll(limit?: number): Observable<appElement[]>;
+}
+
+export interface paginatedDAL extends appElementDAL {
+  getDocCount(): Observable<number>;
+  getPage(limit: number, dir: Direction): Observable<appElement[]>;
 }
 
 export interface appElement {

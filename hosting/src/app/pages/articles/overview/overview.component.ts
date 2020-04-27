@@ -6,7 +6,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { cardFlyIn } from "src/app/utils/animations";
 import { appArticle } from "src/app/utils/interfaces";
-import { Overview } from "src/app/utils/abstract-overview";
+import { PaginatedOverview } from "src/app/utils/abstract-overview";
 
 @Component({
   selector: "app-overview",
@@ -14,11 +14,12 @@ import { Overview } from "src/app/utils/abstract-overview";
   styleUrls: ["./overview.component.scss"],
   animations: [cardFlyIn],
 })
-export class OverviewComponent extends Overview {
+export class OverviewComponent extends PaginatedOverview {
   $data: Observable<appArticle[]>;
 
   constructor(private auth: AuthService, articleDAO: ArticleDalService, route: ActivatedRoute, router: Router) {
-    super(articleDAO, router, route, "articles");
+    super("articles", articleDAO, route, router);
+    super.initDataStream();
   }
 
   canCreate(): boolean {

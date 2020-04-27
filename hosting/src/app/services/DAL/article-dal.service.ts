@@ -14,7 +14,7 @@ import { map, tap, catchError } from "rxjs/operators";
 import * as fbs from "firebase/app";
 import "firebase/firestore";
 
-import { appArticle, appElementDAL } from "src/app/utils/interfaces";
+import { appArticle, paginatedDAL } from "src/app/utils/interfaces";
 import { arrayToMap, mapToArray } from "src/app/utils/converters";
 import { Direction } from "src/app/utils/enums";
 
@@ -29,7 +29,7 @@ interface storeableArticle {
 @Injectable({
   providedIn: "root",
 })
-export class ArticleDalService implements appElementDAL {
+export class ArticleDalService implements paginatedDAL {
   private pageFirst: QueryDocumentSnapshot<storeableArticle>;
   private pageLast: QueryDocumentSnapshot<storeableArticle>;
   constructor(private firestore: AngularFirestore, private snackbar: MatSnackBar) {}
@@ -91,6 +91,27 @@ export class ArticleDalService implements appElementDAL {
       );
   }
 
+  getAll(limit?: number): Observable<appArticle[]> {
+    return this.firestore
+      .collection<storeableArticle>("articles", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        // always order by creation date
+        query = query.orderBy("created", "desc");
+        if (limit) {
+          query = query.limit(limit);
+        }
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(
+        map(convertMany),
+        catchError((err) => {
+          this.snackbar.open(`Fehler beim laden von Artikeln: ${err}`, "OK");
+          return of([]);
+        })
+      );
+  }
+
   getPage(limit: number, dir: Direction): Observable<appArticle[]> {
     return this.firestore
       .collection<storeableArticle>("articles", (qFn) => {
@@ -121,26 +142,6 @@ export class ArticleDalService implements appElementDAL {
         map(convertMany),
         catchError((err) => {
           this.snackbar.open(`Fehler beim laden von Artikeln: ${err}`, "OK");
-          return of([]);
-        })
-      );
-  }
-
-  getAll(limit?: number): Observable<appArticle[]> {
-    return this.firestore
-      .collection<storeableArticle>("articles", (qFn) => {
-        let query: CollectionReference | Query = qFn;
-        query = query.orderBy("created", "desc");
-        if (limit) {
-          query = query.limit(limit);
-        }
-        return query;
-      })
-      .snapshotChanges()
-      .pipe(
-        map(convertMany),
-        catchError((err) => {
-          this.snackbar.open(`Artikel konnten nicht geladen werden: ${err}`, "OK");
           return of([]);
         })
       );

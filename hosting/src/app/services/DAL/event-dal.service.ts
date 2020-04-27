@@ -19,6 +19,7 @@ import "firebase/firestore";
 import { appEvent, appElementDAL } from "src/app/utils/interfaces";
 import { AuthService } from "../auth.service";
 import { arrayToMap, participantArrayToMap, mapToArray, participantMapToArray } from "src/app/utils/converters";
+import { Direction } from "src/app/utils/enums";
 
 interface storeableEvent {
   ownerId: string;
@@ -36,6 +37,8 @@ interface storeableEvent {
   providedIn: "root",
 })
 export class EventDALService implements appElementDAL {
+  private pageFirst: QueryDocumentSnapshot<storeableEvent>;
+  private pageLast: QueryDocumentSnapshot<storeableEvent>;
   constructor(private firestore: AngularFirestore, private snackbar: MatSnackBar, private auth: AuthService) {}
 
   getById(id: string): Observable<appEvent | null> {
@@ -135,6 +138,41 @@ export class EventDALService implements appElementDAL {
         return of([]);
       })
     );
+  }
+
+  getPage(limit: number, dir: Direction, cutoffDate: Date = new Date()): Observable<appEvent[]> {
+    return this.firestore
+      .collection<storeableEvent>("articles", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        // always order by creation date
+        query = query.orderBy("created", "desc");
+        // paginate the data
+        switch (dir) {
+          case Direction.initial:
+            query = query.limit(limit);
+            break;
+          case Direction.forward:
+            query = query.startAfter(this.pageLast).limit(limit);
+            break;
+          case Direction.back:
+            query = query.endBefore(this.pageFirst).limitToLast(limit);
+            break;
+        }
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(
+        tap((el) => {
+          if (el.length === 0) throw new Error("empty result");
+          this.pageFirst = el[0].payload.doc;
+          this.pageLast = el[el.length - 1].payload.doc;
+        }),
+        map(convertMany),
+        catchError((err) => {
+          this.snackbar.open(`Fehler beim laden von Artikeln: ${err}`, "OK");
+          return of([]);
+        })
+      );
   }
 
   getAll(limit: number = undefined, cutoffDate: Date = new Date()): Observable<appEvent[]> {

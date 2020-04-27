@@ -3,52 +3,46 @@ import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription, Observable } from "rxjs";
 
-import { appElement, appElementDAL } from "./interfaces";
+import { appElement, appElementDAL, paginatedDAL } from "./interfaces";
 import { Direction } from "./enums";
 
-export abstract class Overview implements OnDestroy {
-  readonly routeBase: string;
+abstract class Overview {
+  $data: Observable<appElement[]>;
+  get cols(): number {
+    return Math.ceil(window.innerWidth / 500);
+  }
+
+  constructor(public DAO: appElementDAL) {}
+
+  initDataStream() {
+    this.$data = this.DAO.getAll();
+  }
+}
+
+export abstract class SearchableOverview extends Overview implements OnDestroy {
   private paramSub: Subscription;
   searchString = "";
   get searchTags(): string[] {
     return this.searchString.split(",").map((tag) => tag.trim());
   }
-  $data: Observable<appElement[]>;
-  $dataLength: Observable<number>;
-  get limit(): number {
-    return this.cols * 3;
-  }
-  pageIndex: number = 0;
-  get cols(): number {
-    return Math.ceil(window.innerWidth / 500);
+  constructor(private routeBase: string, DAO: appElementDAL, public route: ActivatedRoute, public router: Router) {
+    super(DAO);
   }
 
-  constructor(private DAO: appElementDAL, private router: Router, route: ActivatedRoute, routeBase: string) {
-    this.routeBase = routeBase;
-    this.$dataLength = DAO.getDocCount();
-
-    const initialSearchString = route.snapshot.paramMap.get("searchString");
-    if (initialSearchString) {
-      this.searchString = initialSearchString;
-      this.$data = DAO.getByTags(this.searchTags);
-    } else {
-      this.$data = DAO.getPage(this.limit, Direction.initial, []);
-    }
-    this.paramSub = route.paramMap.subscribe((map) => {
+  initDataStream() {
+    this.searchString = this.route.snapshot.paramMap.get("searchString");
+    this.updateDataStream();
+    this.paramSub = this.route.paramMap.subscribe((map) => {
       this.searchString = map.get("searchString");
-      if (this.searchString) {
-        // this.searchString = initialSearchString;
-        this.$data = DAO.getByTags(this.searchTags);
-      } else {
-        this.$data = DAO.getPage(this.limit, Direction.initial);
-      }
+      this.updateDataStream();
     });
   }
 
-  onPage(ev: PageEvent) {
-    if (ev.pageIndex !== ev.previousPageIndex) {
-      this.$data = this.DAO.getPage(this.limit, ev.pageIndex > ev.previousPageIndex ? Direction.forward : Direction.back);
-      this.pageIndex = ev.pageIndex;
+  updateDataStream() {
+    if (this.searchString) {
+      this.$data = this.DAO.getByTags(this.searchTags);
+    } else {
+      this.$data = this.DAO.getAll();
     }
   }
 
@@ -62,5 +56,37 @@ export abstract class Overview implements OnDestroy {
 
   ngOnDestroy() {
     this.paramSub.unsubscribe();
+  }
+}
+
+export abstract class PaginatedOverview extends SearchableOverview {
+  $dataLength: Observable<number>;
+  get limit(): number {
+    return this.cols * 3;
+  }
+  pageIndex: number = 0;
+
+  constructor(routeBase: string, public DAO: paginatedDAL, route: ActivatedRoute, router: Router) {
+    super(routeBase, DAO, route, router);
+  }
+
+  initDataStream() {
+    this.$dataLength = this.DAO.getDocCount();
+    super.initDataStream();
+  }
+
+  updateDataStream() {
+    if (this.searchString) {
+      this.$data = this.DAO.getByTags(this.searchTags);
+    } else {
+      this.$data = this.DAO.getPage(this.limit, Direction.initial);
+    }
+  }
+
+  onPage(ev: PageEvent) {
+    if (ev.pageIndex !== ev.previousPageIndex) {
+      this.$data = this.DAO.getPage(this.limit, ev.pageIndex > ev.previousPageIndex ? Direction.forward : Direction.back);
+      this.pageIndex = ev.pageIndex;
+    }
   }
 }
