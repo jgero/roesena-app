@@ -14,11 +14,18 @@ import { AuthService } from "src/app/services/auth.service";
 export class DetailsComponent implements OnInit {
   $article: Observable<appArticle>;
 
-  constructor(route: ActivatedRoute, articleDAO: ArticleDalService, router: Router, public auth: AuthService) {
-    this.$article = articleDAO.getArticleById(route.snapshot.paramMap.get("id")).pipe(
+  constructor(
+    private route: ActivatedRoute,
+    private articleDAO: ArticleDalService,
+    private router: Router,
+    private auth: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.$article = this.articleDAO.getArticleById(this.route.snapshot.paramMap.get("id")).pipe(
       tap((article) => {
         if (!article) {
-          router.navigate(["articles", "overview"]);
+          this.router.navigate(["articles", "overview"]);
         }
       })
     );
@@ -28,6 +35,4 @@ export class DetailsComponent implements OnInit {
     const user = this.auth.$user.getValue();
     return user && (user.id === article.ownerId || user.groups.includes("admin"));
   }
-
-  ngOnInit(): void {}
 }

@@ -6,6 +6,11 @@ import { LocationStub } from "src/app/testing/stubs/location";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 describe("LoginComponent", () => {
   let component: LoginComponent;
@@ -17,6 +22,7 @@ describe("LoginComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule, MatToolbarModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
       declarations: [LoginComponent],
       providers: [
         { provide: AuthService, useValue: authStub },

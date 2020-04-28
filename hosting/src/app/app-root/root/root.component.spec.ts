@@ -16,6 +16,8 @@ import { BreakpointObserverStub } from "src/app/testing/stubs/breakpoint-observe
 import { MatSnackBarStub } from "src/app/testing/stubs/snackbar";
 import { AuthServiceStub } from "src/app/testing/stubs/auth";
 import { EventDalServiceStub } from "src/app/testing/stubs/event-dal";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { RouterTestingModule } from "@angular/router/testing";
 
 describe("RootComponent", () => {
   let component: RootComponent;
@@ -38,6 +40,8 @@ describe("RootComponent", () => {
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
+        MatExpansionModule,
+        RouterTestingModule,
       ],
       providers: [
         { provide: Router, useValue: routerSpy },
@@ -57,5 +61,54 @@ describe("RootComponent", () => {
 
   it("should compile", () => {
     expect(component).toBeTruthy();
+  });
+
+  it("should not do anything without user", () => {
+    const spy = spyOn(matSnackBar, "open");
+    component.ngOnInit();
+    authService.$user.next(null);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it("should not show anything when user has no unresponded events", () => {
+    const spy = spyOn(matSnackBar, "open");
+    component.ngOnInit();
+    eventDALService.dataArray = [
+      {
+        id: "asdf",
+        tags: ["asdf"],
+        description: "asdf",
+        ownerName: "John DOe",
+        ownerId: "test",
+        title: "event title",
+        startDate: new Date(2020, 10, 2),
+        endDate: new Date(2020, 10, 3),
+        deadline: new Date(2020, 10, 1),
+        participants: [{ id: "creativeUID", name: "John Doe", amount: 3 }],
+      },
+    ];
+    authService.$user.next({ id: "creativeUID", groups: ["nothing special"], isConfirmedMember: true, name: "John Doe" });
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it("should show snackbar when user has unresponded events", () => {
+    const spy = spyOn(matSnackBar, "open");
+    component.ngOnInit();
+    eventDALService.dataArray = [
+      {
+        id: "asdf",
+        tags: ["asdf"],
+        description: "asdf",
+        ownerName: "John DOe",
+        ownerId: "test",
+        title: "event title",
+        startDate: new Date(2020, 10, 2),
+        endDate: new Date(2020, 10, 3),
+        deadline: new Date(2020, 10, 1),
+        participants: [{ id: "creativeUID", name: "John Doe", amount: -1 }],
+      },
+    ];
+    authService.$user.next({ id: "creativeUID", groups: ["nothing special"], isConfirmedMember: true, name: "John Doe" });
+    expect(spy).toHaveBeenCalled();
   });
 });

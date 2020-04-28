@@ -7,6 +7,15 @@ import { ArticleDalStub } from "src/app/testing/stubs/article-dal";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { ActivatedRoute } from "@angular/router";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { Component } from "@angular/core";
+
+@Component({ selector: "app-image-card", template: "" })
+class a {}
+@Component({ selector: "app-markdown-viewer", template: "" })
+class b {}
 
 describe("CommonComponent", () => {
   let component: CommonComponent;
@@ -18,7 +27,8 @@ describe("CommonComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CommonComponent],
+      imports: [MatToolbarModule, MatButtonModule, MatIconModule],
+      declarations: [CommonComponent, a, b],
       providers: [
         { provide: ImageDalService, useValue: imageStub },
         { provide: ArticleDalService, useValue: articleStub },

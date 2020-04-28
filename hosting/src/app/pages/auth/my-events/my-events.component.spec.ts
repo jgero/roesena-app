@@ -7,6 +7,11 @@ import { PersonDalStub } from "src/app/testing/stubs/person-dal";
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatTableModule } from "@angular/material/table";
 
 describe("MyEventsComponent", () => {
   let component: MyEventsComponent;
@@ -18,6 +23,7 @@ describe("MyEventsComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatToolbarModule, MatInputModule, MatButtonModule, MatProgressBarModule, MatTableModule],
       declarations: [MyEventsComponent],
       providers: [
         { provide: AuthService, useValue: authStub },

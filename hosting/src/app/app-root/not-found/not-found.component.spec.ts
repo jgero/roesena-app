@@ -4,6 +4,8 @@ import { NotFoundComponent } from "./not-found.component";
 import { Location } from "@angular/common";
 import { LocationStub } from "src/app/testing/stubs/location";
 import { Router } from "@angular/router";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
 
 describe("NotFoundComponent", () => {
   let component: NotFoundComponent;
@@ -14,6 +16,7 @@ describe("NotFoundComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatToolbarModule, MatButtonModule],
       declarations: [NotFoundComponent],
       providers: [
         { provide: Location, useValue: locationStub },
@@ -30,5 +33,18 @@ describe("NotFoundComponent", () => {
 
   it("should create", () => {
     expect(component).toBeTruthy();
+  });
+
+  it("should go to startpage when needed", () => {
+    locationStub.navigationId = 1;
+    component.goBack();
+    expect(routerSpy.navigate.calls.count()).toBe(1);
+  });
+
+  it("should go location back when possible", () => {
+    locationStub.navigationId = 3;
+    const spy = spyOn(locationStub, "back");
+    component.goBack();
+    expect(spy).toHaveBeenCalled();
   });
 });

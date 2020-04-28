@@ -1,10 +1,13 @@
 import { BreakpointState } from "@angular/cdk/layout";
-import { of, Observable } from "rxjs";
+import { of, Observable, ReplaySubject } from "rxjs";
 
 export class BreakpointObserverStub {
-  constructor() {}
+  private br = new ReplaySubject<BreakpointState>();
+  constructor() {
+    this.br.next({ matches: false, breakpoints: {} });
+  }
 
   observe(a: any): Observable<BreakpointState> {
-    return of({ matches: false, breakpoints: {} });
+    return this.br.asObservable();
   }
 }

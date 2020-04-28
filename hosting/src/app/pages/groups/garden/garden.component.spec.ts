@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { GardenComponent } from "./garden.component";
 import { RouterTestingModule } from "@angular/router/testing";
+import { MatTabsModule } from "@angular/material/tabs";
 
 describe("GardenComponent", () => {
   let component: GardenComponent;
@@ -9,7 +10,7 @@ describe("GardenComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, MatTabsModule],
       declarations: [GardenComponent],
     }).compileComponents();
   }));

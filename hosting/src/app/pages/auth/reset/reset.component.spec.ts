@@ -5,6 +5,10 @@ import { AuthServiceStub } from "src/app/testing/stubs/auth";
 import { ActivatedRouteStub } from "src/app/testing/stubs/activated-route";
 import { AuthService } from "src/app/services/auth.service";
 import { Router, ActivatedRoute } from "@angular/router";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 describe("ResetComponent", () => {
   let component: ResetComponent;
@@ -16,6 +20,7 @@ describe("ResetComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule, MatToolbarModule, MatInputModule, MatButtonModule],
       declarations: [ResetComponent],
       providers: [
         { provide: AuthService, useValue: authStub },

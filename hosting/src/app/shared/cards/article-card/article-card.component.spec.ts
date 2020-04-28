@@ -5,6 +5,11 @@ import { AuthServiceStub } from "src/app/testing/stubs/auth";
 import { AuthService } from "src/app/services/auth.service";
 import { ToLocalDateStringPipe } from "../../converters/to-local-date/to-local-date-string.pipe";
 import { ConvertersModule } from "../../converters/converters.module";
+import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { RouterTestingModule } from "@angular/router/testing";
 
 describe("ArticleCardComponent", () => {
   let component: ArticleCardComponent;
@@ -16,7 +21,7 @@ describe("ArticleCardComponent", () => {
     TestBed.configureTestingModule({
       declarations: [ArticleCardComponent],
       providers: [{ provide: AuthService, useValue: authStub }],
-      imports: [ConvertersModule],
+      imports: [ConvertersModule, MatCardModule, MatChipsModule, MatButtonModule, MatIconModule, RouterTestingModule],
     }).compileComponents();
   }));
 

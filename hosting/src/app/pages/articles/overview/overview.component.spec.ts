@@ -8,6 +8,17 @@ import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { Component } from "@angular/core";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+
+@Component({ selector: "app-article-card", template: "" })
+class ArticleCardMock {}
 
 describe("OverviewComponent", () => {
   let component: OverviewComponent;
@@ -21,8 +32,17 @@ describe("OverviewComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [OverviewComponent],
+      imports: [
+        NoopAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatGridListModule,
+        MatPaginatorModule,
+        MatProgressBarModule,
+      ],
+      declarations: [OverviewComponent, ArticleCardMock],
       providers: [
         { provide: ArticleDalService, useValue: articleStub },
         { provide: Router, useValue: routerSpy },

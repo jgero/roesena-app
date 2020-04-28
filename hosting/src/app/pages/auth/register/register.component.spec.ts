@@ -4,6 +4,11 @@ import { RegisterComponent } from "./register.component";
 import { AuthServiceStub } from "src/app/testing/stubs/auth";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 describe("RegisterComponent", () => {
   let component: RegisterComponent;
@@ -14,6 +19,7 @@ describe("RegisterComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule, MatToolbarModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
       declarations: [RegisterComponent],
       providers: [
         { provide: Router, useValue: routerSpy },

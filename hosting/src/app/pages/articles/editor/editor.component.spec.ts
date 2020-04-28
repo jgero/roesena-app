@@ -7,6 +7,17 @@ import { ArticleDalStub } from "src/app/testing/stubs/article-dal";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
+import { Component } from "@angular/core";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+
+@Component({ selector: "app-markdown-preview", template: "" })
+class MarkdownPreviewComponentStub {}
 
 describe("EditorComponent", () => {
   let component: EditorComponent;
@@ -20,7 +31,16 @@ describe("EditorComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EditorComponent],
+      imports: [
+        NoopAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatChipsModule,
+        MatProgressBarModule,
+      ],
+      declarations: [EditorComponent, MarkdownPreviewComponentStub],
       providers: [
         { provide: ArticleDalService, useValue: articleStub },
         { provide: Router, useValue: routerSpy },

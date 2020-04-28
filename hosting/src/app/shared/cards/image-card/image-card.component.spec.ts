@@ -5,6 +5,11 @@ import { AuthService } from "src/app/services/auth.service";
 import { AuthServiceStub } from "src/app/testing/stubs/auth";
 import { ImageDalStub } from "src/app/testing/stubs/image-dal";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
+import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { RouterTestingModule } from "@angular/router/testing";
 
 describe("ImageCardComponent", () => {
   let component: ImageCardComponent;
@@ -15,6 +20,7 @@ describe("ImageCardComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatCardModule, MatChipsModule, MatButtonModule, MatIconModule, RouterTestingModule],
       declarations: [ImageCardComponent],
       providers: [
         { provide: AuthService, useValue: authStub },
