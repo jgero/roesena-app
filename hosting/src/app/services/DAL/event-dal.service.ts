@@ -8,11 +8,9 @@ import {
   DocumentSnapshot,
   Action,
   QueryDocumentSnapshot,
-  QuerySnapshot,
-  DocumentData,
 } from "@angular/fire/firestore";
 import { Observable, from, of, combineLatest } from "rxjs";
-import { map, catchError, tap, delay, take, switchMap } from "rxjs/operators";
+import { map, catchError, tap, switchMap } from "rxjs/operators";
 import * as fbs from "firebase/app";
 import "firebase/firestore";
 
@@ -30,7 +28,7 @@ interface storeableEvent {
   endDate: fbs.firestore.Timestamp;
   tags: { [key: string]: boolean };
   deadline: fbs.firestore.Timestamp;
-  participants: { [key: string]: number };
+  participants: { [key: string]: { amount: number; name: string } };
   participantsArray: string[];
 }
 

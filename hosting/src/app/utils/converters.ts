@@ -14,18 +14,23 @@ export function mapToArray(tagMap: { [key: string]: boolean }): string[] {
   return res;
 }
 
-export function participantArrayToMap(partArr: { id: string; amount: number }[]): { [key: string]: number } {
-  let res: { [key: string]: number } = {};
+export function participantArrayToMap(
+  partArr: { id: string; amount: number; name: string }[]
+): { [key: string]: { amount: number; name: string } } {
+  let res: { [key: string]: { amount: number; name: string } } = {};
   partArr.forEach((participant) => {
-    res[participant.id] = participant.amount;
+    const { amount, name } = participant;
+    res[participant.id] = { amount, name };
   });
   return res;
 }
 
-export function participantMapToArray(partMap: { [key: string]: number }): { id: string; amount: number }[] {
-  let res: { id: string; amount: number }[] = [];
+export function participantMapToArray(partMap: {
+  [key: string]: { amount: number; name: string };
+}): { id: string; amount: number; name: string }[] {
+  let res: { id: string; amount: number; name: string }[] = [];
   for (const key in partMap) {
-    res.push({ id: key, amount: partMap[key] });
+    res.push({ id: key, amount: partMap[key].amount, name: partMap[key].name });
   }
   return res;
 }

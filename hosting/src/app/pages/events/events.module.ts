@@ -19,14 +19,13 @@ import { OverviewComponent } from "./overview/overview.component";
 import { CardsModule } from "src/app/shared/cards/cards.module";
 import { DetailsComponent } from "./details/details.component";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
-import { ParticipantChipComponent } from "./details/participant-chip/participant-chip.component";
 import { EditorComponent } from "./editor/editor.component";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MarkdownModule } from "ngx-markdown";
 
 @NgModule({
-  declarations: [OverviewComponent, DetailsComponent, ParticipantChipComponent, EditorComponent],
+  declarations: [OverviewComponent, DetailsComponent, EditorComponent],
   imports: [
     CommonModule,
     FormsModule,

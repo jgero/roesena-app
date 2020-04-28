@@ -39,7 +39,13 @@ export interface appEvent extends appElement {
   startDate: Date;
   endDate: Date;
   deadline: Date | null;
-  participants: { id: string; amount: number }[];
+  participants: Participant[];
+}
+
+export interface Participant {
+  id: string;
+  amount: number;
+  name: string;
 }
 
 export interface appImage extends appElement {
