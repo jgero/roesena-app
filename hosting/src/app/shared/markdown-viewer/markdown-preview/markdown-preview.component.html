@@ -1,0 +1,54 @@
+<h4 class="title">Preview</h4>
+
+<button mat-icon-button (click)="isContentVisible = !isContentVisible" class="info-toggle" [color]="'primary'" type="button">
+  <mat-icon>{{ isContentVisible ? "info" : "cancel" }}</mat-icon>
+</button>
+
+<div *ngIf="isContentVisible; else info" class="markdown content">
+  <app-markdown-viewer [markdownText]="markdownText"></app-markdown-viewer>
+</div>
+
+<ng-template #info>
+  <div class="info content">
+    <h2>Überschriften</h2>
+    <p>
+      # H1 <br />
+      ## H2 <br />
+      ### H3 <br />
+      ...
+    </p>
+    <h2>Formatierung</h2>
+    <p>
+      **dicker Text** <br />
+      *kursiver Text* <br />
+      ~~durchgestrichener Text~~
+    </p>
+    <h2>geordnete Liste</h2>
+    <p>
+      1. erses Item <br />
+      2. zweites Item <br />
+      3. drittes Item
+    </p>
+    <h2>ungeordnete Liste</h2>
+    <p>
+      - erses Item <br />
+      - zweites Item <br />
+      - drittes Item
+    </p>
+    <h2>horizontale Trennlinie</h2>
+    <p>
+      ---
+    </p>
+    <h2>Link</h2>
+    <p>
+      [titel](https://example.com)
+    </p>
+    <h2>Tabelle</h2>
+    <p>
+      | Kopfzelle 1 | Kopfzelle 2 | <br />
+      | ------ | ----------- | <br />
+      | Text | Text | <br />
+      | Text | Text |
+    </p>
+  </div>
+</ng-template>

@@ -19,6 +19,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MarkdownModule } from "ngx-markdown";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MarkdownViewerModule } from "src/app/shared/markdown-viewer/markdown-viewer.module";
 
 @NgModule({
   declarations: [OverviewComponent, EditorComponent, DetailsComponent],
@@ -39,7 +40,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     MatPaginatorModule,
     CardsModule,
     ConvertersModule,
-    MarkdownModule,
+    MarkdownViewerModule,
   ],
 })
 export class ArticlesModule {}

@@ -10,11 +10,7 @@
     <mat-error *ngIf="articleForm.controls.title.invalid"> {{ getErrorMessage(articleForm.controls.title) }} </mat-error>
   </mat-form-field>
 
-  <div
-    class="preview markdown-generated"
-    [style.grid-area]="'preview'"
-    [innerHTML]="articleForm.get('content').value | markdown"
-  ></div>
+  <app-markdown-preview [markdownText]="articleForm.get('content').value" [style.grid-area]="'preview'"></app-markdown-preview>
 
   <mat-form-field [style.grid-area]="'content'">
     <mat-label>Inhalt</mat-label>

@@ -12,7 +12,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTableModule } from "@angular/material/table";
 import { MatChipsModule } from "@angular/material/chips";
 import { CommonComponent } from "./common/common.component";
-import { MarkdownModule } from "ngx-markdown";
+import { MarkdownViewerModule } from "src/app/shared/markdown-viewer/markdown-viewer.module";
 
 @NgModule({
   declarations: [GardenComponent, CommonComponent],
@@ -27,7 +27,7 @@ import { MarkdownModule } from "ngx-markdown";
     MatIconModule,
     MatTableModule,
     MatChipsModule,
-    MarkdownModule,
+    MarkdownViewerModule,
   ],
 })
 export class GroupsModule {}

@@ -7,5 +7,5 @@
 
 <main>
   <app-image-card *ngIf="$imageData | async as image" [image]="image"></app-image-card>
-  <div class="markdown-generated" *ngIf="$textData | async as text" [innerHTML]="text.content | markdown"></div>
+  <app-markdown-viewer *ngIf="$textData | async as text" [markdownText]="text.content"></app-markdown-viewer>
 </main>

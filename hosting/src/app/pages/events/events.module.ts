@@ -22,7 +22,8 @@ import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { EditorComponent } from "./editor/editor.component";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { MarkdownModule } from "ngx-markdown";
+
+import { MarkdownViewerModule } from "src/app/shared/markdown-viewer/markdown-viewer.module";
 
 @NgModule({
   declarations: [OverviewComponent, DetailsComponent, EditorComponent],
@@ -46,7 +47,7 @@ import { MarkdownModule } from "ngx-markdown";
     MatTooltipModule,
     CardsModule,
     ConvertersModule,
-    MarkdownModule,
+    MarkdownViewerModule,
   ],
 })
 export class EventsModule {}

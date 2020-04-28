@@ -15,7 +15,7 @@
     <div>{{ ev.ownerName }}</div>
   </mat-toolbar>
   <main>
-    <div class="markdown-generated" [innerHTML]="ev.description | markdown"></div>
+    <app-markdown-viewer [markdownText]="ev.description"></app-markdown-viewer>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of ev.tags"> {{ tag }} </mat-chip>
     </mat-chip-list>
@@ -25,7 +25,6 @@
       <mat-list-item>
         <div mat-line>Angenommen: {{ getAmountAccumulated(ev) }} Personen</div>
         <mat-chip-list mat-line>
-          <!-- <mat-chip *ngFor="let participant of ev.participants"></mat-chip> -->
           <ng-container *ngFor="let participant of ev.participants">
             <mat-chip [color]="'primary'" selected *ngIf="participant.amount > 0" (click)="onParticipantClick(participant.id)">
               {{ participant.name + " " + participant.amount }}

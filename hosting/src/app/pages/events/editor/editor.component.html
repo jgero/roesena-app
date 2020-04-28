@@ -10,11 +10,7 @@
     <mat-error *ngIf="eventForm.controls.title.invalid"> {{ getErrorMessage(eventForm.controls.title) }} </mat-error>
   </mat-form-field>
 
-  <div
-    class="preview markdown-generated"
-    [style.grid-area]="'preview'"
-    [innerHTML]="eventForm.get('description').value | markdown"
-  ></div>
+  <app-markdown-preview [style.grid-area]="'preview'" [markdownText]="eventForm.get('description').value"></app-markdown-preview>
 
   <mat-form-field class="description" [style.grid-area]="'description'">
     <mat-label>Beschreibung</mat-label>

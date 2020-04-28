@@ -1,0 +1,14 @@
+:host {
+  display: block;
+
+  ::ng-deep table {
+    th {
+      text-align: left;
+      padding: 0 8px;
+    }
+    td {
+      padding: 8px;
+      vertical-align: top;
+    }
+  }
+}

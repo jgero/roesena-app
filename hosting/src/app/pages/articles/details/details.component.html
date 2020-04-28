@@ -11,7 +11,7 @@
     <div>{{ article.ownerName }}</div>
   </mat-toolbar>
   <main>
-    <div class="markdown-generated" [innerHTML]="article.content | markdown"></div>
+    <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of article.tags"> {{ tag }} </mat-chip>
     </mat-chip-list>
