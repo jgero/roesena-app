@@ -1,16 +1,19 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { MarkdownViewerComponent } from './markdown-viewer.component';
+import { MarkdownViewerComponent } from "./markdown-viewer.component";
+import { MarkdownService } from "ngx-markdown";
 
-describe('MarkdownViewerComponent', () => {
+describe("MarkdownViewerComponent", () => {
   let component: MarkdownViewerComponent;
   let fixture: ComponentFixture<MarkdownViewerComponent>;
 
+  const markdownSpy = jasmine.createSpyObj("MarkdownService", ["compile"]);
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MarkdownViewerComponent ]
-    })
-    .compileComponents();
+      declarations: [MarkdownViewerComponent],
+      providers: [{ provide: MarkdownService, useValue: markdownSpy }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +22,7 @@ describe('MarkdownViewerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

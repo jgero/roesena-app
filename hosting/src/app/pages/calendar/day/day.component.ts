@@ -16,6 +16,9 @@ export class DayComponent {
   isPopupVisible = false;
 
   get params(): any {
+    if (!this.calendarCardRef.nativeElement || !document.getElementById("calendar")) {
+      return {};
+    }
     return {
       height: this.calendarCardRef.nativeElement.clientHeight - 12 + "px",
       width: this.calendarCardRef.nativeElement.clientWidth - 12 + "px",
