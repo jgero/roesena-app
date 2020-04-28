@@ -26,7 +26,7 @@
   <mat-list-item>
     <mat-icon mat-list-icon>email</mat-icon>
     <div mat-line>
-      E-Mail: info@roesena.de
+      <a mat-button [color]="'primary'" href="mailto: info@roesena.de">info@roesena.de</a>
     </div>
   </mat-list-item>
   <mat-list-item>
@@ -43,12 +43,14 @@
   <mat-list-item>
     <mat-icon mat-list-icon>code</mat-icon>
     <div mat-line>
-      <a mat-stroked-button [color]="'primary'" href="https://github.com/jgero/roesena-app">GitHub repository</a>
+      <a mat-button [color]="'primary'" href="https://github.com/jgero/roesena-app" target="_blank">GitHub repository</a>
     </div>
   </mat-list-item>
   <mat-list-item>
     <mat-icon mat-list-icon>email</mat-icon>
-    <div mat-line>webmaster@roesena.de</div>
+    <div mat-line>
+      <a mat-button [color]="'primary'" href="mailto: webmaster@roesena.de">webmaster@roesena.de</a>
+    </div>
   </mat-list-item>
   <mat-list-item>
     <mat-icon mat-list-icon>comment</mat-icon>
@@ -62,8 +64,13 @@
       Wollen Sie Mitglied der Faschingsgesellschaft Röhlinger Sechtanarren e.V 1970 werden? <br />
       Einfach die Anmeldung ausfüllen und bei der Vorstandschaft abgeben!
     </div>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>link</mat-icon>
     <div mat-line>
-      <button mat-flat-button [color]="'accent'"><mat-icon>get_app</mat-icon> ANMELDUNG HERUNTERLADEN</button>
+      <a mat-button *ngIf="$applicationURL | async as url" [color]="'primary'" href="{{ url }}" target="_blank"
+        >ANMELDUNG ÖFFNEN</a
+      >
     </div>
   </mat-list-item>
 

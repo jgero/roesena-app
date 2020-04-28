@@ -156,6 +156,19 @@ export class ImageDalService implements paginatedDAL {
       );
   }
 
+  getStaticRscURL(path: string): Observable<string | null> {
+    return this.storage
+      .ref("static")
+      .child(path)
+      .getDownloadURL()
+      .pipe(
+        catchError((err) => {
+          this.snackbar.open(`URL konnte nicht geladen werden: ${err}`, "OK");
+          return of(null);
+        })
+      );
+  }
+
   insert(img: appImage, file: string): Observable<string | null> {
     let id: string;
     return from(this.firestore.collection<storeableImage>("images").add(toStorableImage(img))).pipe(
