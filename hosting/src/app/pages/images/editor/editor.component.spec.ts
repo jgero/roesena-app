@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { EditorComponent } from "./editor.component";
-import { ImageDalStub } from "src/app/testing/stubs/image-dal";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { ActivatedRouteStub } from "src/app/testing/stubs/activated-route";
+import { ImageDalStub } from "src/app/testing";
+import { AuthServiceStub } from "src/app/testing";
+import { ActivatedRouteStub } from "src/app/testing";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";

@@ -7,40 +7,23 @@ import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { tap } from "rxjs/operators";
+import { Details } from "src/app/utils/ui-abstractions";
 
 @Component({
   selector: "app-details",
   templateUrl: "./details.component.html",
   styleUrls: ["./details.component.scss"],
 })
-export class DetailsComponent {
+export class DetailsComponent extends Details {
   $data: Observable<appEvent>;
-  $persons: Observable<appPerson>;
 
-  constructor(
-    public personDAO: PersonDalService,
-    eventDAO: EventDALService,
-    route: ActivatedRoute,
-    public auth: AuthService,
-    public router: Router
-  ) {
-    this.$data = eventDAO.getById(route.snapshot.paramMap.get("id")).pipe(
-      tap((event) => {
-        if (!event) {
-          this.router.navigate(["events", "overview"]);
-        }
-      })
-    );
-  }
-
-  canEdit(event: appEvent): boolean {
-    const user = this.auth.$user.getValue();
-    return user && (user.id === event.ownerId || user.groups.includes("admin"));
+  constructor(eventDAO: EventDALService, route: ActivatedRoute, public auth: AuthService, public router: Router) {
+    super("events", route, router, eventDAO, auth);
   }
 
   onParticipantClick(id: string) {
     if (id === this.auth.$user.getValue().id) {
-      this.router.navigate(["/auth/my-events"]);
+      this.router.navigate(["auth", "my-events"]);
     }
   }
 

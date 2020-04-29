@@ -17,6 +17,7 @@ export interface appPerson {
 }
 
 export interface appElementDAL {
+  getById(id: string): Observable<appElement | null>;
   getByTags(tags: string[], limit?: number): Observable<appElement[]>;
   getAll(limit?: number): Observable<appElement[]>;
 }

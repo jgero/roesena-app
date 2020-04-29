@@ -11,13 +11,12 @@ import { RootComponent } from "./root.component";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { BreakpointObserverStub } from "src/app/testing/stubs/breakpoint-observer";
-import { MatSnackBarStub } from "src/app/testing/stubs/snackbar";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { EventDalServiceStub } from "src/app/testing/stubs/event-dal";
+import { BreakpointObserverStub } from "src/app/testing";
+import { AuthServiceStub } from "src/app/testing";
+import { EventDalStub } from "src/app/testing";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RouterTestingModule } from "@angular/router/testing";
-import { EmptyComponent } from "src/app/testing/mocks/empty.component";
+import { EmptyComponent } from "src/app/testing";
 import { MatBadgeModule } from "@angular/material/badge";
 import { Observable, Subscription } from "rxjs";
 
@@ -26,9 +25,8 @@ describe("RootComponent", () => {
   let fixture: ComponentFixture<RootComponent>;
   let sub: Subscription;
 
-  const eventDALService = new EventDalServiceStub();
+  const eventDALService = new EventDalStub();
   const authService = new AuthServiceStub();
-  // const matSnackBar = new MatSnackBarStub();
   const matSnackBar = jasmine.createSpyObj("MatSnackBar", {
     open: { onAction: () => new Observable<void>((obs) => obs.complete()) },
   });
@@ -71,6 +69,11 @@ describe("RootComponent", () => {
     fixture = TestBed.createComponent(RootComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    matSnackBar.open.calls.reset();
+  });
+
+  afterEach(() => {
+    matSnackBar.open.calls.reset();
   });
 
   it("should compile", () => {

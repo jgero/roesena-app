@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { GroupManagerComponent } from "./group-manager.component";
-import { PersonDalStub } from "src/app/testing/stubs/person-dal";
+import { PersonDalStub } from "src/app/testing";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";

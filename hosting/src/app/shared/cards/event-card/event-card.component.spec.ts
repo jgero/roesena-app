@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { EventCardComponent } from "./event-card.component";
 import { AuthService } from "src/app/services/auth.service";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
+import { AuthServiceStub } from "src/app/testing";
 import { ConvertersModule } from "../../converters/converters.module";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";

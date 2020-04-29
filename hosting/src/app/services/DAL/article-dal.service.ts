@@ -35,7 +35,7 @@ export class ArticleDalService implements paginatedDAL {
   private pageLast: QueryDocumentSnapshot<storeableArticle>;
   constructor(private firestore: AngularFirestore, private snackbar: MatSnackBar) {}
 
-  getArticleById(id: string): Observable<appArticle | null> {
+  getById(id: string): Observable<appArticle | null> {
     return this.firestore
       .collection<storeableArticle>("articles")
       .doc<storeableArticle>(id)

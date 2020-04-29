@@ -2,8 +2,8 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ImageCardComponent } from "./image-card.component";
 import { AuthService } from "src/app/services/auth.service";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { ImageDalStub } from "src/app/testing/stubs/image-dal";
+import { AuthServiceStub } from "src/app/testing";
+import { ImageDalStub } from "src/app/testing";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";

@@ -1,8 +1,18 @@
 import { ToLocalDateStringPipe } from "./to-local-date-string.pipe";
 
-xdescribe("ToLocalDateStringPipe", () => {
+describe("ToLocalDateStringPipe", () => {
+  let pipe: ToLocalDateStringPipe;
+
+  beforeEach(() => {
+    pipe = new ToLocalDateStringPipe();
+  });
+
   it("create an instance", () => {
-    const pipe = new ToLocalDateStringPipe();
-    expect(pipe).toBeTruthy();
+    const p = new ToLocalDateStringPipe();
+    expect(p).toBeTruthy();
+  });
+
+  it("should transform a date object into a string", () => {
+    expect(pipe.transform(new Date(2020, 5, 1))).toEqual("01.06.2020");
   });
 });

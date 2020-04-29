@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { OverviewComponent } from "./overview.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { ImageDalStub } from "src/app/testing/stubs/image-dal";
-import { ActivatedRouteStub } from "src/app/testing/stubs/activated-route";
+import { AuthServiceStub } from "src/app/testing";
+import { ImageDalStub } from "src/app/testing";
+import { ActivatedRouteStub } from "src/app/testing";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";

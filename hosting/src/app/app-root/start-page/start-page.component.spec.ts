@@ -2,29 +2,25 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { StartPageComponent } from "./start-page.component";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { EventDalServiceStub } from "src/app/testing/stubs/event-dal";
-import { ArticleDalStub } from "src/app/testing/stubs/article-dal";
+import { EventDalStub } from "src/app/testing";
+import { ArticleDalStub } from "src/app/testing";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { MatButtonModule } from "@angular/material/button";
-import { Component } from "@angular/core";
 import { RouterTestingModule } from "@angular/router/testing";
+import { ArticleCardStub } from "src/app/testing";
+import { EventCardStub } from "src/app/testing";
 
-@Component({ selector: "app-article-card", template: "" })
-class a {}
-@Component({ selector: "app-event-card", template: "" })
-class b {}
-
-xdescribe("StartPageComponent", () => {
+describe("StartPageComponent", () => {
   let component: StartPageComponent;
   let fixture: ComponentFixture<StartPageComponent>;
 
-  const eventDalStub = new EventDalServiceStub();
+  const eventDalStub = new EventDalStub();
   const articleDalStub = new ArticleDalStub();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatButtonModule, RouterTestingModule],
-      declarations: [StartPageComponent, a, b],
+      declarations: [StartPageComponent, ArticleCardStub, EventCardStub],
       providers: [
         { provide: EventDALService, useValue: eventDalStub },
         { provide: ArticleDalService, useValue: articleDalStub },

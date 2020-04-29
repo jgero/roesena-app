@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ResetComponent } from "./reset.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { ActivatedRouteStub } from "src/app/testing/stubs/activated-route";
+import { AuthServiceStub } from "src/app/testing";
+import { ActivatedRouteStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";

@@ -1,4 +1,4 @@
-<ng-container *ngIf="$article | async as article; else loading">
+<ng-container *ngIf="$data | async as article; else loading">
   <mat-toolbar [color]="'accent'">
     <div>{{ article.title }}</div>
     <div class="spacer"></div>

@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { LoginComponent } from "./login.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { LocationStub } from "src/app/testing/stubs/location";
+import { AuthServiceStub } from "src/app/testing";
+import { LocationStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";

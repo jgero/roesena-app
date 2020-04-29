@@ -1,8 +1,9 @@
 import { appEvent } from "src/app/utils/interfaces";
 import { of, Observable } from "rxjs";
 
-export class EventDalServiceStub {
+export class EventDalStub {
   public dataArray: appEvent[] = [];
+  public data: appEvent | null;
   constructor() {}
 
   getRespondables(): Observable<appEvent[]> {
@@ -18,6 +19,6 @@ export class EventDalServiceStub {
   }
 
   getById(id: string): Observable<appEvent | null> {
-    return of(null);
+    return of(this.data);
   }
 }

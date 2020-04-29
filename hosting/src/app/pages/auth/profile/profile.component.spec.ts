@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ProfileComponent } from "./profile.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
+import { AuthServiceStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
 
 xdescribe("ProfileComponent", () => {

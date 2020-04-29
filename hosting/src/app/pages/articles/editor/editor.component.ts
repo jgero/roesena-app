@@ -24,7 +24,7 @@ export class EditorComponent implements OnDestroy {
   constructor(private articleDAO: ArticleDalService, route: ActivatedRoute, private auth: AuthService, private router: Router) {
     const id = route.snapshot.paramMap.get("id");
     this.$data = (id
-      ? this.articleDAO.getArticleById(id).pipe(
+      ? this.articleDAO.getById(id).pipe(
           tap((article) => {
             if (!article) {
               this.router.navigate(["articles", "overview"]);

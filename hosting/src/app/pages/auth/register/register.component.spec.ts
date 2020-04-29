@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { RegisterComponent } from "./register.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
+import { AuthServiceStub } from "src/app/testing";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { MatToolbarModule } from "@angular/material/toolbar";

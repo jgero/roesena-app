@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ArticleCardComponent } from "./article-card.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
+import { AuthServiceStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
 import { ToLocalDateStringPipe } from "../../converters/to-local-date/to-local-date-string.pipe";
 import { ConvertersModule } from "../../converters/converters.module";

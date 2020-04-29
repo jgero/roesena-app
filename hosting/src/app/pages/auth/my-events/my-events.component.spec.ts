@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { MyEventsComponent } from "./my-events.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { EventDalServiceStub } from "src/app/testing/stubs/event-dal";
-import { PersonDalStub } from "src/app/testing/stubs/person-dal";
+import { AuthServiceStub } from "src/app/testing";
+import { EventDalStub } from "src/app/testing";
+import { PersonDalStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
@@ -18,7 +18,7 @@ xdescribe("MyEventsComponent", () => {
   let fixture: ComponentFixture<MyEventsComponent>;
 
   const authStub = new AuthServiceStub();
-  const eventStub = new EventDalServiceStub();
+  const eventStub = new EventDalStub();
   const personStub = new PersonDalStub();
 
   beforeEach(async(() => {

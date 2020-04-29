@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { AboutComponent } from "./about.component";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
-import { ImageDalStub } from "src/app/testing/stubs/image-dal";
+import { ImageDalStub } from "src/app/testing";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatListModule } from "@angular/material/list";
 import { MatIconModule } from "@angular/material/icon";

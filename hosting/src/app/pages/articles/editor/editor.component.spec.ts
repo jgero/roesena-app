@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { EditorComponent } from "./editor.component";
-import { AuthServiceStub } from "src/app/testing/stubs/auth";
-import { ActivatedRouteStub } from "src/app/testing/stubs/activated-route";
-import { ArticleDalStub } from "src/app/testing/stubs/article-dal";
+import { AuthServiceStub, MarkdownPreviewStub } from "src/app/testing";
+import { ActivatedRouteStub } from "src/app/testing";
+import { ArticleDalStub } from "src/app/testing";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
@@ -16,9 +16,6 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
-
-@Component({ selector: "app-markdown-preview", template: "" })
-class MarkdownPreviewComponentStub {}
 
 xdescribe("EditorComponent", () => {
   let component: EditorComponent;
@@ -42,7 +39,7 @@ xdescribe("EditorComponent", () => {
         MatChipsModule,
         MatProgressBarModule,
       ],
-      declarations: [EditorComponent, MarkdownPreviewComponentStub],
+      declarations: [EditorComponent, MarkdownPreviewStub],
       providers: [
         { provide: ArticleDalService, useValue: articleStub },
         { provide: Router, useValue: routerSpy },

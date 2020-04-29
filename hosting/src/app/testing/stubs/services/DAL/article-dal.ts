@@ -1,12 +1,12 @@
 import { of, Observable } from "rxjs";
-import { appArticle } from "src/app/utils/interfaces";
+import { appArticle, appElementDAL } from "src/app/utils/interfaces";
 import { Direction } from "src/app/utils/enums";
 
-export class ArticleDalStub {
+export class ArticleDalStub implements appElementDAL {
   public dataArray: appArticle[] = [];
   public data: appArticle = null;
   constructor() {}
-  getArticleById(id: string): Observable<appArticle | null> {
+  getById(id: string): Observable<appArticle | null> {
     return of(this.data);
   }
 
