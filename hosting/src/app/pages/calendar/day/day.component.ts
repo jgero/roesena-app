@@ -1,6 +1,6 @@
 import { Component, Input, ElementRef } from "@angular/core";
 import { appEvent } from "src/app/utils/interfaces";
-import { expandCollapseAnimation } from "./expand-collapse.animation";
+import { expandCollapseAnimation } from "src/app/utils/animations";
 
 @Component({
   selector: "app-day",

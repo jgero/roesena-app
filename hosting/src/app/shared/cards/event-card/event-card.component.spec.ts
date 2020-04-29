@@ -1,16 +1,17 @@
+import { RouterTestingModule } from "@angular/router/testing";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 import { EventCardComponent } from "./event-card.component";
 import { AuthService } from "src/app/services/auth.service";
 import { AuthServiceStub } from "src/app/testing";
 import { ConvertersModule } from "../../converters/converters.module";
-import { MatCardModule } from "@angular/material/card";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { RouterTestingModule } from "@angular/router/testing";
 
-xdescribe("EventCardComponent", () => {
+describe("EventCardComponent", () => {
   let component: EventCardComponent;
   let fixture: ComponentFixture<EventCardComponent>;
 
@@ -27,7 +28,7 @@ xdescribe("EventCardComponent", () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EventCardComponent);
     component = fixture.componentInstance;
-    component.event = {
+    component.data = {
       id: "asdf",
       title: "test",
       description: "asdf",

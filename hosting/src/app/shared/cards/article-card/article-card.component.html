@@ -1,17 +1,17 @@
 <mat-card>
-  <mat-card-title> {{ article.title }} </mat-card-title>
+  <mat-card-title> {{ data.title }} </mat-card-title>
   <mat-card-subtitle>
-    <div>{{ article.created | toLocalDateString }}</div>
-    <div>{{ article.ownerName }}</div>
+    <div>{{ data.created | toLocalDateString }}</div>
+    <div>{{ data.ownerName }}</div>
   </mat-card-subtitle>
   <mat-card-content>
-    <div class="content-preview">{{ article.content }}</div>
+    <div class="content-preview">{{ data.content }}</div>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of article.tags" [routerLink]="'/articles/overview/' + tag">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of data.tags" [routerLink]="'/articles/overview/' + tag">{{ tag }}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
   <mat-card-actions>
-    <a mat-button [routerLink]="'/articles/details/' + article.id">MEHR</a>
-    <a mat-icon-button *ngIf="canEdit()" [routerLink]="'/articles/edit/' + article.id"><mat-icon>edit</mat-icon></a>
+    <a mat-button [routerLink]="'/articles/details/' + data.id">MEHR</a>
+    <a mat-icon-button *ngIf="canEdit()" [routerLink]="'/articles/edit/' + data.id"><mat-icon>edit</mat-icon></a>
   </mat-card-actions>
 </mat-card>

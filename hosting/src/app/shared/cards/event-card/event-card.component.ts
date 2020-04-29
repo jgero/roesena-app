@@ -2,21 +2,18 @@ import { Component, Input } from "@angular/core";
 
 import { appEvent } from "../../../utils/interfaces";
 import { AuthService } from "src/app/services/auth.service";
+import { Card } from "src/app/utils/ui-abstractions";
 
 @Component({
   selector: "app-event-card",
   templateUrl: "./event-card.component.html",
   styleUrls: ["./event-card.component.scss"],
 })
-export class EventCardComponent {
+export class EventCardComponent extends Card {
   @Input()
-  public event: appEvent;
+  public data: appEvent;
 
-  constructor(public auth: AuthService) {}
-
-  canEdit(): boolean {
-    const user = this.auth.$user.getValue();
-    // owner and admins can edit
-    return user && (user.id === this.event.ownerId || user.groups.includes("admin"));
+  constructor(auth: AuthService) {
+    super(auth);
   }
 }

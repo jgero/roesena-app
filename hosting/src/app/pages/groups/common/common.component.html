@@ -6,6 +6,6 @@
 </mat-toolbar>
 
 <main>
-  <app-image-card *ngIf="$imageData | async as image" [image]="image"></app-image-card>
+  <app-image-card *ngIf="$imageData | async as image" [data]="image"></app-image-card>
   <app-markdown-viewer *ngIf="$textData | async as text" [markdownText]="text.content"></app-markdown-viewer>
 </main>

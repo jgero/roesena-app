@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-
-import { GardenComponent } from "./garden.component";
 import { RouterTestingModule } from "@angular/router/testing";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { MatTabsModule } from "@angular/material/tabs";
 
-xdescribe("GardenComponent", () => {
+import { GardenComponent } from "./garden.component";
+
+describe("GardenComponent", () => {
   let component: GardenComponent;
   let fixture: ComponentFixture<GardenComponent>;
 

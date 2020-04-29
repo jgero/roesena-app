@@ -28,7 +28,7 @@
 
 <mat-grid-list *ngIf="$data | async as images; else loading" [cols]="cols" [rowHeight]="'450px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let image of images">
-    <app-image-card [image]="image"></app-image-card>
+    <app-image-card [data]="image"></app-image-card>
   </mat-grid-tile>
 </mat-grid-list>
 <mat-paginator

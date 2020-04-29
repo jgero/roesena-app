@@ -2,11 +2,11 @@
   <img mat-card-image [src]="$src | async" />
   <mat-card-content>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of image.tags" [routerLink]="'/images/overview/' + tag">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of data.tags" [routerLink]="'/images/overview/' + tag">{{ tag }}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
   <mat-card-actions>
-    <a mat-button [routerLink]="'/images/details/' + image.id">MEHR</a>
-    <a mat-icon-button *ngIf="canEdit()" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>
+    <a mat-button [routerLink]="'/images/details/' + data.id">MEHR</a>
+    <a mat-icon-button *ngIf="canEdit()" [routerLink]="'/images/edit/' + data.id"><mat-icon>edit</mat-icon></a>
   </mat-card-actions>
 </mat-card>

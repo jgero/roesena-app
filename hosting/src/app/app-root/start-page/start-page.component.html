@@ -1,9 +1,9 @@
 <div class="cardContainer">
   <a mat-flat-button [color]="'accent'" [routerLink]="'/events/overview'">NÄCHSTE EVENTS</a>
-  <app-event-card *ngFor="let event of eventCards | async" [event]="event"></app-event-card>
+  <app-event-card *ngFor="let event of eventCards | async" [data]="event"></app-event-card>
 </div>
 
 <div class="cardContainer">
   <a mat-flat-button [color]="'accent'" [routerLink]="'/articles/overview'">AKTUELLSTE ARTIKEL</a>
-  <app-article-card *ngFor="let article of articleCards | async" [article]="article"></app-article-card>
+  <app-article-card *ngFor="let article of articleCards | async" [data]="article"></app-article-card>
 </div>

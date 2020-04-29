@@ -1,28 +1,26 @@
-import { Component, OnInit, Input, HostBinding } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
+import { Observable } from "rxjs";
+
 import { appImage } from "src/app/utils/interfaces";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
-import { Observable } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
+import { Card } from "src/app/utils/ui-abstractions";
 
 @Component({
   selector: "app-image-card",
   templateUrl: "./image-card.component.html",
   styleUrls: ["./image-card.component.scss"],
 })
-export class ImageCardComponent implements OnInit {
+export class ImageCardComponent extends Card implements OnInit {
   @Input()
-  image: appImage;
+  data: appImage;
   $src: Observable<string | null>;
 
-  constructor(private imageDAO: ImageDalService, public auth: AuthService) {}
-
-  ngOnInit(): void {
-    this.$src = this.imageDAO.getDownloadURL(this.image.id);
+  constructor(private imageDAO: ImageDalService, auth: AuthService) {
+    super(auth);
   }
 
-  canEdit(): boolean {
-    const user = this.auth.$user.getValue();
-    // owner and admins can edit
-    return user && (user.id === this.image.ownerId || user.groups.includes("admin"));
+  ngOnInit(): void {
+    this.$src = this.imageDAO.getDownloadURL(this.data.id);
   }
 }
