@@ -19,6 +19,5 @@ export class OverviewComponent extends SearchableOverview {
 
   constructor(evDAO: EventDALService, auth: AuthService, route: ActivatedRoute, router: Router) {
     super("events", evDAO, route, router, auth);
-    super.initDataStream();
   }
 }

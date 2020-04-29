@@ -19,6 +19,5 @@ export class OverviewComponent extends PaginatedOverview {
 
   constructor(auth: AuthService, articleDAO: ArticleDalService, route: ActivatedRoute, router: Router) {
     super("articles", articleDAO, route, router, auth);
-    super.initDataStream();
   }
 }

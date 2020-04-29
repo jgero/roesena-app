@@ -1,10 +1,11 @@
 import { of, Observable } from "rxjs";
-import { appArticle, appElementDAL } from "src/app/utils/interfaces";
+import { appArticle, paginatedDAL } from "src/app/utils/interfaces";
 import { Direction } from "src/app/utils/enums";
 
-export class ArticleDalStub implements appElementDAL {
+export class ArticleDalStub implements paginatedDAL {
   public dataArray: appArticle[] = [];
   public data: appArticle = null;
+  public length: number = 0;
   constructor() {}
   getById(id: string): Observable<appArticle | null> {
     return of(this.data);
@@ -15,7 +16,7 @@ export class ArticleDalStub implements appElementDAL {
   }
 
   getDocCount(): Observable<number> {
-    return of(0);
+    return of(this.length);
   }
 
   getPage(limit: number, d: Direction): Observable<appArticle[]> {

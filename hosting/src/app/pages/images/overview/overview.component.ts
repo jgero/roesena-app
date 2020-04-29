@@ -18,6 +18,5 @@ export class OverviewComponent extends PaginatedOverview {
 
   constructor(imageDAO: ImageDalService, auth: AuthService, route: ActivatedRoute, router: Router) {
     super("images", imageDAO, route, router, auth);
-    super.initDataStream();
   }
 }
