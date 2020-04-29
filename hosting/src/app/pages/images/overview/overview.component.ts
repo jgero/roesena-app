@@ -5,7 +5,7 @@ import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { cardFlyIn } from "src/app/utils/animations";
-import { PaginatedOverview } from "src/app/utils/abstract-overview";
+import { PaginatedOverview } from "src/app/utils/ui-abstractions";
 
 @Component({
   selector: "app-overview",
@@ -16,14 +16,8 @@ import { PaginatedOverview } from "src/app/utils/abstract-overview";
 export class OverviewComponent extends PaginatedOverview {
   $data: Observable<appImage[]>;
 
-  constructor(imageDAO: ImageDalService, private auth: AuthService, route: ActivatedRoute, router: Router) {
-    super("images", imageDAO, route, router);
+  constructor(imageDAO: ImageDalService, auth: AuthService, route: ActivatedRoute, router: Router) {
+    super("images", imageDAO, route, router, auth);
     super.initDataStream();
-  }
-
-  canCreate(): boolean {
-    const user = this.auth.$user.getValue();
-    // owner and admins can edit
-    return user && (user.groups.includes("Autor") || user.groups.includes("admin"));
   }
 }

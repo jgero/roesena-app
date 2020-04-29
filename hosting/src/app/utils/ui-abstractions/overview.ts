@@ -3,8 +3,9 @@ import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription, Observable } from "rxjs";
 
-import { appElement, appElementDAL, paginatedDAL } from "./interfaces";
-import { Direction } from "./enums";
+import { appElement, appElementDAL, paginatedDAL } from "../interfaces";
+import { Direction } from "../enums";
+import { AuthService } from "src/app/services/auth.service";
 
 abstract class Overview {
   $data: Observable<appElement[]>;
@@ -12,10 +13,16 @@ abstract class Overview {
     return Math.ceil(window.innerWidth / 500);
   }
 
-  constructor(public DAO: appElementDAL) {}
+  constructor(public DAO: appElementDAL, public auth: AuthService) {}
 
   initDataStream() {
     this.$data = this.DAO.getAll();
+  }
+
+  canCreate(): boolean {
+    const user = this.auth.$user.getValue();
+    // owner and admins can edit
+    return user && (user.groups.includes("Autor") || user.groups.includes("admin"));
   }
 }
 
@@ -25,8 +32,14 @@ export abstract class SearchableOverview extends Overview implements OnDestroy {
   get searchTags(): string[] {
     return this.searchString.split(",").map((tag) => tag.trim());
   }
-  constructor(private routeBase: string, DAO: appElementDAL, public route: ActivatedRoute, public router: Router) {
-    super(DAO);
+  constructor(
+    private routeBase: string,
+    DAO: appElementDAL,
+    public route: ActivatedRoute,
+    public router: Router,
+    auth: AuthService
+  ) {
+    super(DAO, auth);
   }
 
   initDataStream() {
@@ -66,8 +79,8 @@ export abstract class PaginatedOverview extends SearchableOverview {
   }
   pageIndex: number = 0;
 
-  constructor(routeBase: string, public DAO: paginatedDAL, route: ActivatedRoute, router: Router) {
-    super(routeBase, DAO, route, router);
+  constructor(routeBase: string, public DAO: paginatedDAL, route: ActivatedRoute, router: Router, auth: AuthService) {
+    super(routeBase, DAO, route, router, auth);
   }
 
   initDataStream() {

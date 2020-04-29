@@ -1,12 +1,17 @@
+import { FormsModule } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatInputModule } from "@angular/material/input";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatGridListModule } from "@angular/material/grid-list";
 
 import { OverviewComponent } from "./overview.component";
-import { AuthServiceStub } from "src/app/testing";
-import { ImageDalStub } from "src/app/testing";
-import { ActivatedRouteStub } from "src/app/testing";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { AuthServiceStub, ImageCardStub, ActivatedRouteStub, ImageDalStub } from "src/app/testing";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
-import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 
 xdescribe("OverviewComponent", () => {
@@ -20,8 +25,16 @@ xdescribe("OverviewComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [OverviewComponent],
+      imports: [
+        NoopAnimationsModule,
+        FormsModule,
+        MatToolbarModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatGridListModule,
+      ],
+      declarations: [OverviewComponent, ImageCardStub],
       providers: [
         { provide: ImageDalService, useValue: imageStub },
         { provide: Router, useValue: routerSpy },

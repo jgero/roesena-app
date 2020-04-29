@@ -1,15 +1,21 @@
+import { FormsModule } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { OverviewComponent } from "./overview.component";
-import { EventDalStub } from "src/app/testing";
-import { AuthServiceStub } from "src/app/testing";
-import { ActivatedRouteStub } from "src/app/testing";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { AuthService } from "src/app/services/auth.service";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
-xdescribe("OverviewComponent", () => {
+import { OverviewComponent } from "./overview.component";
+import { AuthService } from "src/app/services/auth.service";
+import { EventDALService } from "src/app/services/DAL/event-dal.service";
+import { EventDalStub, EventCardStub, AuthServiceStub, ActivatedRouteStub } from "src/app/testing";
+
+describe("OverviewComponent", () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
 
@@ -20,8 +26,17 @@ xdescribe("OverviewComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [OverviewComponent],
+      imports: [
+        FormsModule,
+        NoopAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatGridListModule,
+        MatProgressBarModule,
+      ],
+      declarations: [OverviewComponent, EventCardStub],
       providers: [
         { provide: EventDALService, useValue: eventStub },
         { provide: Router, useValue: routerSpy },

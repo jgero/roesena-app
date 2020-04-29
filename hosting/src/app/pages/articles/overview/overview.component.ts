@@ -6,7 +6,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { cardFlyIn } from "src/app/utils/animations";
 import { appArticle } from "src/app/utils/interfaces";
-import { PaginatedOverview } from "src/app/utils/abstract-overview";
+import { PaginatedOverview } from "src/app/utils/ui-abstractions";
 
 @Component({
   selector: "app-overview",
@@ -17,14 +17,8 @@ import { PaginatedOverview } from "src/app/utils/abstract-overview";
 export class OverviewComponent extends PaginatedOverview {
   $data: Observable<appArticle[]>;
 
-  constructor(private auth: AuthService, articleDAO: ArticleDalService, route: ActivatedRoute, router: Router) {
-    super("articles", articleDAO, route, router);
+  constructor(auth: AuthService, articleDAO: ArticleDalService, route: ActivatedRoute, router: Router) {
+    super("articles", articleDAO, route, router, auth);
     super.initDataStream();
-  }
-
-  canCreate(): boolean {
-    const user = this.auth.$user.getValue();
-    // owner and admins can edit
-    return user && (user.groups.includes("Autor") || user.groups.includes("admin"));
   }
 }
