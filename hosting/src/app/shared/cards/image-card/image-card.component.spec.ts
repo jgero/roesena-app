@@ -11,7 +11,7 @@ import { ImageCardComponent } from "./image-card.component";
 import { AuthService } from "src/app/services/auth.service";
 import { AuthServiceStub, ImageDalStub } from "src/app/testing";
 
-xdescribe("ImageCardComponent", () => {
+describe("ImageCardComponent", () => {
   let component: ImageCardComponent;
   let fixture: ComponentFixture<ImageCardComponent>;
 

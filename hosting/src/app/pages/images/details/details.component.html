@@ -1,11 +1,11 @@
-<ng-container *ngIf="$image | async as image; else loading">
+<ng-container *ngIf="$data | async as image; else loading">
   <mat-toolbar [color]="'accent'">
     <div ngPreserveWhitespaces>{{ image.tags?.join(", ") }} - {{ image.ownerName }}</div>
     <div class="spacer"></div>
     <a mat-icon-button [routerLink]="'/images/overview'"><mat-icon>apps</mat-icon></a>
     <a mat-icon-button *ngIf="canEdit(image)" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>
   </mat-toolbar>
-  <img [attr.src]="image.url" alt="Bild Detailansicht" />
+  <img [attr.src]="$url | async" alt="Bild Detailansicht" />
 </ng-container>
 <ng-template #loading>
   <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>

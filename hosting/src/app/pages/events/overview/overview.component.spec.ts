@@ -15,7 +15,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { EventDalStub, EventCardStub, AuthServiceStub, ActivatedRouteStub } from "src/app/testing";
 
-describe("OverviewComponent", () => {
+describe("Events-OverviewComponent", () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
 

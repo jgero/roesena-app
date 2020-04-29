@@ -17,7 +17,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
 
-xdescribe("EditorComponent", () => {
+xdescribe("Articles-EditorComponent", () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
 

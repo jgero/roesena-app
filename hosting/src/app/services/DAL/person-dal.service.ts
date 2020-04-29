@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, ChangeDetectorRef, NgZone } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AngularFireFunctions } from "@angular/fire/functions";
 import {
@@ -30,7 +30,12 @@ interface storeablePerson {
 export class PersonDalService {
   private pageFirst: QueryDocumentSnapshot<storeablePerson>;
   private pageLast: QueryDocumentSnapshot<storeablePerson>;
-  constructor(private firestore: AngularFirestore, private fns: AngularFireFunctions, private snackbar: MatSnackBar) {}
+  constructor(
+    private firestore: AngularFirestore,
+    private fns: AngularFireFunctions,
+    private snackbar: MatSnackBar,
+    private ngZone: NgZone
+  ) {}
 
   getPersonById(id: string): Observable<appPerson | null> {
     return this.firestore
@@ -129,7 +134,12 @@ export class PersonDalService {
       .pipe(
         map(() => true),
         tap(() => {
-          this.snackbar.open("Gespeichert!", "OK", { duration: 2000 });
+          // this callback is outside of the angular zone, because of that the ngZone stuff is needed to align the snackbar correctly
+          this.ngZone.run(() => {
+            setTimeout(() => {
+              this.snackbar.open("Gespeichert!", "OK", { duration: 2000 });
+            }, 0);
+          });
         }),
         catchError((err) => {
           this.snackbar.open(`Fehler beim Speichern der Anzahl, wahrscheinlich ist die Deadline vorbei: ${err}`, "OK");

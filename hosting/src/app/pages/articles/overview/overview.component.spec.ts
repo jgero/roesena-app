@@ -16,7 +16,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { AuthServiceStub, ArticleCardStub, ActivatedRouteStub, ArticleDalStub } from "src/app/testing";
 
-describe("OverviewComponent", () => {
+describe("Articles-OverviewComponent", () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
 

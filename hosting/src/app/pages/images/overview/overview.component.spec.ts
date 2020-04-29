@@ -13,8 +13,9 @@ import { OverviewComponent } from "./overview.component";
 import { AuthServiceStub, ImageCardStub, ActivatedRouteStub, ImageDalStub } from "src/app/testing";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { AuthService } from "src/app/services/auth.service";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
-xdescribe("OverviewComponent", () => {
+describe("Images-OverviewComponent", () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
 
@@ -33,6 +34,7 @@ xdescribe("OverviewComponent", () => {
         MatButtonModule,
         MatIconModule,
         MatGridListModule,
+        MatPaginatorModule,
       ],
       declarations: [OverviewComponent, ImageCardStub],
       providers: [

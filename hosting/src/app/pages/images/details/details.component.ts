@@ -5,33 +5,22 @@ import { appImage } from "src/app/utils/interfaces";
 import { Observable, zip } from "rxjs";
 import { switchMap, map, tap } from "rxjs/operators";
 import { AuthService } from "src/app/services/auth.service";
-
-interface appImageWithUrl extends appImage {
-  url: string;
-}
+import { Details } from "src/app/utils/ui-abstractions";
 
 @Component({
   selector: "app-details",
   templateUrl: "./details.component.html",
   styleUrls: ["./details.component.scss"],
 })
-export class DetailsComponent {
-  $image: Observable<appImageWithUrl>;
-  constructor(route: ActivatedRoute, imageDAO: ImageDalService, router: Router, private auth: AuthService) {
-    this.$image = zip(
-      imageDAO.getById(route.snapshot.paramMap.get("id")).pipe(
-        tap((event) => {
-          if (!event) {
-            router.navigate(["images", "overview"]);
-          }
-        })
-      ),
-      imageDAO.getDownloadURL(route.snapshot.paramMap.get("id"))
-    ).pipe(map((values) => ({ ...values[0], url: values[1] })));
+export class DetailsComponent extends Details implements OnInit {
+  $data: Observable<appImage>;
+  $url: Observable<string>;
+  constructor(public route: ActivatedRoute, public imageDAO: ImageDalService, router: Router, auth: AuthService) {
+    super("images", route, router, imageDAO, auth);
   }
 
-  canEdit(image: appImage): boolean {
-    const user = this.auth.$user.getValue();
-    return user && (user.id === image.ownerId || user.groups.includes("admin"));
+  ngOnInit() {
+    this.$url = this.imageDAO.getDownloadURL(this.route.snapshot.paramMap.get("id"));
+    super.ngOnInit();
   }
 }

@@ -13,9 +13,9 @@ import { ConvertersModule } from "src/app/shared/converters/converters.module";
 
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { AuthService } from "src/app/services/auth.service";
-import { ActivatedRouteStub, EmptyComponent, MarkdownViewerStub, ArticleDalStub, AuthServiceStub } from "src/app/testing";
+import { ActivatedRouteStub, MarkdownViewerStub, ArticleDalStub, AuthServiceStub } from "src/app/testing";
 
-describe("DetailsComponent", () => {
+describe("Articles-DetailsComponent", () => {
   let component: DetailsComponent;
   let fixture: ComponentFixture<DetailsComponent>;
 

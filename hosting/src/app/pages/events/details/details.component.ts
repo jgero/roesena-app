@@ -2,11 +2,9 @@ import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable } from "rxjs";
 
-import { appEvent, appPerson } from "src/app/utils/interfaces";
+import { appEvent } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { AuthService } from "src/app/services/auth.service";
-import { tap } from "rxjs/operators";
 import { Details } from "src/app/utils/ui-abstractions";
 
 @Component({
