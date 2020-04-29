@@ -42,7 +42,7 @@ export class RootComponent implements OnInit {
       // only keep the amount of events
       map((vals) => (vals.length > 0 ? vals.length : null)),
       tap((unresponded) => {
-        if (unresponded) {
+        if (unresponded !== null) {
           this.snackbar
             .open(`Unbeantwortete Termine: ${unresponded}`, "ANTWORTEN")
             .onAction()

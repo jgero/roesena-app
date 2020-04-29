@@ -11,7 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterTestingModule } from "@angular/router/testing";
 
-describe("ImageCardComponent", () => {
+xdescribe("ImageCardComponent", () => {
   let component: ImageCardComponent;
   let fixture: ComponentFixture<ImageCardComponent>;
 

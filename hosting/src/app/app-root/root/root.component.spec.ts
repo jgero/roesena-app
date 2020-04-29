@@ -1,4 +1,4 @@
-import { LayoutModule, BreakpointObserver } from "@angular/cdk/layout";
+import { BreakpointObserver } from "@angular/cdk/layout";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { MatButtonModule } from "@angular/material/button";
@@ -8,7 +8,6 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatToolbarModule } from "@angular/material/toolbar";
 
 import { RootComponent } from "./root.component";
-import { Router } from "@angular/router";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -18,15 +17,21 @@ import { AuthServiceStub } from "src/app/testing/stubs/auth";
 import { EventDalServiceStub } from "src/app/testing/stubs/event-dal";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RouterTestingModule } from "@angular/router/testing";
+import { EmptyComponent } from "src/app/testing/mocks/empty.component";
+import { MatBadgeModule } from "@angular/material/badge";
+import { Observable, Subscription } from "rxjs";
 
 describe("RootComponent", () => {
   let component: RootComponent;
   let fixture: ComponentFixture<RootComponent>;
+  let sub: Subscription;
 
-  const routerSpy = jasmine.createSpyObj("Router", ["navigate"]);
   const eventDALService = new EventDalServiceStub();
   const authService = new AuthServiceStub();
-  const matSnackBar = new MatSnackBarStub();
+  // const matSnackBar = new MatSnackBarStub();
+  const matSnackBar = jasmine.createSpyObj("MatSnackBar", {
+    open: { onAction: () => new Observable<void>((obs) => obs.complete()) },
+  });
   const breakpointObserver = new BreakpointObserverStub();
 
   beforeEach(async(() => {
@@ -34,17 +39,26 @@ describe("RootComponent", () => {
       declarations: [RootComponent],
       imports: [
         NoopAnimationsModule,
-        LayoutModule,
         MatButtonModule,
         MatIconModule,
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
         MatExpansionModule,
-        RouterTestingModule,
+        MatBadgeModule,
+        RouterTestingModule.withRoutes([
+          { path: "", component: EmptyComponent },
+          { path: "events", component: EmptyComponent },
+          { path: "auth", component: EmptyComponent },
+          { path: "articles", component: EmptyComponent },
+          { path: "images", component: EmptyComponent },
+          { path: "calendar", component: EmptyComponent },
+          { path: "groups", component: EmptyComponent },
+          { path: "about", component: EmptyComponent },
+          { path: "**", component: EmptyComponent },
+        ]),
       ],
       providers: [
-        { provide: Router, useValue: routerSpy },
         { provide: EventDALService, useValue: eventDALService },
         { provide: AuthService, useValue: authService },
         { provide: MatSnackBar, useValue: matSnackBar },
@@ -63,52 +77,84 @@ describe("RootComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it("should not do anything without user", () => {
-    const spy = spyOn(matSnackBar, "open");
-    component.ngOnInit();
-    authService.$user.next(null);
-    expect(spy).not.toHaveBeenCalled();
-  });
+  describe("snackbar", () => {
+    beforeEach(() => {
+      matSnackBar.open.calls.reset();
+    });
+    afterEach(() => {
+      if (sub) sub.unsubscribe();
+      matSnackBar.open.calls.reset();
+    });
 
-  it("should not show anything when user has no unresponded events", () => {
-    const spy = spyOn(matSnackBar, "open");
-    component.ngOnInit();
-    eventDALService.dataArray = [
-      {
-        id: "asdf",
-        tags: ["asdf"],
-        description: "asdf",
-        ownerName: "John DOe",
-        ownerId: "test",
-        title: "event title",
-        startDate: new Date(2020, 10, 2),
-        endDate: new Date(2020, 10, 3),
-        deadline: new Date(2020, 10, 1),
-        participants: [{ id: "creativeUID", name: "John Doe", amount: 3 }],
-      },
-    ];
-    authService.$user.next({ id: "creativeUID", groups: ["nothing special"], isConfirmedMember: true, name: "John Doe" });
-    expect(spy).not.toHaveBeenCalled();
-  });
+    it("should not show without user", () => {
+      authService.$user.next(null);
+      eventDALService.dataArray = [
+        {
+          id: "asdf",
+          tags: ["asdf"],
+          description: "asdf",
+          ownerName: "John DOe",
+          ownerId: "test",
+          title: "event title",
+          startDate: new Date(2020, 10, 2),
+          endDate: new Date(2020, 10, 3),
+          deadline: new Date(2020, 10, 1),
+          participants: [{ id: "creativeUID", name: "John Doe", amount: -1 }],
+        },
+      ];
+      component.ngOnInit();
+      fixture.detectChanges();
+      authService.$user.next(null);
+      expect(matSnackBar.open.calls.count()).toBe(0);
+    });
 
-  it("should show snackbar when user has unresponded events", () => {
-    const spy = spyOn(matSnackBar, "open");
-    component.ngOnInit();
-    eventDALService.dataArray = [
-      {
-        id: "asdf",
-        tags: ["asdf"],
-        description: "asdf",
-        ownerName: "John DOe",
-        ownerId: "test",
-        title: "event title",
-        startDate: new Date(2020, 10, 2),
-        endDate: new Date(2020, 10, 3),
-        deadline: new Date(2020, 10, 1),
-        participants: [{ id: "creativeUID", name: "John Doe", amount: -1 }],
-      },
-    ];
-    authService.$user.next({ id: "creativeUID", groups: ["nothing special"], isConfirmedMember: true, name: "John Doe" });
-    expect(spy).toHaveBeenCalled();
+    it("should not show when user has no unresponded events", (done) => {
+      eventDALService.dataArray = [
+        {
+          id: "asdf",
+          tags: ["asdf"],
+          description: "asdf",
+          ownerName: "John DOe",
+          ownerId: "test",
+          title: "event title",
+          startDate: new Date(2020, 10, 2),
+          endDate: new Date(2020, 10, 3),
+          deadline: new Date(2020, 10, 1),
+          participants: [{ id: "creativeUID", name: "John Doe", amount: 3 }],
+        },
+      ];
+      component.ngOnInit();
+      fixture.detectChanges();
+      sub = component.$badgeContentStream.subscribe((val) => {
+        expect(matSnackBar.open).not.toHaveBeenCalled();
+        done();
+      });
+      authService.$user.next({ id: "creativeUID", groups: ["nothing special"], isConfirmedMember: true, name: "John Doe" });
+    });
+
+    it("should show when user has unresponded events", (done) => {
+      eventDALService.dataArray = [
+        {
+          id: "asdf",
+          tags: ["asdf"],
+          description: "asdf",
+          ownerName: "John DOe",
+          ownerId: "test",
+          title: "event title",
+          startDate: new Date(2020, 10, 2),
+          endDate: new Date(2020, 10, 3),
+          deadline: new Date(2020, 10, 1),
+          participants: [{ id: "creativeUID", name: "John Doe", amount: -1 }],
+        },
+      ];
+      component.ngOnInit();
+      fixture.detectChanges();
+      sub = component.$badgeContentStream.subscribe((val) => {
+        expect(matSnackBar.open.calls.count()).toBe(1);
+        // expect(matSnackBar.open).toHaveBeenCalled();
+        done();
+      });
+      authService.$user.next({ id: "creativeUID", groups: ["nothing special"], isConfirmedMember: true, name: "John Doe" });
+    });
   });
 });

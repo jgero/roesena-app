@@ -8,7 +8,7 @@ import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 
-describe("DetailsComponent", () => {
+xdescribe("DetailsComponent", () => {
   let component: DetailsComponent;
   let fixture: ComponentFixture<DetailsComponent>;
 

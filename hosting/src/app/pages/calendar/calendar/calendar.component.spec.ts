@@ -6,7 +6,7 @@ import { EventDalServiceStub } from "src/app/testing/stubs/event-dal";
 import { ActivatedRoute } from "@angular/router";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 
-describe("CalendarComponent", () => {
+xdescribe("CalendarComponent", () => {
   let component: CalendarComponent;
   let fixture: ComponentFixture<CalendarComponent>;
 

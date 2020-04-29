@@ -9,7 +9,7 @@ import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 
-describe("OverviewComponent", () => {
+xdescribe("OverviewComponent", () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
 

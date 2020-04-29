@@ -10,7 +10,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { PersonDalStub } from "src/app/testing/stubs/person-dal";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 
-describe("EditorComponent", () => {
+xdescribe("EditorComponent", () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
 

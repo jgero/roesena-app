@@ -10,7 +10,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterTestingModule } from "@angular/router/testing";
 
-describe("EventCardComponent", () => {
+xdescribe("EventCardComponent", () => {
   let component: EventCardComponent;
   let fixture: ComponentFixture<EventCardComponent>;
 

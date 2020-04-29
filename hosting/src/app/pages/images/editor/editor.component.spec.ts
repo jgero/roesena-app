@@ -8,7 +8,7 @@ import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 
-describe("EditorComponent", () => {
+xdescribe("EditorComponent", () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
 

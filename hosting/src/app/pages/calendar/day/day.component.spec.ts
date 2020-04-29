@@ -10,7 +10,7 @@ export class MockElementRef extends ElementRef {
   }
 }
 
-describe("DayComponent", () => {
+xdescribe("DayComponent", () => {
   let component: DayComponent;
   let fixture: ComponentFixture<DayComponent>;
 
