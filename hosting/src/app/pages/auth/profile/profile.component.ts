@@ -1,7 +1,9 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { AuthService } from "src/app/services/auth.service";
+import { Component, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators, AbstractControl } from "@angular/forms";
 import { Subscription } from "rxjs";
+
+import { AuthService } from "src/app/services/auth.service";
+import { BrowserService } from "src/app/services/browser.service";
 
 @Component({
   selector: "app-profile",
@@ -13,7 +15,7 @@ export class ProfileComponent implements OnDestroy {
     name: new FormControl("", [Validators.required, Validators.pattern("^[a-zA-ZäöüÄÖÜ -]+$")]),
   });
   private subs: Subscription[] = [];
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private browser: BrowserService) {}
 
   onUpdateNameSubmit() {
     this.updateNameForm.disable();
@@ -29,17 +31,11 @@ export class ProfileComponent implements OnDestroy {
     );
   }
 
-  getErrorMessage(ctrl: AbstractControl): string {
-    if (ctrl.getError("pattern")) return "Ungültiger Name";
-    if (ctrl.getError("required")) return "Pflichtfeld";
-    return "";
-  }
-
   logout() {
     this.subs.push(
       this.auth.logout().subscribe({
         next: () => {
-          location.reload();
+          this.browser.reload();
         },
       })
     );

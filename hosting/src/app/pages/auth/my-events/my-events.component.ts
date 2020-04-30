@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Observable, Subscription, of } from "rxjs";
 import { map, tap } from "rxjs/operators";
@@ -17,12 +17,14 @@ interface appEventWithForm extends appEvent {
   templateUrl: "./my-events.component.html",
   styleUrls: ["./my-events.component.scss"],
 })
-export class MyEventsComponent implements OnDestroy {
+export class MyEventsComponent implements OnInit, OnDestroy {
   $data: Observable<appEventWithForm[]>;
   displayedColumns: string[] = ["title", "deadline", "response"];
   private subs: Subscription[] = [];
 
-  constructor(private eventDAO: EventDALService, private personDAO: PersonDalService, private auth: AuthService) {
+  constructor(private eventDAO: EventDALService, private personDAO: PersonDalService, private auth: AuthService) {}
+
+  ngOnInit() {
     this.$data = this.eventDAO.getRespondables().pipe(
       map((events) => {
         return events.map((event) => {
@@ -42,7 +44,6 @@ export class MyEventsComponent implements OnDestroy {
   }
 
   onSubmit(eventId: string, amount: string, form: FormGroup) {
-    console.log("submitted");
     form.disable();
     this.subs.push(
       this.personDAO.respondToEvent(eventId, parseInt(amount)).subscribe({

@@ -87,6 +87,7 @@ describe("RootComponent", () => {
     afterEach(() => {
       if (sub) sub.unsubscribe();
       matSnackBar.open.calls.reset();
+      fixture.destroy();
     });
 
     it("should not show without user", () => {
@@ -153,8 +154,7 @@ describe("RootComponent", () => {
       component.ngOnInit();
       fixture.detectChanges();
       sub = component.$badgeContentStream.subscribe((val) => {
-        expect(matSnackBar.open.calls.count()).toBe(1);
-        // expect(matSnackBar.open).toHaveBeenCalled();
+        expect(matSnackBar.open).toHaveBeenCalled();
         done();
       });
       authService.$user.next({ id: "creativeUID", groups: ["nothing special"], isConfirmedMember: true, name: "John Doe" });

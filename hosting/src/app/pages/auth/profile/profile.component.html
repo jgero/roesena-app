@@ -21,7 +21,7 @@
         <mat-form-field>
           <mat-label>neuer Name</mat-label>
           <input matInput formControlName="name" />
-          <mat-error *ngIf="updateNameForm.get('name').invalid"> {{ getErrorMessage(updateNameForm.get("name")) }} </mat-error>
+          <mat-error *ngIf="updateNameForm.get('name').invalid"> {{ updateNameForm.get("name") | errorMessage }} </mat-error>
         </mat-form-field>
         <button
           mat-stroked-button

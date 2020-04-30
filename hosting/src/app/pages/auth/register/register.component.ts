@@ -1,6 +1,6 @@
 import { Router } from "@angular/router";
 import { Component, OnDestroy } from "@angular/core";
-import { FormGroup, FormControl, Validators, AbstractControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 
 import { AuthService } from "src/app/services/auth.service";
@@ -36,14 +36,6 @@ export class RegisterComponent implements OnDestroy {
           },
         })
     );
-  }
-
-  getErrorMessage(ctrl: AbstractControl): string {
-    if (ctrl.getError("email")) return "Ungültige E-Mail";
-    if (ctrl.getError("minlength")) return "Passwort zu kurz";
-    if (ctrl.getError("pattern")) return "Ungültige Eingabe";
-    if (ctrl.getError("required")) return "Pflichtfeld";
-    return "";
   }
 
   ngOnDestroy() {

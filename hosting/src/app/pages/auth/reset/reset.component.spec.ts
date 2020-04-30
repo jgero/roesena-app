@@ -4,27 +4,44 @@ import { ResetComponent } from "./reset.component";
 import { AuthServiceStub } from "src/app/testing";
 import { ActivatedRouteStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, convertToParamMap, Params, ParamMap } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { RouterTestingModule } from "@angular/router/testing";
+import { ReactiveFormsModule } from "@angular/forms";
+import { BehaviorSubject, of } from "rxjs";
+import { appPerson } from "src/app/utils/interfaces";
 
-xdescribe("ResetComponent", () => {
+describe("ResetComponent", () => {
   let component: ResetComponent;
   let fixture: ComponentFixture<ResetComponent>;
 
-  const authStub = new AuthServiceStub();
-  const activatedRouteStub = new ActivatedRouteStub();
-  const routerSpy = jasmine.createSpyObj("Router", ["navigate"]);
+  const authStub = {
+    $user: new BehaviorSubject<appPerson>(null),
+    sendResetPasswordMail: (email: string) => of(null),
+    changePasswordWithResetCode: (pw: string, code: string) => of(null),
+  };
+  const activatedRouteStub = {
+    snapshot: {
+      queryParamMap: convertToParamMap({ oobCode: "asdfasdf", mode: "resetPassword" }),
+    },
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, MatToolbarModule, MatInputModule, MatButtonModule],
+      imports: [
+        NoopAnimationsModule,
+        MatToolbarModule,
+        MatInputModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+      ],
       declarations: [ResetComponent],
       providers: [
         { provide: AuthService, useValue: authStub },
-        { provide: Router, useValue: routerSpy },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
     }).compileComponents();
@@ -38,5 +55,44 @@ xdescribe("ResetComponent", () => {
 
   it("should create", () => {
     expect(component).toBeTruthy();
+  });
+
+  describe("on init", () => {
+    beforeEach(() => {});
+
+    it("should set code if it exists", () => {
+      component.ngOnInit();
+      fixture.detectChanges();
+      expect(component.code).toBe("asdfasdf");
+    });
+
+    it("should navigate to startpage if user is logged in", () => {
+      const router = TestBed.get(Router);
+      const spy = spyOn(router, "navigate");
+      component.ngOnInit();
+      fixture.detectChanges();
+      authStub.$user.next({ id: "asdf", name: "asdf", isConfirmedMember: true, groups: [] });
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith([""]);
+    });
+  });
+
+  describe("on submit", () => {
+    it("should call service for password reset", () => {
+      const spy = spyOn(authStub, "sendResetPasswordMail").and.returnValue(of(null));
+      component.resetForm.get("email").setValue("asdf@test.com");
+      component.onResetSubmit();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith("asdf@test.com");
+    });
+
+    it("should call service for new password", () => {
+      const spy = spyOn(authStub, "changePasswordWithResetCode").and.returnValue(of(null));
+      component.newPasswordForm.get("password").setValue("12341234");
+      component.code = "asdfasdf";
+      component.onNewPasswordSubmit();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith("12341234", "asdfasdf");
+    });
   });
 });

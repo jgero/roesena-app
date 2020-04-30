@@ -5,8 +5,8 @@ import { Direction } from "src/app/utils/enums";
 export class PersonDalStub {
   constructor() {}
 
-  respondToEvent(): Observable<null> {
-    return of(null);
+  respondToEvent(): Observable<boolean> {
+    return of(true);
   }
 
   getAll(limit?: number): Observable<appPerson[]> {

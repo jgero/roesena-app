@@ -10,7 +10,7 @@ import { Subscription } from "rxjs";
   templateUrl: "./reset.component.html",
   styleUrls: ["./reset.component.scss"],
 })
-export class ResetComponent implements OnDestroy {
+export class ResetComponent implements OnDestroy, OnInit {
   resetForm = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email]),
   });
@@ -20,9 +20,11 @@ export class ResetComponent implements OnDestroy {
   public code: string;
   private subs: Subscription[] = [];
 
-  constructor(route: ActivatedRoute, private auth: AuthService, private router: Router) {
-    if (route.snapshot.queryParamMap.get("mode") === "resetPassword" && route.snapshot.queryParamMap.get("oobCode")) {
-      this.code = route.snapshot.queryParamMap.get("oobCode");
+  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    if (this.route.snapshot.queryParamMap.get("mode") === "resetPassword" && this.route.snapshot.queryParamMap.get("oobCode")) {
+      this.code = this.route.snapshot.queryParamMap.get("oobCode");
     }
     this.subs.push(
       this.auth.$user.pipe(filter((el) => !!el)).subscribe({
