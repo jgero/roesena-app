@@ -6,7 +6,7 @@ import { StartPageComponent } from "./start-page/start-page.component";
 import { AboutComponent } from "./about/about.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: "",
     canActivateChild: [LoadUserGuard],

@@ -97,7 +97,7 @@ export class EventDALService implements appElementDAL {
       ) as Observable<appEvent[]>;
   }
 
-  getByTags(tags: string[]): Observable<appEvent[]> {
+  getBySearchStrings(tags: string[]): Observable<appEvent[]> {
     const user = this.auth.$user.getValue();
     let stream = this.firestore
       .collection<storeableEvent>("events", (qFn) => {

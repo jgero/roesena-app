@@ -23,7 +23,7 @@ export class ArticleDalStub implements paginatedDAL {
     return of(this.dataArray);
   }
 
-  getByTags(tags: string[]): Observable<appArticle[]> {
+  getBySearchStrings(tags: string[]): Observable<appArticle[]> {
     return of(this.dataArray);
   }
 }

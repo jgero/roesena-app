@@ -17,6 +17,6 @@ export class OverviewComponent extends PaginatedOverview {
   $data: Observable<appImage[]>;
 
   constructor(imageDAO: ImageDalService, auth: AuthService, route: ActivatedRoute, router: Router) {
-    super("images", imageDAO, route, router, auth);
+    super(["images", "overview"], imageDAO, route, router, auth);
   }
 }

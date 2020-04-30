@@ -34,7 +34,7 @@ export class EditorComponent implements OnDestroy {
   ) {
     const id = route.snapshot.paramMap.get("id");
     this.$data = combineLatest([
-      personDAO.getAll(true).pipe(
+      personDAO.getBySearchStrings([], undefined, true).pipe(
         tap((persons) => (this.persons = persons)),
         tap((persons) => {
           this.groups = [];

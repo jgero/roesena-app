@@ -15,6 +15,7 @@ import { LoginComponent } from "./login.component";
 import { AuthService } from "src/app/services/auth.service";
 import { appPerson } from "src/app/utils/interfaces";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
+import { testingRoutes } from "src/app/testing";
 
 describe("LoginComponent", () => {
   let component: LoginComponent;
@@ -30,7 +31,7 @@ describe("LoginComponent", () => {
         MatInputModule,
         MatButtonModule,
         MatProgressSpinnerModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(testingRoutes),
         ReactiveFormsModule,
         ConvertersModule,
       ],

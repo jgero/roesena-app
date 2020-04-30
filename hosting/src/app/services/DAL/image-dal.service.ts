@@ -97,7 +97,7 @@ export class ImageDalService implements paginatedDAL {
       );
   }
 
-  getByTags(tags: string[], limit?: number): Observable<appImage[]> {
+  getBySearchStrings(tags: string[], limit?: number): Observable<appImage[]> {
     return this.firestore
       .collection<storeableImage>("images", (qFn) => {
         let query: CollectionReference | Query = qFn;

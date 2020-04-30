@@ -20,7 +20,7 @@ describe("Overview pagination extension", () => {
   class a extends PaginatedOverview {
     constructor() {
       super(
-        "articles",
+        ["articles", "overview"],
         articleDalStub as paginatedDAL,
         (activatedRouteStub as unknown) as ActivatedRoute,
         routerSpy,
@@ -61,7 +61,7 @@ describe("Overview pagination extension", () => {
 
     it("should init by tags when there is a search string", () => {
       activatedRouteStub.setParamMap({ searchString: " my Group  , 2020 " });
-      const spy = spyOn(articleDalStub, "getByTags");
+      const spy = spyOn(articleDalStub, "getBySearchStrings");
       componentBase.ngOnInit();
       expect(spy).toHaveBeenCalled();
     });

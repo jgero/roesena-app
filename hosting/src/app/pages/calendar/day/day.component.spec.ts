@@ -8,6 +8,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterTestingModule } from "@angular/router/testing";
 import { MatBadgeModule } from "@angular/material/badge";
+import { testingRoutes } from "src/app/testing";
 
 export class MockElementRef extends ElementRef {
   constructor() {
@@ -21,7 +22,14 @@ describe("DayComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, MatCardModule, MatButtonModule, MatIconModule, RouterTestingModule, MatBadgeModule],
+      imports: [
+        NoopAnimationsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        RouterTestingModule.withRoutes(testingRoutes),
+        MatBadgeModule,
+      ],
       declarations: [DayComponent],
       providers: [{ provide: ElementRef, useValue: MockElementRef }],
     }).compileComponents();

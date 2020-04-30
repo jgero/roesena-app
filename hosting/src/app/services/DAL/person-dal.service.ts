@@ -14,7 +14,7 @@ import { Observable, of, from, BehaviorSubject, Subject, combineLatest } from "r
 import { map, tap, catchError } from "rxjs/operators";
 import "firebase/firestore";
 
-import { appPerson } from "src/app/utils/interfaces";
+import { appPerson, paginatedDAL } from "src/app/utils/interfaces";
 import { mapToArray, arrayToMap } from "src/app/utils/converters";
 import { Direction } from "src/app/utils/enums";
 
@@ -27,7 +27,7 @@ interface storeablePerson {
 @Injectable({
   providedIn: "root",
 })
-export class PersonDalService {
+export class PersonDalService implements paginatedDAL {
   private pageFirst: QueryDocumentSnapshot<storeablePerson>;
   private pageLast: QueryDocumentSnapshot<storeablePerson>;
   constructor(
@@ -37,7 +37,7 @@ export class PersonDalService {
     private ngZone: NgZone
   ) {}
 
-  getPersonById(id: string): Observable<appPerson | null> {
+  getById(id: string): Observable<appPerson | null> {
     return this.firestore
       .collection<storeablePerson>("persons")
       .doc<storeablePerson>(id)
@@ -51,15 +51,9 @@ export class PersonDalService {
       );
   }
 
-  getAll(onlyConfirmed?: boolean): Observable<appPerson[]> {
+  getAll(): Observable<appPerson[]> {
     return this.firestore
-      .collection<storeablePerson>("persons", (qFn) => {
-        let query: CollectionReference | Query = qFn;
-        if (onlyConfirmed === true) {
-          query = query.where("isConfirmedMember", "==", true);
-        }
-        return query;
-      })
+      .collection<storeablePerson>("persons")
       .snapshotChanges()
       .pipe(
         map(convertMany),
@@ -70,7 +64,33 @@ export class PersonDalService {
       );
   }
 
-  getPersonAmount(): Observable<number> {
+  getBySearchStrings(searchStrings: string[], limit?: number, onlyConfirmed?: boolean): Observable<appPerson[]> {
+    return this.firestore
+      .collection<storeablePerson>("persons", (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        searchStrings.forEach((s) => {
+          query = query.where("name", "==", s);
+        });
+        if (onlyConfirmed && onlyConfirmed === true) {
+          query = query.where("isConfirmedMember", "==", true);
+        }
+        if (limit) {
+          query = query.limit(limit);
+        }
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(
+        map(convertMany),
+        tap((el) => console.log(el)),
+        catchError((err) => {
+          this.snackbar.open(`Fehler beim laden von Personen: ${err}`, "OK");
+          return of([]);
+        })
+      );
+  }
+
+  getDocCount(): Observable<number> {
     return this.firestore
       .collection("meta")
       .doc("persons")

@@ -12,7 +12,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatIconModule } from "@angular/material/icon";
 
-import { AuthServiceStub, EventDalStub } from "src/app/testing";
+import { AuthServiceStub, EventDalStub, testingRoutes } from "src/app/testing";
 import { MyEventsComponent } from "./my-events.component";
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
@@ -41,7 +41,7 @@ describe("MyEventsComponent", () => {
         ConvertersModule,
         MatBadgeModule,
         MatIconModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(testingRoutes),
       ],
       declarations: [MyEventsComponent],
       providers: [

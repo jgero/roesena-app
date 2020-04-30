@@ -17,7 +17,7 @@ export class PersonDalStub {
     return of([]);
   }
 
-  getPersonAmount(): Observable<number> {
+  getDocCount(): Observable<number> {
     return of(0);
   }
 

@@ -14,7 +14,7 @@ export abstract class PaginatedOverview extends SearchableOverview {
   }
   pageIndex: number = 0;
 
-  constructor(routeBase: string, public DAO: paginatedDAL, route: ActivatedRoute, router: Router, auth: AuthService) {
+  constructor(routeBase: string[], public DAO: paginatedDAL, route: ActivatedRoute, router: Router, auth: AuthService) {
     super(routeBase, DAO, route, router, auth);
   }
 
@@ -25,7 +25,7 @@ export abstract class PaginatedOverview extends SearchableOverview {
 
   updateDataStream() {
     if (this.searchString) {
-      this.$data = this.DAO.getByTags(this.searchTags);
+      this.$data = this.DAO.getBySearchStrings(this.searchTags);
     } else {
       this.$data = this.DAO.getPage(this.limit, Direction.initial);
     }

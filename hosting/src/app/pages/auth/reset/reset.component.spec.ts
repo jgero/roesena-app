@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ResetComponent } from "./reset.component";
-import { AuthServiceStub } from "src/app/testing";
+import { AuthServiceStub, testingRoutes } from "src/app/testing";
 import { ActivatedRouteStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
 import { Router, ActivatedRoute, convertToParamMap, Params, ParamMap } from "@angular/router";
@@ -13,6 +13,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BehaviorSubject, of } from "rxjs";
 import { appPerson } from "src/app/utils/interfaces";
+import { routes } from "src/app/app-root/app-root-routing.module";
 
 describe("ResetComponent", () => {
   let component: ResetComponent;
@@ -37,7 +38,7 @@ describe("ResetComponent", () => {
         MatInputModule,
         MatButtonModule,
         ReactiveFormsModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(testingRoutes),
       ],
       declarations: [ResetComponent],
       providers: [

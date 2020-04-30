@@ -16,6 +16,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { appPerson } from "src/app/utils/interfaces";
 import { BrowserService } from "src/app/services/browser.service";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
+import { testingRoutes } from "src/app/testing";
 
 describe("ProfileComponent", () => {
   let component: ProfileComponent;
@@ -31,7 +32,7 @@ describe("ProfileComponent", () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(testingRoutes),
         MatToolbarModule,
         MatListModule,
         MatInputModule,

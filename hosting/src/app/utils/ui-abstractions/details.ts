@@ -3,7 +3,7 @@ import { OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
-import { appElement, appElementDAL } from "../interfaces";
+import { appElement, DAL } from "../interfaces";
 import { AuthService } from "src/app/services/auth.service";
 
 export abstract class Details implements OnInit {
@@ -13,7 +13,7 @@ export abstract class Details implements OnInit {
     public routeBase: string,
     public route: ActivatedRoute,
     public router: Router,
-    public DAO: appElementDAL,
+    public DAO: DAL,
     public auth: AuthService
   ) {}
 

@@ -49,7 +49,7 @@ export class ArticleDalService implements paginatedDAL {
       );
   }
 
-  getByTags(tags: string[], limit?: number): Observable<appArticle[]> {
+  getBySearchStrings(tags: string[], limit?: number): Observable<appArticle[]> {
     // if there is no limit set one
     if (!limit) {
       limit = 15;

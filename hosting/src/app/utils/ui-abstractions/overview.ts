@@ -1,16 +1,16 @@
 import { OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { appElement, appElementDAL } from "../interfaces";
+import { DAL } from "../interfaces";
 import { AuthService } from "src/app/services/auth.service";
 
 export abstract class Overview implements OnInit {
-  $data: Observable<appElement[]>;
+  $data: Observable<any[]>;
   get cols(): number {
     return Math.ceil(window.innerWidth / 500);
   }
 
-  constructor(public DAO: appElementDAL, public auth: AuthService) {}
+  constructor(public DAO: DAL, public auth: AuthService) {}
 
   ngOnInit() {
     this.initDataStream();

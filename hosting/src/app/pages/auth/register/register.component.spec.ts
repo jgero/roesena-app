@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { RegisterComponent } from "./register.component";
 import { AuthService } from "src/app/services/auth.service";
+import { testingRoutes } from "src/app/testing";
 
 describe("RegisterComponent", () => {
   let component: RegisterComponent;
@@ -29,7 +30,7 @@ describe("RegisterComponent", () => {
         MatInputModule,
         MatButtonModule,
         MatProgressSpinnerModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(testingRoutes),
         ReactiveFormsModule,
         ConvertersModule,
       ],

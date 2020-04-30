@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 
 import { Overview } from "./overview";
-import { appElementDAL } from "../interfaces";
+import { DAL } from "../interfaces";
 import { AuthService } from "src/app/services/auth.service";
 
 export abstract class SearchableOverview extends Overview implements OnDestroy {
@@ -12,13 +12,7 @@ export abstract class SearchableOverview extends Overview implements OnDestroy {
   get searchTags(): string[] {
     return this.searchString.split(",").map((tag) => tag.trim());
   }
-  constructor(
-    private routeBase: string,
-    DAO: appElementDAL,
-    public route: ActivatedRoute,
-    public router: Router,
-    auth: AuthService
-  ) {
+  constructor(private routeBase: string[], DAO: DAL, public route: ActivatedRoute, public router: Router, auth: AuthService) {
     super(DAO, auth);
   }
 
@@ -33,7 +27,7 @@ export abstract class SearchableOverview extends Overview implements OnDestroy {
 
   updateDataStream() {
     if (this.searchString) {
-      this.$data = this.DAO.getByTags(this.searchTags);
+      this.$data = this.DAO.getBySearchStrings(this.searchTags);
     } else {
       this.$data = this.DAO.getAll();
     }
@@ -41,9 +35,9 @@ export abstract class SearchableOverview extends Overview implements OnDestroy {
 
   onSearchClick() {
     if (this.searchString) {
-      this.router.navigate([this.routeBase, "overview", this.searchString]);
+      this.router.navigate([...this.routeBase, this.searchString]);
     } else {
-      this.router.navigate([this.routeBase, "overview"]);
+      this.router.navigate([...this.routeBase]);
     }
   }
 

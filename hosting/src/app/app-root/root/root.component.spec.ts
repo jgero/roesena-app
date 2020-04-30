@@ -11,7 +11,7 @@ import { RootComponent } from "./root.component";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { BreakpointObserverStub } from "src/app/testing";
+import { BreakpointObserverStub, testingRoutes } from "src/app/testing";
 import { AuthServiceStub } from "src/app/testing";
 import { EventDalStub } from "src/app/testing";
 import { MatExpansionModule } from "@angular/material/expansion";
@@ -44,17 +44,7 @@ describe("RootComponent", () => {
         MatToolbarModule,
         MatExpansionModule,
         MatBadgeModule,
-        RouterTestingModule.withRoutes([
-          { path: "", component: EmptyComponent },
-          { path: "events", component: EmptyComponent },
-          { path: "auth", component: EmptyComponent },
-          { path: "articles", component: EmptyComponent },
-          { path: "images", component: EmptyComponent },
-          { path: "calendar", component: EmptyComponent },
-          { path: "groups", component: EmptyComponent },
-          { path: "about", component: EmptyComponent },
-          { path: "**", component: EmptyComponent },
-        ]),
+        RouterTestingModule.withRoutes(testingRoutes),
       ],
       providers: [
         { provide: EventDALService, useValue: eventDALService },

@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatListModule } from "@angular/material/list";
@@ -24,11 +24,13 @@ import { GroupManagerComponent } from "./group-manager/group-manager.component";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatGridListModule } from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [LoginComponent, ProfileComponent, RegisterComponent, MyEventsComponent, ResetComponent, GroupManagerComponent],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     AuthRoutingModule,
     MatToolbarModule,
@@ -44,6 +46,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     MatProgressBarModule,
     MatTooltipModule,
     MatPaginatorModule,
+    MatGridListModule,
     ConvertersModule,
   ],
 })

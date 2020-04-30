@@ -18,6 +18,6 @@ export class OverviewComponent extends PaginatedOverview {
   $data: Observable<appArticle[]>;
 
   constructor(auth: AuthService, articleDAO: ArticleDalService, route: ActivatedRoute, router: Router) {
-    super("articles", articleDAO, route, router, auth);
+    super(["articles", "overview"], articleDAO, route, router, auth);
   }
 }

@@ -27,6 +27,11 @@ const routes: Routes = [
     canActivate: [LoggedInGuard],
   },
   {
+    path: "group-manager/:searchString",
+    component: GroupManagerComponent,
+    canActivate: [LoggedInGuard],
+  },
+  {
     path: "profile",
     component: ProfileComponent,
     canActivate: [LoggedInGuard],

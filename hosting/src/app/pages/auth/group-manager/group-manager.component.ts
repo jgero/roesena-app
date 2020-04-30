@@ -1,14 +1,17 @@
+import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Component, OnDestroy } from "@angular/core";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { PageEvent } from "@angular/material/paginator";
-import { ENTER, COMMA } from "@angular/cdk/keycodes";
 import { Observable, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 
+import { MatChipInputEvent } from "@angular/material/chips";
+import { PageEvent } from "@angular/material/paginator";
+import { ENTER, COMMA } from "@angular/cdk/keycodes";
+
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { appPerson } from "src/app/utils/interfaces";
-import { Direction } from "src/app/utils/enums";
+import { PaginatedOverview } from "src/app/utils/ui-abstractions";
+import { AuthService } from "src/app/services/auth.service";
 
 interface appPersonWithForm extends appPerson {
   form: FormGroup;
@@ -19,24 +22,47 @@ interface appPersonWithForm extends appPerson {
   templateUrl: "./group-manager.component.html",
   styleUrls: ["./group-manager.component.scss"],
 })
-export class GroupManagerComponent implements OnDestroy {
-  $persons: Observable<appPersonWithForm[]>;
-  $count: Observable<number>;
-  pageIndex: number = 0;
+export class GroupManagerComponent extends PaginatedOverview implements OnDestroy {
+  $data: Observable<appPerson[]>;
+  $withForm: Observable<appPersonWithForm[]>;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   private subs: Subscription[] = [];
+  get cols(): number {
+    return Math.ceil(window.innerWidth / 700);
+  }
 
-  constructor(private personsDAO: PersonDalService) {
-    this.$count = personsDAO.getPersonAmount();
-    this.$persons = this.constructFormObservable(personsDAO.getPage(10, Direction.initial));
+  constructor(private personsDAO: PersonDalService, router: Router, route: ActivatedRoute, auth: AuthService) {
+    super(["auth", "group-manager"], personsDAO, route, router, auth);
+  }
+
+  updateDataStream() {
+    // first let the base classes request the data
+    super.updateDataStream();
+    // and then add the form to it
+    this.updateForm();
+  }
+
+  private updateForm() {
+    this.$withForm = this.$data.pipe(
+      map((persons) => {
+        persons = persons.map((person) => ({
+          ...person,
+          form: new FormGroup({
+            groups: new FormControl(person.groups),
+            confirmed: new FormControl(person.isConfirmedMember),
+          }),
+        }));
+        return persons as appPersonWithForm[];
+      })
+    );
   }
 
   onPage(ev: PageEvent) {
+    // let the super class do the update stuff
+    super.onPage(ev);
     if (ev.pageIndex !== ev.previousPageIndex) {
-      this.$persons = this.constructFormObservable(
-        this.personsDAO.getPage(10, ev.pageIndex > ev.previousPageIndex ? Direction.forward : Direction.back)
-      );
-      this.pageIndex = ev.pageIndex;
+      // and update the observable if needed
+      this.updateForm();
     }
   }
 
@@ -48,22 +74,6 @@ export class GroupManagerComponent implements OnDestroy {
         form.enable();
       },
     });
-  }
-
-  private constructFormObservable(data: Observable<appPerson[]>): Observable<appPersonWithForm[]> {
-    return data.pipe(
-      map((persons) => {
-        console.log(persons);
-        persons = persons.map((person) => ({
-          ...person,
-          form: new FormGroup({
-            groups: new FormControl(person.groups),
-            confirmed: new FormControl(person.isConfirmedMember),
-          }),
-        }));
-        return persons as appPersonWithForm[];
-      })
-    );
   }
 
   removeGroup(tag: string, form: FormGroup) {
@@ -85,5 +95,6 @@ export class GroupManagerComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach((sub) => sub.unsubscribe());
+    super.ngOnDestroy();
   }
 }

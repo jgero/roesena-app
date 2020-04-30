@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { DetailsComponent } from "./details.component";
-import { AuthServiceStub } from "src/app/testing";
+import { AuthServiceStub, testingRoutes } from "src/app/testing";
 import { ActivatedRouteStub } from "src/app/testing";
 import { ImageDalStub } from "src/app/testing";
 import { ImageDalService } from "src/app/services/DAL/image-dal.service";
@@ -24,7 +24,13 @@ describe("Images-DetailsComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatToolbarModule, MatButtonModule, MatIconModule, RouterTestingModule, MatProgressBarModule],
+      imports: [
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        RouterTestingModule.withRoutes(testingRoutes),
+        MatProgressBarModule,
+      ],
       declarations: [DetailsComponent],
       providers: [
         { provide: ImageDalService, useValue: imageStub },

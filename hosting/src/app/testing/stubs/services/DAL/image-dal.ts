@@ -25,7 +25,7 @@ export class ImageDalStub {
     return of(null);
   }
 
-  getByTags(tags: string[]): Observable<appImage[]> {
+  getBySearchStrings(tags: string[]): Observable<appImage[]> {
     return of([]);
   }
 }

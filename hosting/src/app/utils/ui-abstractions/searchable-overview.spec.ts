@@ -18,7 +18,7 @@ describe("Overview search extension", () => {
   class a extends SearchableOverview {
     constructor() {
       super(
-        "articles",
+        ["articles", "overview"],
         articleDalStub as appElementDAL,
         (activatedRouteStub as unknown) as ActivatedRoute,
         routerSpy,
@@ -64,7 +64,7 @@ describe("Overview search extension", () => {
 
   describe("on data request", () => {
     it("should get elements by tags if search string is present", () => {
-      const spy = spyOn(articleDalStub, "getByTags");
+      const spy = spyOn(articleDalStub, "getBySearchStrings");
       activatedRouteStub.setParamMap({ searchString: " my Group  , 2020 " });
       componentBase.ngOnInit();
       expect(spy).toHaveBeenCalledWith(["my Group", "2020"]);

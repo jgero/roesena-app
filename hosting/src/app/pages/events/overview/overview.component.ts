@@ -18,6 +18,6 @@ export class OverviewComponent extends SearchableOverview {
   $data: Observable<appEvent[]>;
 
   constructor(evDAO: EventDALService, auth: AuthService, route: ActivatedRoute, router: Router) {
-    super("events", evDAO, route, router, auth);
+    super(["events", "overview"], evDAO, route, router, auth);
   }
 }

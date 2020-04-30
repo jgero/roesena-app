@@ -16,7 +16,7 @@ export class AuthService implements OnDestroy {
 
   constructor(public auth: AngularFireAuth, private personDAO: PersonDalService, private snackbar: MatSnackBar) {
     this.subs.push(
-      this.auth.authState.pipe(switchMap((user) => (!!user ? this.personDAO.getPersonById(user.uid) : of(null)))).subscribe({
+      this.auth.authState.pipe(switchMap((user) => (!!user ? this.personDAO.getById(user.uid) : of(null)))).subscribe({
         next: (user) => {
           this.$user.next(user);
         },
@@ -33,7 +33,7 @@ export class AuthService implements OnDestroy {
       // get the user from the credentials
       map((userCredentials) => userCredentials.user),
       // get the user data from the database
-      switchMap((user) => (user ? this.personDAO.getPersonById(user.uid) : of(null))),
+      switchMap((user) => (user ? this.personDAO.getById(user.uid) : of(null))),
       // hide the data from the caller
       map(() => null),
       catchError((err) => {
@@ -83,7 +83,7 @@ export class AuthService implements OnDestroy {
     return from(this.auth.createUserWithEmailAndPassword(email, password)).pipe(
       // wait until the person is created in the database
       switchMap((user) =>
-        this.personDAO.getPersonById(user.user.uid).pipe(
+        this.personDAO.getById(user.user.uid).pipe(
           filter((el) => !!el),
           take(1)
         )
@@ -109,7 +109,7 @@ export class AuthService implements OnDestroy {
   public updateName(person: appPerson): Observable<null> {
     return this.personDAO.update(person).pipe(
       // get the user data from the database
-      switchMap((user) => (user ? this.personDAO.getPersonById(person.id) : of(null))),
+      switchMap((user) => (user ? this.personDAO.getById(person.id) : of(null))),
       tap((user: appPerson | null) => this.$user.next(user)),
       tap(() => {
         this.snackbar.open(`Name geändert!`, "OK", { duration: 2000 });

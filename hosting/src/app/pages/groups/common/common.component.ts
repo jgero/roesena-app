@@ -20,7 +20,7 @@ export class CommonComponent {
   constructor(route: ActivatedRoute, imageDAO: ImageDalService, articleDAO: ArticleDalService) {
     this.groupName = route.snapshot.data.groupName;
     this.externalPageLink = route.snapshot.data.externalPageLink;
-    this.$imageData = imageDAO.getByTags([this.groupName, "Gruppenseite"], 1).pipe(map((val) => val[0]));
-    this.$textData = articleDAO.getByTags([this.groupName, "Gruppenseite"], 1).pipe(map((val) => val[0]));
+    this.$imageData = imageDAO.getBySearchStrings([this.groupName, "Gruppenseite"], 1).pipe(map((val) => val[0]));
+    this.$textData = articleDAO.getBySearchStrings([this.groupName, "Gruppenseite"], 1).pipe(map((val) => val[0]));
   }
 }

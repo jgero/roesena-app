@@ -1,15 +1,21 @@
 import { Observable } from "rxjs";
 
-import { appElement } from "./appElements";
 import { Direction } from "../enums";
+import { appElement } from "./appElements";
 
-export interface appElementDAL {
+export interface appElementDAL extends DAL {
   getById(id: string): Observable<appElement | null>;
-  getByTags(tags: string[], limit?: number): Observable<appElement[]>;
+  getBySearchStrings(tags: string[], limit?: number): Observable<appElement[]>;
   getAll(limit?: number): Observable<appElement[]>;
 }
 
-export interface paginatedDAL extends appElementDAL {
+export interface DAL {
+  getById(id: string): Observable<any | null>;
+  getBySearchStrings(tags: string[], limit?: number): Observable<any[]>;
+  getAll(limit?: number): Observable<any[]>;
+}
+
+export interface paginatedDAL extends DAL {
   getDocCount(): Observable<number>;
-  getPage(limit: number, dir: Direction): Observable<appElement[]>;
+  getPage(limit: number, dir: Direction): Observable<any[]>;
 }

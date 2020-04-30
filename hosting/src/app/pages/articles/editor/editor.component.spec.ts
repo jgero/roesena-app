@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { EditorComponent } from "./editor.component";
-import { AuthServiceStub, MarkdownPreviewStub } from "src/app/testing";
+import { AuthServiceStub, MarkdownPreviewStub, testingRoutes } from "src/app/testing";
 import { ActivatedRouteStub } from "src/app/testing";
 import { ArticleDalStub } from "src/app/testing";
 import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
@@ -31,7 +31,7 @@ xdescribe("Articles-EditorComponent", () => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(testingRoutes),
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
