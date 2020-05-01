@@ -86,8 +86,8 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
 
   addGroup(event: MatChipInputEvent, form: FormGroup) {
     let value = event.value.trim();
-    if (value !== "") {
-      (form.get("groups").value as string[]).push(event.value);
+    if (value !== "" && !form.get("groups").value.includes(value)) {
+      (form.get("groups").value as string[]).push(value);
     }
     event.input.value = "";
     form.get("groups").markAsDirty();

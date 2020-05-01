@@ -7,23 +7,30 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatChipsModule, MatChipInputEvent } from "@angular/material/chips";
+import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { RouterTestingModule } from "@angular/router/testing";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription, of } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from "@angular/forms";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { appPerson } from "src/app/utils/interfaces";
 
 describe("GroupManagerComponent", () => {
   let component: GroupManagerComponent;
   let fixture: ComponentFixture<GroupManagerComponent>;
+  let sub: Subscription;
 
-  const personStub = new PersonDalStub();
+  const personStub = {
+    getPage: (a: any, b: any) => of<appPerson[]>([]),
+    getDocCount: () => of(1),
+    getBySearchStrings: (a: any, b: any) => of<appPerson[]>([]),
+    update: (a: any) => of(true),
+  };
   const authStub = { $user: new BehaviorSubject(null) };
 
   beforeEach(async(() => {
@@ -39,6 +46,7 @@ describe("GroupManagerComponent", () => {
         MatProgressBarModule,
         RouterTestingModule.withRoutes(testingRoutes),
         MatGridListModule,
+        ReactiveFormsModule,
         MatInputModule,
         MatIconModule,
         FormsModule,
@@ -57,7 +65,63 @@ describe("GroupManagerComponent", () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    if (sub) sub.unsubscribe();
+  });
+
   it("should create", () => {
     expect(component).toBeTruthy();
+  });
+
+  it("should init the data observable with a form", (done) => {
+    spyOn(personStub, "getPage").and.returnValue(of([{ id: "asdf", name: "asdf", isConfirmedMember: true, groups: [] }]));
+    component.ngOnInit();
+    fixture.detectChanges();
+    sub = component.$withForm.subscribe((el) => {
+      expect(el[0].form).toBeTruthy();
+      done();
+    });
+  });
+
+  it("should update the data with a form on search", (done) => {
+    spyOn(personStub, "getPage").and.returnValue(of([{ id: "asdf", name: "asdf", isConfirmedMember: true, groups: [] }]));
+    component.onPage({ pageIndex: 1, previousPageIndex: 2 } as PageEvent);
+    fixture.detectChanges();
+    sub = component.$withForm.subscribe((el) => {
+      expect(el[0].form).toBeTruthy();
+      done();
+    });
+  });
+
+  it("should call update correctly on submit", () => {
+    const spy = spyOn(personStub, "update").and.returnValue(of(true));
+    component.onSubmit("asdf", false, [], "test", new FormGroup({}));
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalledWith({ id: "asdf", isConfirmedMember: false, groups: [], name: "test" });
+  });
+
+  describe("on tag changes", () => {
+    let formGroup;
+
+    beforeEach(() => {
+      formGroup = new FormGroup({ groups: new FormControl(["group 1"]) });
+    });
+
+    it("should remove tag", () => {
+      component.removeGroup("group 1", formGroup);
+      expect(formGroup.get("groups").value).toEqual([]);
+    });
+
+    it("should add a tag", () => {
+      component.addGroup({ value: " group 2  ", input: { value: "" } } as MatChipInputEvent, formGroup);
+      expect(formGroup.get("groups").value.length).toBe(2);
+      expect(formGroup.get("groups").value.includes("group 2")).toBeTrue();
+      expect(formGroup.get("groups").value.includes("group 1")).toBeTrue();
+    });
+
+    it("should not add duplicates", () => {
+      component.addGroup({ value: " group 1", input: { value: "" } } as MatChipInputEvent, formGroup);
+      expect(formGroup.get("groups").value.length).toBe(1);
+    });
   });
 });
