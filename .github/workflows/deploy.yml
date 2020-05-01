@@ -20,7 +20,7 @@ jobs:
 
   deploy_to_firebase:
     runs-on: ubuntu-latest
-
+    needs: [bump-version-number]
     steps:
       - name: Checkout master
         uses: actions/checkout@v1

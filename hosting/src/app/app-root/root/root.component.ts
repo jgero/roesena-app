@@ -1,5 +1,5 @@
 import { Router } from "@angular/router";
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map, shareReplay, filter, switchMap, tap } from "rxjs/operators";
@@ -8,13 +8,14 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { environment } from "src/environments/environment";
+import { SwUpdate } from "@angular/service-worker";
 
 @Component({
   selector: "app-root",
   templateUrl: "./root.component.html",
   styleUrls: ["./root.component.scss"],
 })
-export class RootComponent {
+export class RootComponent implements OnInit {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
     shareReplay()
@@ -27,7 +28,8 @@ export class RootComponent {
     private router: Router,
     public auth: AuthService,
     eventDAO: EventDALService,
-    snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private swUpdate: SwUpdate
   ) {
     this.version = environment.buildVersion;
     this.$badgeContentStream = auth.$user.pipe(
@@ -51,6 +53,17 @@ export class RootComponent {
         }
       })
     );
+  }
+
+  ngOnInit() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        this.snackbar
+          .open("Ein update für die App ist bereit", "UPDATE")
+          .onAction()
+          .subscribe(() => location.reload());
+      });
+    }
   }
 
   onHelpClick() {
