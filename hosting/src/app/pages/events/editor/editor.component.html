@@ -7,7 +7,7 @@
   <mat-form-field [style.grid-area]="'title'">
     <mat-label>Titel</mat-label>
     <input matInput formControlName="title" />
-    <mat-error *ngIf="eventForm.controls.title.invalid"> {{ getErrorMessage(eventForm.controls.title) }} </mat-error>
+    <mat-error *ngIf="eventForm.controls.title.invalid"> {{ eventForm.controls.title | errorMessage }} </mat-error>
   </mat-form-field>
 
   <app-markdown-preview [style.grid-area]="'preview'" [markdownText]="eventForm.get('description').value"></app-markdown-preview>
@@ -20,7 +20,7 @@
   <mat-form-field class="date-time" [style.grid-area]="'start-date'">
     <mat-label>Start-Datum</mat-label>
     <input matInput placeholder="DD.MM.YYYY" [matDatepicker]="picker1" formControlName="startDate" />
-    <mat-error *ngIf="eventForm.controls.startDate.invalid"> {{ getErrorMessage(eventForm.controls.startDate) }} </mat-error>
+    <mat-error *ngIf="eventForm.controls.startDate.invalid"> {{ eventForm.controls.startDate | errorMessage }} </mat-error>
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker #picker1></mat-datepicker>
   </mat-form-field>
@@ -28,13 +28,13 @@
   <mat-form-field class="date-time" [style.grid-area]="'start-time'">
     <mat-label>Start-Zeit</mat-label>
     <input matInput placeholder="HH:MM" formControlName="startTime" />
-    <mat-error *ngIf="eventForm.controls.startTime.invalid"> {{ getErrorMessage(eventForm.controls.startTime) }} </mat-error>
+    <mat-error *ngIf="eventForm.controls.startTime.invalid"> {{ eventForm.controls.startTime | errorMessage }} </mat-error>
   </mat-form-field>
 
   <mat-form-field class="date-time" [style.grid-area]="'end-date'">
     <mat-label>End-Datum</mat-label>
     <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker2" formControlName="endDate" />
-    <mat-error *ngIf="eventForm.controls.endDate.invalid"> {{ getErrorMessage(eventForm.controls.endDate) }} </mat-error>
+    <mat-error *ngIf="eventForm.controls.endDate.invalid"> {{ eventForm.controls.endDate | errorMessage }} </mat-error>
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2></mat-datepicker>
   </mat-form-field>
@@ -42,7 +42,7 @@
   <mat-form-field class="date-time" [style.grid-area]="'end-time'">
     <mat-label>End-Zeit</mat-label>
     <input matInput placeholder="HH:MM" formControlName="endTime" />
-    <mat-error *ngIf="eventForm.controls.endTime.invalid"> {{ getErrorMessage(eventForm.controls.endTime) }} </mat-error>
+    <mat-error *ngIf="eventForm.controls.endTime.invalid"> {{ eventForm.controls.endTime | errorMessage }} </mat-error>
   </mat-form-field>
 
   <mat-form-field [style.grid-area]="'tags'">
@@ -65,7 +65,7 @@
       <mat-panel-title>Teilnehmer</mat-panel-title>
       <mat-panel-description>{{
         this.eventForm.get("deadline").invalid
-          ? getErrorMessage(this.eventForm.get("deadline"))
+          ? (this.eventForm.get("deadline") | errorMessage)
           : "Teilnehmer einladen und Deadline festlegen"
       }}</mat-panel-description>
     </mat-expansion-panel-header>
@@ -74,7 +74,7 @@
       <mat-label>Deadline-Datum</mat-label>
       <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker3" formControlName="deadlineDate" />
       <mat-error *ngIf="this.eventForm.get('deadline').get('deadlineDate').invalid">
-        {{ getErrorMessage(this.eventForm.get("deadline").get("deadlineDate")) }}
+        {{ this.eventForm.get("deadline").get("deadlineDate") | errorMessage }}
       </mat-error>
       <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
       <mat-datepicker #picker3></mat-datepicker>
@@ -84,7 +84,7 @@
       <mat-label>Deadline-Zeit</mat-label>
       <input matInput placeholder="HH:MM" formControlName="deadlineTime" />
       <mat-error *ngIf="this.eventForm.get('deadline').get('deadlineTime').invalid">
-        {{ getErrorMessage(this.eventForm.get("deadline").get("deadlineTime")) }}
+        {{ this.eventForm.get("deadline").get("deadlineTime") | errorMessage }}
       </mat-error>
     </mat-form-field>
 
@@ -116,7 +116,7 @@
         </mat-chip>
       </mat-chip-list>
       <mat-error *ngIf="this.eventForm.get('deadline').get('participants').invalid">
-        {{ getErrorMessage(this.eventForm.get("deadline").get("participants")) }}
+        {{ this.eventForm.get("deadline").get("participants") | errorMessage }}
       </mat-error>
     </mat-form-field>
   </mat-expansion-panel>

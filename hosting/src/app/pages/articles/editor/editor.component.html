@@ -7,7 +7,7 @@
   <mat-form-field [style.grid-area]="'title'">
     <mat-label>Titel</mat-label>
     <input matInput formControlName="title" />
-    <mat-error *ngIf="articleForm.controls.title.invalid"> {{ getErrorMessage(articleForm.controls.title) }} </mat-error>
+    <mat-error *ngIf="articleForm.controls.title.invalid"> {{ articleForm.controls.title | errorMessage }} </mat-error>
   </mat-form-field>
 
   <app-markdown-preview [markdownText]="articleForm.get('content').value" [style.grid-area]="'preview'"></app-markdown-preview>

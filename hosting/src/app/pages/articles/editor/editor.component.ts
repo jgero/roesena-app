@@ -78,12 +78,6 @@ export class EditorComponent implements OnDestroy {
     );
   }
 
-  getErrorMessage(ctrl: AbstractControl): string {
-    if (ctrl.hasError("maxlength")) return "Eingabe zu lang";
-    if (ctrl.hasError("required")) return "Pflichtfeld";
-    return "";
-  }
-
   removeTag(tag: string) {
     (this.articleForm.get("tags").value as string[]).splice(
       (this.articleForm.get("tags").value as string[]).findIndex((el) => el === tag),
