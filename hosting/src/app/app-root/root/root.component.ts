@@ -3,10 +3,11 @@ import { Component } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map, shareReplay, filter, switchMap, tap } from "rxjs/operators";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-root",
@@ -19,6 +20,7 @@ export class RootComponent {
     shareReplay()
   );
   $badgeContentStream: Observable<number>;
+  version: string;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -27,6 +29,7 @@ export class RootComponent {
     eventDAO: EventDALService,
     snackbar: MatSnackBar
   ) {
+    this.version = environment.buildVersion;
     this.$badgeContentStream = auth.$user.pipe(
       // listen to user updates and only trigger on new users
       filter((val) => !!val),
