@@ -10,6 +10,7 @@ import { appEvent, appPerson, appElement, Participant } from "src/app/utils/inte
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { AuthService } from "src/app/services/auth.service";
+import { ToLocalTimeStringPipe } from "src/app/shared/converters/to-local-time/to-local-time-string.pipe";
 
 @Component({
   selector: "app-editor",
@@ -70,29 +71,27 @@ export class EditorComponent implements OnDestroy {
       ).pipe(
         tap((ev) => {
           this.event = ev;
+          const p = new ToLocalTimeStringPipe();
           this.eventForm = new FormGroup({
             title: new FormControl(this.event.title, [Validators.required]),
             description: new FormControl(this.event.description, []),
             startDate: new FormControl(this.event.startDate, [Validators.required]),
-            startTime: new FormControl(
-              `${this.event.startDate.getHours()}:${this.event.startDate.getMinutes().toString().padEnd(2, "0")}`,
-              [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-            ),
+            startTime: new FormControl(p.transform(this.event.startDate), [
+              Validators.required,
+              Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$"),
+            ]),
             endDate: new FormControl(this.event.endDate, [Validators.required]),
-            endTime: new FormControl(
-              `${this.event.endDate.getHours()}:${this.event.endDate.getMinutes().toString().padEnd(2, "0")}`,
-              [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-            ),
+            endTime: new FormControl(p.transform(this.event.endDate), [
+              Validators.required,
+              Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$"),
+            ]),
             tags: new FormControl(this.event.tags),
             deadline: new FormGroup(
               {
                 deadlineDate: new FormControl(this.event.deadline),
-                deadlineTime: new FormControl(
-                  this.event.deadline
-                    ? `${this.event.deadline.getHours()}:${this.event.deadline.getMinutes().toString().padEnd(2, "0")}`
-                    : "",
-                  [Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-                ),
+                deadlineTime: new FormControl(this.event.deadline ? p.transform(this.event.deadline) : "", [
+                  Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$"),
+                ]),
                 participants: new FormControl(this.event.participants, [this.getParticipantFormValidatorFn()]),
               },
               [this.getDeadlineFormValidatorFn()]
