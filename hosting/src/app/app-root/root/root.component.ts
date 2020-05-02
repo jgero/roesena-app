@@ -3,10 +3,12 @@ import { Component, OnInit } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map, shareReplay, filter, switchMap, tap } from "rxjs/operators";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { environment } from "src/environments/environment";
+import { SwUpdate } from "@angular/service-worker";
 
 @Component({
   selector: "app-root",
@@ -20,13 +22,15 @@ export class RootComponent implements OnInit {
   );
   $badgeContentStream: Observable<number>;
   isLoading = false;
+  version: string;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     public auth: AuthService,
     private eventDAO: EventDALService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private swUpdate: SwUpdate
   ) {
     this.router.events.subscribe((event) => {
       switch (true) {
@@ -43,6 +47,15 @@ export class RootComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.version = environment.buildVersion;
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        this.snackbar
+          .open("Ein Update für die App ist bereit", "UPDATE")
+          .onAction()
+          .subscribe(() => location.reload());
+      });
+    }
     this.$badgeContentStream = this.auth.$user.pipe(
       // listen to user updates and only trigger on new users
       filter((val) => !!val),
