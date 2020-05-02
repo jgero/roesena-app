@@ -9,6 +9,7 @@ import { appEvent, appPerson, Participant } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { ChipsInputService } from "src/app/services/chips-input.service";
+import { ToLocalTimeStringPipe } from "src/app/shared/converters/to-local-time/to-local-time-string.pipe";
 
 @Component({
   selector: "app-editor",
@@ -43,17 +44,18 @@ export class EditorComponent implements OnDestroy {
     // get the event from the route
     this.initEvent = route.snapshot.data.event;
     // build the form element
+    const p = new ToLocalTimeStringPipe();
     this.eventForm = new FormGroup({
       title: new FormControl(this.initEvent.title, [Validators.required]),
       description: new FormControl(this.initEvent.description, []),
       startDate: new FormControl(this.initEvent.startDate, [Validators.required]),
       startTime: new FormControl(
-        `${this.initEvent.startDate.getHours()}:${this.initEvent.startDate.getMinutes().toString().padEnd(2, "0")}`,
+        p.transform(this.initEvent.startDate),
         [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
       ),
       endDate: new FormControl(this.initEvent.endDate, [Validators.required]),
       endTime: new FormControl(
-        `${this.initEvent.endDate.getHours()}:${this.initEvent.endDate.getMinutes().toString().padEnd(2, "0")}`,
+        p.transform(this.initEvent.endDate),
         [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
       ),
       tags: new FormControl(this.initEvent.tags),
@@ -62,7 +64,7 @@ export class EditorComponent implements OnDestroy {
           deadlineDate: new FormControl(this.initEvent.deadline),
           deadlineTime: new FormControl(
             this.initEvent.deadline
-              ? `${this.initEvent.deadline.getHours()}:${this.initEvent.deadline.getMinutes().toString().padEnd(2, "0")}`
+              ? p.transform(this.initEvent.deadline)
               : "",
             [Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
           ),
