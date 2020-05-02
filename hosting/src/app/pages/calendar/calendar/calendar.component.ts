@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from "@angular/core";
-import { Subscription, Observable } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
-import { map, tap, switchMap, take } from "rxjs/operators";
+import { Subscription, Observable } from "rxjs";
+import { map, tap, switchMap } from "rxjs/operators";
+
 import { appEvent } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 
