@@ -82,7 +82,6 @@ export class PersonDalService implements paginatedDAL {
       .snapshotChanges()
       .pipe(
         map(convertMany),
-        tap((el) => console.log(el)),
         catchError((err) => {
           this.snackbar.open(`Fehler beim laden von Personen: ${err}`, "OK");
           return of([]);

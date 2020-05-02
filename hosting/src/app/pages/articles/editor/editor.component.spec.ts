@@ -16,15 +16,29 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
+import { of } from "rxjs";
+import { appArticle } from "src/app/utils/interfaces";
+import { ReactiveFormsModule } from "@angular/forms";
 
-xdescribe("Articles-EditorComponent", () => {
+describe("Articles-EditorComponent", () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
 
   const authStub = new AuthServiceStub();
   authStub.$user.next({ id: "asdf", isConfirmedMember: true, name: "John", groups: ["admins"] });
-  const activatedRouteStub = new ActivatedRouteStub();
-  const routerSpy = jasmine.createSpyObj("Router", ["navigate"]);
+  const activatedRouteStub = {
+    data: of<{ article: appArticle }>({
+      article: {
+        id: "asd",
+        title: "asdf",
+        created: new Date(),
+        content: "",
+        tags: [],
+        ownerName: "asdf",
+        ownerId: "asdf",
+      },
+    }),
+  };
   const articleStub = new ArticleDalStub();
 
   beforeEach(async(() => {
@@ -32,6 +46,7 @@ xdescribe("Articles-EditorComponent", () => {
       imports: [
         NoopAnimationsModule,
         RouterTestingModule.withRoutes(testingRoutes),
+        ReactiveFormsModule,
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
@@ -42,7 +57,6 @@ xdescribe("Articles-EditorComponent", () => {
       declarations: [EditorComponent, MarkdownPreviewStub],
       providers: [
         { provide: ArticleDalService, useValue: articleStub },
-        { provide: Router, useValue: routerSpy },
         { provide: AuthService, useValue: authStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],

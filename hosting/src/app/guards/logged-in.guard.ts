@@ -5,7 +5,7 @@ import { AuthService } from "../services/auth.service";
 import { map, tap } from "rxjs/operators";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class LoggedInGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
@@ -13,6 +13,6 @@ export class LoggedInGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.$user.getValue() ? true : this.router.parseUrl("/auth/login");
+    return this.auth.$user.getValue() !== null ? true : this.router.parseUrl("/auth/login");
   }
 }

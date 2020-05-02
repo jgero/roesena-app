@@ -15,7 +15,7 @@ import { ChipsInputService } from "src/app/services/chips-input.service";
   templateUrl: "./editor.component.html",
   styleUrls: ["./editor.component.scss"],
 })
-export class EditorComponent implements OnDestroy {
+export class EditorComponent implements OnDestroy, OnInit {
   $data: Observable<appArticle>;
   private article: appArticle;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -24,32 +24,15 @@ export class EditorComponent implements OnDestroy {
 
   constructor(
     private articleDAO: ArticleDalService,
-    route: ActivatedRoute,
-    private auth: AuthService,
+    private route: ActivatedRoute,
     private router: Router,
     public chips: ChipsInputService
-  ) {
-    const id = route.snapshot.paramMap.get("id");
-    this.$data = (id
-      ? this.articleDAO.getById(id).pipe(
-          tap((article) => {
-            if (!article) {
-              this.router.navigate(["articles", "overview"]);
-            }
-          })
-        )
-      : of<appArticle>({
-          id: "",
-          title: "",
-          content: "",
-          ownerId: this.auth.$user.getValue().id,
-          ownerName: this.auth.$user.getValue().name,
-          created: new Date(),
-          tags: [],
-        })
-    ).pipe(
+  ) {}
+
+  ngOnInit() {
+    this.$data = this.route.data.pipe(
+      map((routeData) => routeData.article),
       tap((article: appArticle) => {
-        if (article === null) return;
         this.article = article;
         this.articleForm = new FormGroup({
           title: new FormControl(article.title, [Validators.required, Validators.maxLength(35)]),
@@ -67,15 +50,15 @@ export class EditorComponent implements OnDestroy {
     updated.content = this.articleForm.get("content").value;
     updated.tags = this.articleForm.get("tags").value;
     const action = this.article.id
-      ? this.articleDAO.update(updated).pipe(
+      ? // if id exists run update and mark form as clean
+        this.articleDAO.update(updated).pipe(
           tap(() => {
             this.articleForm.enable();
             this.articleForm.markAsPristine();
           })
         )
-      : this.articleDAO.insert(updated).pipe(tap((newId) => this.router.navigate(["articles", "edit", newId])));
-    // save
-    // when saving worked the query in constructor will fire again, reset the form and event can be saved again, becaus id will then be set
+      : // else inser the new doc and go to new editor page with created id
+        this.articleDAO.insert(updated).pipe(tap((newId) => this.router.navigate(["articles", "edit", newId])));
     this.subs.push(action.subscribe(null, null, null));
   }
 

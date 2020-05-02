@@ -1,4 +1,4 @@
-import { Router } from "@angular/router";
+import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
@@ -19,6 +19,7 @@ export class RootComponent implements OnInit {
     shareReplay()
   );
   $badgeContentStream: Observable<number>;
+  isLoading = false;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -26,7 +27,20 @@ export class RootComponent implements OnInit {
     public auth: AuthService,
     private eventDAO: EventDALService,
     private snackbar: MatSnackBar
-  ) {}
+  ) {
+    this.router.events.subscribe((event) => {
+      switch (true) {
+        case event instanceof NavigationStart:
+          this.isLoading = true;
+          break;
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError:
+          this.isLoading = false;
+          break;
+      }
+    });
+  }
 
   ngOnInit() {
     this.$badgeContentStream = this.auth.$user.pipe(

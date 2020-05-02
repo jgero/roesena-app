@@ -27,6 +27,7 @@ import { CardsModule } from "../shared/cards/cards.module";
 import { MatBadgeModule } from "@angular/material/badge";
 import { AboutComponent } from "./about/about.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent],
@@ -50,6 +51,7 @@ import { NotFoundComponent } from "./not-found/not-found.component";
     MatNativeDateModule,
     MatSnackBarModule,
     MatBadgeModule,
+    MatProgressBarModule,
     CardsModule,
     MarkdownModule.forRoot(),
   ],
