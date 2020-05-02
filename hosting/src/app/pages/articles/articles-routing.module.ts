@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "overview" },
   { path: "overview", component: OverviewComponent },
   { path: "overview/:searchString", component: OverviewComponent },
-  { path: "details/:id", component: DetailsComponent },
+  { path: "details/:id", component: DetailsComponent, resolve: { article: ArticleResolver } },
   { path: "edit", component: EditorComponent, canActivate: [LoggedInGuard], resolve: { article: EmptyArticleResolver } },
   { path: "edit/:id", component: EditorComponent, canActivate: [LoggedInGuard], resolve: { article: ArticleResolver } },
 ];
