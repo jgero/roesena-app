@@ -32,6 +32,36 @@ describe("ErrorMessagePipe", () => {
       a.setErrors({ required: true });
       expect(pipe.transform(a)).toBeTruthy();
     });
+    it("maxlength", () => {
+      const pipe = new ErrorMessagePipe();
+      const a = new FormControl();
+      a.setErrors({ maxlength: true });
+      expect(pipe.transform(a)).toBeTruthy();
+    });
+    it("matDatepickerParse", () => {
+      const pipe = new ErrorMessagePipe();
+      const a = new FormControl();
+      a.setErrors({ matDatepickerParse: true });
+      expect(pipe.transform(a)).toBeTruthy();
+    });
+    it("dateAndTime", () => {
+      const pipe = new ErrorMessagePipe();
+      const a = new FormControl();
+      a.setErrors({ dateAndTime: true });
+      expect(pipe.transform(a)).toBeTruthy();
+    });
+    it("mustContainSelf", () => {
+      const pipe = new ErrorMessagePipe();
+      const a = new FormControl();
+      a.setErrors({ mustContainSelf: true });
+      expect(pipe.transform(a)).toBeTruthy();
+    });
+    it("participantsMissing", () => {
+      const pipe = new ErrorMessagePipe();
+      const a = new FormControl();
+      a.setErrors({ participantsMissing: true });
+      expect(pipe.transform(a)).toBeTruthy();
+    });
   });
 
   it("should not return message if there is no error", () => {

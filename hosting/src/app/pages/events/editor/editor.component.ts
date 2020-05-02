@@ -10,6 +10,7 @@ import { appEvent, appPerson, appElement, Participant } from "src/app/utils/inte
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { AuthService } from "src/app/services/auth.service";
+import { ChipsInputService } from "src/app/services/chips-input.service";
 
 @Component({
   selector: "app-editor",
@@ -30,7 +31,8 @@ export class EditorComponent implements OnDestroy {
     private eventDAO: EventDALService,
     route: ActivatedRoute,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    public chips: ChipsInputService
   ) {
     const id = route.snapshot.paramMap.get("id");
     this.$data = combineLatest([
@@ -223,33 +225,6 @@ export class EditorComponent implements OnDestroy {
     // manually run the validity check after a person was clicked
     this.eventForm.get("deadline").get("participants").updateValueAndValidity();
     this.eventForm.get("deadline").get("participants").markAsDirty();
-  }
-
-  getErrorMessage(ctrl: AbstractControl): string {
-    if (ctrl.hasError("matDatepickerParse")) return "Datum ungültig";
-    if (ctrl.hasError("pattern")) return "Eingabe ungültig";
-    if (ctrl.hasError("dateAndTime")) return "Datum und Zeit müssen eingegeben werden";
-    if (ctrl.hasError("mustContainSelf")) return "Man muss selbst Teilnehmer sein";
-    if (ctrl.hasError("participantsMissing")) return "Teilnehmer dürfen nicht leer sein wenn Deadline festgelegt ist";
-    if (ctrl.hasError("required")) return "Pflichtfeld";
-    return "";
-  }
-
-  removeTag(tag: string) {
-    (this.eventForm.get("tags").value as string[]).splice(
-      (this.eventForm.get("tags").value as string[]).findIndex((el) => el === tag),
-      1
-    );
-    this.eventForm.get("tags").markAsDirty();
-  }
-
-  addTag(event: MatChipInputEvent) {
-    let value = event.value.trim();
-    if (value !== "") {
-      (this.eventForm.get("tags").value as string[]).push(event.value);
-    }
-    event.input.value = "";
-    this.eventForm.get("tags").markAsDirty();
   }
 
   ngOnDestroy() {

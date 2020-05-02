@@ -19,7 +19,7 @@
 
   <mat-form-field [style.grid-area]="'tags'">
     <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
-      <mat-chip *ngFor="let tag of articleForm.get('tags').value" (removed)="removeTag(tag)">
+      <mat-chip *ngFor="let tag of articleForm.get('tags').value" (removed)="chips.removeItem(tag, articleForm.get('tags'))">
         {{ tag }}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
@@ -27,7 +27,7 @@
         placeholder="Tags"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="addTag($event)"
+        (matChipInputTokenEnd)="chips.addItem($event, articleForm.get('tags'))"
       />
     </mat-chip-list>
   </mat-form-field>

@@ -8,6 +8,7 @@ import { tap, map, delay } from "rxjs/operators";
 import { AuthService } from "src/app/services/auth.service";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { ENTER, COMMA } from "@angular/cdk/keycodes";
+import { ChipsInputService } from "src/app/services/chips-input.service";
 
 @Component({
   selector: "app-editor",
@@ -22,7 +23,13 @@ export class EditorComponent implements OnDestroy {
   private image: appImage;
   private subs: Subscription[] = [];
 
-  constructor(route: ActivatedRoute, private imageDAO: ImageDalService, private router: Router, auth: AuthService) {
+  constructor(
+    route: ActivatedRoute,
+    private imageDAO: ImageDalService,
+    private router: Router,
+    auth: AuthService,
+    public chips: ChipsInputService
+  ) {
     const id = route.snapshot.paramMap.get("id");
     this.$image = (id
       ? this.imageDAO.getById(id).pipe(
@@ -85,23 +92,6 @@ export class EditorComponent implements OnDestroy {
       this.$url.next(fr.result as string);
     };
     fr.readAsDataURL(file);
-  }
-
-  removeTag(tag: string) {
-    (this.imageForm.get("tags").value as string[]).splice(
-      (this.imageForm.get("tags").value as string[]).findIndex((el) => el === tag),
-      1
-    );
-    this.imageForm.get("tags").markAsDirty();
-  }
-
-  addTag(event: MatChipInputEvent) {
-    let value = event.value.trim();
-    if (value !== "") {
-      (this.imageForm.get("tags").value as string[]).push(event.value);
-    }
-    event.input.value = "";
-    this.imageForm.get("tags").markAsDirty();
   }
 
   ngOnDestroy() {

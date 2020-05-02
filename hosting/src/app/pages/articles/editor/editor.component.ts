@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { tap, map, delay } from "rxjs/operators";
 import { MatChipInputEvent } from "@angular/material/chips";
+import { ChipsInputService } from "src/app/services/chips-input.service";
 
 @Component({
   selector: "app-editor",
@@ -21,7 +22,13 @@ export class EditorComponent implements OnDestroy {
   articleForm: FormGroup;
   private subs: Subscription[] = [];
 
-  constructor(private articleDAO: ArticleDalService, route: ActivatedRoute, private auth: AuthService, private router: Router) {
+  constructor(
+    private articleDAO: ArticleDalService,
+    route: ActivatedRoute,
+    private auth: AuthService,
+    private router: Router,
+    public chips: ChipsInputService
+  ) {
     const id = route.snapshot.paramMap.get("id");
     this.$data = (id
       ? this.articleDAO.getById(id).pipe(
@@ -76,23 +83,6 @@ export class EditorComponent implements OnDestroy {
     this.subs.push(
       this.articleDAO.delete(this.article.id).subscribe({ next: () => this.router.navigate(["articles", "overview"]) })
     );
-  }
-
-  removeTag(tag: string) {
-    (this.articleForm.get("tags").value as string[]).splice(
-      (this.articleForm.get("tags").value as string[]).findIndex((el) => el === tag),
-      1
-    );
-    this.articleForm.get("tags").markAsDirty();
-  }
-
-  addTag(event: MatChipInputEvent) {
-    let value = event.value.trim();
-    if (value !== "") {
-      (this.articleForm.get("tags").value as string[]).push(event.value);
-    }
-    event.input.value = "";
-    this.articleForm.get("tags").markAsDirty();
   }
 
   ngOnDestroy() {

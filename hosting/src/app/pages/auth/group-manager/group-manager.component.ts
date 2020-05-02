@@ -4,7 +4,6 @@ import { Component, OnDestroy } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { MatChipInputEvent } from "@angular/material/chips";
 import { PageEvent } from "@angular/material/paginator";
 import { ENTER, COMMA } from "@angular/cdk/keycodes";
 
@@ -12,6 +11,7 @@ import { PersonDalService } from "src/app/services/DAL/person-dal.service";
 import { appPerson } from "src/app/utils/interfaces";
 import { PaginatedOverview } from "src/app/utils/ui-abstractions";
 import { AuthService } from "src/app/services/auth.service";
+import { ChipsInputService } from "src/app/services/chips-input.service";
 
 interface appPersonWithForm extends appPerson {
   form: FormGroup;
@@ -31,7 +31,13 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
     return Math.ceil(window.innerWidth / 700);
   }
 
-  constructor(private personsDAO: PersonDalService, router: Router, route: ActivatedRoute, auth: AuthService) {
+  constructor(
+    private personsDAO: PersonDalService,
+    router: Router,
+    route: ActivatedRoute,
+    auth: AuthService,
+    public chips: ChipsInputService
+  ) {
     super(["auth", "group-manager"], personsDAO, route, router, auth);
   }
 
@@ -74,23 +80,6 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
         form.enable();
       },
     });
-  }
-
-  removeGroup(tag: string, form: FormGroup) {
-    (form.get("groups").value as string[]).splice(
-      (form.get("groups").value as string[]).findIndex((el) => el === tag),
-      1
-    );
-    form.get("groups").markAsDirty();
-  }
-
-  addGroup(event: MatChipInputEvent, form: FormGroup) {
-    let value = event.value.trim();
-    if (value !== "" && !form.get("groups").value.includes(value)) {
-      (form.get("groups").value as string[]).push(value);
-    }
-    event.input.value = "";
-    form.get("groups").markAsDirty();
   }
 
   ngOnDestroy() {

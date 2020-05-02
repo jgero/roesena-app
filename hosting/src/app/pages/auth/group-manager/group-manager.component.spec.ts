@@ -99,29 +99,4 @@ describe("GroupManagerComponent", () => {
     fixture.detectChanges();
     expect(spy).toHaveBeenCalledWith({ id: "asdf", isConfirmedMember: false, groups: [], name: "test" });
   });
-
-  describe("on tag changes", () => {
-    let formGroup;
-
-    beforeEach(() => {
-      formGroup = new FormGroup({ groups: new FormControl(["group 1"]) });
-    });
-
-    it("should remove tag", () => {
-      component.removeGroup("group 1", formGroup);
-      expect(formGroup.get("groups").value).toEqual([]);
-    });
-
-    it("should add a tag", () => {
-      component.addGroup({ value: " group 2  ", input: { value: "" } } as MatChipInputEvent, formGroup);
-      expect(formGroup.get("groups").value.length).toBe(2);
-      expect(formGroup.get("groups").value.includes("group 2")).toBeTrue();
-      expect(formGroup.get("groups").value.includes("group 1")).toBeTrue();
-    });
-
-    it("should not add duplicates", () => {
-      component.addGroup({ value: " group 1", input: { value: "" } } as MatChipInputEvent, formGroup);
-      expect(formGroup.get("groups").value.length).toBe(1);
-    });
-  });
 });
