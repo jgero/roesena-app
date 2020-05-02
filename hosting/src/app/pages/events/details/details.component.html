@@ -1,61 +1,57 @@
-<ng-container *ngIf="$data | async as ev; else loading">
-  <mat-toolbar [color]="'accent'">
-    <div>{{ ev.title }}</div>
-    <div class="spacer"></div>
-    <a mat-icon-button [routerLink]="'/events/overview'"><mat-icon>apps</mat-icon></a>
-    <a mat-icon-button *ngIf="canEdit(ev)" [routerLink]="'/events/edit/' + ev.id"><mat-icon>edit</mat-icon></a>
-  </mat-toolbar>
-  <mat-toolbar
-    ><span>
-      <time [dateTime]="ev.startDate">{{ ev.startDate | toLocalDateString }} {{ ev.startDate | toLocalTimeString }}</time>
-      <span> - </span>
-      <time [dateTime]="ev.endDate">{{ ev.endDate | toLocalDateString }} {{ ev.endDate | toLocalTimeString }}</time>
-    </span>
-    <div class="spacer"></div>
-    <div>{{ ev.ownerName }}</div>
-  </mat-toolbar>
-  <main>
-    <app-markdown-viewer [markdownText]="ev.description"></app-markdown-viewer>
-    <mat-chip-list>
-      <mat-chip *ngFor="let tag of ev.tags"> {{ tag }} </mat-chip>
-    </mat-chip-list>
-    <mat-list *ngIf="ev.participants.length > 0 && auth.$user | async as user">
-      <mat-divider></mat-divider>
-      <div mat-subheader>Rückmeldungen: Deadline {{ ev.deadline | toLocalDateString }} {{ ev.deadline | toLocalTimeString }}</div>
-      <mat-list-item>
-        <div mat-line>Angenommen: {{ getAmountAccumulated(ev) }} Personen</div>
-        <mat-chip-list mat-line>
-          <ng-container *ngFor="let participant of ev.participants">
-            <mat-chip [color]="'primary'" selected *ngIf="participant.amount > 0" (click)="onParticipantClick(participant.id)">
-              {{ participant.name + " " + participant.amount }}
-            </mat-chip>
-          </ng-container>
-        </mat-chip-list>
-      </mat-list-item>
-      <mat-list-item>
-        <div mat-line>Abgelehnt:</div>
-        <mat-chip-list mat-line>
-          <ng-container *ngFor="let participant of ev.participants">
-            <mat-chip [color]="'warn'" selected *ngIf="participant.amount === 0" (click)="onParticipantClick(participant.id)">
-              {{ participant.name }}
-            </mat-chip>
-          </ng-container>
-        </mat-chip-list>
-      </mat-list-item>
-      <mat-list-item>
-        <div mat-line>Ausstehend: {{ getPendingPercent(ev) }}% / {{ getPendingAmount(ev) }} Personen</div>
-        <mat-chip-list mat-line>
-          <ng-container *ngFor="let participant of ev.participants">
-            <mat-chip *ngIf="participant.amount < 0" (click)="onParticipantClick(participant.id)">
-              {{ participant.name }}
-            </mat-chip>
-          </ng-container>
-        </mat-chip-list>
-      </mat-list-item>
-    </mat-list>
-  </main>
-</ng-container>
-
-<ng-template #loading>
-  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
-</ng-template>
+<mat-toolbar [color]="'accent'">
+  <div>{{ event.title }}</div>
+  <div class="spacer"></div>
+  <a mat-icon-button [routerLink]="'/events/overview'"><mat-icon>apps</mat-icon></a>
+  <a mat-icon-button *ngIf="canEdit(event)" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
+</mat-toolbar>
+<mat-toolbar
+  ><span>
+    <time [dateTime]="event.startDate">{{ event.startDate | toLocalDateString }} {{ event.startDate | toLocalTimeString }}</time>
+    <span> - </span>
+    <time [dateTime]="event.endDate">{{ event.endDate | toLocalDateString }} {{ event.endDate | toLocalTimeString }}</time>
+  </span>
+  <div class="spacer"></div>
+  <div>{{ event.ownerName }}</div>
+</mat-toolbar>
+<main>
+  <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
+  <mat-chip-list>
+    <mat-chip *ngFor="let tag of event.tags"> {{ tag }} </mat-chip>
+  </mat-chip-list>
+  <mat-list *ngIf="event.participants.length > 0 && auth.$user | async as user">
+    <mat-divider></mat-divider>
+    <div mat-subheader>
+      Rückmeldungen: Deadline {{ event.deadline | toLocalDateString }} {{ event.deadline | toLocalTimeString }}
+    </div>
+    <mat-list-item>
+      <div mat-line>Angenommen: {{ amountAccumulated }} Personen</div>
+      <mat-chip-list mat-line>
+        <ng-container *ngFor="let participant of event.participants">
+          <mat-chip [color]="'primary'" selected *ngIf="participant.amount > 0" (click)="onParticipantClick(participant.id)">
+            {{ participant.name + " " + participant.amount }}
+          </mat-chip>
+        </ng-container>
+      </mat-chip-list>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line>Abgelehnt:</div>
+      <mat-chip-list mat-line>
+        <ng-container *ngFor="let participant of event.participants">
+          <mat-chip [color]="'warn'" selected *ngIf="participant.amount === 0" (click)="onParticipantClick(participant.id)">
+            {{ participant.name }}
+          </mat-chip>
+        </ng-container>
+      </mat-chip-list>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line>Ausstehend: {{ pendingPercent }}% / {{ pendingAmount }} Personen</div>
+      <mat-chip-list mat-line>
+        <ng-container *ngFor="let participant of event.participants">
+          <mat-chip *ngIf="participant.amount < 0" (click)="onParticipantClick(participant.id)">
+            {{ participant.name }}
+          </mat-chip>
+        </ng-container>
+      </mat-chip-list>
+    </mat-list-item>
+  </mat-list>
+</main>

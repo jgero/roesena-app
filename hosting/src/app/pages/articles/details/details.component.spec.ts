@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
+import { of } from "rxjs";
 
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatChipsModule } from "@angular/material/chips";
@@ -10,17 +11,30 @@ import { MatIconModule } from "@angular/material/icon";
 
 import { DetailsComponent } from "./details.component";
 import { ConvertersModule } from "src/app/shared/converters/converters.module";
-
-import { ArticleDalService } from "src/app/services/DAL/article-dal.service";
 import { AuthService } from "src/app/services/auth.service";
-import { ActivatedRouteStub, MarkdownViewerStub, ArticleDalStub, AuthServiceStub, testingRoutes } from "src/app/testing";
+import { ActivatedRouteStub, MarkdownViewerStub, AuthServiceStub, testingRoutes } from "src/app/testing";
+import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 
 describe("Articles-DetailsComponent", () => {
   let component: DetailsComponent;
   let fixture: ComponentFixture<DetailsComponent>;
 
-  const activatedRouteStub = new ActivatedRouteStub({ id: "12341234" });
-  const articleDalStub = new ArticleDalStub();
+  const activatedRouteStub = {
+    snapshot: {
+      data: {
+        article: {
+          id: "",
+          ownerId: "",
+          ownerName: "",
+          tags: [],
+          title: "",
+          content: "",
+          created: new Date(),
+        },
+      },
+    },
+  };
+  const imageStub = { getBySearchStrings: (a: any, b: any) => of([]) };
   const authServiceStub = new AuthServiceStub();
 
   beforeEach(async(() => {
@@ -36,7 +50,7 @@ describe("Articles-DetailsComponent", () => {
       ],
       declarations: [DetailsComponent, MarkdownViewerStub],
       providers: [
-        { provide: ArticleDalService, useValue: articleDalStub },
+        { provide: ImageDalService, useValue: imageStub },
         { provide: AuthService, useValue: authServiceStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
@@ -44,7 +58,6 @@ describe("Articles-DetailsComponent", () => {
   }));
 
   beforeEach(() => {
-    activatedRouteStub.setParamMap({ id: "12341234" });
     fixture = TestBed.createComponent(DetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

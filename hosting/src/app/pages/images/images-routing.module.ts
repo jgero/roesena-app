@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: "", redirectTo: "overview", pathMatch: "full" },
   { path: "overview", component: OverviewComponent },
   { path: "overview/:searchString", component: OverviewComponent },
-  { path: "details/:id", component: DetailsComponent },
+  { path: "details/:id", component: DetailsComponent, resolve: { image: ImageResolver, url: UrlResolver } },
   {
     path: "edit",
     component: EditorComponent,
