@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Observable, of, zip, Subscription, BehaviorSubject } from "rxjs";
-import { appImage } from "src/app/utils/interfaces";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { FormGroup, FormControl } from "@angular/forms";
-import { tap, map, delay } from "rxjs/operators";
-import { AuthService } from "src/app/services/auth.service";
-import { MatChipInputEvent } from "@angular/material/chips";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnDestroy } from "@angular/core";
 import { ENTER, COMMA } from "@angular/cdk/keycodes";
+import { Subscription } from "rxjs";
+import { tap } from "rxjs/operators";
+
+import { appImage } from "src/app/utils/interfaces";
+import { ImageDalService } from "src/app/services/DAL/image-dal.service";
 import { ChipsInputService } from "src/app/services/chips-input.service";
 
 @Component({
@@ -16,57 +15,26 @@ import { ChipsInputService } from "src/app/services/chips-input.service";
   styleUrls: ["./editor.component.scss"],
 })
 export class EditorComponent implements OnDestroy {
-  $image: Observable<appImage>;
-  $url = new BehaviorSubject<string>("");
+  readonly initialImage: appImage;
+  url: string;
   imageForm: FormGroup;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  private image: appImage;
   private subs: Subscription[] = [];
 
-  constructor(
-    route: ActivatedRoute,
-    private imageDAO: ImageDalService,
-    private router: Router,
-    auth: AuthService,
-    public chips: ChipsInputService
-  ) {
-    const id = route.snapshot.paramMap.get("id");
-    this.$image = (id
-      ? this.imageDAO.getById(id).pipe(
-          tap((event) => {
-            if (!event) {
-              router.navigate(["images", "overview"]);
-            }
-          })
-        )
-      : of<appImage>({
-          created: new Date(),
-          ownerId: auth.$user.getValue().id,
-          ownerName: auth.$user.getValue().name,
-          id: "",
-          tags: [],
-        })
-    ).pipe(
-      tap((image) => {
-        if (image === null) this.router.navigate(["images", "overview"]);
-        // set the url to the one loaded from the image, only if the image already exists
-        if (image.id) {
-          this.subs.push(this.imageDAO.getDownloadURL(image.id).subscribe({ next: (url) => this.$url.next(url) }));
-        }
-        this.image = image;
-        this.imageForm = new FormGroup({
-          tags: new FormControl(image.tags),
-          image: new FormControl(""),
-        });
-      })
-    );
+  constructor(route: ActivatedRoute, private imageDAO: ImageDalService, private router: Router, public chips: ChipsInputService) {
+    this.url = route.snapshot.data.url;
+    this.initialImage = route.snapshot.data.image;
+    this.imageForm = new FormGroup({
+      tags: new FormControl(this.initialImage.tags),
+      image: new FormControl(""),
+    });
   }
 
   onSubmit() {
     this.imageForm.disable();
-    let updated = this.image;
+    let updated = this.initialImage;
     updated.tags = this.imageForm.get("tags").value;
-    const action = this.image.id
+    const action = this.initialImage.id
       ? this.imageDAO.update(updated, this.imageForm.get("image").value).pipe(
           tap(() => {
             this.imageForm.enable();
@@ -80,7 +48,9 @@ export class EditorComponent implements OnDestroy {
   }
 
   onDelete() {
-    this.subs.push(this.imageDAO.delete(this.image.id).subscribe({ next: () => this.router.navigate(["images", "overview"]) }));
+    this.subs.push(
+      this.imageDAO.delete(this.initialImage.id).subscribe({ next: () => this.router.navigate(["images", "overview"]) })
+    );
   }
 
   onImageChange(file: File) {
@@ -89,7 +59,7 @@ export class EditorComponent implements OnDestroy {
     fr.onload = () => {
       this.imageForm.get("image").setValue(fr.result);
       this.imageForm.get("image").markAsDirty();
-      this.$url.next(fr.result as string);
+      this.url = fr.result as string;
     };
     fr.readAsDataURL(file);
   }
