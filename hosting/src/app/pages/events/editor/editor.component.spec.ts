@@ -30,21 +30,23 @@ describe("Events-EditorComponent", () => {
   const authStub = new AuthServiceStub();
   authStub.$user.next({ id: "asdf", isConfirmedMember: true, name: "John", groups: ["admins"] });
   const activatedRouteStub = {
-    data: of({
-      event: {
-        id: "",
-        ownerId: "",
-        ownerName: "",
-        tags: [],
-        description: "",
-        deadline: null,
-        startDate: new Date(),
-        endDate: new Date(),
-        title: "",
-        participants: [],
+    snapshot: {
+      data: {
+        event: {
+          id: "",
+          ownerId: "",
+          ownerName: "",
+          tags: [],
+          description: "",
+          deadline: null,
+          startDate: new Date(),
+          endDate: new Date(),
+          title: "",
+          participants: [],
+        },
+        persons: [],
       },
-      persons: [],
-    }),
+    },
   };
   new ActivatedRouteStub();
   const eventsStub = new EventDalStub();

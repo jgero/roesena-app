@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, Validators, FormGroup, AbstractControl, ValidatorFn } from "@angular/forms";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { Observable, of, Subscription, combineLatest } from "rxjs";
-import { tap, map, delay } from "rxjs/operators";
+import { Subscription } from "rxjs";
+import { tap } from "rxjs/operators";
 
-import { appEvent, appPerson, appElement, Participant } from "src/app/utils/interfaces";
+import { appEvent, appPerson, Participant } from "src/app/utils/interfaces";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { AuthService } from "src/app/services/auth.service";
 import { ChipsInputService } from "src/app/services/chips-input.service";
@@ -15,10 +15,9 @@ import { ChipsInputService } from "src/app/services/chips-input.service";
   templateUrl: "./editor.component.html",
   styleUrls: ["./editor.component.scss"],
 })
-export class EditorComponent implements OnDestroy, OnInit {
-  $data: Observable<any>;
-  event: appEvent;
-  persons: appPerson[];
+export class EditorComponent implements OnDestroy {
+  readonly initEvent: appEvent;
+  readonly persons: appPerson[];
   groups: string[] = [];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   eventForm: FormGroup;
@@ -26,58 +25,52 @@ export class EditorComponent implements OnDestroy, OnInit {
 
   constructor(
     private eventDAO: EventDALService,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private auth: AuthService,
     private router: Router,
     public chips: ChipsInputService
-  ) {}
-
-  ngOnInit() {
-    this.$data = this.route.data.pipe(
-      tap((routeData) => {
-        // get persons from route data
-        this.persons = routeData.persons;
-        // build groups from person data
-        this.persons.forEach((person) => {
-          person.groups.forEach((group) => {
-            if (!this.groups.includes(group)) {
-              this.groups.push(group);
-            }
-          });
-        });
-        // get the event from the route
-        this.event = routeData.event;
-        // build the form element
-        this.eventForm = new FormGroup({
-          title: new FormControl(this.event.title, [Validators.required]),
-          description: new FormControl(this.event.description, []),
-          startDate: new FormControl(this.event.startDate, [Validators.required]),
-          startTime: new FormControl(
-            `${this.event.startDate.getHours()}:${this.event.startDate.getMinutes().toString().padEnd(2, "0")}`,
-            [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
+  ) {
+    // get persons from route data
+    this.persons = route.snapshot.data.persons;
+    // build groups from person data
+    this.persons.forEach((person) => {
+      person.groups.forEach((group) => {
+        if (!this.groups.includes(group)) {
+          this.groups.push(group);
+        }
+      });
+    });
+    // get the event from the route
+    this.initEvent = route.snapshot.data.event;
+    // build the form element
+    this.eventForm = new FormGroup({
+      title: new FormControl(this.initEvent.title, [Validators.required]),
+      description: new FormControl(this.initEvent.description, []),
+      startDate: new FormControl(this.initEvent.startDate, [Validators.required]),
+      startTime: new FormControl(
+        `${this.initEvent.startDate.getHours()}:${this.initEvent.startDate.getMinutes().toString().padEnd(2, "0")}`,
+        [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
+      ),
+      endDate: new FormControl(this.initEvent.endDate, [Validators.required]),
+      endTime: new FormControl(
+        `${this.initEvent.endDate.getHours()}:${this.initEvent.endDate.getMinutes().toString().padEnd(2, "0")}`,
+        [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
+      ),
+      tags: new FormControl(this.initEvent.tags),
+      deadline: new FormGroup(
+        {
+          deadlineDate: new FormControl(this.initEvent.deadline),
+          deadlineTime: new FormControl(
+            this.initEvent.deadline
+              ? `${this.initEvent.deadline.getHours()}:${this.initEvent.deadline.getMinutes().toString().padEnd(2, "0")}`
+              : "",
+            [Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
           ),
-          endDate: new FormControl(this.event.endDate, [Validators.required]),
-          endTime: new FormControl(
-            `${this.event.endDate.getHours()}:${this.event.endDate.getMinutes().toString().padEnd(2, "0")}`,
-            [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-          ),
-          tags: new FormControl(this.event.tags),
-          deadline: new FormGroup(
-            {
-              deadlineDate: new FormControl(this.event.deadline),
-              deadlineTime: new FormControl(
-                this.event.deadline
-                  ? `${this.event.deadline.getHours()}:${this.event.deadline.getMinutes().toString().padEnd(2, "0")}`
-                  : "",
-                [Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-              ),
-              participants: new FormControl(this.event.participants, [this.getParticipantFormValidatorFn()]),
-            },
-            [this.getDeadlineFormValidatorFn()]
-          ),
-        });
-      })
-    );
+          participants: new FormControl(this.initEvent.participants, [this.getParticipantFormValidatorFn()]),
+        },
+        [this.getDeadlineFormValidatorFn()]
+      ),
+    });
   }
 
   onAddGroup(group: string) {
@@ -119,9 +112,9 @@ export class EditorComponent implements OnDestroy, OnInit {
   onSubmit() {
     this.eventForm.disable();
     const updated: appEvent = {
-      id: this.event.id,
-      ownerId: this.event.ownerId,
-      ownerName: this.event.ownerName,
+      id: this.initEvent.id,
+      ownerId: this.initEvent.ownerId,
+      ownerName: this.initEvent.ownerName,
       title: this.eventForm.get("title").value,
       description: this.eventForm.get("description").value,
       tags: this.eventForm.get("tags").value,
@@ -133,7 +126,7 @@ export class EditorComponent implements OnDestroy, OnInit {
       ),
       participants: this.eventForm.get("deadline").get("participants").value,
     };
-    const action = this.event.id
+    const action = this.initEvent.id
       ? // save and mark the form as clean again
         this.eventDAO.update(updated).pipe(
           tap(() => {
@@ -147,7 +140,9 @@ export class EditorComponent implements OnDestroy, OnInit {
   }
 
   deleteEvent(): void {
-    this.subs.push(this.eventDAO.delete(this.event.id).subscribe({ next: () => this.router.navigate(["events", "overview"]) }));
+    this.subs.push(
+      this.eventDAO.delete(this.initEvent.id).subscribe({ next: () => this.router.navigate(["events", "overview"]) })
+    );
   }
 
   private getDateFromDateAndTimeStrings(d: Date, time: string): Date {

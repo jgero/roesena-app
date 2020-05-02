@@ -27,17 +27,19 @@ describe("Articles-EditorComponent", () => {
   const authStub = new AuthServiceStub();
   authStub.$user.next({ id: "asdf", isConfirmedMember: true, name: "John", groups: ["admins"] });
   const activatedRouteStub = {
-    data: of<{ article: appArticle }>({
-      article: {
-        id: "asd",
-        title: "asdf",
-        created: new Date(),
-        content: "",
-        tags: [],
-        ownerName: "asdf",
-        ownerId: "asdf",
+    snapshot: {
+      data: {
+        article: {
+          id: "asd",
+          title: "asdf",
+          created: new Date(),
+          content: "",
+          tags: [],
+          ownerName: "asdf",
+          ownerId: "asdf",
+        },
       },
-    }),
+    },
   };
   const articleStub = new ArticleDalStub();
 
