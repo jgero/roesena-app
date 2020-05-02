@@ -18,4 +18,8 @@ export class DetailsComponent extends Details {
   constructor(route: ActivatedRoute, articleDAO: ArticleDalService, router: Router, auth: AuthService) {
     super("articles", route, router, articleDAO, auth);
   }
+
+  getLinkToImages(val: appArticle): string {
+    return `/images/overview/${val.tags.join(",")}`;
+  }
 }

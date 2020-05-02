@@ -23,4 +23,8 @@ export class DetailsComponent extends Details implements OnInit {
     this.$url = this.imageDAO.getDownloadURL(this.route.snapshot.paramMap.get("id"));
     super.ngOnInit();
   }
+
+  getLinkToArticles(val: appImage): string {
+    return `/articles/overview/${val.tags.join(",")}`;
+  }
 }
