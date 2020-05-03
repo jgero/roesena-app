@@ -28,9 +28,11 @@ import { StartPageComponent } from "./start-page/start-page.component";
 import { CardsModule } from "../shared/cards/cards.module";
 import { AboutComponent } from "./about/about.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
+import { HelpComponent } from "./help/help.component";
+import { MarkdownViewerModule } from "../shared/markdown-viewer/markdown-viewer.module";
 
 @NgModule({
-  declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent],
+  declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent, HelpComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -54,6 +56,7 @@ import { NotFoundComponent } from "./not-found/not-found.component";
     MatProgressBarModule,
     CardsModule,
     MarkdownModule.forRoot(),
+    MarkdownViewerModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: "de" }],
   bootstrap: [RootComponent],

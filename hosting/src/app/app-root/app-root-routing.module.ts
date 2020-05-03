@@ -5,6 +5,7 @@ import { LoadUserGuard } from "../guards/load-user.guard";
 import { StartPageComponent } from "./start-page/start-page.component";
 import { AboutComponent } from "./about/about.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
+import { HelpComponent } from "./help/help.component";
 
 export const routes: Routes = [
   {
@@ -19,6 +20,7 @@ export const routes: Routes = [
       { path: "calendar", loadChildren: () => import("../pages/calendar/calendar.module").then((m) => m.CalendarModule) },
       { path: "groups", loadChildren: () => import("../pages/groups/groups.module").then((m) => m.GroupsModule) },
       { path: "about", component: AboutComponent },
+      { path: "help", component: HelpComponent },
       { path: "**", component: NotFoundComponent },
     ],
   },
