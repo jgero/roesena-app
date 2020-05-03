@@ -49,25 +49,22 @@ export class EditorComponent implements OnDestroy {
       title: new FormControl(this.initEvent.title, [Validators.required]),
       description: new FormControl(this.initEvent.description, []),
       startDate: new FormControl(this.initEvent.startDate, [Validators.required]),
-      startTime: new FormControl(
-        p.transform(this.initEvent.startDate),
-        [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-      ),
+      startTime: new FormControl(p.transform(this.initEvent.startDate), [
+        Validators.required,
+        Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$"),
+      ]),
       endDate: new FormControl(this.initEvent.endDate, [Validators.required]),
-      endTime: new FormControl(
-        p.transform(this.initEvent.endDate),
-        [Validators.required, Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-      ),
+      endTime: new FormControl(p.transform(this.initEvent.endDate), [
+        Validators.required,
+        Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$"),
+      ]),
       tags: new FormControl(this.initEvent.tags),
       deadline: new FormGroup(
         {
           deadlineDate: new FormControl(this.initEvent.deadline),
-          deadlineTime: new FormControl(
-            this.initEvent.deadline
-              ? p.transform(this.initEvent.deadline)
-              : "",
-            [Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$")]
-          ),
+          deadlineTime: new FormControl(this.initEvent.deadline ? p.transform(this.initEvent.deadline) : "", [
+            Validators.pattern("^([01][0-9]|2[0-3]):([0-5][0-9])$"),
+          ]),
           participants: new FormControl(this.initEvent.participants, [this.getParticipantFormValidatorFn()]),
         },
         [this.getDeadlineFormValidatorFn()]
@@ -143,7 +140,11 @@ export class EditorComponent implements OnDestroy {
 
   deleteEvent(): void {
     this.subs.push(
-      this.eventDAO.delete(this.initEvent.id).subscribe({ next: () => this.router.navigate(["events", "overview"]) })
+      this.eventDAO.delete(this.initEvent.id).subscribe({
+        next: (success) => {
+          if (success) this.router.navigate(["events", "overview"]);
+        },
+      })
     );
   }
 

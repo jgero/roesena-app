@@ -55,7 +55,11 @@ export class EditorComponent implements OnDestroy {
 
   deleteArticle(): void {
     this.subs.push(
-      this.articleDAO.delete(this.article.id).subscribe({ next: () => this.router.navigate(["articles", "overview"]) })
+      this.articleDAO.delete(this.article.id).subscribe({
+        next: (success) => {
+          if (success) this.router.navigate(["articles", "overview"]);
+        },
+      })
     );
   }
 

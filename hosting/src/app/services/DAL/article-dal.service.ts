@@ -9,8 +9,8 @@ import {
   Query,
 } from "@angular/fire/firestore";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Observable, of, from } from "rxjs";
-import { map, tap, catchError } from "rxjs/operators";
+import { Observable, of, from, concat } from "rxjs";
+import { map, tap, catchError, switchMap } from "rxjs/operators";
 import * as fbs from "firebase/app";
 import "firebase/firestore";
 
@@ -175,16 +175,32 @@ export class ArticleDalService implements paginatedDAL {
   }
 
   delete(id: string): Observable<boolean> {
-    return from(this.firestore.collection("articles").doc(id).delete()).pipe(
-      map(() => true),
-      tap(() => {
-        this.snackbar.open(`Gelöscht!`, "OK", { duration: 2000 });
-      }),
-      catchError((err) => {
-        this.snackbar.open(`Artikel konnte nicht gelöscht werden: ${err}`, "OK");
-        return of(false);
-      })
-    );
+    return this.snackbar
+      .open("Sind Sie sich sicher?", "LÖSCHEN", { duration: 5000 })
+      .afterDismissed()
+      .pipe(
+        // true if dismissed on click on action button, false if dismissed otherwise (by function call or timeout)
+        map((el) => el.dismissedByAction),
+        // switch to actual deletion if dismissed by button click
+        switchMap((dismissedByAction) => {
+          if (dismissedByAction) {
+            // because the void observable of the delete operation will never emit
+            // merge it with an observable, which just emits true to trigger the snackbar
+            return concat<boolean>(from(this.firestore.collection("articles").doc(id).delete()), of(true));
+          } else {
+            return of(false);
+          }
+        }),
+        // on success show message
+        tap((success) => {
+          if (success) this.snackbar.open(`Gelöscht!`, "OK", { duration: 2000 });
+        }),
+        // on error show message and return false
+        catchError((err) => {
+          this.snackbar.open(`Artikel konnte nicht gelöscht werden: ${err}`, "OK");
+          return of(false);
+        })
+      );
   }
 }
 

@@ -49,7 +49,11 @@ export class EditorComponent implements OnDestroy {
 
   onDelete() {
     this.subs.push(
-      this.imageDAO.delete(this.initialImage.id).subscribe({ next: () => this.router.navigate(["images", "overview"]) })
+      this.imageDAO.delete(this.initialImage.id).subscribe({
+        next: (success) => {
+          if (success) this.router.navigate(["images", "overview"]);
+        },
+      })
     );
   }
 
