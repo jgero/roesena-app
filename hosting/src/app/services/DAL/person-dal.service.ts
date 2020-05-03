@@ -9,6 +9,8 @@ import {
   QueryDocumentSnapshot,
   CollectionReference,
   Query,
+  QuerySnapshot,
+  DocumentData,
 } from "@angular/fire/firestore";
 import { Observable, of, from, BehaviorSubject, Subject, combineLatest } from "rxjs";
 import { map, tap, catchError } from "rxjs/operators";
@@ -79,9 +81,9 @@ export class PersonDalService implements paginatedDAL {
         }
         return query;
       })
-      .snapshotChanges()
+      .get()
       .pipe(
-        map(convertMany),
+        map((el) => el.docs.map((doc) => convertSnapshot(doc as any))),
         catchError((err) => {
           this.snackbar.open(`Fehler beim laden von Personen: ${err}`, "OK");
           return of([]);
