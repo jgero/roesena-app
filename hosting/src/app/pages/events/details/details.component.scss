@@ -4,17 +4,34 @@
   align-items: center;
 }
 
+.date {
+  font-size: 14px;
+}
+
 main {
   padding: 8px;
   max-width: 800px;
   width: calc(100% - 16px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 
   .mat-list-item {
     height: min-content;
     margin-bottom: 1em;
   }
 
+  .mat-list {
+    width: 100%;
+  }
+
   .mat-chip-list {
     outline: none;
   }
+}
+
+.edit-fab {
+  position: sticky;
+  z-index: 1;
+  bottom: 16px;
 }

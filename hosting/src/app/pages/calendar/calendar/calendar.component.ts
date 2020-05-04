@@ -51,7 +51,11 @@ export class CalendarComponent implements OnDestroy {
         });
       }),
       map((days) => ({ date: currentDate, days })),
-      tap(() => (this.loading = false))
+      // set loading state and detect changes
+      tap(() => {
+        this.loading = false;
+        cdr.detectChanges();
+      })
     );
   }
 

@@ -9,14 +9,13 @@
   <mat-chip-list>
     <mat-chip *ngFor="let tag of article.tags"> {{ tag }} </mat-chip>
   </mat-chip-list>
+  <div class="fab-container">
+    <a mat-fab [color]="'primary'" *ngIf="canEdit(article)" [routerLink]="'/articles/edit/' + article.id"
+      ><mat-icon>edit</mat-icon></a
+    >
+    <a mat-fab [color]="'primary'" [routerLink]="getLinkToImages(article)"><mat-icon>image</mat-icon></a>
+  </div>
 </main>
-
-<div class="fab-container">
-  <a mat-fab [color]="'primary'" *ngIf="canEdit(article)" [routerLink]="'/articles/edit/' + article.id"
-    ><mat-icon>edit</mat-icon></a
-  >
-  <a mat-fab [color]="'primary'" [routerLink]="getLinkToImages(article)"><mat-icon>image</mat-icon></a>
-</div>
 
 <mat-toolbar>
   <div>{{ article.created | toLocalDateString }}</div>

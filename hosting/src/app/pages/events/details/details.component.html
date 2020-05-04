@@ -1,17 +1,10 @@
-<mat-toolbar [color]="'accent'">
-  <div>{{ event.title }}</div>
-  <div class="spacer"></div>
-  <a mat-icon-button [routerLink]="'/events/overview'"><mat-icon>apps</mat-icon></a>
-  <a mat-icon-button *ngIf="canEdit(event)" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
-</mat-toolbar>
-<mat-toolbar
+<mat-toolbar [color]="'accent'">{{ event.title }}</mat-toolbar>
+<mat-toolbar class="date"
   ><span>
     <time [dateTime]="event.startDate">{{ event.startDate | toLocalDateString }} {{ event.startDate | toLocalTimeString }}</time>
     <span> - </span>
     <time [dateTime]="event.endDate">{{ event.endDate | toLocalDateString }} {{ event.endDate | toLocalTimeString }}</time>
   </span>
-  <div class="spacer"></div>
-  <div>{{ event.ownerName }}</div>
 </mat-toolbar>
 <main>
   <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
@@ -54,4 +47,10 @@
       </mat-chip-list>
     </mat-list-item>
   </mat-list>
+  <a mat-fab class="edit-fab" *ngIf="canEdit(event)" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
 </main>
+
+<mat-toolbar>
+  <div class="spacer"></div>
+  <div>{{ event.ownerName }}</div>
+</mat-toolbar>

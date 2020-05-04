@@ -11,6 +11,7 @@ import { DetailsComponent } from "./details.component";
 import { AuthServiceStub, testingRoutes } from "src/app/testing";
 import { ActivatedRouteStub } from "src/app/testing";
 import { AuthService } from "src/app/services/auth.service";
+import { MatChipsModule } from "@angular/material/chips";
 
 describe("Images-DetailsComponent", () => {
   let component: DetailsComponent;
@@ -38,6 +39,7 @@ describe("Images-DetailsComponent", () => {
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
+        MatChipsModule,
         RouterTestingModule.withRoutes(testingRoutes),
         MatProgressBarModule,
       ],
