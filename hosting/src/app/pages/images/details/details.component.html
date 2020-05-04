@@ -1,8 +1,16 @@
 <mat-toolbar [color]="'accent'">
-  <div ngPreserveWhitespaces>{{ image.tags?.join(", ") }} - {{ image.ownerName }}</div>
   <div class="spacer"></div>
   <a mat-icon-button [routerLink]="getLinkToArticles(image)"><mat-icon>description</mat-icon></a>
   <a mat-icon-button [routerLink]="'/images/overview'"><mat-icon>apps</mat-icon></a>
   <a mat-icon-button *ngIf="canEdit(image)" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>
 </mat-toolbar>
-<img [attr.src]="url" alt="Bild Detailansicht" />
+<mat-toolbar>
+  <div class="spacer"></div>
+  <div>{{ image.ownerName }}</div>
+</mat-toolbar>
+<main>
+  <img [attr.src]="url" alt="Bild Detailansicht" />
+  <mat-chip-list>
+    <mat-chip *ngFor="let tag of image.tags">{{ tag }}</mat-chip>
+  </mat-chip-list>
+</main>

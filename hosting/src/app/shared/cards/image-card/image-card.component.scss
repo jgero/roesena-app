@@ -13,6 +13,8 @@
 
     .mat-card-content {
       flex: 1;
+      display: flex;
+      align-items: flex-end;
     }
   }
 }
