@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription, Observable } from "rxjs";
 import { map, tap, switchMap } from "rxjs/operators";
@@ -13,13 +13,17 @@ import { EventDALService } from "src/app/services/DAL/event-dal.service";
 })
 export class CalendarComponent implements OnDestroy {
   $activeMonth: Observable<{ date: Date; days: appEvent[][] }>;
-  loading = false;
+  loading: boolean;
   private subs: Subscription[] = [];
 
-  constructor(route: ActivatedRoute, eventDAO: EventDALService) {
+  constructor(route: ActivatedRoute, eventDAO: EventDALService, cdr: ChangeDetectorRef) {
     let currentDate: Date;
     this.$activeMonth = route.paramMap.pipe(
-      tap(() => (this.loading = true)),
+      // set loading state and detect changes
+      tap(() => {
+        this.loading = true;
+        cdr.detectChanges();
+      }),
       // convert paramMap to date
       map((map) => new Date(map.get("date"))),
       // convert it to the first day of the month
@@ -27,9 +31,7 @@ export class CalendarComponent implements OnDestroy {
       // save the date for later user
       tap((date) => (currentDate = date)),
       // request some events starting from that specific date
-      // switchMap((date) => eventDAO.getAll(10, date)),
       switchMap((date) => eventDAO.getForMonth(date.getFullYear(), date.getMonth())),
-      tap((results) => console.log(results)),
       // distribute the events into the day 2D-Array
       map((events) => {
         // empty array with the length of the current month
