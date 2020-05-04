@@ -19,8 +19,10 @@ import { MatSidenav, MatDrawer } from "@angular/material/sidenav";
 export class RootComponent implements OnInit {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
+    tap((el) => (this.brakpointMatches = el)),
     shareReplay()
   );
+  brakpointMatches: boolean;
   $badgeContentStream: Observable<number>;
   isLoading = false;
   version: string;
@@ -45,7 +47,8 @@ export class RootComponent implements OnInit {
         case event instanceof NavigationCancel:
         case event instanceof NavigationError:
           this.isLoading = false;
-          if (this.sidenav) this.sidenav.close();
+          // only close sidenav if its in mobile mode
+          if (this.brakpointMatches) this.sidenav.close();
           break;
       }
     });

@@ -1,10 +1,5 @@
 <mat-toolbar class="header" [color]="'accent'">
-  <div>
-    <span class="title">Artikel</span>
-    <a mat-icon-button [routerLink]="'/articles/edit'" *ngIf="canCreate()">
-      <mat-icon>add</mat-icon>
-    </a>
-  </div>
+  <div>Artikel</div>
   <div class="spacer"></div>
   <div>
     <mat-form-field class="search-field">
@@ -38,6 +33,9 @@
     <app-article-card [data]="article"></app-article-card>
   </mat-grid-tile>
 </mat-grid-list>
+
+<a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canCreate()"><mat-icon>add</mat-icon></a>
+
 <mat-paginator
   *ngIf="!searchString"
   [pageSize]="limit"
