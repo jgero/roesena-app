@@ -1,5 +1,5 @@
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map, shareReplay, filter, switchMap, tap } from "rxjs/operators";
@@ -9,6 +9,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { EventDALService } from "src/app/services/DAL/event-dal.service";
 import { environment } from "src/environments/environment";
 import { SwUpdate } from "@angular/service-worker";
+import { MatSidenav, MatDrawer } from "@angular/material/sidenav";
 
 @Component({
   selector: "app-root",
@@ -23,6 +24,9 @@ export class RootComponent implements OnInit {
   $badgeContentStream: Observable<number>;
   isLoading = false;
   version: string;
+
+  @ViewChild("drawer")
+  private sidenav: MatDrawer;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -41,6 +45,7 @@ export class RootComponent implements OnInit {
         case event instanceof NavigationCancel:
         case event instanceof NavigationError:
           this.isLoading = false;
+          if (this.sidenav) this.sidenav.close();
           break;
       }
     });
