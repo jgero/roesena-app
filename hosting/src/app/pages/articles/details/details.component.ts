@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,7 +17,7 @@ export class DetailsComponent extends Details {
   article: AppArticle;
   $image: Observable<AppImage>;
 
-  constructor(imageDAO: ImageDalService, auth: AuthService, route: ActivatedRoute) {
+  constructor(imageDAO: ImageDalService, auth: AuthService, route: ActivatedRoute, router: Router) {
     super(auth);
     this.article = route.snapshot.data.article;
     this.$image = imageDAO.getBySearchStrings(this.article.tags, 1).pipe(map((imgs) => imgs[0]));

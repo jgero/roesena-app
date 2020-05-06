@@ -7,7 +7,7 @@
   <app-image-card *ngIf="$image | async as image" [data]="image"></app-image-card>
   <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
   <mat-chip-list>
-    <mat-chip *ngFor="let tag of article.tags"> {{ tag }} </mat-chip>
+    <mat-chip *ngFor="let tag of article.tags" [routerLink]="'/articles/overview/' + tag"> {{ tag }} </mat-chip>
   </mat-chip-list>
   <div class="fab-container">
     <a mat-fab [color]="'primary'" *ngIf="canEdit(article)" [routerLink]="'/articles/edit/' + article.id"

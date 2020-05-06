@@ -9,7 +9,7 @@
 <main>
   <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
   <mat-chip-list>
-    <mat-chip *ngFor="let tag of event.tags"> {{ tag }} </mat-chip>
+    <mat-chip *ngFor="let tag of event.tags" [routerLink]="'/events/overview/' + tag"> {{ tag }} </mat-chip>
   </mat-chip-list>
   <mat-list *ngIf="event.participants.length > 0 && auth.$user | async as user">
     <mat-divider></mat-divider>
