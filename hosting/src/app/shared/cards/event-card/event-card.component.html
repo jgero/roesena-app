@@ -9,7 +9,7 @@
       {{ data.description }}
     </div>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of data.tags" [routerLink]="'/events/overview/' + tag">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of data.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
   <mat-card-actions>

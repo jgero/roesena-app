@@ -20,6 +20,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-viewer.module';
+import { SearchModule } from 'src/app/shared/search/search.module';
 
 @NgModule({
   declarations: [OverviewComponent, EditorComponent, DetailsComponent],
@@ -41,6 +42,7 @@ import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-vi
     CardsModule,
     ConvertersModule,
     MarkdownViewerModule,
+    SearchModule,
   ],
 })
 export class ArticlesModule {}

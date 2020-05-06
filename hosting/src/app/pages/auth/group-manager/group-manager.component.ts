@@ -84,6 +84,5 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
 
   ngOnDestroy() {
     this.subs.forEach((sub) => sub.unsubscribe());
-    super.ngOnDestroy();
   }
 }

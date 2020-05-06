@@ -17,6 +17,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { SearchModule } from 'src/app/shared/search/search.module';
 
 @NgModule({
   declarations: [OverviewComponent, DetailsComponent, EditorComponent],
@@ -36,6 +37,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatChipsModule,
     MatPaginatorModule,
     CardsModule,
+    SearchModule,
   ],
 })
 export class ImagesModule {}

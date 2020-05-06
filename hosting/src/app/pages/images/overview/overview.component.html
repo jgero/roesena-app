@@ -1,29 +1,14 @@
 <mat-toolbar class="header" [color]="'accent'">
   <div>Bilder</div>
-  <div class="spacer"></div>
-  <div>
-    <mat-form-field class="search-field">
-      <mat-label>Suchbegriff</mat-label>
-      <input
-        matInput
-        matTooltip="Suchbegriffe durch Komma trennen"
-        type="text"
-        [(ngModel)]="searchString"
-        (keydown.enter)="searchButton._elementRef.nativeElement.click()"
-      />
-      <button *ngIf="searchString" matSuffix mat-icon-button aria-label="clear" (click)="searchString = ''">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <button #searchButton mat-icon-button aria-label="search" (click)="onSearchClick()">
-      <mat-icon>search</mat-icon>
-    </button>
-  </div>
 </mat-toolbar>
 
-<mat-grid-list *ngIf="$data | async as images; else loading" [cols]="cols" [rowHeight]="'450px'" [gutterSize]="'16px'" @cardFlyIn>
+<mat-progress-bar *ngIf="!($data | async)" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
+
+<app-search-bar [searchStrings]="$searchTags | async" (search)="onSearchEvent($event)"></app-search-bar>
+
+<mat-grid-list *ngIf="$data | async as images" [cols]="cols" [rowHeight]="'450px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let image of images">
-    <app-image-card [data]="image"></app-image-card>
+    <app-image-card [data]="image" [navigateOnTagClick]="false" (tagClick)="onTagClick($event)"></app-image-card>
   </mat-grid-tile>
 </mat-grid-list>
 
@@ -37,7 +22,3 @@
   [length]="$dataLength | async"
   (page)="onPage($event)"
 ></mat-paginator>
-
-<ng-template #loading>
-  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
-</ng-template>

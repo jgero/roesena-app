@@ -15,7 +15,8 @@
     margin-bottom: 16px;
   }
 
-  .mat-grid-list {
+  .mat-grid-list,
+  app-search-bar {
     width: calc(100% - 32px);
     margin: 16px;
   }

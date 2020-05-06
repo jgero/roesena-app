@@ -15,7 +15,8 @@
   }
 
   .mat-grid-list,
-  .mat-paginator {
+  .mat-paginator,
+  app-search-bar {
     width: calc(100% - 32px);
     margin: 16px;
   }

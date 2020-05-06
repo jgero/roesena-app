@@ -1,28 +1,38 @@
-import { OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Overview } from './overview';
 import { DAL } from '../interfaces';
 import { AuthService } from 'src/app/services/auth.service';
+import { map, tap } from 'rxjs/operators';
 
-export abstract class SearchableOverview extends Overview implements OnDestroy {
-  private paramSub: Subscription;
+export abstract class SearchableOverview extends Overview {
   searchString = '';
   get searchTags(): string[] {
+    if (this.searchString === '') {
+      return [];
+    }
     return this.searchString.split(',').map((tag) => tag.trim());
   }
+  $searchTags: Observable<string[]>;
+
   constructor(private routeBase: string[], DAO: DAL, public route: ActivatedRoute, public router: Router, auth: AuthService) {
     super(DAO, auth);
   }
 
   initDataStream() {
-    this.searchString = this.route.snapshot.paramMap.get('searchString');
+    this.searchString = this.route.snapshot.paramMap.get('searchString') || '';
     this.updateDataStream();
-    this.paramSub = this.route.paramMap.subscribe((map) => {
-      this.searchString = map.get('searchString');
-      this.updateDataStream();
-    });
+    this.$searchTags = this.route.paramMap.pipe(
+      map((m) => m.get('searchString') || ''),
+      tap(() => this.updateDataStream()),
+      map((p) => {
+        if (p === '') {
+          return [];
+        }
+        return p.split(',').map((tag) => tag.trim());
+      })
+    );
   }
 
   updateDataStream() {
@@ -41,7 +51,21 @@ export abstract class SearchableOverview extends Overview implements OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.paramSub.unsubscribe();
+  onSearchEvent(newSearchStrings: string[]) {
+    this.searchString = newSearchStrings.join(',');
+    this.onSearchClick();
+  }
+
+  onTagClick(tag: string) {
+    if (this.searchString === '') {
+      this.searchString = tag;
+    } else {
+      console.log(this.searchString);
+      if (this.searchString.split(',').includes(tag)) {
+        return;
+      }
+      this.searchString = this.searchString.concat(',', tag);
+    }
+    this.onSearchClick();
   }
 }

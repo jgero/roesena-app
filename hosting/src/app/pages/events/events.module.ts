@@ -24,6 +24,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-viewer.module';
+import { SearchModule } from 'src/app/shared/search/search.module';
 
 @NgModule({
   declarations: [OverviewComponent, DetailsComponent, EditorComponent],
@@ -48,6 +49,7 @@ import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-vi
     CardsModule,
     ConvertersModule,
     MarkdownViewerModule,
+    SearchModule,
   ],
 })
 export class EventsModule {}

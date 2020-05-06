@@ -7,7 +7,7 @@
   <mat-card-content>
     <div class="content-preview">{{ data.content }}</div>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of data.tags" [routerLink]="'/articles/overview/' + tag">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of data.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
   <mat-card-actions>
