@@ -1,20 +1,20 @@
-import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from "@angular/router";
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Observable } from "rxjs";
-import { map, shareReplay, filter, switchMap, tap } from "rxjs/operators";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map, shareReplay, filter, switchMap, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AuthService } from "src/app/services/auth.service";
-import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { environment } from "src/environments/environment";
-import { SwUpdate } from "@angular/service-worker";
-import { MatSidenav, MatDrawer } from "@angular/material/sidenav";
+import { AuthService } from 'src/app/services/auth.service';
+import { EventDALService } from 'src/app/services/DAL/event-dal.service';
+import { environment } from 'src/environments/environment';
+import { SwUpdate } from '@angular/service-worker';
+import { MatSidenav, MatDrawer } from '@angular/material/sidenav';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./root.component.html",
-  styleUrls: ["./root.component.scss"],
+  selector: 'app-root',
+  templateUrl: './root.component.html',
+  styleUrls: ['./root.component.scss'],
 })
 export class RootComponent implements OnInit {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -27,7 +27,7 @@ export class RootComponent implements OnInit {
   isLoading = false;
   version: string;
 
-  @ViewChild("drawer")
+  @ViewChild('drawer')
   private sidenav: MatDrawer;
 
   constructor(
@@ -48,7 +48,7 @@ export class RootComponent implements OnInit {
         case event instanceof NavigationError:
           this.isLoading = false;
           // only close sidenav if its in mobile mode
-          if (this.brakpointMatches) this.sidenav.close();
+          if (this.brakpointMatches) { this.sidenav.close(); }
           break;
       }
     });
@@ -59,7 +59,7 @@ export class RootComponent implements OnInit {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
         this.snackbar
-          .open("Ein Update für die App ist bereit", "UPDATE")
+          .open('Ein Update für die App ist bereit', 'UPDATE')
           .onAction()
           .subscribe(() => location.reload());
       });
@@ -79,9 +79,9 @@ export class RootComponent implements OnInit {
       tap((unresponded) => {
         if (unresponded !== null) {
           this.snackbar
-            .open(`Unbeantwortete Termine: ${unresponded}`, "ANTWORTEN")
+            .open(`Unbeantwortete Termine: ${unresponded}`, 'ANTWORTEN')
             .onAction()
-            .subscribe({ next: () => this.router.navigate(["auth", "my-events"]) });
+            .subscribe({ next: () => this.router.navigate(['auth', 'my-events']) });
         }
       })
     );

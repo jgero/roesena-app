@@ -1,25 +1,25 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormControl, Validators, FormGroup } from "@angular/forms";
-import { Observable, Subscription, of } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { Observable, Subscription, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
-import { appEvent } from "src/app/utils/interfaces";
-import { AuthService } from "src/app/services/auth.service";
-import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { PersonDalService } from "src/app/services/DAL/person-dal.service";
+import { AppEvent } from 'src/app/utils/interfaces';
+import { AuthService } from 'src/app/services/auth.service';
+import { EventDALService } from 'src/app/services/DAL/event-dal.service';
+import { PersonDalService } from 'src/app/services/DAL/person-dal.service';
 
-interface appEventWithForm extends appEvent {
+interface AppEventWithForm extends AppEvent {
   form: FormGroup;
 }
 
 @Component({
-  selector: "app-my-events",
-  templateUrl: "./my-events.component.html",
-  styleUrls: ["./my-events.component.scss"],
+  selector: 'app-my-events',
+  templateUrl: './my-events.component.html',
+  styleUrls: ['./my-events.component.scss'],
 })
 export class MyEventsComponent implements OnInit, OnDestroy {
-  $data: Observable<appEventWithForm[]>;
-  displayedColumns: string[] = ["title", "deadline", "response"];
+  $data: Observable<AppEventWithForm[]>;
+  displayedColumns: string[] = ['title', 'deadline', 'response'];
   private subs: Subscription[] = [];
 
   constructor(private eventDAO: EventDALService, private personDAO: PersonDalService, private auth: AuthService) {}
@@ -28,13 +28,13 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     this.$data = this.eventDAO.getRespondables().pipe(
       map((events) => {
         return events.map((event) => {
-          const participant = event.participants.find((participant) => participant.id === this.auth.$user.getValue().id);
+          const participant = event.participants.find((p) => p.id === this.auth.$user.getValue().id);
           return {
             ...event,
             form: new FormGroup({
-              amount: new FormControl(participant.amount >= 0 ? participant.amount : "", [
+              amount: new FormControl(participant.amount >= 0 ? participant.amount : '', [
                 Validators.required,
-                Validators.pattern("^[0-9]*$"),
+                Validators.pattern('^[0-9]*$'),
               ]),
             }),
           };
@@ -46,7 +46,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   onSubmit(eventId: string, amount: string, form: FormGroup) {
     form.disable();
     this.subs.push(
-      this.personDAO.respondToEvent(eventId, parseInt(amount)).subscribe({
+      this.personDAO.respondToEvent(eventId, parseInt(amount, 10)).subscribe({
         next: () => {
           form.markAsPristine();
           form.enable();

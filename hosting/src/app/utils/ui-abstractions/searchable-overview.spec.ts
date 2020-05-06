@@ -1,25 +1,22 @@
-import { Subscription } from "rxjs";
+import { ArticleDalStub, AuthServiceStub, ActivatedRouteStub } from 'src/app/testing';
+import { AuthService } from 'src/app/services/auth.service';
+import { AppElementDAL } from '../interfaces';
+import { SearchableOverview } from './searchable-overview';
+import { ActivatedRoute } from '@angular/router';
 
-import { ArticleDalStub, AuthServiceStub, ActivatedRouteStub } from "src/app/testing";
-import { AuthService } from "src/app/services/auth.service";
-import { appElementDAL } from "../interfaces";
-import { SearchableOverview } from "./searchable-overview";
-import { ActivatedRoute } from "@angular/router";
-
-describe("Overview search extension", () => {
-  let componentBase: a;
-  let sub: Subscription;
+describe('Overview search extension', () => {
+  let componentBase: A;
 
   const articleDalStub = new ArticleDalStub();
-  const activatedRouteStub = new ActivatedRouteStub({ id: "12341234" });
-  const routerSpy = jasmine.createSpyObj("Router", ["navigate"]);
+  const activatedRouteStub = new ActivatedRouteStub({ id: '12341234' });
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const authServiceStub = new AuthServiceStub();
 
-  class a extends SearchableOverview {
+  class A extends SearchableOverview {
     constructor() {
       super(
-        ["articles", "overview"],
-        articleDalStub as appElementDAL,
+        ['articles', 'overview'],
+        articleDalStub as AppElementDAL,
         (activatedRouteStub as unknown) as ActivatedRoute,
         routerSpy,
         authServiceStub as AuthService
@@ -28,51 +25,47 @@ describe("Overview search extension", () => {
   }
 
   beforeEach(() => {
-    componentBase = new a();
+    componentBase = new A();
   });
 
-  afterEach(() => {
-    if (sub) sub.unsubscribe();
-  });
-
-  it("should create", () => {
+  it('should create', () => {
     expect(componentBase).toBeTruthy();
   });
 
-  describe("on search click", () => {
+  describe('on search click', () => {
     beforeEach(() => {
       routerSpy.navigate.calls.reset();
     });
 
-    it("should navigate to search route from input", () => {
-      componentBase.searchString = "asdf";
+    it('should navigate to search route from input', () => {
+      componentBase.searchString = 'asdf';
       componentBase.onSearchClick();
-      expect(routerSpy.navigate).toHaveBeenCalledWith(["articles", "overview", "asdf"]);
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['articles', 'overview', 'asdf']);
     });
 
-    it("should reset search route on empty search string", () => {
-      componentBase.searchString = "";
+    it('should reset search route on empty search string', () => {
+      componentBase.searchString = '';
       componentBase.onSearchClick();
-      expect(routerSpy.navigate).toHaveBeenCalledWith(["articles", "overview"]);
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['articles', 'overview']);
     });
   });
 
-  it("should transform search string to tags", () => {
-    componentBase.searchString = " my Group  , 2020 ";
-    expect(componentBase.searchTags).toEqual(["my Group", "2020"]);
+  it('should transform search string to tags', () => {
+    componentBase.searchString = ' my Group  , 2020 ';
+    expect(componentBase.searchTags).toEqual(['my Group', '2020']);
   });
 
-  describe("on data request", () => {
-    it("should get elements by tags if search string is present", () => {
-      const spy = spyOn(articleDalStub, "getBySearchStrings");
-      activatedRouteStub.setParamMap({ searchString: " my Group  , 2020 " });
+  describe('on data request', () => {
+    it('should get elements by tags if search string is present', () => {
+      const spy = spyOn(articleDalStub, 'getBySearchStrings');
+      activatedRouteStub.setParamMap({ searchString: ' my Group  , 2020 ' });
       componentBase.ngOnInit();
-      expect(spy).toHaveBeenCalledWith(["my Group", "2020"]);
+      expect(spy).toHaveBeenCalledWith(['my Group', '2020']);
     });
 
-    it("should get all elements if search string is empty", () => {
-      const spy = spyOn(articleDalStub, "getAll");
-      activatedRouteStub.setParamMap({ searchString: "" });
+    it('should get all elements if search string is empty', () => {
+      const spy = spyOn(articleDalStub, 'getAll');
+      activatedRouteStub.setParamMap({ searchString: '' });
       componentBase.ngOnInit();
       expect(spy).toHaveBeenCalled();
     });

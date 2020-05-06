@@ -1,5 +1,5 @@
 export function arrayToMap(tagArr: string[]): { [key: string]: boolean } {
-  let res: { [key: string]: boolean } = {};
+  const res: { [key: string]: boolean } = {};
   tagArr.forEach((tag) => {
     res[tag] = true;
   });
@@ -7,9 +7,11 @@ export function arrayToMap(tagArr: string[]): { [key: string]: boolean } {
 }
 
 export function mapToArray(tagMap: { [key: string]: boolean }): string[] {
-  let res: string[] = [];
+  const res: string[] = [];
   for (const key in tagMap) {
-    res.push(key);
+    if (tagMap.hasOwnProperty(key)) {
+      res.push(key);
+    }
   }
   return res;
 }

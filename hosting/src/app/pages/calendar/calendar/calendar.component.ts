@@ -1,18 +1,18 @@
-import { Component, OnDestroy, ChangeDetectorRef } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription, Observable } from "rxjs";
-import { map, tap, switchMap } from "rxjs/operators";
+import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
+import { map, tap, switchMap } from 'rxjs/operators';
 
-import { appEvent } from "src/app/utils/interfaces";
-import { EventDALService } from "src/app/services/DAL/event-dal.service";
+import { AppEvent } from 'src/app/utils/interfaces';
+import { EventDALService } from 'src/app/services/DAL/event-dal.service';
 
 @Component({
-  selector: "app-calendar",
-  templateUrl: "./calendar.component.html",
-  styleUrls: ["./calendar.component.scss"],
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnDestroy {
-  $activeMonth: Observable<{ date: Date; days: appEvent[][] }>;
+  $activeMonth: Observable<{ date: Date; days: AppEvent[][] }>;
   loading: boolean;
   private subs: Subscription[] = [];
 
@@ -25,7 +25,7 @@ export class CalendarComponent implements OnDestroy {
         cdr.detectChanges();
       }),
       // convert paramMap to date
-      map((map) => new Date(map.get("date"))),
+      map((pm) => new Date(pm.get('date'))),
       // convert it to the first day of the month
       map((date) => new Date(date.getFullYear(), date.getMonth(), 1)),
       // save the date for later user
@@ -35,11 +35,11 @@ export class CalendarComponent implements OnDestroy {
       // distribute the events into the day 2D-Array
       map((events) => {
         // empty array with the length of the current month
-        let value: appEvent[][] = new Array(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()).fill(
+        const value: AppEvent[][] = new Array(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()).fill(
           []
         );
         return value.map((_, index) => {
-          let eventsForDay: appEvent[] = [];
+          const eventsForDay: AppEvent[] = [];
           const startDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 0, 0).getTime();
           const endDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 24, 0).getTime();
           events.forEach((event) => {
@@ -80,46 +80,46 @@ export class CalendarComponent implements OnDestroy {
   }
 
   getTitle(d: Date): string {
-    let val = "";
+    let val = '';
     switch (d.getMonth()) {
       case 0:
-        val += "Januar";
+        val += 'Januar';
         break;
       case 1:
-        val += "Februar";
+        val += 'Februar';
         break;
       case 2:
-        val += "März";
+        val += 'März';
         break;
       case 3:
-        val += "April";
+        val += 'April';
         break;
       case 4:
-        val += "Mai";
+        val += 'Mai';
         break;
       case 5:
-        val += "Juni";
+        val += 'Juni';
         break;
       case 6:
-        val += "Juli";
+        val += 'Juli';
         break;
       case 7:
-        val += "August";
+        val += 'August';
         break;
       case 8:
-        val += "September";
+        val += 'September';
         break;
       case 9:
-        val += "Oktober";
+        val += 'Oktober';
         break;
       case 10:
-        val += "November";
+        val += 'November';
         break;
       case 11:
-        val += "Dezember";
+        val += 'Dezember';
         break;
     }
-    val += " " + d.getFullYear();
+    val += ' ' + d.getFullYear();
     return val;
   }
 }

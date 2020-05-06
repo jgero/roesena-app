@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { AbstractControl } from "@angular/forms";
-import { MatChipInputEvent } from "@angular/material/chips";
+import { Injectable } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ChipsInputService {
   constructor() {}
@@ -17,11 +17,11 @@ export class ChipsInputService {
   }
 
   addItem(event: MatChipInputEvent, form: AbstractControl) {
-    let value = event.value.trim();
-    if (value !== "" && !form.value.includes(value)) {
+    const value = event.value.trim();
+    if (value !== '' && !form.value.includes(value)) {
       (form.value as string[]).push(value);
       form.markAsDirty();
     }
-    event.input.value = "";
+    event.input.value = '';
   }
 }

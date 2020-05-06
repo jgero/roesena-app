@@ -1,24 +1,24 @@
-import { appEvent } from "src/app/utils/interfaces";
-import { of, Observable } from "rxjs";
+import { AppEvent } from 'src/app/utils/interfaces';
+import { of, Observable } from 'rxjs';
 
 export class EventDalStub {
-  public dataArray: appEvent[] = [];
-  public data: appEvent | null;
+  public dataArray: AppEvent[] = [];
+  public data: AppEvent | null;
   constructor() {}
 
-  getRespondables(): Observable<appEvent[]> {
+  getRespondables(): Observable<AppEvent[]> {
     return of(this.dataArray);
   }
 
-  getAll(limit?: number): Observable<appEvent[]> {
+  getAll(limit?: number): Observable<AppEvent[]> {
     return of(this.dataArray);
   }
 
-  getForMonth(): Observable<appEvent[]> {
+  getForMonth(): Observable<AppEvent[]> {
     return of(this.dataArray);
   }
 
-  getById(id: string): Observable<appEvent | null> {
+  getById(id: string): Observable<AppEvent | null> {
     return of(this.data);
   }
 }

@@ -1,6 +1,6 @@
-import { of, Observable } from "rxjs";
-import { appPerson } from "src/app/utils/interfaces";
-import { Direction } from "src/app/utils/enums";
+import { of, Observable } from 'rxjs';
+import { AppPerson } from 'src/app/utils/interfaces';
+import { Direction } from 'src/app/utils/enums';
 
 export class PersonDalStub {
   constructor() {}
@@ -9,11 +9,11 @@ export class PersonDalStub {
     return of(true);
   }
 
-  getAll(limit?: number): Observable<appPerson[]> {
+  getAll(limit?: number): Observable<AppPerson[]> {
     return of([]);
   }
 
-  getPage(limit: number, d: Direction): Observable<appPerson[]> {
+  getPage(limit: number, d: Direction): Observable<AppPerson[]> {
     return of([]);
   }
 
@@ -21,7 +21,7 @@ export class PersonDalStub {
     return of(0);
   }
 
-  update(p: appPerson): Observable<null> {
+  update(p: AppPerson): Observable<null> {
     return of(null);
   }
 }

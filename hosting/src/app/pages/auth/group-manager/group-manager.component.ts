@@ -1,30 +1,30 @@
-import { Router, ActivatedRoute } from "@angular/router";
-import { FormGroup, FormControl } from "@angular/forms";
-import { Component, OnDestroy } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import { map } from "rxjs/operators";
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { PageEvent } from "@angular/material/paginator";
-import { ENTER, COMMA } from "@angular/cdk/keycodes";
+import { PageEvent } from '@angular/material/paginator';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
-import { PersonDalService } from "src/app/services/DAL/person-dal.service";
-import { appPerson } from "src/app/utils/interfaces";
-import { PaginatedOverview } from "src/app/utils/ui-abstractions";
-import { AuthService } from "src/app/services/auth.service";
-import { ChipsInputService } from "src/app/services/chips-input.service";
+import { PersonDalService } from 'src/app/services/DAL/person-dal.service';
+import { AppPerson } from 'src/app/utils/interfaces';
+import { PaginatedOverview } from 'src/app/utils/ui-abstractions';
+import { AuthService } from 'src/app/services/auth.service';
+import { ChipsInputService } from 'src/app/services/chips-input.service';
 
-interface appPersonWithForm extends appPerson {
+interface AppPersonWithForm extends AppPerson {
   form: FormGroup;
 }
 
 @Component({
-  selector: "app-group-manager",
-  templateUrl: "./group-manager.component.html",
-  styleUrls: ["./group-manager.component.scss"],
+  selector: 'app-group-manager',
+  templateUrl: './group-manager.component.html',
+  styleUrls: ['./group-manager.component.scss'],
 })
 export class GroupManagerComponent extends PaginatedOverview implements OnDestroy {
-  $data: Observable<appPerson[]>;
-  $withForm: Observable<appPersonWithForm[]>;
+  $data: Observable<AppPerson[]>;
+  $withForm: Observable<AppPersonWithForm[]>;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   private subs: Subscription[] = [];
   get cols(): number {
@@ -38,7 +38,7 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
     auth: AuthService,
     public chips: ChipsInputService
   ) {
-    super(["auth", "group-manager"], personsDAO, route, router, auth);
+    super(['auth', 'group-manager'], personsDAO, route, router, auth);
   }
 
   updateDataStream() {
@@ -58,7 +58,7 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
             confirmed: new FormControl(person.isConfirmedMember),
           }),
         }));
-        return persons as appPersonWithForm[];
+        return persons as AppPersonWithForm[];
       })
     );
   }

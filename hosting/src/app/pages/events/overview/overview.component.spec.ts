@@ -1,27 +1,27 @@
-import { FormsModule } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatGridListModule } from "@angular/material/grid-list";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { OverviewComponent } from "./overview.component";
-import { AuthService } from "src/app/services/auth.service";
-import { EventDALService } from "src/app/services/DAL/event-dal.service";
-import { EventDalStub, EventCardStub, AuthServiceStub, ActivatedRouteStub } from "src/app/testing";
+import { OverviewComponent } from './overview.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { EventDALService } from 'src/app/services/DAL/event-dal.service';
+import { EventDalStub, EventCardStubComponent, AuthServiceStub, ActivatedRouteStub } from 'src/app/testing';
 
-describe("Events-OverviewComponent", () => {
+describe('Events-OverviewComponent', () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
 
   const authStub = new AuthServiceStub();
   const activatedRouteStub = new ActivatedRouteStub();
-  const routerSpy = jasmine.createSpyObj("Router", ["navigate"]);
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const eventStub = new EventDalStub();
 
   beforeEach(async(() => {
@@ -36,7 +36,7 @@ describe("Events-OverviewComponent", () => {
         MatGridListModule,
         MatProgressBarModule,
       ],
-      declarations: [OverviewComponent, EventCardStub],
+      declarations: [OverviewComponent, EventCardStubComponent],
       providers: [
         { provide: EventDALService, useValue: eventStub },
         { provide: Router, useValue: routerSpy },
@@ -52,7 +52,7 @@ describe("Events-OverviewComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

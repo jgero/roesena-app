@@ -13,8 +13,14 @@ jobs:
       - name: Use Node.js 12
         uses: actions/setup-node@v1
 
-      - name: Install packages and run unit tests
+      - name: Install packages
         working-directory: ./hosting
-        run: |
-          npm ci
-          npm run test:ci
+        run: npm ci
+
+      - name: lint project
+        working-directory: ./hosting
+        run: npm run lint
+
+      - name: run unit tests
+        working-directory: ./hosting
+        run: npm run test:ci

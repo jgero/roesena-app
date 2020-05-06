@@ -1,2 +1,2 @@
-export * from "./map-array-general";
-export * from "./participants";
+export * from './map-array-general';
+export * from './participants';

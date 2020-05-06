@@ -1,45 +1,45 @@
-import { Component, Input, ElementRef } from "@angular/core";
-import { appEvent } from "src/app/utils/interfaces";
-import { expandCollapseAnimation } from "src/app/utils/animations";
+import { Component, Input, ElementRef } from '@angular/core';
+import { AppEvent } from 'src/app/utils/interfaces';
+import { expandCollapseAnimation } from 'src/app/utils/animations';
 
 @Component({
-  selector: "app-day",
+  selector: 'app-day',
   animations: [expandCollapseAnimation],
-  templateUrl: "./day.component.html",
-  styleUrls: ["./day.component.scss"],
+  templateUrl: './day.component.html',
+  styleUrls: ['./day.component.scss'],
 })
 export class DayComponent {
   @Input()
   day: number;
   @Input()
-  events: appEvent[];
+  events: AppEvent[];
   isPopupVisible = false;
 
   get params(): any {
-    if (!this.calendarCardRef.nativeElement || !document.getElementById("calendar")) {
+    if (!this.calendarCardRef.nativeElement || !document.getElementById('calendar')) {
       return {};
     }
     return {
-      height: this.calendarCardRef.nativeElement.clientHeight - 12 + "px",
-      width: this.calendarCardRef.nativeElement.clientWidth - 12 + "px",
+      height: this.calendarCardRef.nativeElement.clientHeight - 12 + 'px',
+      width: this.calendarCardRef.nativeElement.clientWidth - 12 + 'px',
       top:
         (window.pageYOffset || document.documentElement.scrollLeft) +
         this.calendarCardRef.nativeElement.getBoundingClientRect().top +
-        "px",
+        'px',
       left:
         (window.pageXOffset || document.documentElement.scrollLeft) +
         this.calendarCardRef.nativeElement.getBoundingClientRect().left +
-        "px",
+        'px',
       calendarLeft:
         (window.pageXOffset || document.documentElement.scrollLeft) +
-        document.getElementById("calendar").getBoundingClientRect().left +
-        "px",
+        document.getElementById('calendar').getBoundingClientRect().left +
+        'px',
       calendarTop:
         (window.pageXOffset || document.documentElement.scrollLeft) +
-        document.getElementById("calendar").getBoundingClientRect().top +
-        "px",
-      calendarWidth: document.getElementById("calendar").clientWidth + "px",
-      calendarHeight: document.getElementById("calendar").clientHeight + "px",
+        document.getElementById('calendar').getBoundingClientRect().top +
+        'px',
+      calendarWidth: document.getElementById('calendar').clientWidth + 'px',
+      calendarHeight: document.getElementById('calendar').clientHeight + 'px',
     };
   }
 

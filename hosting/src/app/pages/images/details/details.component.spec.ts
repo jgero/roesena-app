@@ -1,19 +1,19 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { ActivatedRoute } from "@angular/router";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { RouterTestingModule } from "@angular/router/testing";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { DetailsComponent } from "./details.component";
-import { AuthServiceStub, testingRoutes } from "src/app/testing";
-import { ActivatedRouteStub } from "src/app/testing";
-import { AuthService } from "src/app/services/auth.service";
-import { MatChipsModule } from "@angular/material/chips";
+import { DetailsComponent } from './details.component';
+import { AuthServiceStub, testingRoutes } from 'src/app/testing';
+import { ActivatedRouteStub } from 'src/app/testing';
+import { AuthService } from 'src/app/services/auth.service';
+import { MatChipsModule } from '@angular/material/chips';
 
-describe("Images-DetailsComponent", () => {
+describe('Images-DetailsComponent', () => {
   let component: DetailsComponent;
   let fixture: ComponentFixture<DetailsComponent>;
 
@@ -21,11 +21,11 @@ describe("Images-DetailsComponent", () => {
   const activatedRouteStub = {
     snapshot: {
       data: {
-        url: "",
+        url: '',
         image: {
-          id: "",
-          ownerId: "",
-          ownerName: "",
+          id: '',
+          ownerId: '',
+          ownerName: '',
           tags: [],
           created: new Date(),
         },
@@ -57,7 +57,7 @@ describe("Images-DetailsComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,20 +1,20 @@
-import { ActivatedRoute, Router } from "@angular/router";
-import { PageEvent } from "@angular/material/paginator";
-import { Observable } from "rxjs";
+import { ActivatedRoute, Router } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
+import { Observable } from 'rxjs';
 
-import { Direction } from "../enums";
-import { paginatedDAL } from "../interfaces";
-import { SearchableOverview } from "./searchable-overview";
-import { AuthService } from "src/app/services/auth.service";
+import { Direction } from '../enums';
+import { PaginatedDAL } from '../interfaces';
+import { SearchableOverview } from './searchable-overview';
+import { AuthService } from 'src/app/services/auth.service';
 
 export abstract class PaginatedOverview extends SearchableOverview {
   $dataLength: Observable<number>;
   get limit(): number {
     return this.cols * 3;
   }
-  pageIndex: number = 0;
+  pageIndex = 0;
 
-  constructor(routeBase: string[], public DAO: paginatedDAL, route: ActivatedRoute, router: Router, auth: AuthService) {
+  constructor(routeBase: string[], public DAO: PaginatedDAL, route: ActivatedRoute, router: Router, auth: AuthService) {
     super(routeBase, DAO, route, router, auth);
   }
 

@@ -1,5 +1,5 @@
-import { BreakpointState } from "@angular/cdk/layout";
-import { of, Observable, ReplaySubject } from "rxjs";
+import { BreakpointState } from '@angular/cdk/layout';
+import { of, Observable, ReplaySubject } from 'rxjs';
 
 export class BreakpointObserverStub {
   private br = new ReplaySubject<BreakpointState>();

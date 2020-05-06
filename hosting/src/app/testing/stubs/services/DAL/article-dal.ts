@@ -1,17 +1,17 @@
-import { of, Observable } from "rxjs";
-import { appArticle, paginatedDAL } from "src/app/utils/interfaces";
-import { Direction } from "src/app/utils/enums";
+import { of, Observable } from 'rxjs';
+import { AppArticle, PaginatedDAL } from 'src/app/utils/interfaces';
+import { Direction } from 'src/app/utils/enums';
 
-export class ArticleDalStub implements paginatedDAL {
-  public dataArray: appArticle[] = [];
-  public data: appArticle = null;
-  public length: number = 0;
+export class ArticleDalStub implements PaginatedDAL {
+  public dataArray: AppArticle[] = [];
+  public data: AppArticle = null;
+  public length = 0;
   constructor() {}
-  getById(id: string): Observable<appArticle | null> {
+  getById(id: string): Observable<AppArticle | null> {
     return of(this.data);
   }
 
-  getAll(limit?: number): Observable<appArticle[]> {
+  getAll(limit?: number): Observable<AppArticle[]> {
     return of(this.dataArray);
   }
 
@@ -19,11 +19,11 @@ export class ArticleDalStub implements paginatedDAL {
     return of(this.length);
   }
 
-  getPage(limit: number, d: Direction): Observable<appArticle[]> {
+  getPage(limit: number, d: Direction): Observable<AppArticle[]> {
     return of(this.dataArray);
   }
 
-  getBySearchStrings(tags: string[]): Observable<appArticle[]> {
+  getBySearchStrings(tags: string[]): Observable<AppArticle[]> {
     return of(this.dataArray);
   }
 }

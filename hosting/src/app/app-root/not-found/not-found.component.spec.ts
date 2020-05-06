@@ -1,14 +1,14 @@
-import { Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { RouterTestingModule } from "@angular/router/testing";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { RouterTestingModule } from '@angular/router/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatButtonModule } from "@angular/material/button";
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
-import { NotFoundComponent } from "./not-found.component";
+import { NotFoundComponent } from './not-found.component';
 
-describe("NotFoundComponent", () => {
+describe('NotFoundComponent', () => {
   let component: NotFoundComponent;
   let fixture: ComponentFixture<NotFoundComponent>;
   let location: Location;
@@ -24,25 +24,25 @@ describe("NotFoundComponent", () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NotFoundComponent);
     component = fixture.componentInstance;
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should go to startpage when needed", () => {
-    location.replaceState("/asdf", "", { navigationId: 1 });
-    const spy = spyOn(router, "navigate");
+  it('should go to startpage when needed', () => {
+    location.replaceState('/asdf', '', { navigationId: 1 });
+    const spy = spyOn(router, 'navigate');
     component.goBack();
     expect(spy).toHaveBeenCalled();
   });
 
-  it("should go location back when possible", () => {
-    location.replaceState("/asdf", "", { navigationId: 3 });
-    const spy = spyOn(location, "back");
+  it('should go location back when possible', () => {
+    location.replaceState('/asdf', '', { navigationId: 3 });
+    const spy = spyOn(location, 'back');
     component.goBack();
     expect(spy).toHaveBeenCalled();
   });

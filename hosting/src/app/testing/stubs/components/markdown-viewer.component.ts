@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
-@Component({ selector: "app-markdown-viewer", template: "" })
-export class MarkdownViewerStub {
+@Component({ selector: 'app-markdown-viewer', template: '' })
+export class MarkdownViewerStubComponent {
   @Input() markdownText: string;
 }

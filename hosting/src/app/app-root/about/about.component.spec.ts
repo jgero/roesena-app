@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AboutComponent } from "./about.component";
-import { ImageDalService } from "src/app/services/DAL/image-dal.service";
-import { ImageDalStub } from "src/app/testing";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatListModule } from "@angular/material/list";
-import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
+import { AboutComponent } from './about.component';
+import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
+import { ImageDalStub } from 'src/app/testing';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
-describe("AboutComponent", () => {
+describe('AboutComponent', () => {
   let component: AboutComponent;
   let fixture: ComponentFixture<AboutComponent>;
 
@@ -28,7 +28,7 @@ describe("AboutComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

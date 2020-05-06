@@ -1,8 +1,8 @@
-import { BehaviorSubject, of, Observable } from "rxjs";
-import { appPerson } from "src/app/utils/interfaces";
+import { BehaviorSubject, of, Observable } from 'rxjs';
+import { AppPerson } from 'src/app/utils/interfaces';
 
 export class AuthServiceStub {
-  $user = new BehaviorSubject<appPerson | null>(null);
+  $user = new BehaviorSubject<AppPerson | null>(null);
   constructor() {}
 
   login(a: string, b: string): Observable<null> {

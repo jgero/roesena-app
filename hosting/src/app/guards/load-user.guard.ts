@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from "@angular/router";
-import { Observable } from "rxjs";
-import { map, filter } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
-import { AuthService } from "../services/auth.service";
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class LoadUserGuard implements CanActivateChild {
   constructor(public auth: AuthService, public router: Router) {}

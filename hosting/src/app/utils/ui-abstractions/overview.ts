@@ -1,8 +1,8 @@
-import { OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { DAL } from "../interfaces";
-import { AuthService } from "src/app/services/auth.service";
+import { DAL } from '../interfaces';
+import { AuthService } from 'src/app/services/auth.service';
 
 export abstract class Overview implements OnInit {
   $data: Observable<any[]>;
@@ -23,6 +23,6 @@ export abstract class Overview implements OnInit {
   canCreate(): boolean {
     const user = this.auth.$user.getValue();
     // owner and admins can edit
-    return user && (user.groups.includes("Autor") || user.groups.includes("admin"));
+    return user && (user.groups.includes('Autor') || user.groups.includes('admin'));
   }
 }

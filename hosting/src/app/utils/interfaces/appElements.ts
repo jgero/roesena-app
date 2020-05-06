@@ -1,18 +1,18 @@
-export interface appElement {
+export interface AppElement {
   id: string;
   ownerId: string;
   ownerName: string;
   tags: string[];
 }
 
-export interface appPerson {
+export interface AppPerson {
   id: string;
   name: string;
   groups: string[];
   isConfirmedMember: boolean;
 }
 
-export interface appEvent extends appElement {
+export interface AppEvent extends AppElement {
   title: string;
   description: string;
   startDate: Date;
@@ -27,11 +27,11 @@ export interface Participant {
   name: string;
 }
 
-export interface appImage extends appElement {
+export interface AppImage extends AppElement {
   created: Date;
 }
 
-export interface appArticle extends appElement {
+export interface AppArticle extends AppElement {
   created: Date;
   title: string;
   content: string;
