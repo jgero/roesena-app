@@ -21,7 +21,7 @@
       <mat-chip-list mat-line>
         <ng-container *ngFor="let participant of event.participants">
           <mat-chip [color]="'primary'" selected *ngIf="participant.amount > 0" (click)="onParticipantClick(participant.id)">
-            {{ participant.name + " " + participant.amount }}
+            {{ participant.name + ' ' + participant.amount }}
           </mat-chip>
         </ng-container>
       </mat-chip-list>
@@ -47,10 +47,12 @@
       </mat-chip-list>
     </mat-list-item>
   </mat-list>
-  <a mat-fab class="edit-fab" *ngIf="canEdit(event)" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
+  <a mat-fab class="edit-fab" [color]="'primary'" *ngIf="canEdit(event)" [routerLink]="'/events/edit/' + event.id"
+    ><mat-icon>edit</mat-icon></a
+  >
 </main>
 
-<mat-toolbar>
+<mat-toolbar class="footer">
   <div class="spacer"></div>
   <div>{{ event.ownerName }}</div>
 </mat-toolbar>
