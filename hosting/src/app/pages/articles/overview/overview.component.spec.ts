@@ -14,7 +14,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { OverviewComponent } from './overview.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArticleDalService } from 'src/app/services/DAL/article-dal.service';
-import { AuthServiceStub, ArticleCardStubComponent, ActivatedRouteStub, ArticleDalStub } from 'src/app/testing';
+import {
+  AuthServiceStub,
+  ArticleCardStubComponent,
+  ActivatedRouteStub,
+  ArticleDalStub,
+  SearchBarStubComponent,
+} from 'src/app/testing';
 
 describe('Articles-OverviewComponent', () => {
   let component: OverviewComponent;
@@ -38,7 +44,7 @@ describe('Articles-OverviewComponent', () => {
         MatPaginatorModule,
         MatProgressBarModule,
       ],
-      declarations: [OverviewComponent, ArticleCardStubComponent],
+      declarations: [OverviewComponent, ArticleCardStubComponent, SearchBarStubComponent],
       providers: [
         { provide: ArticleDalService, useValue: articleStub },
         { provide: Router, useValue: routerSpy },

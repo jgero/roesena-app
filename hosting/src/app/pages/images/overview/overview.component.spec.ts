@@ -10,7 +10,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 
 import { OverviewComponent } from './overview.component';
-import { AuthServiceStub, ImageCardStubComponent, ActivatedRouteStub, ImageDalStub } from 'src/app/testing';
+import {
+  AuthServiceStub,
+  ImageCardStubComponent,
+  ActivatedRouteStub,
+  ImageDalStub,
+  SearchBarStubComponent,
+} from 'src/app/testing';
 import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -36,7 +42,7 @@ describe('Images-OverviewComponent', () => {
         MatGridListModule,
         MatPaginatorModule,
       ],
-      declarations: [OverviewComponent, ImageCardStubComponent],
+      declarations: [OverviewComponent, ImageCardStubComponent, SearchBarStubComponent],
       providers: [
         { provide: ImageDalService, useValue: imageStub },
         { provide: Router, useValue: routerSpy },

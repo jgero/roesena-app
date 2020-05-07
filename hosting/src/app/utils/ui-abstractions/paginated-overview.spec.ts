@@ -1,8 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 
-import { ArticleDalStub, AuthServiceStub, ActivatedRouteStub } from 'src/app/testing';
+import { ArticleDalStub, AuthServiceStub } from 'src/app/testing';
 import { AuthService } from 'src/app/services/auth.service';
 import { PaginatedOverview } from './paginated-overview';
 import { PaginatedDAL } from '../interfaces';
@@ -13,7 +13,7 @@ describe('Overview pagination extension', () => {
   let sub: Subscription;
 
   const articleDalStub = new ArticleDalStub();
-  const activatedRouteStub = new ActivatedRouteStub({ id: '12341234' });
+  const activatedRouteStub = { snapshot: { paramMap: { get: (a: any) => null } }, paramMap: of({ get: (a: any) => null }) };
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const authServiceStub = new AuthServiceStub();
 
@@ -54,7 +54,7 @@ describe('Overview pagination extension', () => {
     });
 
     it('should init a page when there is no search string', () => {
-      activatedRouteStub.setParamMap({ searchString: '' });
+      activatedRouteStub.snapshot.paramMap = { get: (a: any) => null };
       const spy = spyOn(articleDalStub, 'getPage');
       componentBase.ngOnInit();
       expect(spy).toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('Overview pagination extension', () => {
     });
 
     it('should init by tags when there is a search string', () => {
-      activatedRouteStub.setParamMap({ searchString: ' my Group  , 2020 ' });
+      activatedRouteStub.snapshot.paramMap = { get: (a: any) => ' my Group  , 2020 ' };
       const spy = spyOn(articleDalStub, 'getBySearchStrings');
       componentBase.ngOnInit();
       expect(spy).toHaveBeenCalled();

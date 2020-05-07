@@ -13,7 +13,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { OverviewComponent } from './overview.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventDALService } from 'src/app/services/DAL/event-dal.service';
-import { EventDalStub, EventCardStubComponent, AuthServiceStub, ActivatedRouteStub } from 'src/app/testing';
+import {
+  EventDalStub,
+  EventCardStubComponent,
+  AuthServiceStub,
+  ActivatedRouteStub,
+  SearchBarStubComponent,
+} from 'src/app/testing';
 
 describe('Events-OverviewComponent', () => {
   let component: OverviewComponent;
@@ -36,7 +42,7 @@ describe('Events-OverviewComponent', () => {
         MatGridListModule,
         MatProgressBarModule,
       ],
-      declarations: [OverviewComponent, EventCardStubComponent],
+      declarations: [OverviewComponent, EventCardStubComponent, SearchBarStubComponent],
       providers: [
         { provide: EventDALService, useValue: eventStub },
         { provide: Router, useValue: routerSpy },

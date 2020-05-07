@@ -66,7 +66,7 @@ export class PersonDalService implements PaginatedDAL {
       );
   }
 
-  getBySearchStrings(searchStrings: string[], limit?: number, onlyConfirmed?: boolean): Observable<AppPerson[]> {
+  getBySearchStrings(searchStrings: string[], limit = 20, onlyConfirmed?: boolean): Observable<AppPerson[]> {
     return this.firestore
       .collection<StoreablePerson>('persons', (qFn) => {
         let query: CollectionReference | Query = qFn;
@@ -76,9 +76,7 @@ export class PersonDalService implements PaginatedDAL {
         if (onlyConfirmed && onlyConfirmed === true) {
           query = query.where('isConfirmedMember', '==', true);
         }
-        if (limit) {
-          query = query.limit(limit);
-        }
+        query = query.limit(limit);
         return query;
       })
       .get()

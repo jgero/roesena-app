@@ -1,15 +1,18 @@
-import { AuthServiceStub } from 'src/app/testing';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+
 import { AuthService } from 'src/app/services/auth.service';
 import { Card } from './card';
 
 describe('Card components base', () => {
   let componentBase: A;
 
-  const authServiceStub = new AuthServiceStub();
+  const authServiceStub = { $user: new BehaviorSubject(null) };
+  const routerStub = { navigate: (a: any) => {} };
 
   class A extends Card {
     constructor() {
-      super(authServiceStub as AuthService);
+      super(authServiceStub as AuthService, routerStub as Router, 'article');
     }
   }
 
@@ -35,5 +38,20 @@ describe('Card components base', () => {
     authServiceStub.$user.next({ id: 'asdf', isConfirmedMember: true, name: 'John Doe', groups: [] });
     const pleb = componentBase.canEdit();
     expect(owner && admin && !pleb).toBeTrue();
+  });
+
+  describe('on tag click', () => {
+    it('should navigate if flag is not set', () => {
+      const spy = spyOn(routerStub, 'navigate');
+      componentBase.onTagClick('asdf');
+      expect(spy).toHaveBeenCalledWith(['article', 'overview', 'asdf']);
+    });
+
+    it('should not navigate if flag is set', () => {
+      const spy = spyOn(routerStub, 'navigate');
+      componentBase.navigateOnTagClick = false;
+      componentBase.onTagClick('asdf');
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });

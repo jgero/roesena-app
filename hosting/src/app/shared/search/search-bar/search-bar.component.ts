@@ -23,7 +23,9 @@ export class SearchBarComponent {
   search = new EventEmitter<string[]>();
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  searchForm: FormGroup;
+  searchForm: FormGroup = new FormGroup({
+    searchStrings: new FormControl(),
+  });
 
   constructor(public chips: ChipsInputService) {}
 

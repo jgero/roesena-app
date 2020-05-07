@@ -97,12 +97,13 @@ export class EventDALService implements AppElementDAL {
       ) as Observable<AppEvent[]>;
   }
 
-  getBySearchStrings(tags: string[]): Observable<AppEvent[]> {
+  getBySearchStrings(tags: string[], limit = 20): Observable<AppEvent[]> {
     const user = this.auth.$user.getValue();
     let stream = this.firestore
       .collection<StoreableEvent>('events', (qFn) => {
         let query: CollectionReference | Query = qFn;
         query = query.where(`participants`, '==', {});
+        query = query.limit(limit);
         tags.forEach((tag) => {
           query = query.where(`tags.${tag}`, '==', true);
         });

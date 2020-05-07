@@ -5,3 +5,4 @@ export * from './empty.component';
 export * from './markdown-preview.component';
 export * from './markdown-viewer.component';
 export * from './day.component';
+export * from './search-bar.component';

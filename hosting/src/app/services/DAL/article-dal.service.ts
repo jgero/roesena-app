@@ -49,11 +49,7 @@ export class ArticleDalService implements PaginatedDAL {
       );
   }
 
-  getBySearchStrings(tags: string[], limit?: number): Observable<AppArticle[]> {
-    // if there is no limit set one
-    if (!limit) {
-      limit = 15;
-    }
+  getBySearchStrings(tags: string[], limit = 20): Observable<AppArticle[]> {
     // check if limit is too big
     if (limit && (limit < 1 || limit > 20)) {
       this.snackbar.open(`Limit '${limit}' ist ungültig in Artikel Query`, 'OK');

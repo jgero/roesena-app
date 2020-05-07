@@ -99,16 +99,14 @@ export class ImageDalService implements PaginatedDAL {
       );
   }
 
-  getBySearchStrings(tags: string[], limit?: number): Observable<AppImage[]> {
+  getBySearchStrings(tags: string[], limit = 20): Observable<AppImage[]> {
     return this.firestore
       .collection<StoreableImage>('images', (qFn) => {
         let query: CollectionReference | Query = qFn;
         tags.forEach((tag) => {
           query = query.where(`tags.${tag}`, '==', true);
         });
-        if (limit) {
-          query = query.limit(limit);
-        }
+        query = query.limit(limit);
         return query;
       })
       .snapshotChanges()
