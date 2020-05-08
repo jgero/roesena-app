@@ -2,7 +2,7 @@
   <div>Bilder</div>
 </mat-toolbar>
 
-<mat-progress-bar *ngIf="!($data | async)" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
+<mat-progress-bar *ngIf="($data | async) === null" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 
 <app-search-bar [searchStrings]="$searchTags | async" (search)="onSearchEvent($event)"></app-search-bar>
 
