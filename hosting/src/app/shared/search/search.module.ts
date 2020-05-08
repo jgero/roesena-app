@@ -6,10 +6,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ConvertersModule } from '../converters/converters.module';
 
 @NgModule({
   declarations: [SearchBarComponent],
   exports: [SearchBarComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatIconModule, MatButtonModule, MatChipsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    ConvertersModule,
+  ],
 })
 export class SearchModule {}
