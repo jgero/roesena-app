@@ -5,4 +5,9 @@ describe('AutocompleteFilterPipe', () => {
     const pipe = new AutocompleteFilterPipe();
     expect(pipe).toBeTruthy();
   });
+
+  it('should remove not matching strings from array', () => {
+    const pipe = new AutocompleteFilterPipe();
+    expect(pipe.transform(['asdf', 'test', '123'], 'TesT')).toEqual(['test']);
+  });
 });
