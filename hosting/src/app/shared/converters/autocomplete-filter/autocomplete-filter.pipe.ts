@@ -5,6 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AutocompleteFilterPipe implements PipeTransform {
   transform(value: string[], arg: string): unknown {
-    return value.filter((val) => val.toLowerCase().includes(arg.toLowerCase()));
+    if (value) {
+      return value.filter((val) => val.toLowerCase().includes(arg.toLowerCase()));
+    } else {
+      return [];
+    }
   }
 }

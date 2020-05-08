@@ -60,7 +60,6 @@ export abstract class SearchableOverview extends Overview {
     if (this.searchString === '') {
       this.searchString = tag;
     } else {
-      console.log(this.searchString);
       if (this.searchString.split(',').includes(tag)) {
         return;
       }
