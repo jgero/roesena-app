@@ -163,7 +163,12 @@ export class PersonDalService implements PaginatedDAL {
           });
         }),
         catchError((err) => {
-          this.snackbar.open(`Fehler beim Speichern der Anzahl, wahrscheinlich ist die Deadline vorbei: ${err}`, 'OK');
+          // this callback is outside of the angular zone, because of that the ngZone stuff is needed to align the snackbar correctly
+          this.ngZone.run(() => {
+            setTimeout(() => {
+              this.snackbar.open(`Fehler beim Speichern der Anzahl, wahrscheinlich ist die Deadline vorbei: ${err}`, 'OK');
+            }, 0);
+          });
           return of(false);
         })
       );

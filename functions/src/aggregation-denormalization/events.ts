@@ -1,18 +1,11 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
-export const articleWriteListener = functions
+export const eventWriteListener = functions
   .region('europe-west1')
-  .firestore.document('articles/{articleId}')
+  .firestore.document('events/{eventId}')
   .onWrite(async (change) => {
     if (!change.before.exists) {
-      // New document Created : add one to article count
-      await admin
-        .firestore()
-        .collection('meta')
-        .doc('articles')
-        .update({ amount: admin.firestore.FieldValue.increment(1) });
-
       // map tags element to increment 1
       const tags: { [key: string]: any } = (change.after.data() as any).tags as { [key: string]: boolean };
       for (const key in tags) {
@@ -48,13 +41,6 @@ export const articleWriteListener = functions
       }
       return true;
     } else if (!change.after.exists) {
-      // Deleting document : subtract one from count
-      await admin
-        .firestore()
-        .collection('meta')
-        .doc('articles')
-        .update({ amount: admin.firestore.FieldValue.increment(-1) });
-
       // map tags element to increment -1
       const tags: { [key: string]: any } = (change.before.data() as any).tags as { [key: string]: boolean };
       for (const key in tags) {

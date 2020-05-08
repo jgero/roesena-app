@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireFunctionsModule, REGION } from '@angular/fire/functions';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MarkdownModule } from 'ngx-markdown';
@@ -58,7 +58,10 @@ import { MarkdownViewerModule } from '../shared/markdown-viewer/markdown-viewer.
     MarkdownModule.forRoot(),
     MarkdownViewerModule,
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de' }],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'de' },
+    { provide: REGION, useValue: 'europe-west1' },
+  ],
   bootstrap: [RootComponent],
 })
 export class AppRootModule {}
