@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent implements OnDestroy {
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZäöüÄÖÜ -]+$')]),
+    name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZäöüÄÖÜß -]+$')]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   private subs: Subscription[] = [];

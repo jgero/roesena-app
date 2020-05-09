@@ -12,7 +12,7 @@ import { BrowserService } from 'src/app/services/browser.service';
 })
 export class ProfileComponent implements OnDestroy {
   updateNameForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZäöüÄÖÜ -]+$')]),
+    name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZäöüÄÖÜß -]+$')]),
   });
   private subs: Subscription[] = [];
   constructor(public auth: AuthService, private browser: BrowserService) {}
