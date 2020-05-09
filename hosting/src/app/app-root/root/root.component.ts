@@ -1,5 +1,5 @@
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay, filter, switchMap, tap } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { EventDALService } from 'src/app/services/DAL/event-dal.service';
 import { environment } from 'src/environments/environment';
 import { SwUpdate } from '@angular/service-worker';
-import { MatSidenav, MatDrawer } from '@angular/material/sidenav';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -51,10 +51,6 @@ export class RootComponent implements OnInit {
           break;
       }
     });
-  }
-
-  openNav() {
-    this.sidenav.open();
   }
 
   closeNav() {

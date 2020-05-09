@@ -13,7 +13,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-nav-list (swipeleft)="closeNav()">
+    <mat-nav-list>
       <a mat-list-item routerLink="/events">Events</a>
       <a mat-list-item routerLink="/articles">Artikel</a>
       <a mat-list-item routerLink="/images">Bilder</a>
@@ -54,7 +54,7 @@
       <div mat-list-item class="version">{{ version }}</div>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content (swiperight)="openNav()">
+  <mat-sidenav-content>
     <mat-progress-bar class="loading" *ngIf="isLoading" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
