@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +17,27 @@ export class ChipsInputService {
     form.markAsDirty();
   }
 
-  addItem(event: MatChipInputEvent, form: AbstractControl) {
+  addItem(event: MatChipInputEvent, form: AbstractControl, autocomplete?: MatAutocomplete) {
     const value = event.value.trim();
-    if (value !== '' && !form.value.includes(value)) {
-      (form.value as string[]).push(value);
-      form.markAsDirty();
+    // only add if no autocomplete is provided or nothing is selected
+    if (!autocomplete || (autocomplete && !autocomplete.isOpen)) {
+      if (value !== '' && !form.value.includes(value)) {
+        // debugger;
+        (form.value as string[]).push(value);
+        form.markAsDirty();
+      }
     }
     event.input.value = '';
+  }
+
+  addSelected(event: MatAutocompleteSelectedEvent, form: AbstractControl, itemInput: HTMLInputElement) {
+    const value = event.option.value;
+    if (value !== '' && !form.value.includes(value)) {
+      (form.value as string[]).push(value);
+      // debugger;
+      form.markAsDirty();
+    }
+    event.option.deselect();
+    itemInput.value = '';
   }
 }

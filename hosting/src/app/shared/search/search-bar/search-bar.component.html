@@ -1,5 +1,16 @@
 <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="chips.addSelected($event, searchForm.get('searchStrings'), chipInput)"
+    >
+      <mat-option
+        *ngFor="let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value"
+        [value]="option"
+      >
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
     <mat-chip-list #chipList>
       <mat-chip
         *ngFor="let item of searchForm.get('searchStrings').value"
@@ -13,17 +24,9 @@
         placeholder="Suchbegriffe"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="chips.addItem($event, searchForm.get('searchStrings'))"
+        (matChipInputTokenEnd)="chips.addItem($event, searchForm.get('searchStrings'), auto)"
         [matAutocomplete]="auto"
       />
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addItemByAutocomplete($event)">
-        <mat-option
-          *ngFor="let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value"
-          [value]="option"
-        >
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
     </mat-chip-list>
   </mat-form-field>
   <button mat-icon-button aria-label="search">
