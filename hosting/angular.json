@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "roesena-app"
+  "defaultProject": "roesena-app",
+  "cli": {
+    "analytics": "50a83e67-7810-4b36-ade4-100a297699d8"
+  }
 }
