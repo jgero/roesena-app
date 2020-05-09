@@ -5,7 +5,7 @@
   <img src="assets/icon-inverted.svg" alt="RöSeNa Logo" />
   <a class="home" mat-button routerLink="/">RöSeNa</a>
 </mat-toolbar>
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" (swipeleft)="closeNav()">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -13,7 +13,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-nav-list>
+    <mat-nav-list (swipeleft)="closeNav()">
       <a mat-list-item routerLink="/events">Events</a>
       <a mat-list-item routerLink="/articles">Artikel</a>
       <a mat-list-item routerLink="/images">Bilder</a>
@@ -54,7 +54,7 @@
       <div mat-list-item class="version">{{ version }}</div>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content (swiperight)="openNav()">
     <mat-progress-bar class="loading" *ngIf="isLoading" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
@@ -57,6 +57,7 @@ import { MarkdownViewerModule } from '../shared/markdown-viewer/markdown-viewer.
     CardsModule,
     MarkdownModule.forRoot(),
     MarkdownViewerModule,
+    HammerModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },

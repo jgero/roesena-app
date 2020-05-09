@@ -1,5 +1,5 @@
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay, filter, switchMap, tap } from 'rxjs/operators';
@@ -47,11 +47,21 @@ export class RootComponent implements OnInit {
         case event instanceof NavigationCancel:
         case event instanceof NavigationError:
           this.isLoading = false;
-          // only close sidenav if its in mobile mode
-          if (this.brakpointMatches) { this.sidenav.close(); }
+          this.closeNav();
           break;
       }
     });
+  }
+
+  openNav() {
+    this.sidenav.open();
+  }
+
+  closeNav() {
+    // only close sidenav if its in mobile mode
+    if (this.brakpointMatches) {
+      this.sidenav.close();
+    }
   }
 
   ngOnInit() {
