@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@import '~@angular/material/theming';
 @include mat-core();
 $background: mat-palette($mat-grey);
 
@@ -8,6 +8,10 @@ $background: mat-palette($mat-grey);
   width: 100%;
   align-items: center;
   justify-content: center;
+
+  ::ng-deep.mat-badge.hide-text .mat-badge-content {
+    color: transparent;
+  }
 
   .mat-card {
     height: calc(100% - 36px);
@@ -29,7 +33,7 @@ $background: mat-palette($mat-grey);
       position: relative;
 
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         bottom: 0;
         left: 0;

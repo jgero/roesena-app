@@ -173,6 +173,18 @@ export class PersonDalService implements PaginatedDAL {
         })
       );
   }
+
+  markEventAsSeen(id: string): Observable<null> {
+    return this.fns
+      .httpsCallable('changeSeenMarker')({ id })
+      .pipe(
+        map(() => null),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
 }
 
 function toStorablePerson(app: AppPerson): StoreablePerson {

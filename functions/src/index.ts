@@ -11,3 +11,4 @@ export * from './aggregation-denormalization/events';
 export * from './aggregation-denormalization/meta-tags';
 
 export * from './rest-endpoints/event-responder';
+export * from './rest-endpoints/change-seen-marker';

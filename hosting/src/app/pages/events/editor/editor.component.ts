@@ -82,7 +82,12 @@ export class EditorComponent implements OnDestroy {
         );
         if (index < 0) {
           // add the person as participant
-          (this.eventForm.get('deadline').get('participants').value as Participant[]).push({ id, amount: -1, name: person.name });
+          (this.eventForm.get('deadline').get('participants').value as Participant[]).push({
+            id,
+            amount: -1,
+            name: person.name,
+            hasUnseenChanges: true,
+          });
         }
       });
     // manually run the validity check after a person was clicked
@@ -123,7 +128,11 @@ export class EditorComponent implements OnDestroy {
         this.eventForm.get('deadline').get('deadlineDate').value,
         this.eventForm.get('deadline').get('deadlineTime').value
       ),
-      participants: this.eventForm.get('deadline').get('participants').value,
+      // not only add the participants, but also set the unseen changes for all to true
+      participants: (this.eventForm.get('deadline').get('participants').value as Participant[]).map((participant) => {
+        participant.hasUnseenChanges = true;
+        return participant;
+      }),
     };
     const action = this.initEvent.id
       ? // save and mark the form as clean again
@@ -212,6 +221,7 @@ export class EditorComponent implements OnDestroy {
         id,
         amount: -1,
         name: this.persons.find((p) => p.id === id).name,
+        hasUnseenChanges: true,
       });
     } else {
       // remove the participant from the array of participants

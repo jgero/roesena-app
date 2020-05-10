@@ -12,12 +12,22 @@ import { ConvertersModule } from '../converters/converters.module';
 import { EventCardComponent } from './event-card/event-card.component';
 import { ImageCardComponent } from './image-card/image-card.component';
 import { ArticleCardComponent } from './article-card/article-card.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 const components = [EventCardComponent, ImageCardComponent, ArticleCardComponent];
 
 @NgModule({
   declarations: components,
-  imports: [CommonModule, RouterModule, ConvertersModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ConvertersModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatChipsModule,
+    MatBadgeModule,
+  ],
   exports: components,
 })
 export class CardsModule {}

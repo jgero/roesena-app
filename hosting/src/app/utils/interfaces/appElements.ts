@@ -25,6 +25,7 @@ export interface Participant {
   id: string;
   amount: number;
   name: string;
+  hasUnseenChanges: boolean | null;
 }
 
 export interface AppImage extends AppElement {

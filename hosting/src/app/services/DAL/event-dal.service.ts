@@ -28,7 +28,7 @@ interface StoreableEvent {
   endDate: fbs.firestore.Timestamp;
   tags: { [key: string]: boolean };
   deadline: fbs.firestore.Timestamp;
-  participants: { [key: string]: { amount: number; name: string } };
+  participants: { [key: string]: { amount: number; name: string; hasUnseenChanges: boolean | null } };
   participantsArray: string[];
 }
 
