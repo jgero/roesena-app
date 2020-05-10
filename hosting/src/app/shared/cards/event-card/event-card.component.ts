@@ -22,6 +22,21 @@ export class EventCardComponent extends Card {
     return part.hasUnseenChanges ? 1 : null;
   }
 
+  get status(): string {
+    const user = this.auth.$user.getValue();
+    if (!user || !this.data) return '';
+    const part = this.data.participants.find((p) => p.id === user.id);
+    if (!part) return '';
+    switch (part.amount) {
+      case -1:
+        return 'Rückmeldung ausstehend';
+      case 0:
+        return 'abgelehnt';
+      default:
+        return 'angemeldet';
+    }
+  }
+
   constructor(auth: AuthService, router: Router) {
     super(auth, router, 'events');
   }

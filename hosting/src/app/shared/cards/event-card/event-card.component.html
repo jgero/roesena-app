@@ -2,7 +2,7 @@
   <mat-card-title class="hide-text" [matBadge]="unseen">{{ data.title }}</mat-card-title>
   <mat-card-subtitle>
     <div>{{ data.startDate | toLocalDateString }} - {{ data.endDate | toLocalDateString }}</div>
-    <div>{{ data.ownerName }}</div>
+    <div>{{ status }}</div>
   </mat-card-subtitle>
   <mat-card-content>
     <div class="content-preview">
