@@ -1,6 +1,7 @@
-import { Component, Input, ElementRef } from '@angular/core';
+import { Component, Input, ElementRef, HostBinding } from '@angular/core';
 import { AppEvent } from 'src/app/utils/interfaces';
 import { expandCollapseAnimation } from 'src/app/utils/animations';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-day',
@@ -14,6 +15,37 @@ export class DayComponent {
   @Input()
   events: AppEvent[];
   isPopupVisible = false;
+
+  @HostBinding('class.inactive') get isInactive(): boolean {
+    return !this.events || this.events.length === 0;
+  }
+
+  displayedColumns = ['name', 'status'];
+  get eventTableData(): { name: string; status: string }[] {
+    if (!this.events) {
+      return [];
+    }
+    const user = this.auth.$user.getValue();
+    console.log(this.events);
+    return this.events.map((ev) => {
+      const res = { name: ev.title, status: 'öffentlich' };
+      if (ev.participants.length > 0) {
+        const p = ev.participants.find((part) => part.id === user.id);
+        switch (p.amount) {
+          case -1:
+            res.status = 'Rückmeldung ausstehend';
+            break;
+          case 0:
+            res.status = 'abgelehnt';
+            break;
+          default:
+            res.status = `angenommen mit ${p.amount} Personen`;
+            break;
+        }
+      }
+      return res;
+    });
+  }
 
   get params(): any {
     if (!this.calendarCardRef.nativeElement || !document.getElementById('calendar')) {
@@ -43,7 +75,7 @@ export class DayComponent {
     };
   }
 
-  constructor(private calendarCardRef: ElementRef<HTMLElement>) {}
+  constructor(private calendarCardRef: ElementRef<HTMLElement>, public auth: AuthService) {}
 
   onCardClick() {
     if (!this.isPopupVisible) {
