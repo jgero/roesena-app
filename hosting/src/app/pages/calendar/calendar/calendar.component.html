@@ -4,15 +4,19 @@
   <div class="change-month-buttons"></div>
   <mat-progress-bar *ngIf="loading" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 </mat-toolbar>
-<main *ngIf="$activeMonth | async as month">
+<main
+  *ngIf="$activeMonth | async as month"
+  (swipeleft)="navigateToNextMonth(month.date)"
+  (swiperight)="navigateToPreviousMonth(month.date)"
+>
   <mat-toolbar>
     <div class="spacer"></div>
     <div class="title-container">
-      <a mat-icon-button [routerLink]="'/calendar/' + getPreviousMonth(month.date).toISOString()">
+      <a mat-icon-button (click)="navigateToPreviousMonth(month.date)">
         <mat-icon>navigate_before</mat-icon>
       </a>
       <div class="title">{{ getTitle(month.date) }}</div>
-      <a mat-icon-button [routerLink]="'/calendar/' + getNextMonth(month.date).toISOString()">
+      <a mat-icon-button (click)="navigateToNextMonth(month.date)">
         <mat-icon>navigate_next</mat-icon>
       </a>
     </div>

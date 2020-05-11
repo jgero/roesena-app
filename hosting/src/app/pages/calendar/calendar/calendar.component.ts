@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ export class CalendarComponent implements OnDestroy {
   loading: boolean;
   private subs: Subscription[] = [];
 
-  constructor(route: ActivatedRoute, eventDAO: EventDALService, cdr: ChangeDetectorRef) {
+  constructor(route: ActivatedRoute, eventDAO: EventDALService, cdr: ChangeDetectorRef, public router: Router) {
     let currentDate: Date;
     this.$activeMonth = route.paramMap.pipe(
       // set loading state and detect changes
@@ -72,11 +72,11 @@ export class CalendarComponent implements OnDestroy {
     return new Array(offset).fill(null);
   }
 
-  getNextMonth(d: Date): Date {
-    return new Date(d.getFullYear(), d.getMonth() + 1);
+  navigateToNextMonth(d: Date) {
+    this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() + 1).toISOString()]);
   }
-  getPreviousMonth(d: Date): Date {
-    return new Date(d.getFullYear(), d.getMonth() - 1);
+  navigateToPreviousMonth(d: Date): Date {
+    this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() - 1).toISOString()]);
   }
 
   getTitle(d: Date): string {
