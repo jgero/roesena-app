@@ -22,7 +22,7 @@ export const changeSeenMarker = functions.region('europe-west1').https.onRequest
       return;
     }
     // if person is not invited to event
-    const part = doc.participants.find((p) => p.id === decoded.uid);
+    const part = doc.participants.find((p: any) => p.id === decoded.uid);
     if (!part) {
       res.status(400).send('person is not invited to event');
       return;
