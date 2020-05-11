@@ -24,3 +24,25 @@ jobs:
       - name: run unit tests
         working-directory: ./hosting
         run: npm run test:ci
+
+  build_functions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v1
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+
+      - name: Install packages
+        working-directory: ./functions
+        run: npm ci
+
+      - name: lint project
+        working-directory: ./functions
+        run: npm run lint
+
+      - name: build functions
+        working-directory: ./functions
+        run: npm run build
