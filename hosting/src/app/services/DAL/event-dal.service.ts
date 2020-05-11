@@ -299,7 +299,7 @@ export class EventDALService implements AppElementDAL {
 function toStorableEvent(app: AppEvent): StoreableEvent {
   const { title, description, ownerId, ownerName, startDate, endDate } = app;
   // create the array with the month and year numbers for calendar month queries
-  let months: { year: number; month: number }[] = [];
+  const months: { year: number; month: number }[] = [];
   let month = startDate.getMonth();
   let year = startDate.getFullYear();
   months.push({ year, month });

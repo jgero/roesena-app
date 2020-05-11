@@ -16,7 +16,6 @@ import { AuthServiceStub } from 'src/app/testing';
 import { EventDalStub } from 'src/app/testing';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EmptyComponent } from 'src/app/testing';
 import { MatBadgeModule } from '@angular/material/badge';
 import { Observable, Subscription, of } from 'rxjs';
 import { SwUpdate } from '@angular/service-worker';
@@ -78,7 +77,9 @@ describe('RootComponent', () => {
       matSnackBar.open.calls.reset();
     });
     afterEach(() => {
-      if (sub) { sub.unsubscribe(); }
+      if (sub) {
+        sub.unsubscribe();
+      }
       matSnackBar.open.calls.reset();
       fixture.destroy();
     });
@@ -141,7 +142,7 @@ describe('RootComponent', () => {
           startDate: new Date(2020, 10, 2),
           endDate: new Date(2020, 10, 3),
           deadline: new Date(2020, 10, 1),
-          participants: [{ id: 'creativeUID', name: 'John Doe', amount: -1 }],
+          participants: [{ id: 'creativeUID', name: 'John Doe', amount: -1, hasUnseenChanges: false }],
         },
       ];
       component.ngOnInit();

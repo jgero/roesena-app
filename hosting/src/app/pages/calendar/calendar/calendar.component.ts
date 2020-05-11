@@ -75,7 +75,7 @@ export class CalendarComponent implements OnDestroy {
   navigateToNextMonth(d: Date) {
     this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() + 1).toISOString()]);
   }
-  navigateToPreviousMonth(d: Date): Date {
+  navigateToPreviousMonth(d: Date) {
     this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() - 1).toISOString()]);
   }
 

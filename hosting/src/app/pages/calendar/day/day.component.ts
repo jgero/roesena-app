@@ -17,10 +17,10 @@ export class DayComponent {
   set _events(ev: AppEvent[]) {
     this.events = ev;
     const user = this.auth.$user.getValue();
-    this.eventTableData = this.events.map((ev) => {
-      const res = { name: ev.title, status: 'öffentlich', id: ev.id, hasUnseenChanges: false };
-      if (ev.participants.length > 0) {
-        const p = ev.participants.find((part) => part.id === user.id);
+    this.eventTableData = this.events.map((evIter) => {
+      const res = { name: evIter.title, status: 'öffentlich', id: evIter.id, hasUnseenChanges: false };
+      if (evIter.participants.length > 0) {
+        const p = evIter.participants.find((part) => part.id === user.id);
         if (p.hasUnseenChanges) {
           res.hasUnseenChanges = true;
         }

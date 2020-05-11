@@ -10,6 +10,7 @@ import { EventCardComponent } from './event-card.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthServiceStub } from 'src/app/testing';
 import { ConvertersModule } from '../../converters/converters.module';
+import { MatBadgeModule } from '@angular/material/badge';
 
 describe('EventCardComponent', () => {
   let component: EventCardComponent;
@@ -21,7 +22,15 @@ describe('EventCardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [EventCardComponent],
       providers: [{ provide: AuthService, useValue: authStub }],
-      imports: [ConvertersModule, MatCardModule, MatChipsModule, MatButtonModule, MatIconModule, RouterTestingModule],
+      imports: [
+        ConvertersModule,
+        MatCardModule,
+        MatChipsModule,
+        MatButtonModule,
+        MatIconModule,
+        RouterTestingModule,
+        MatBadgeModule,
+      ],
     }).compileComponents();
   }));
 

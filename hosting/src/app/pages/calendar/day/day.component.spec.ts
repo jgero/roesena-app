@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatBadgeModule } from '@angular/material/badge';
 import { testingRoutes } from 'src/app/testing';
+import { BehaviorSubject } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 export class MockElementRef extends ElementRef {
   constructor() {
@@ -19,6 +21,8 @@ export class MockElementRef extends ElementRef {
 describe('DayComponent', () => {
   let component: DayComponent;
   let fixture: ComponentFixture<DayComponent>;
+
+  const authStub = { $user: new BehaviorSubject(null) };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,7 +35,10 @@ describe('DayComponent', () => {
         MatBadgeModule,
       ],
       declarations: [DayComponent],
-      providers: [{ provide: ElementRef, useValue: MockElementRef }],
+      providers: [
+        { provide: ElementRef, useValue: MockElementRef },
+        { provide: AuthService, useValue: authStub },
+      ],
     }).compileComponents();
   }));
 

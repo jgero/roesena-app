@@ -13,7 +13,8 @@ import { MarkdownViewerStubComponent, EventDalStub, testingRoutes } from 'src/ap
 import { ConvertersModule } from 'src/app/shared/converters/converters.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { PersonDalService } from 'src/app/services/DAL/person-dal.service';
 
 describe('Event-DetailsComponent', () => {
   let component: DetailsComponent;
@@ -40,6 +41,7 @@ describe('Event-DetailsComponent', () => {
     },
   };
   const eventsStub = new EventDalStub();
+  const personStub = { markEventAsSeen: of(null) };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,6 +58,7 @@ describe('Event-DetailsComponent', () => {
         { provide: EventDALService, useValue: eventsStub },
         { provide: AuthService, useValue: authStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
+        { provide: PersonDalService, useValue: personStub },
       ],
     }).compileComponents();
   }));
@@ -98,9 +101,9 @@ describe('Event-DetailsComponent', () => {
         ownerName: 'john',
         deadline: new Date(),
         participants: [
-          { id: 'asdfTest', name: 'john', amount: -1 },
-          { id: 'asdfTest', name: 'john', amount: 2 },
-          { id: 'asdfTest', name: 'john', amount: 0 },
+          { id: 'asdfTest', name: 'john', amount: -1, hasUnseenChanges: false },
+          { id: 'asdfTest', name: 'john', amount: 2, hasUnseenChanges: false },
+          { id: 'asdfTest', name: 'john', amount: 0, hasUnseenChanges: false },
         ],
       };
     });

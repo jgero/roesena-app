@@ -16,17 +16,17 @@ export class EventCardComponent extends Card {
 
   get unseen(): number | null {
     const user = this.auth.$user.getValue();
-    if (!this.data) return null;
+    if (!this.data) { return null; }
     const part = this.data.participants.find((p) => p.id === user.id);
-    if (!part) return null;
+    if (!part) { return null; }
     return part.hasUnseenChanges ? 1 : null;
   }
 
   get status(): string {
     const user = this.auth.$user.getValue();
-    if (!user || !this.data) return '';
+    if (!user || !this.data) { return ''; }
     const part = this.data.participants.find((p) => p.id === user.id);
-    if (!part) return '';
+    if (!part) { return ''; }
     switch (part.amount) {
       case -1:
         return 'Rückmeldung ausstehend';

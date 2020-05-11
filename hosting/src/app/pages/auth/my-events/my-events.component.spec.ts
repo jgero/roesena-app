@@ -67,14 +67,16 @@ describe('MyEventsComponent', () => {
         tags: [],
         id: 'a',
         title: 'a',
-        participants: [{ id: 'myUID', name: 'a', amount: 2 }],
+        participants: [{ id: 'myUID', name: 'a', amount: 2, hasUnseenChanges: false }],
       },
     ];
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    if (sub) { sub.unsubscribe(); }
+    if (sub) {
+      sub.unsubscribe();
+    }
   });
 
   it('should create', () => {
