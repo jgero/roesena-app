@@ -21,7 +21,17 @@
       <table mat-table [dataSource]="eventTableData">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          <td mat-cell *matCellDef="let element">
+            <a
+              mat-button
+              class="hide-text"
+              matBadge="{{ element.hasUnseenChanges ? 'a' : '' }}"
+              matBadgeSize="small"
+              [routerLink]="'/events/details/' + element.id"
+            >
+              {{ element.name }}</a
+            >
+          </td>
         </ng-container>
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Status</th>

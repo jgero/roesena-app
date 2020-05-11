@@ -1,4 +1,5 @@
 import { Component, Input, ElementRef, HostBinding } from '@angular/core';
+
 import { AppEvent } from 'src/app/utils/interfaces';
 import { expandCollapseAnimation } from 'src/app/utils/animations';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,25 +13,17 @@ import { AuthService } from 'src/app/services/auth.service';
 export class DayComponent {
   @Input()
   day: number;
-  @Input()
-  events: AppEvent[];
-  isPopupVisible = false;
-
-  @HostBinding('class.inactive') get isInactive(): boolean {
-    return !this.events || this.events.length === 0;
-  }
-
-  displayedColumns = ['name', 'status'];
-  get eventTableData(): { name: string; status: string }[] {
-    if (!this.events) {
-      return [];
-    }
+  @Input('events')
+  set _events(ev: AppEvent[]) {
+    this.events = ev;
     const user = this.auth.$user.getValue();
-    console.log(this.events);
-    return this.events.map((ev) => {
-      const res = { name: ev.title, status: 'öffentlich' };
+    this.eventTableData = this.events.map((ev) => {
+      const res = { name: ev.title, status: 'öffentlich', id: ev.id, hasUnseenChanges: false };
       if (ev.participants.length > 0) {
         const p = ev.participants.find((part) => part.id === user.id);
+        if (p.hasUnseenChanges) {
+          res.hasUnseenChanges = true;
+        }
         switch (p.amount) {
           case -1:
             res.status = 'Rückmeldung ausstehend';
@@ -46,6 +39,15 @@ export class DayComponent {
       return res;
     });
   }
+  events: AppEvent[] = [];
+  isPopupVisible = false;
+
+  @HostBinding('class.inactive') get isInactive(): boolean {
+    return !this.events || this.events.length === 0;
+  }
+
+  displayedColumns = ['name', 'status'];
+  eventTableData: { name: string; status: string; id: string; hasUnseenChanges: boolean }[] = [];
 
   get params(): any {
     if (!this.calendarCardRef.nativeElement || !document.getElementById('calendar')) {

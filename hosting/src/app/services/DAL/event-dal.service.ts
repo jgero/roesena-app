@@ -9,7 +9,7 @@ import {
   Action,
   QueryDocumentSnapshot,
 } from '@angular/fire/firestore';
-import { Observable, from, of, combineLatest, race, concat } from 'rxjs';
+import { Observable, from, of, combineLatest, concat } from 'rxjs';
 import { map, catchError, tap, switchMap } from 'rxjs/operators';
 import * as fbs from 'firebase/app';
 import 'firebase/firestore';
@@ -26,6 +26,7 @@ interface StoreableEvent {
   description: string;
   startDate: fbs.firestore.Timestamp;
   endDate: fbs.firestore.Timestamp;
+  months: { year: number; month: number }[];
   tags: { [key: string]: boolean };
   deadline: fbs.firestore.Timestamp;
   participants: { [key: string]: { amount: number; name: string; hasUnseenChanges: boolean | null } };
@@ -55,46 +56,29 @@ export class EventDALService implements AppElementDAL {
   }
 
   getForMonth(year: number, month: number): Observable<AppEvent[]> {
-    const results: AppEvent[] = [];
-    // get the next event starting from the last returned one
-    const nextEvent = (last: QueryDocumentSnapshot<StoreableEvent>) =>
-      this.firestore
-        .collection<StoreableEvent>('events', (qFn) => qFn.orderBy('endDate').startAfter(last).limit(1))
-        .get()
-        .pipe(
-          map((el: any) => el.docs[0]),
-          switchMap((current) => {
-            if (current && convertSnapshot(current).startDate.getTime() <= new Date(year, month + 1, 0).getTime()) {
-              results.push(convertSnapshot(current));
-              return nextEvent(current);
-            } else {
-              return of(results);
-            }
-          }),
+    const user = this.auth.$user.getValue();
+    return this.firestore
+      .collection<StoreableEvent>('events', (qFn) => {
+        let query: CollectionReference | Query = qFn;
+        // only query for public events when user is not logged in or confirmed, otherwise all events can be seen
+        if (!user || !user.isConfirmedMember) {
+          query = query.where(`participants`, '==', {});
+        }
+        query = query.where('months', 'array-contains', { year, month });
+        return query;
+      })
+      .snapshotChanges()
+      .pipe(
+        map(convertMany),
+        // keep public events and the ones where the user is invited
+        map(
+          (evs) => evs.filter((ev) => ev.participants.length === 0 || !!ev.participants.find((part) => part.id === user.id)),
           catchError((err) => {
             this.snackbar.open(`Events konnten nicht geladen werden: ${err}`, 'OK');
             return of([]);
           })
-        );
-    // query the first event starting from the current month
-    return this.firestore
-      .collection<StoreableEvent>('events', (qFn) => qFn.where('endDate', '>=', new Date(year, month, 1)).limit(1))
-      .get()
-      .pipe(
-        map((el: any) => el.docs[0]),
-        switchMap((current) => {
-          if (current && convertSnapshot(current).startDate.getTime() <= new Date(year, month + 1, 0).getTime()) {
-            results.push(convertSnapshot(current));
-            return nextEvent(current);
-          } else {
-            return of(results);
-          }
-        }),
-        catchError((err) => {
-          this.snackbar.open(`Events konnten nicht geladen werden: ${err}`, 'OK');
-          return of([]);
-        })
-      ) as Observable<AppEvent[]>;
+        )
+      );
   }
 
   getBySearchStrings(tags: string[], limit = 20): Observable<AppEvent[]> {
@@ -140,42 +124,42 @@ export class EventDALService implements AppElementDAL {
     );
   }
 
-  getPage(limit: number, dir: Direction, cutoffDate: Date = new Date()): Observable<AppEvent[]> {
-    return this.firestore
-      .collection<StoreableEvent>('articles', (qFn) => {
-        let query: CollectionReference | Query = qFn;
-        // always order by creation date
-        query = query.orderBy('created', 'desc');
-        // paginate the data
-        switch (dir) {
-          case Direction.initial:
-            query = query.limit(limit);
-            break;
-          case Direction.forward:
-            query = query.startAfter(this.pageLast).limit(limit);
-            break;
-          case Direction.back:
-            query = query.endBefore(this.pageFirst).limitToLast(limit);
-            break;
-        }
-        return query;
-      })
-      .snapshotChanges()
-      .pipe(
-        tap((el) => {
-          if (el.length === 0) {
-            throw new Error('empty result');
-          }
-          this.pageFirst = el[0].payload.doc;
-          this.pageLast = el[el.length - 1].payload.doc;
-        }),
-        map(convertMany),
-        catchError((err) => {
-          this.snackbar.open(`Fehler beim laden von Artikeln: ${err}`, 'OK');
-          return of([]);
-        })
-      );
-  }
+  // getPage(limit: number, dir: Direction, cutoffDate: Date = new Date()): Observable<AppEvent[]> {
+  //   return this.firestore
+  //     .collection<StoreableEvent>('articles', (qFn) => {
+  //       let query: CollectionReference | Query = qFn;
+  //       // always order by creation date
+  //       query = query.orderBy('created', 'desc');
+  //       // paginate the data
+  //       switch (dir) {
+  //         case Direction.initial:
+  //           query = query.limit(limit);
+  //           break;
+  //         case Direction.forward:
+  //           query = query.startAfter(this.pageLast).limit(limit);
+  //           break;
+  //         case Direction.back:
+  //           query = query.endBefore(this.pageFirst).limitToLast(limit);
+  //           break;
+  //       }
+  //       return query;
+  //     })
+  //     .snapshotChanges()
+  //     .pipe(
+  //       tap((el) => {
+  //         if (el.length === 0) {
+  //           throw new Error('empty result');
+  //         }
+  //         this.pageFirst = el[0].payload.doc;
+  //         this.pageLast = el[el.length - 1].payload.doc;
+  //       }),
+  //       map(convertMany),
+  //       catchError((err) => {
+  //         this.snackbar.open(`Fehler beim laden von Artikeln: ${err}`, 'OK');
+  //         return of([]);
+  //       })
+  //     );
+  // }
 
   getAll(limit?: number, cutoffDate: Date = new Date()): Observable<AppEvent[]> {
     // only return events that are not already over here!
@@ -313,7 +297,21 @@ export class EventDALService implements AppElementDAL {
 }
 
 function toStorableEvent(app: AppEvent): StoreableEvent {
-  const { title, description, ownerId, ownerName } = app;
+  const { title, description, ownerId, ownerName, startDate, endDate } = app;
+  // create the array with the month and year numbers for calendar month queries
+  let months: { year: number; month: number }[] = [];
+  let month = startDate.getMonth();
+  let year = startDate.getFullYear();
+  months.push({ year, month });
+  while (year !== endDate.getFullYear() || month !== endDate.getMonth()) {
+    if (month === 11) {
+      month = 0;
+      year += 1;
+    } else {
+      month += 1;
+    }
+    months.push({ year, month });
+  }
   return {
     title,
     description,
@@ -321,6 +319,7 @@ function toStorableEvent(app: AppEvent): StoreableEvent {
     ownerName,
     startDate: fbs.firestore.Timestamp.fromDate(app.startDate),
     endDate: fbs.firestore.Timestamp.fromDate(app.endDate),
+    months,
     tags: arrayToMap(app.tags),
     deadline: app.deadline ? fbs.firestore.Timestamp.fromDate(app.deadline) : null,
     participants: participantArrayToMap(app.participants),

@@ -14,6 +14,6 @@ export class PersonsResolver implements Resolve<AppPerson[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<AppPerson[]> | Promise<AppPerson[]> | AppPerson[] {
-    return this.DAO.getBySearchStrings([], undefined, true).pipe(take(1));
+    return this.DAO.getBySearchStrings([], 100, true).pipe(take(1));
   }
 }

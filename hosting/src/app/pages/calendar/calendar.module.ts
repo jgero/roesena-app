@@ -11,6 +11,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [CalendarComponent, DayComponent],
@@ -24,6 +25,7 @@ import { MatTableModule } from '@angular/material/table';
     MatCardModule,
     MatProgressBarModule,
     MatTableModule,
+    MatBadgeModule,
   ],
 })
 export class CalendarModule {}
