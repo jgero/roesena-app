@@ -20,7 +20,7 @@ const routes: Routes = [
       { path: 'kindergarde', component: CommonComponent, data: { groupName: 'Kindergarde' } },
       { path: 'jugendgarde', component: CommonComponent, data: { groupName: 'Jugendgarde' } },
       { path: 'prinzengarde', component: CommonComponent, data: { groupName: 'Prinzengarde' } },
-      { path: 'erste-garde', component: CommonComponent, data: { groupName: '1. Garde' } },
+      { path: 'erste-garde', component: CommonComponent, data: { groupName: 'Erste Garde' } },
     ],
   },
   { path: 'maennerballett', component: CommonComponent, data: { groupName: 'Männerballett' } },
