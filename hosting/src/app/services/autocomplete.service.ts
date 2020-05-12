@@ -18,12 +18,14 @@ export class AutocompleteService {
       .pipe(
         map((snapshot) => snapshot.payload.data()),
         map((data) => {
-          const result: string[] = [];
+          let result = [];
           for (const key in data) {
             if (data.hasOwnProperty(key)) {
-              result.push(key);
+              result.push({ tag: key, amount: data[key] });
             }
           }
+          result = result.sort((a, b) => b.amount - a.amount);
+          result = result.map((el) => el.tag);
           return result;
         })
       );

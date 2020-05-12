@@ -23,6 +23,7 @@ export class SearchBarComponent {
   @Output()
   search = new EventEmitter<string[]>();
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  isHelpVisible = false;
 
   searchForm: FormGroup = new FormGroup({
     searchStrings: new FormControl(),

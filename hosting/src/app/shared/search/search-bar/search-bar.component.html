@@ -1,4 +1,7 @@
-<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+<button mat-icon-button [color]="'accent'" class="help" (click)="isHelpVisible = !isHelpVisible">
+  <mat-icon>{{ isHelpVisible ? 'cancel' : 'help' }}</mat-icon>
+</button>
+<form *ngIf="!isHelpVisible; else help" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <mat-autocomplete
       #auto="matAutocomplete"
@@ -33,3 +36,11 @@
     <mat-icon>search</mat-icon>
   </button>
 </form>
+<ng-template #help>
+  <ul>
+    <li>Suchbegriffe müssen mit "Enter" bestätigt werden</li>
+    <li>Clicks auf Elemente in der Liste fügen neue Suchbegriffe hinzu</li>
+    <li>Suche wird durch Click auf die Lupe gestartet</li>
+    <li>Clicks auf Tags in Kacheln fügt diese zu den Suchbegriffen hinzu</li>
+  </ul>
+</ng-template>
