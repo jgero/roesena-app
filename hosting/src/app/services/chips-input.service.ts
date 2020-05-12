@@ -20,7 +20,6 @@ export class ChipsInputService {
   addItem(event: MatChipInputEvent, form: AbstractControl, autocomplete?: MatAutocomplete) {
     const value = event.value.trim();
     // only add if no autocomplete is provided or nothing is selected
-    console.log(form);
     if (!autocomplete || (autocomplete && !autocomplete.isOpen)) {
       if (new RegExp('^[0-9a-zA-ZäöüÄÖÜß -]+$').test(value) && !form.value.includes(value)) {
         (form.value as string[]).push(value);

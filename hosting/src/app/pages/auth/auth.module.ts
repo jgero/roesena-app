@@ -25,6 +25,7 @@ import { ConvertersModule } from 'src/app/shared/converters/converters.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [LoginComponent, ProfileComponent, RegisterComponent, MyEventsComponent, ResetComponent, GroupManagerComponent],
@@ -48,6 +49,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatPaginatorModule,
     MatGridListModule,
     ConvertersModule,
+    MatCardModule,
   ],
 })
 export class AuthModule {}

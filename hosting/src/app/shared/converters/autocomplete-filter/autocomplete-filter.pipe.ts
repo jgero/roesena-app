@@ -5,7 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AutocompleteFilterPipe implements PipeTransform {
   transform(value: string[], arg: string): string[] {
-    // lowercase of string -> split into array -> add regex for any symbol behind every char -> join togehter -> add regex for any char in front
+    // lowercase of string -> split into array -> add regex for any symbol behind every char
+    //  -> join togehter -> add regex for any char in front
     const substringRegex = new RegExp(
       arg
         .toLowerCase()
