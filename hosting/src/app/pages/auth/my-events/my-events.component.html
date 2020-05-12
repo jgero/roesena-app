@@ -1,28 +1,23 @@
 <mat-toolbar [color]="'accent'">Meine Events</mat-toolbar>
 
-<main *ngIf="$data | async as events; else loading">
-  <table mat-table [dataSource]="events">
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Titel</th>
-      <td mat-cell *matCellDef="let event">
-        <a
-          mat-flat-button
-          class="hide-text"
-          matBadge="{{ event.form.get('amount').value === '' ? 'a' : '' }}"
-          matBadgeSize="small"
-          [routerLink]="'/events/details/' + event.id"
-        >
-          {{ event.title }}
-        </a>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="deadline">
-      <th mat-header-cell *matHeaderCellDef>Deadline</th>
-      <td mat-cell *matCellDef="let event">{{ event.deadline | toLocalDateString }}</td>
-    </ng-container>
-    <ng-container matColumnDef="response">
-      <th mat-header-cell *matHeaderCellDef>Meine Teilnehmerzahl</th>
-      <td mat-cell *matCellDef="let event">
+<mat-grid-list *ngIf="$data | async as events" [cols]="cols" [rowHeight]="'175px'" [gutterSize]="'16px'">
+  <mat-grid-tile *ngFor="let event of events">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <div class="hide-text" matBadge="{{ event.form.get('amount').value === '' ? 'a' : '' }}" matBadgeSize="small">
+            {{ event.title }}
+          </div>
+          <a mat-icon-button [routerLink]="'/events/details/' + event.id">
+            <mat-icon>description</mat-icon>
+          </a>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <mat-icon>assignment_late</mat-icon>
+          <div>{{ event.deadline | toLocalDateString }} - {{ event.deadline | toLocalTimeString }}</div>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
         <form [formGroup]="event.form" (ngSubmit)="onSubmit(event.id, event.form.get('amount').value, event.form)">
           <mat-form-field>
             <mat-label>Teilnehmerzahl</mat-label>
@@ -31,6 +26,7 @@
           </mat-form-field>
 
           <button
+            *ngIf="!event.form.disabled; else loading"
             mat-stroked-button
             type="submit"
             [color]="'primary'"
@@ -38,15 +34,11 @@
           >
             <mat-icon>save</mat-icon> SPEICHERN
           </button>
-          <mat-spinner *ngIf="event.form.disabled" [color]="'accent'" [diameter]="36"></mat-spinner>
+          <ng-template #loading>
+            <mat-spinner [color]="'accent'" [diameter]="36"></mat-spinner>
+          </ng-template>
         </form>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-</main>
-
-<ng-template #loading>
-  <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
-</ng-template>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

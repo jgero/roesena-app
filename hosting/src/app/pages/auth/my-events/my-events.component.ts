@@ -21,6 +21,9 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   $data: Observable<AppEventWithForm[]>;
   displayedColumns: string[] = ['title', 'deadline', 'response'];
   private subs: Subscription[] = [];
+  get cols(): number {
+    return Math.ceil(window.innerWidth / 550);
+  }
 
   constructor(private eventDAO: EventDALService, private personDAO: PersonDalService, private auth: AuthService) {}
 
