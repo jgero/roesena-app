@@ -32,8 +32,9 @@ import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HelpComponent } from './help/help.component';
 import { MarkdownViewerModule } from '../shared/markdown-viewer/markdown-viewer.module';
-import { ArticleOverviewEffects } from '../effects/article-overview.effect';
+import { ArticleOverviewEffects } from '../effects/article-overview.effects';
 import { reducers } from '../reducers';
+import { AuthEffects } from '../effects/auth.effects';
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent, HelpComponent],
@@ -63,7 +64,7 @@ import { reducers } from '../reducers';
     MarkdownViewerModule,
     HammerModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([ArticleOverviewEffects]),
+    EffectsModule.forRoot([ArticleOverviewEffects, AuthEffects]),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },

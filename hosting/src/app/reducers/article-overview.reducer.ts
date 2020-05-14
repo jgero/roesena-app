@@ -2,7 +2,7 @@ import { createReducer, on, Action } from '@ngrx/store';
 import { AppArticle } from '../utils/interfaces';
 
 import * as articleOverviewActions from '../actions/article-overview.actions';
-import * as articleDalActions from '../actions/article-dal.actions';
+import * as articleDalActions from '../actions/article-endpoint.actions';
 
 export interface State {
   articlePageNumber: number;
