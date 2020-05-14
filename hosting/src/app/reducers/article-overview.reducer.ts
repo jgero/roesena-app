@@ -1,17 +1,8 @@
-import {
-  ActionReducer,
-  ActionReducerMap,
-  createFeatureSelector,
-  createSelector,
-  MetaReducer,
-  createReducer,
-  on,
-  Action,
-} from '@ngrx/store';
-import { environment } from '../../environments/environment';
+import { createReducer, on, Action } from '@ngrx/store';
 import { AppArticle } from '../utils/interfaces';
 
-import * as articleActions from '../actions/article-overview.actions';
+import * as articleOverviewActions from '../actions/article-overview.actions';
+import * as articleDalActions from '../actions/article-dal.actions';
 
 export interface State {
   articlePageNumber: number;
@@ -27,13 +18,13 @@ const initialState: State = {
 
 const articleReducer = createReducer(
   initialState,
-  on(articleActions.pageForward, (state) => ({ ...state, articlePageNumber: state.articlePageNumber + 1 })),
-  on(articleActions.pageBackwards, (state) => ({
+  on(articleOverviewActions.pageForward, (state) => ({ ...state, articlePageNumber: state.articlePageNumber + 1 })),
+  on(articleOverviewActions.pageBackwards, (state) => ({
     ...state,
     articlePageNumber: state.articlePageNumber === 0 ? 0 : state.articlePageNumber - 1,
   })),
-  on(articleActions.updateSearchStrings, (state, { searchStrings }) => ({ ...state, searchStrings })),
-  on(articleActions.articlesLoaded, (state, { articles }) => ({ ...state, articles }))
+  on(articleOverviewActions.updateSearchStrings, (state, { searchStrings }) => ({ ...state, searchStrings })),
+  on(articleDalActions.articlesLoaded, (state, { articles }) => ({ ...state, articles }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

@@ -9,6 +9,7 @@ import { AppArticle } from 'src/app/utils/interfaces';
 import { PaginatedOverview } from 'src/app/utils/ui-abstractions';
 import { Store, select } from '@ngrx/store';
 import { updateSearchStrings } from 'src/app/actions/article-overview.actions';
+import { AppStore } from 'src/app/reducers';
 
 @Component({
   selector: 'app-overview',
@@ -17,16 +18,16 @@ import { updateSearchStrings } from 'src/app/actions/article-overview.actions';
   animations: [cardFlyIn],
 })
 export class OverviewComponent {
-  $data: Observable<AppArticle[]> = this.store.select((state) => state.articles.articles);
+  $data: Observable<AppArticle[]> = this.store.select('articleOverviewState', 'articles');
 
   constructor(
     auth: AuthService,
     articleDAO: ArticleDalService,
     route: ActivatedRoute,
     router: Router,
-    public store: Store<{ articles: AppArticle[] }>
+    public store: Store<AppStore>
   ) {
-    store.pipe(select('articles')).subscribe((el) => console.log(el));
-    store.dispatch(updateSearchStrings({ searchStrings: [] }));
+    // store.pipe(select('articleState')).subscribe((el) => console.log(el));
+    // store.dispatch(updateSearchStrings({ searchStrings: r }));
   }
 }

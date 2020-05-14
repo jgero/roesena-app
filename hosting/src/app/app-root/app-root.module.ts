@@ -9,6 +9,8 @@ import { AngularFireFunctionsModule, REGION } from '@angular/fire/functions';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MarkdownModule } from 'ngx-markdown';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -30,10 +32,8 @@ import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HelpComponent } from './help/help.component';
 import { MarkdownViewerModule } from '../shared/markdown-viewer/markdown-viewer.module';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { ArticleEffects } from '../effects/article-overview.effect';
-import * as fromArticles from '../reducers/article-overview.reducer';
+import { ArticleOverviewEffects } from '../effects/article-overview.effect';
+import { reducers } from '../reducers';
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent, HelpComponent],
@@ -62,8 +62,8 @@ import * as fromArticles from '../reducers/article-overview.reducer';
     MarkdownModule.forRoot(),
     MarkdownViewerModule,
     HammerModule,
-    StoreModule.forRoot({ articles: fromArticles.reducer }),
-    EffectsModule.forRoot([ArticleEffects]),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([ArticleOverviewEffects]),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },
