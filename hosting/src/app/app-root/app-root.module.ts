@@ -35,6 +35,7 @@ import { MarkdownViewerModule } from '../shared/markdown-viewer/markdown-viewer.
 import { ArticleOverviewEffects } from '../effects/article-overview.effects';
 import { reducers } from '../reducers';
 import { AuthEffects } from '../effects/auth.effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent, HelpComponent],
@@ -65,6 +66,7 @@ import { AuthEffects } from '../effects/auth.effects';
     HammerModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([ArticleOverviewEffects, AuthEffects]),
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },

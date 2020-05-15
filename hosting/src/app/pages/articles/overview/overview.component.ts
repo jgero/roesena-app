@@ -1,13 +1,10 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { AuthService } from 'src/app/services/auth.service';
-import { ArticleDalService } from 'src/app/services/DAL/article-dal.service';
 import { cardFlyIn } from 'src/app/utils/animations';
 import { AppArticle } from 'src/app/utils/interfaces';
-import { PaginatedOverview } from 'src/app/utils/ui-abstractions';
-import { Store, select } from '@ngrx/store';
 import { updateSearchStrings } from 'src/app/actions/article-overview.actions';
 import { AppStore } from 'src/app/reducers';
 
@@ -18,16 +15,14 @@ import { AppStore } from 'src/app/reducers';
   animations: [cardFlyIn],
 })
 export class OverviewComponent {
-  $data: Observable<AppArticle[]> = this.store.select('articleOverviewState', 'articles');
+  data$: Observable<AppArticle[]> = this.store.select('articleOverviewState', 'articles');
+  isLoading$: Observable<boolean> = this.store.select('articleOverviewState', 'isLoading');
+  searchStrings$: Observable<string[]> = this.store.select('articleOverviewState', 'searchStrings');
+  canEdit$: Observable<boolean> = this.store.select('authState').pipe(map((state) => state.isAuthor || state.isAdmin));
 
-  constructor(
-    auth: AuthService,
-    articleDAO: ArticleDalService,
-    route: ActivatedRoute,
-    router: Router,
-    public store: Store<AppStore>
-  ) {
-    // store.pipe(select('articleState')).subscribe((el) => console.log(el));
-    // store.dispatch(updateSearchStrings({ searchStrings: r }));
+  constructor(public store: Store<AppStore>) {}
+
+  onSearch(event: string[]) {
+    this.store.dispatch(updateSearchStrings({ searchStrings: event }));
   }
 }

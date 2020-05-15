@@ -2,11 +2,12 @@
   <div>Artikel</div>
 </mat-toolbar>
 
-<mat-progress-bar *ngIf="($data | async) === null" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
+<mat-progress-bar *ngIf="isLoading$ | async" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 
-<!-- <app-search-bar [searchStrings]="$searchTags | async" (search)="onSearchEvent($event)"></app-search-bar> -->
+<!-- change events up so there is a separate event for when tags changed an when search is initiated -->
+<app-search-bar [searchStrings]="searchStrings$ | async" (search)="onSearch($event)"></app-search-bar>
 
-<mat-grid-list *ngIf="$data | async as articles" [cols]="4" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
+<mat-grid-list *ngIf="data$ | async as articles" [cols]="4" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let article of articles">
     <app-article-card [data]="article" [navigateOnTagClick]="false"></app-article-card>
     <!-- (tagClick)="onTagClick($event)" -->
