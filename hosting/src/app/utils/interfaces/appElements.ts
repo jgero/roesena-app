@@ -1,3 +1,5 @@
+import * as fbs from 'firebase/app';
+
 export interface AppElement {
   id: string;
   ownerId: string;
@@ -36,4 +38,13 @@ export interface AppArticle extends AppElement {
   created: Date;
   title: string;
   content: string;
+}
+
+export interface StoreableArticle {
+  ownerId: string;
+  ownerName: string;
+  created: fbs.firestore.Timestamp;
+  title: string;
+  content: string;
+  tags: { [key: string]: boolean };
 }

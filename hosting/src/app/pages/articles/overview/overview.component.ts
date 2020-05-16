@@ -5,8 +5,10 @@ import { map } from 'rxjs/operators';
 
 import { cardFlyIn } from 'src/app/utils/animations';
 import { AppArticle } from 'src/app/utils/interfaces';
-import { updateSearchStrings, addSearchString } from 'src/app/actions/article-overview.actions';
 import { AppStore } from 'src/app/reducers';
+import { addString } from 'src/app/actions/search.actions';
+import { init, pageForward, pageBackwards } from 'src/app/actions/article-overview.actions';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-overview',
@@ -16,17 +18,26 @@ import { AppStore } from 'src/app/reducers';
 })
 export class OverviewComponent {
   data$: Observable<AppArticle[]> = this.store.select('articleOverviewState', 'articles');
+  dataLength$: Observable<number> = this.store.select('articleOverviewState', 'dataLength');
   isLoading$: Observable<boolean> = this.store.select('articleOverviewState', 'isLoading');
-  searchStrings$: Observable<string[]> = this.store.select('articleOverviewState', 'searchStrings');
   canEdit$: Observable<boolean> = this.store.select('authState').pipe(map((state) => state.isAuthor || state.isAdmin));
+  columns$: Observable<number> = this.store.select('articleOverviewState', 'columns');
+  limit$: Observable<number> = this.store.select('articleOverviewState', 'limit');
+  pageIndex$: Observable<number> = this.store.select('articleOverviewState', 'pageIndex');
 
-  constructor(public store: Store<AppStore>) {}
-
-  onSearch(event: string[]) {
-    this.store.dispatch(updateSearchStrings({ searchStrings: event }));
+  constructor(public store: Store<AppStore>) {
+    this.store.dispatch(init());
   }
 
   addSearchString(searchString: string) {
-    this.store.dispatch(addSearchString({ searchString }));
+    this.store.dispatch(addString({ searchString }));
+  }
+
+  onPage(event: PageEvent) {
+    if (event.pageIndex > event.previousPageIndex) {
+      this.store.dispatch(pageForward());
+    } else {
+      this.store.dispatch(pageBackwards());
+    }
   }
 }

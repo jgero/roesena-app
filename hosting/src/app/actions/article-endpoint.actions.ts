@@ -1,6 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 
-import { AppArticle } from '../utils/interfaces';
+import { AppArticle, StoreableArticle } from '../utils/interfaces';
+import { QueryDocumentSnapshot } from '@angular/fire/firestore/interfaces';
 
-export const articlesLoaded = createAction('[Article DAL] articles loaded successfully', props<{ articles: AppArticle[] }>());
-export const articlesLoadingError = createAction('[Article DAL] articles could not be loaded', props<{ error: Error }>());
+export const articlesLoaded = createAction(
+  '[article endpoint] articles loaded successfully',
+  props<{
+    articles: AppArticle[];
+    pageFirst: QueryDocumentSnapshot<StoreableArticle>;
+    pageLast: QueryDocumentSnapshot<StoreableArticle>;
+  }>()
+);
+export const lengthLoaded = createAction('[article endpoint] data length loaded', props<{ dataLength: number }>());
+export const articlesLoadingError = createAction('[article endpoint] articles could not be loaded', props<{ error: Error }>());

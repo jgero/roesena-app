@@ -4,7 +4,7 @@
 
 <mat-progress-bar *ngIf="($data | async) === null" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 
-<app-search-bar [searchStrings]="$searchTags | async" (search)="onSearchEvent($event)"></app-search-bar>
+<app-search-bar></app-search-bar>
 
 <mat-grid-list
   *ngIf="$data | async as events"

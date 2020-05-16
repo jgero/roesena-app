@@ -1,51 +1,48 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { AppArticle } from '../utils/interfaces';
-import { ROUTER_NAVIGATED, ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { AppArticle, StoreableArticle } from '../utils/interfaces';
 
 import * as articleOverviewActions from '../actions/article-overview.actions';
 import * as articleEndpointActions from '../actions/article-endpoint.actions';
+import { QueryDocumentSnapshot } from '@angular/fire/firestore/interfaces';
 
 export interface State {
-  articlePageNumber: number;
-  searchStrings: string[];
+  pageIndex: number;
   articles: AppArticle[];
+  dataLength: number;
   isLoading: boolean;
+  columns: number;
+  limit: number;
+  pageFirst: QueryDocumentSnapshot<StoreableArticle>;
+  pageLast: QueryDocumentSnapshot<StoreableArticle>;
 }
 
 const initialState: State = {
-  articlePageNumber: 1,
-  searchStrings: [],
+  pageIndex: 0,
   articles: [],
+  dataLength: 0,
   isLoading: false,
+  columns: Math.ceil(window.innerWidth / 500),
+  limit: Math.ceil(window.innerWidth / 500) * 5,
+  pageFirst: null,
+  pageLast: null,
 };
 
 const articleReducer = createReducer(
   initialState,
-  on(articleOverviewActions.pageForward, (state) => ({ ...state, articlePageNumber: state.articlePageNumber + 1 })),
+  on(articleOverviewActions.pageForward, (state) => ({ ...state, pageIndex: state.pageIndex + 1 })),
   on(articleOverviewActions.pageBackwards, (state) => ({
     ...state,
-    articlePageNumber: state.articlePageNumber === 0 ? 0 : state.articlePageNumber - 1,
+    articlePageNumber: state.pageIndex === 0 ? 0 : state.pageIndex - 1,
   })),
-  on(articleOverviewActions.updateSearchStrings, (state, { searchStrings }) => ({ ...state, searchStrings })),
-  on(articleOverviewActions.addSearchString, (state, { searchString }) => ({
+  on(articleEndpointActions.articlesLoaded, (state, { articles, pageLast, pageFirst }) => ({
     ...state,
-    searchStrings: [...state.searchStrings, searchString],
+    articles,
+    isLoading: false,
+    pageFirst,
+    pageLast,
   })),
-  on(articleOverviewActions.search, (state) => ({ ...state, isLoading: true })),
-  on(articleEndpointActions.articlesLoaded, (state, { articles }) => ({ ...state, articles, isLoading: false })),
-  on(articleEndpointActions.articlesLoadingError, (state) => ({ ...state, isLoading: false })),
-  on({ type: ROUTER_NAVIGATED } as any, (state, action) => {
-    // if navigation was not to article overview do nothing
-    if (!(action.payload.routerState.url as string).includes('/articles/overview')) {
-      return state;
-    }
-    // split the params into the separate strings
-    let searchStrings = [];
-    if (action.payload.routerState.params.searchString) {
-      searchStrings = action.payload.routerState.params.searchString.split(',');
-    }
-    return { ...state, searchStrings };
-  })
+  on(articleEndpointActions.lengthLoaded, (state, { dataLength }) => ({ ...state, dataLength })),
+  on(articleEndpointActions.articlesLoadingError, (state) => ({ ...state, isLoading: false }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

@@ -6,7 +6,7 @@
 
 <app-search-bar></app-search-bar>
 
-<mat-grid-list *ngIf="data$ | async as articles" [cols]="4" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
+<mat-grid-list *ngIf="data$ | async as articles" [cols]="columns$ | async" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let article of articles">
     <app-article-card [data]="article" [navigateOnTagClick]="false" (tagClick)="addSearchString($event)"></app-article-card>
   </mat-grid-tile>
@@ -14,11 +14,10 @@
 
 <a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canEdit$ | async"><mat-icon>add</mat-icon></a>
 
-<!-- <mat-paginator
-  *ngIf="!searchString"
-  [pageSize]="limit"
-  [pageIndex]="pageIndex"
+<mat-paginator
+  [pageSize]="limit$ | async"
+  [pageIndex]="pageIndex$ | async"
   [hidePageSize]="true"
-  [length]="$dataLength | async"
+  [length]="dataLength$ | async"
   (page)="onPage($event)"
-></mat-paginator> -->
+></mat-paginator>
