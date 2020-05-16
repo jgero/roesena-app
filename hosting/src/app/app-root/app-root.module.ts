@@ -11,6 +11,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { MarkdownModule } from 'ngx-markdown';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -36,6 +37,7 @@ import { ArticleOverviewEffects } from '../effects/article-overview.effects';
 import { reducers } from '../reducers';
 import { AuthEffects } from '../effects/auth.effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { NgrxRouterStoreModule } from '../router/ngrx-router.module';
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent, HelpComponent],
@@ -65,8 +67,9 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     MarkdownViewerModule,
     HammerModule,
     StoreModule.forRoot(reducers),
+    NgrxRouterStoreModule,
     EffectsModule.forRoot([ArticleOverviewEffects, AuthEffects]),
-    StoreRouterConnectingModule.forRoot(),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },

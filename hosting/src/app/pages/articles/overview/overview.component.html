@@ -4,17 +4,15 @@
 
 <mat-progress-bar *ngIf="isLoading$ | async" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 
-<!-- change events up so there is a separate event for when tags changed an when search is initiated -->
-<app-search-bar [searchStrings]="searchStrings$ | async" (search)="onSearch($event)"></app-search-bar>
+<app-search-bar></app-search-bar>
 
 <mat-grid-list *ngIf="data$ | async as articles" [cols]="4" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let article of articles">
-    <app-article-card [data]="article" [navigateOnTagClick]="false"></app-article-card>
-    <!-- (tagClick)="onTagClick($event)" -->
+    <app-article-card [data]="article" [navigateOnTagClick]="false" (tagClick)="addSearchString($event)"></app-article-card>
   </mat-grid-tile>
 </mat-grid-list>
 
-<!-- <a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canCreate()"><mat-icon>add</mat-icon></a> -->
+<a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canEdit$ | async"><mat-icon>add</mat-icon></a>
 
 <!-- <mat-paginator
   *ngIf="!searchString"

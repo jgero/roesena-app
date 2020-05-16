@@ -1,41 +1,29 @@
 <button mat-icon-button [color]="'accent'" class="help" (click)="isHelpVisible = !isHelpVisible">
   <mat-icon>{{ isHelpVisible ? 'cancel' : 'help' }}</mat-icon>
 </button>
-<form *ngIf="!isHelpVisible; else help" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+<div *ngIf="!isHelpVisible; else help">
   <mat-form-field>
-    <mat-autocomplete
-      #auto="matAutocomplete"
-      (optionSelected)="chips.addSelected($event, searchForm.get('searchStrings'), chipInput)"
-    >
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAddTag($event, chipInput)">
       <mat-option
-        *ngFor="let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value"
+        *ngFor="let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value:(searchStrings$ | async)"
         [value]="option"
       >
         {{ option }}
       </mat-option>
     </mat-autocomplete>
     <mat-chip-list #chipList>
-      <mat-chip
-        *ngFor="let item of searchForm.get('searchStrings').value"
-        (removed)="chips.removeItem(item, searchForm.get('searchStrings'))"
-      >
+      <mat-chip *ngFor="let item of searchStrings$ | async" (removed)="onRemoveTag(item)">
         {{ item }}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
-      <input
-        #chipInput
-        placeholder="Suchbegriffe"
-        [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="chips.addItem($event, searchForm.get('searchStrings'), auto)"
-        [matAutocomplete]="auto"
-      />
+      <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
     </mat-chip-list>
   </mat-form-field>
-  <button mat-icon-button aria-label="search">
+  <button mat-icon-button aria-label="search" (click)="onSearch()">
     <mat-icon>search</mat-icon>
   </button>
-</form>
+</div>
+
 <ng-template #help>
   <ul>
     <li>Suchbegriffe müssen mit "Enter" bestätigt werden</li>

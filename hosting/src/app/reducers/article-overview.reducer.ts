@@ -27,23 +27,22 @@ const articleReducer = createReducer(
     articlePageNumber: state.articlePageNumber === 0 ? 0 : state.articlePageNumber - 1,
   })),
   on(articleOverviewActions.updateSearchStrings, (state, { searchStrings }) => ({ ...state, searchStrings })),
+  on(articleOverviewActions.addSearchString, (state, { searchString }) => ({
+    ...state,
+    searchStrings: [...state.searchStrings, searchString],
+  })),
   on(articleOverviewActions.search, (state) => ({ ...state, isLoading: true })),
   on(articleEndpointActions.articlesLoaded, (state, { articles }) => ({ ...state, articles, isLoading: false })),
   on(articleEndpointActions.articlesLoadingError, (state) => ({ ...state, isLoading: false })),
   on({ type: ROUTER_NAVIGATED } as any, (state, action) => {
     // if navigation was not to article overview do nothing
-    if (!(action.payload.event.url as string).includes('/articles/overview')) {
+    if (!(action.payload.routerState.url as string).includes('/articles/overview')) {
       return state;
-    }
-    // traverse the router parts to the deepest element
-    let routePart = action.payload.routerState.root;
-    while (routePart.firstChild) {
-      routePart = routePart.firstChild;
     }
     // split the params into the separate strings
     let searchStrings = [];
-    if (routePart.params.searchString) {
-      searchStrings = routePart.params.searchString.split(',');
+    if (action.payload.routerState.params.searchString) {
+      searchStrings = action.payload.routerState.params.searchString.split(',');
     }
     return { ...state, searchStrings };
   })

@@ -1,9 +1,13 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { FormGroup, FormControl } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { ChipsInputService } from 'src/app/services/chips-input.service';
 import { AutocompleteService } from 'src/app/services/autocomplete.service';
+import { AppStore } from 'src/app/reducers';
+import { addString, removeString, search } from 'src/app/actions/search.actions';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-search-bar',
@@ -11,27 +15,22 @@ import { AutocompleteService } from 'src/app/services/autocomplete.service';
   styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent {
-  @Input()
-  set searchStrings(s: string[]) {
-    this.searchForm = new FormGroup({
-      searchStrings: new FormControl(s),
-    });
-  }
-  get searchStrings(): string[] {
-    return this.searchForm.get('searchStrings').value;
-  }
-  @Output()
-  search = new EventEmitter<string[]>();
+  searchStrings$: Observable<string[]> = this.store.select('search', 'searchStrings');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isHelpVisible = false;
 
-  searchForm: FormGroup = new FormGroup({
-    searchStrings: new FormControl(),
-  });
+  constructor(public store: Store<AppStore>, public autocomplete: AutocompleteService) {}
 
-  constructor(public chips: ChipsInputService, public autocomplete: AutocompleteService) {}
+  onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
+    input.value = '';
+    this.store.dispatch(addString({ searchString: event.option.value }));
+  }
 
-  onSubmit() {
-    this.search.emit(this.searchForm.get('searchStrings').value);
+  onRemoveTag(searchString: string) {
+    this.store.dispatch(removeString({ searchString }));
+  }
+
+  onSearch() {
+    this.store.dispatch(search());
   }
 }

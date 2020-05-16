@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { cardFlyIn } from 'src/app/utils/animations';
 import { AppArticle } from 'src/app/utils/interfaces';
-import { updateSearchStrings } from 'src/app/actions/article-overview.actions';
+import { updateSearchStrings, addSearchString } from 'src/app/actions/article-overview.actions';
 import { AppStore } from 'src/app/reducers';
 
 @Component({
@@ -24,5 +24,9 @@ export class OverviewComponent {
 
   onSearch(event: string[]) {
     this.store.dispatch(updateSearchStrings({ searchStrings: event }));
+  }
+
+  addSearchString(searchString: string) {
+    this.store.dispatch(addSearchString({ searchString }));
   }
 }
