@@ -12,8 +12,8 @@ export interface State {
   isLoading: boolean;
   columns: number;
   limit: number;
-  pageFirst: QueryDocumentSnapshot<StoreableArticle>;
-  pageLast: QueryDocumentSnapshot<StoreableArticle>;
+  pageFirst: AppArticle;
+  pageLast: AppArticle;
 }
 
 const initialState: State = {
@@ -32,7 +32,7 @@ const articleReducer = createReducer(
   on(articleOverviewActions.pageForward, (state) => ({ ...state, pageIndex: state.pageIndex + 1 })),
   on(articleOverviewActions.pageBackwards, (state) => ({
     ...state,
-    articlePageNumber: state.pageIndex === 0 ? 0 : state.pageIndex - 1,
+    pageIndex: state.pageIndex === 0 ? 0 : state.pageIndex - 1,
   })),
   on(articleEndpointActions.articlesLoaded, (state, { articles, pageLast, pageFirst }) => ({
     ...state,

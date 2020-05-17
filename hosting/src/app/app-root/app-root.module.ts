@@ -38,6 +38,7 @@ import { reducers } from '../reducers';
 import { AuthEffects } from '../effects/auth.effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { NgrxRouterStoreModule } from '../router/ngrx-router.module';
+import { SearchEffects } from '../effects/search.effects';
 
 @NgModule({
   declarations: [RootComponent, StartPageComponent, AboutComponent, NotFoundComponent, HelpComponent],
@@ -68,7 +69,7 @@ import { NgrxRouterStoreModule } from '../router/ngrx-router.module';
     HammerModule,
     StoreModule.forRoot(reducers),
     NgrxRouterStoreModule,
-    EffectsModule.forRoot([ArticleOverviewEffects, AuthEffects]),
+    EffectsModule.forRoot([ArticleOverviewEffects, AuthEffects, SearchEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [

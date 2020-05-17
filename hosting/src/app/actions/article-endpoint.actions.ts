@@ -7,8 +7,8 @@ export const articlesLoaded = createAction(
   '[article endpoint] articles loaded successfully',
   props<{
     articles: AppArticle[];
-    pageFirst: QueryDocumentSnapshot<StoreableArticle>;
-    pageLast: QueryDocumentSnapshot<StoreableArticle>;
+    pageFirst: AppArticle;
+    pageLast: AppArticle;
   }>()
 );
 export const lengthLoaded = createAction('[article endpoint] data length loaded', props<{ dataLength: number }>());

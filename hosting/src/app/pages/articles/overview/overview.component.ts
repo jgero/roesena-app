@@ -25,9 +25,7 @@ export class OverviewComponent {
   limit$: Observable<number> = this.store.select('articleOverviewState', 'limit');
   pageIndex$: Observable<number> = this.store.select('articleOverviewState', 'pageIndex');
 
-  constructor(public store: Store<AppStore>) {
-    this.store.dispatch(init());
-  }
+  constructor(public store: Store<AppStore>) {}
 
   addSearchString(searchString: string) {
     this.store.dispatch(addString({ searchString }));
