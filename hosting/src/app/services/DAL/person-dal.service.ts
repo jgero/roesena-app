@@ -17,8 +17,8 @@ import { map, tap, catchError } from 'rxjs/operators';
 import 'firebase/firestore';
 
 import { AppPerson, PaginatedDAL } from 'src/app/utils/interfaces';
-import { mapToArray, arrayToMap } from 'src/app/utils/converters';
 import { Direction } from 'src/app/utils/enums';
+import { arrayToMap, mapToArray } from '@utils/converters/map-array-general';
 
 interface StoreablePerson {
   groups: { [key: string]: boolean };

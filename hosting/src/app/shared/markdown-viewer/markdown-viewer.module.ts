@@ -9,6 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [MarkdownPreviewComponent, MarkdownViewerComponent],
   exports: [MarkdownPreviewComponent, MarkdownViewerComponent],
-  imports: [CommonModule, MarkdownModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MarkdownModule.forRoot(), MatButtonModule, MatIconModule],
 })
 export class MarkdownViewerModule {}

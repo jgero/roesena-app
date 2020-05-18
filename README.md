@@ -50,3 +50,7 @@ export class AppComponent {
   }
 }
 ```
+
+## NgRx
+
+- generate new feature store: `ng generate feature state/articles/article -m pages/articles/articles.module.ts --group`

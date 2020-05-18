@@ -6,7 +6,7 @@ import { map, mergeMap, catchError, take, filter, tap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import 'firebase/firestore';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { mapToArray } from '../utils/converters';
+import { mapToArray } from '@utils/converters';
 
 interface StoreablePerson {
   groups: { [key: string]: boolean };

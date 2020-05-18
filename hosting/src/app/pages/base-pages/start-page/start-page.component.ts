@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AppEvent, AppArticle } from '../../utils/interfaces';
-import { EventDALService } from 'src/app/services/DAL/event-dal.service';
-import { ArticleDalService } from 'src/app/services/DAL/article-dal.service';
+import { AppEvent, AppArticle } from '@utils/interfaces';
+import { EventDALService } from '@services/DAL/event-dal.service';
+import { ArticleDalService } from '@services/DAL/article-dal.service';
 
 @Component({
   selector: 'app-start-page',

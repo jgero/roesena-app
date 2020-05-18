@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { cardFlyIn } from 'src/app/utils/animations';
 import { AppArticle } from 'src/app/utils/interfaces';
-import { AppStore } from 'src/app/reducers';
-import { addString } from 'src/app/actions/search.actions';
-import { init, pageForward, pageBackwards } from 'src/app/actions/article-overview.actions';
 import { PageEvent } from '@angular/material/paginator';
+import { State } from '@state/articles/reducers/article.reducer';
+import { AddSearchString } from '@state/searching/actions/search.actions';
+import { PageForward, PageBackwards } from '@state/articles/actions/article.actions';
 
 @Component({
   selector: 'app-overview',
@@ -17,25 +17,26 @@ import { PageEvent } from '@angular/material/paginator';
   animations: [cardFlyIn],
 })
 export class OverviewComponent {
-  data$: Observable<AppArticle[]> = this.store.select('articleOverviewState', 'articles');
-  dataLength$: Observable<number> = this.store.select('articleOverviewState', 'dataLength');
-  isLoading$: Observable<boolean> = this.store.select('articleOverviewState', 'isLoading');
-  canEdit$: Observable<boolean> = this.store.select('authState').pipe(map((state) => state.isAuthor || state.isAdmin));
-  columns$: Observable<number> = this.store.select('articleOverviewState', 'columns');
-  limit$: Observable<number> = this.store.select('articleOverviewState', 'limit');
-  pageIndex$: Observable<number> = this.store.select('articleOverviewState', 'pageIndex');
+  data$: Observable<AppArticle[]> = this.store.select('article', 'articles');
+  dataLength$: Observable<number> = this.store.select('article', 'dataLength');
+  isLoading$: Observable<boolean> = this.store.select('article', 'isLoading');
+  // canEdit$: Observable<boolean> = this.store.select('authState').pipe(map((state) => state.isAuthor || state.isAdmin));
+  canEdit$: Observable<boolean> = of(false);
+  columns$: Observable<number> = this.store.select('article', 'columns');
+  limit$: Observable<number> = this.store.select('article', 'limit');
+  pageIndex$: Observable<number> = this.store.select('article', 'pageIndex');
 
-  constructor(public store: Store<AppStore>) {}
+  constructor(public store: Store<State>) {}
 
   addSearchString(searchString: string) {
-    this.store.dispatch(addString({ searchString }));
+    this.store.dispatch(new AddSearchString({ searchString }));
   }
 
   onPage(event: PageEvent) {
     if (event.pageIndex > event.previousPageIndex) {
-      this.store.dispatch(pageForward());
+      this.store.dispatch(new PageForward());
     } else {
-      this.store.dispatch(pageBackwards());
+      this.store.dispatch(new PageBackwards());
     }
   }
 }

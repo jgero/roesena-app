@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { AppPerson } from '../utils/interfaces';
+import { AppPerson } from '@utils/interfaces';
 
 import * as authEndpointActions from '../actions/auth-endpoint.actions';
 

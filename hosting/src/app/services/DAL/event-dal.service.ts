@@ -16,8 +16,9 @@ import 'firebase/firestore';
 
 import { AppEvent, AppElementDAL } from 'src/app/utils/interfaces';
 import { AuthService } from '../auth.service';
-import { arrayToMap, participantArrayToMap, mapToArray, participantMapToArray } from 'src/app/utils/converters';
 import { Direction } from 'src/app/utils/enums';
+import { participantArrayToMap, participantMapToArray } from '@utils/converters/participants';
+import { arrayToMap, mapToArray } from '@utils/converters/map-array-general';
 
 interface StoreableEvent {
   ownerId: string;

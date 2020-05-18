@@ -15,8 +15,8 @@ import * as fbs from 'firebase/app';
 import 'firebase/firestore';
 
 import { AppArticle, PaginatedDAL } from 'src/app/utils/interfaces';
-import { arrayToMap, mapToArray } from 'src/app/utils/converters';
 import { Direction } from 'src/app/utils/enums';
+import { arrayToMap, mapToArray } from '@utils/converters/map-array-general';
 
 interface StoreableArticle {
   ownerId: string;

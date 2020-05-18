@@ -1,8 +1,9 @@
-import { NgModule, Optional, Self } from '@angular/core';
-import { routerReducer, RouterStateSerializer, StoreRouterConfig, StoreRouterConnectingModule } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
-import { MergedRouterStateSerializer } from './merged-route-serializer';
 import { Router } from '@angular/router';
+import { NgModule, Optional, Self } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import { routerReducer, RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+
+import { MergedRouterStateSerializer } from './merged-route-serializer';
 
 export const routerStateConfig = {
   stateKey: 'router', // state-slice name for routing state

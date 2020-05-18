@@ -16,11 +16,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConvertersModule } from 'src/app/shared/converters/converters.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MarkdownModule } from 'ngx-markdown';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-viewer.module';
 import { SearchModule } from 'src/app/shared/search/search.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromArticle from '../../state/articles/reducers/article.reducer';
+import { ArticleEffects } from '../../state/articles/effects/article.effects';
 
 @NgModule({
   declarations: [OverviewComponent, EditorComponent, DetailsComponent],
@@ -43,6 +46,8 @@ import { SearchModule } from 'src/app/shared/search/search.module';
     ConvertersModule,
     MarkdownViewerModule,
     SearchModule,
+    StoreModule.forFeature(fromArticle.articleFeatureKey, fromArticle.reducer),
+    EffectsModule.forFeature([ArticleEffects]),
   ],
 })
 export class ArticlesModule {}

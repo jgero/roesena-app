@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { AppPerson } from '../utils/interfaces';
+import { AppPerson } from '@utils/interfaces';
 
 export const loginLoaded = createAction('[Auth Endpoint] person login successful', props<{ person: AppPerson }>());
 export const loginFailed = createAction('[Auth Endpoint] login failed', props<{ error: Error }>());

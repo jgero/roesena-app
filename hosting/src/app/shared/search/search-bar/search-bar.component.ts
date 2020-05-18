@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { AutocompleteService } from 'src/app/services/autocomplete.service';
-import { AppStore } from 'src/app/reducers';
-import { addString, removeString, search } from 'src/app/actions/search.actions';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { AddSearchString, RemoveSearchString, RunSearch } from '@state/searching/actions/search.actions';
+import { State } from '@state/state.module';
 
 @Component({
   selector: 'app-search-bar',
@@ -19,18 +18,18 @@ export class SearchBarComponent {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isHelpVisible = false;
 
-  constructor(public store: Store<AppStore>, public autocomplete: AutocompleteService) {}
+  constructor(public store: Store<State>, public autocomplete: AutocompleteService) {}
 
   onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
     input.value = '';
-    this.store.dispatch(addString({ searchString: event.option.value }));
+    this.store.dispatch(new AddSearchString({ searchString: event.option.value }));
   }
 
   onRemoveTag(searchString: string) {
-    this.store.dispatch(removeString({ searchString }));
+    this.store.dispatch(new RemoveSearchString({ searchString }));
   }
 
   onSearch() {
-    this.store.dispatch(search());
+    this.store.dispatch(new RunSearch());
   }
 }

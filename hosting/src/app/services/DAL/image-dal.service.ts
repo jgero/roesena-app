@@ -16,9 +16,9 @@ import 'firebase/firestore';
 import 'firebase/storage';
 
 import { AppImage, AppElementDAL, PaginatedDAL } from 'src/app/utils/interfaces';
-import { arrayToMap, mapToArray } from 'src/app/utils/converters';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Direction } from 'src/app/utils/enums';
+import { arrayToMap, mapToArray } from '@utils/converters/map-array-general';
 
 interface StoreableImage {
   ownerId: string;
