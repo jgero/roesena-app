@@ -9,16 +9,21 @@ import { NgrxRouterStoreModule } from './router/ngrx-router.module';
 import * as fromSearch from './searching/reducers/search.reducer';
 import { SearchEffects } from './searching/effects/search.effects';
 
+import * as fromUser from './user/reducers/user.reducer';
+import { UserEffects } from './user/effects/user.effects';
+import { MergedRouteReducerState } from './router/merged-route';
+
 export interface State {
-  router: { state: { url: string } };
+  router: MergedRouteReducerState;
   search: fromSearch.State;
+  user: fromUser.State;
 }
 
 @NgModule({
   imports: [
-    StoreModule.forRoot({ search: fromSearch.reducer }),
+    StoreModule.forRoot({ search: fromSearch.reducer, user: fromUser.reducer }),
     NgrxRouterStoreModule,
-    EffectsModule.forRoot([SearchEffects]),
+    EffectsModule.forRoot([SearchEffects, UserEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   exports: [],

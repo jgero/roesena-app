@@ -39,7 +39,7 @@ export function reducer(state = initialState, action: ArticleActions): ArticleSt
       return { ...state, pageIndex: state.pageIndex === 0 ? 0 : state.pageIndex - 1 };
 
     case ArticleActionTypes.LoadArticles:
-      return { ...state, isLoading: true };
+      return { ...state, pageIndex: 0, isLoading: true };
 
     case ArticleActionTypes.LoadArticlesSuccess:
       return {

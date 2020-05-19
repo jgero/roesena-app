@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
-import { map, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Observable, of, iif } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { State } from '@state/state.module';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoggedInGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private store: Store<State>, private router: Router) {}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.$user.getValue() !== null ? true : this.router.parseUrl('/auth/login');
+    return this.store
+      .select('user', 'user')
+      .pipe(switchMap((user) => iif(() => user !== null, of(true), of(this.router.parseUrl('/auth/login')))));
   }
 }

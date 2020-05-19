@@ -5,18 +5,25 @@ import { StartPageComponent } from '@pages/base-pages/start-page/start-page.comp
 import { AboutComponent } from '@pages/base-pages/about/about.component';
 import { HelpComponent } from '@pages/base-pages/help/help.component';
 import { NotFoundComponent } from '@pages/base-pages/not-found/not-found.component';
+import { LoadUserGuard } from '@guards/load-user.guard';
 
 export const routes: Routes = [
-  { path: '', component: StartPageComponent },
-  // { path: 'events', loadChildren: () => import('@pages/events/events.module').then((m) => m.EventsModule) },
-  // { path: 'auth', loadChildren: () => import('@pages/auth/auth.module').then((m) => m.AuthModule) },
-  { path: 'articles', loadChildren: () => import('@pages/articles/articles.module').then((m) => m.ArticlesModule) },
-  // { path: 'images', loadChildren: () => import('@pages/images/images.module').then((m) => m.ImagesModule) },
-  // { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },
-  // { path: 'groups', loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule) },
-  { path: 'about', component: AboutComponent },
-  { path: 'help', component: HelpComponent },
-  { path: '**', component: NotFoundComponent },
+  {
+    path: '',
+    canActivateChild: [LoadUserGuard],
+    children: [
+      { path: '', component: StartPageComponent },
+      // { path: 'events', loadChildren: () => import('@pages/events/events.module').then((m) => m.EventsModule) },
+      // { path: 'auth', loadChildren: () => import('@pages/auth/auth.module').then((m) => m.AuthModule) },
+      { path: 'articles', loadChildren: () => import('@pages/articles/articles.module').then((m) => m.ArticlesModule) },
+      // { path: 'images', loadChildren: () => import('@pages/images/images.module').then((m) => m.ImagesModule) },
+      // { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },
+      // { path: 'groups', loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule) },
+      { path: 'about', component: AboutComponent },
+      { path: 'help', component: HelpComponent },
+      { path: '**', component: NotFoundComponent },
+    ],
+  },
 ];
 
 @NgModule({

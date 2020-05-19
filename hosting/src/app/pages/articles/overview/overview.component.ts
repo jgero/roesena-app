@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { cardFlyIn } from 'src/app/utils/animations';
@@ -20,8 +20,7 @@ export class OverviewComponent {
   data$: Observable<AppArticle[]> = this.store.select('article', 'articles');
   dataLength$: Observable<number> = this.store.select('article', 'dataLength');
   isLoading$: Observable<boolean> = this.store.select('article', 'isLoading');
-  // canEdit$: Observable<boolean> = this.store.select('authState').pipe(map((state) => state.isAuthor || state.isAdmin));
-  canEdit$: Observable<boolean> = of(false);
+  canEdit$: Observable<boolean> = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
   columns$: Observable<number> = this.store.select('article', 'columns');
   limit$: Observable<number> = this.store.select('article', 'limit');
   pageIndex$: Observable<number> = this.store.select('article', 'pageIndex');

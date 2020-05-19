@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivateChild } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
-import { AuthService } from '../services/auth.service';
+import { State } from '@state/state.module';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadUserGuard implements CanActivateChild {
-  constructor(public auth: AuthService, public router: Router) {}
+  constructor(private store: Store<State>) {}
   canActivateChild(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.$user.pipe(
-      filter((el) => el !== undefined),
-      map(() => true)
+    return this.store.select('user', 'isInitialized').pipe(
+      // delay until user is initialized
+      filter((init) => init)
     );
   }
 }

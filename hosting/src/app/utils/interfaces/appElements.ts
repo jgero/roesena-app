@@ -48,3 +48,9 @@ export interface StoreableArticle {
   content: string;
   tags: { [key: string]: boolean };
 }
+
+export interface StoreablePerson {
+  groups: { [key: string]: boolean };
+  isConfirmedMember: boolean;
+  name: string;
+}
