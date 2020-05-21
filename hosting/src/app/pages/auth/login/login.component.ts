@@ -1,48 +1,42 @@
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
-import { AuthService } from 'src/app/services/auth.service';
+import { Store } from '@ngrx/store';
+import { DoLogin } from '@state/auth/actions/auth.actions';
+import { State } from '@state/auth/reducers/auth.reducer';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnDestroy, OnInit {
+export class LoginComponent implements OnDestroy {
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
   private subs: Subscription[] = [];
+  isLoading$ = this.store.select('auth', 'isLoading');
 
-  constructor(private auth: AuthService, private location: Location, private router: Router) {}
-
-  ngOnInit() {
+  constructor(private store: Store<State>) {
     this.subs.push(
-      this.auth.$user.pipe(filter((el) => !!el)).subscribe({
-        next: () => this.goBack(),
+      // enable and disable the form while loading
+      this.store.select('auth', 'isLoading').subscribe({
+        next: (isLoading) => {
+          if (isLoading) {
+            this.loginForm.disable();
+          } else {
+            this.loginForm.enable();
+          }
+        },
       })
     );
   }
 
-  private goBack() {
-    if ((this.location.getState() as any).navigationId > 1) {
-      this.location.back();
-    } else {
-      this.router.navigate(['']);
-    }
-  }
-
   onSubmit() {
-    this.loginForm.disable();
-    this.subs.push(
-      this.auth
-        .login(this.loginForm.get('email').value, this.loginForm.get('password').value)
-        .subscribe({ next: () => this.loginForm.enable() })
+    this.store.dispatch(
+      new DoLogin({ email: this.loginForm.get('email').value, password: this.loginForm.get('password').value })
     );
   }
 

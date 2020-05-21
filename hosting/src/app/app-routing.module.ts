@@ -14,7 +14,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: StartPageComponent },
       // { path: 'events', loadChildren: () => import('@pages/events/events.module').then((m) => m.EventsModule) },
-      // { path: 'auth', loadChildren: () => import('@pages/auth/auth.module').then((m) => m.AuthModule) },
+      { path: 'auth', loadChildren: () => import('@pages/auth/auth.module').then((m) => m.AuthModule) },
       { path: 'articles', loadChildren: () => import('@pages/articles/articles.module').then((m) => m.ArticlesModule) },
       // { path: 'images', loadChildren: () => import('@pages/images/images.module').then((m) => m.ImagesModule) },
       // { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },

@@ -9,7 +9,7 @@
     <button mat-flat-button [color]="'primary'" type="submit" [disabled]="resetForm.invalid" [style.grid-area]="'button'">
       ZURÜCKSETZEN
     </button>
-    <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">Ich habe bereits ein Konto</a>
+    <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">ANMELDEN</a>
   </form>
   <ng-template #newPassword>
     <form [formGroup]="newPasswordForm" (ngSubmit)="onNewPasswordSubmit()">
@@ -21,7 +21,7 @@
       <button mat-flat-button [color]="'primary'" type="submit" [disabled]="newPasswordForm.invalid" [style.grid-area]="'button'">
         PASSWORT ÄNDERN
       </button>
-      <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">Ich habe bereits ein Konto</a>
+      <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">ANMELDEN</a>
     </form>
   </ng-template>
 </main>

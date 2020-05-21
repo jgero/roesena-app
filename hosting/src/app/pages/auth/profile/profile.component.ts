@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-
-import { AuthService } from 'src/app/services/auth.service';
-import { BrowserService } from 'src/app/services/browser.service';
+import { State } from '@state/auth/reducers/auth.reducer';
+import { DoLogout, DoChangeName } from '@state/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-profile',
@@ -15,30 +15,31 @@ export class ProfileComponent implements OnDestroy {
     name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZäöüÄÖÜß -]+$')]),
   });
   private subs: Subscription[] = [];
-  constructor(public auth: AuthService, private browser: BrowserService) {}
+  isLoading$ = this.store.select('auth', 'isLoading');
+  user$ = this.store.select('user', 'user');
 
-  onUpdateNameSubmit() {
-    this.updateNameForm.disable();
-    const user = this.auth.$user.getValue();
-    user.name = this.updateNameForm.get('name').value;
+  constructor(private store: Store<State>) {
     this.subs.push(
-      this.auth.updateName(user).subscribe({
-        next: () => {
-          this.updateNameForm.reset();
-          this.updateNameForm.enable();
+      // enable and disable the form while loading
+      this.store.select('auth', 'isLoading').subscribe({
+        next: (isLoading) => {
+          if (isLoading) {
+            this.updateNameForm.disable();
+          } else {
+            this.updateNameForm.enable();
+          }
         },
       })
     );
   }
 
+  onUpdateNameSubmit() {
+    this.store.dispatch(new DoChangeName({ newName: this.updateNameForm.get('name').value }));
+    this.updateNameForm.reset();
+  }
+
   logout() {
-    this.subs.push(
-      this.auth.logout().subscribe({
-        next: () => {
-          this.browser.reload();
-        },
-      })
-    );
+    this.store.dispatch(new DoLogout());
   }
 
   ngOnDestroy() {

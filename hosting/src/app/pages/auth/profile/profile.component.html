@@ -3,7 +3,7 @@
   <button mat-raised-button type="button" [color]="'basic'" (click)="logout()">LOGOUT</button>
 </mat-toolbar>
 
-<main *ngIf="auth.$user | async as user">
+<main *ngIf="user$ | async as user">
   <mat-list>
     <div mat-subheader>Meine Daten</div>
     <mat-list-item>
@@ -12,7 +12,7 @@
     </mat-list-item>
     <mat-list-item>
       <div mat-line><strong>Gruppen</strong></div>
-      <div mat-line>{{ user.groups.join(", ") }}</div>
+      <div mat-line>{{ user.groups.join(', ') }}</div>
     </mat-list-item>
     <mat-divider></mat-divider>
     <div mat-subheader>Name ändern</div>
@@ -21,7 +21,7 @@
         <mat-form-field>
           <mat-label>neuer Name</mat-label>
           <input matInput formControlName="name" />
-          <mat-error *ngIf="updateNameForm.get('name').invalid"> {{ updateNameForm.get("name") | errorMessage }} </mat-error>
+          <mat-error *ngIf="updateNameForm.get('name').invalid"> {{ updateNameForm.get('name') | errorMessage }} </mat-error>
         </mat-form-field>
         <button
           mat-stroked-button
