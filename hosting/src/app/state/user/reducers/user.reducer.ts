@@ -24,8 +24,8 @@ export function reducer(state = initialState, action: UserActions): State {
         ...state,
         user: action.payload.user,
         isInitialized: true,
-        isAuthor: action.payload.user.groups.includes('Autor'),
-        isAdmin: action.payload.user.groups.includes('admin'),
+        isAuthor: action.payload.user ? action.payload.user.groups.includes('Autor') : false,
+        isAdmin: action.payload.user ? action.payload.user.groups.includes('admin') : false,
       };
 
     case UserActionTypes.LoadUserFailure:

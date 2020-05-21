@@ -14,8 +14,11 @@ export class LoggedInGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.store
-      .select('user', 'user')
-      .pipe(switchMap((user) => iif(() => user !== null, of(true), of(this.router.parseUrl('/auth/login')))));
+    return (
+      this.store
+        .select('user', 'user')
+        // not sure if this actually works, because iif is very strange
+        .pipe(switchMap((user) => iif(() => user !== null, of(true), of(this.router.parseUrl('/auth/login')))))
+    );
   }
 }
