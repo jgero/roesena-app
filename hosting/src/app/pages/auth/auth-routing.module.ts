@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LoggedInGuard } from 'src/app/guards/logged-in.guard';
+import { UnauthenticatedGuard } from '@guards/unauthenticated.guard';
 
 import { MyEventsComponent } from './my-events/my-events.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -9,6 +9,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ResetComponent } from './reset/reset.component';
 import { GroupManagerComponent } from './group-manager/group-manager.component';
+import { LoggedInGuard } from '@guards/logged-in.guard';
 
 const routes: Routes = [
   {
@@ -39,14 +40,17 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [UnauthenticatedGuard],
   },
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [UnauthenticatedGuard],
   },
   {
     path: 'reset',
     component: ResetComponent,
+    canActivate: [UnauthenticatedGuard],
   },
 ];
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 import { State } from '@state/auth/reducers/auth.reducer';
 import { DoReset, DoChangePasswordWithCode } from '@state/auth/actions/auth.actions';
 
@@ -16,6 +17,7 @@ export class ResetComponent {
   newPasswordForm = new FormGroup({
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
+  hasCode$ = this.store.select('router', 'state', 'queryParams').pipe(map((params) => !!params && !!params.oobCode));
 
   constructor(private store: Store<State>) {}
 

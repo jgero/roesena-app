@@ -1,9 +1,9 @@
-import { Router } from '@angular/router';
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-
-import { AuthService } from 'src/app/services/auth.service';
+import { State } from '@state/auth/reducers/auth.reducer';
+import { DoRegister } from '@state/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -13,28 +13,31 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent implements OnDestroy {
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZäöüÄÖÜß -]+$')]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   private subs: Subscription[] = [];
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private store: Store<State>) {
+    this.subs.push(
+      // enable and disable the form while loading
+      this.store.select('auth', 'isLoading').subscribe({
+        next: (isLoading) => {
+          if (isLoading) {
+            this.registerForm.disable();
+          } else {
+            this.registerForm.enable();
+          }
+        },
+      })
+    );
+  }
 
   onSubmit() {
-    this.registerForm.disable();
-    this.subs.push(
-      this.auth
-        .register(
-          this.registerForm.get('email').value,
-          this.registerForm.get('password').value,
-          this.registerForm.get('name').value
-        )
-        .subscribe({
-          next: () => {
-            this.registerForm.enable();
-            this.router.navigate(['auth', 'profile']);
-          },
-        })
+    this.store.dispatch(
+      new DoRegister({
+        email: this.registerForm.get('email').value,
+        password: this.registerForm.get('password').value,
+      })
     );
   }
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import { switchMap, map, catchError, tap, withLatestFrom } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { switchMap, map, catchError, tap, withLatestFrom, take, filter } from 'rxjs/operators';
+import { of, from, Observable } from 'rxjs';
 import {
   AuthActionTypes,
   AuthActions,
@@ -16,18 +16,21 @@ import {
   ResetFailed,
   ChangePasswordWithCodeLoaded,
   ChangePasswordWithCodeFailed,
+  DoRegister,
+  RegisterLoaded,
+  RegisterFailed,
 } from '../actions/auth.actions';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { BrowserService } from '@services/browser.service';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 
 import 'firebase/firestore';
 import { State } from '../reducers/auth.reducer';
 import { Store } from '@ngrx/store';
 import { StoreablePerson } from '@utils/interfaces';
-import { toStorablePerson } from '@utils/converters/person-documents';
+import { toStorablePerson, convertOne } from '@utils/converters/person-documents';
 
 @Injectable()
 export class AuthEffects {
@@ -64,6 +67,26 @@ export class AuthEffects {
     ofType(AuthActionTypes.LogoutLoaded),
     // location reload will automatically navigate to the right pages
     tap(() => this.browser.reload())
+  );
+
+  //register
+  @Effect()
+  registerUser$ = this.actions$.pipe(
+    ofType(AuthActionTypes.DoRegister),
+    // create new user in firebase auth
+    switchMap((action) => from(this.auth.createUserWithEmailAndPassword(action.payload.email, action.payload.password))),
+    // wait until user doc is created via cloud function
+    switchMap((userCredential) =>
+      this.firestore
+        .collection('persons')
+        .doc<StoreablePerson>(userCredential.user.uid)
+        .snapshotChanges()
+        .pipe(
+          filter((el) => el.payload.exists),
+          take(1)
+        )
+    ),
+    catchError((error) => of(new RegisterFailed({ error })))
   );
 
   //change name
