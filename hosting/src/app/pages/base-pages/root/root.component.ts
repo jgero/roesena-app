@@ -1,56 +1,44 @@
-import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map, shareReplay, filter, switchMap, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { AuthService } from 'src/app/services/auth.service';
-import { EventDALService } from 'src/app/services/DAL/event-dal.service';
-import { environment } from 'src/environments/environment';
-import { SwUpdate } from '@angular/service-worker';
 import { MatDrawer } from '@angular/material/sidenav';
+import { Observable, Subject } from 'rxjs';
+import { map, shareReplay, tap, takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
+import { ROUTER_REQUEST } from '@ngrx/router-store';
+import { environment } from 'src/environments/environment';
+import { State } from '@state/basePages/reducers/base.reducer';
 
 @Component({
   selector: 'app-root',
   templateUrl: './root.component.html',
   styleUrls: ['./root.component.scss'],
 })
-export class RootComponent implements OnInit {
+export class RootComponent implements OnDestroy {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
     tap((el) => (this.brakpointMatches = el)),
     shareReplay()
   );
   brakpointMatches: boolean;
-  $badgeContentStream: Observable<number>;
-  isLoading = false;
+  badgeContentStream$ = this.store.select('base', 'respondablesAmount');
+  user$ = this.store.select('user', 'user');
   version: string;
+  destroyed$ = new Subject<boolean>();
 
   @ViewChild('drawer')
   private sidenav: MatDrawer;
 
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    private router: Router,
-    public auth: AuthService,
-    private eventDAO: EventDALService,
-    private snackbar: MatSnackBar,
-    private swUpdate: SwUpdate
-  ) {
-    this.router.events.subscribe((event) => {
-      switch (true) {
-        case event instanceof NavigationStart:
-          this.isLoading = true;
-          break;
-        case event instanceof NavigationEnd:
-        case event instanceof NavigationCancel:
-        case event instanceof NavigationError:
-          this.isLoading = false;
-          this.closeNav();
-          break;
-      }
-    });
+  constructor(private breakpointObserver: BreakpointObserver, private store: Store<State>, updates$: Actions) {
+    this.version = environment.buildVersion;
+    // close sidenav on navigation
+    updates$
+      .pipe(
+        ofType(ROUTER_REQUEST),
+        takeUntil(this.destroyed$),
+        tap(() => this.closeNav())
+      )
+      .subscribe();
   }
 
   closeNav() {
@@ -60,36 +48,8 @@ export class RootComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.version = environment.buildVersion;
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.available.subscribe(() => {
-        this.snackbar
-          .open('Ein Update für die App ist bereit', 'UPDATE')
-          .onAction()
-          .subscribe(() => location.reload());
-      });
-    }
-    this.$badgeContentStream = this.auth.$user.pipe(
-      // listen to user updates and only trigger on new users
-      filter((val) => !!val),
-      // then request events
-      switchMap(() => this.eventDAO.getRespondables()),
-      // filter out events that are already responded
-      map((vals) => {
-        const id = this.auth.$user.getValue().id;
-        return vals.filter((val) => val.participants.find((paricipant) => paricipant.id === id).amount < 0);
-      }),
-      // only keep the amount of events
-      map((vals) => (vals.length > 0 ? vals.length : null)),
-      tap((unresponded) => {
-        if (unresponded !== null) {
-          this.snackbar
-            .open(`Unbeantwortete Termine: ${unresponded}`, 'ANTWORTEN')
-            .onAction()
-            .subscribe({ next: () => this.router.navigate(['auth', 'my-events']) });
-        }
-      })
-    );
+  ngOnDestroy() {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

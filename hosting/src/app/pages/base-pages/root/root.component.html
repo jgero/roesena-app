@@ -37,9 +37,9 @@
             Account
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <ng-container *ngIf="auth.$user | async as user; else authenticate">
+        <ng-container *ngIf="user$ | async as user; else authenticate">
           <a mat-list-item routerLink="/auth/profile">Profil</a>
-          <a mat-list-item *ngIf="user.isConfirmedMember" [matBadge]="$badgeContentStream | async" routerLink="/auth/my-events"
+          <a mat-list-item *ngIf="user.isConfirmedMember" [matBadge]="badgeContentStream$ | async" routerLink="/auth/my-events"
             >Meine Events</a
           >
           <a mat-list-item *ngIf="user.groups.includes('admin')" routerLink="/auth/group-manager">Gruppen Manager</a>
@@ -55,7 +55,6 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-progress-bar class="loading" *ngIf="isLoading" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

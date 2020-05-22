@@ -18,6 +18,10 @@ import { HelpComponent } from './help/help.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RootComponent } from './root/root.component';
 import { StartPageComponent } from './start-page/start-page.component';
+import { StoreModule } from '@ngrx/store';
+import * as fromBase from '../../state/basePages/reducers/base.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { BaseEffects } from '../../state/basePages/effects/base.effects';
 
 @NgModule({
   declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
@@ -34,6 +38,8 @@ import { StartPageComponent } from './start-page/start-page.component';
     MarkdownViewerModule,
     MatButtonModule,
     CardsModule,
+    StoreModule.forFeature(fromBase.baseFeatureKey, fromBase.reducer),
+    EffectsModule.forFeature([BaseEffects]),
   ],
   exports: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
 })
