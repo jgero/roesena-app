@@ -1,27 +1,31 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { AppImage } from 'src/app/utils/interfaces';
-import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { Card } from 'src/app/utils/ui-abstractions';
-import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { State } from '@state/cards/reducers/card.reducer';
+import { TagClick } from '@state/cards/actions/card.actions';
+import { ImageLoaderService } from '@services/image-loader.service';
+import { AppImage } from '@utils/interfaces';
 
 @Component({
   selector: 'app-image-card',
   templateUrl: './image-card.component.html',
   styleUrls: ['./image-card.component.scss'],
 })
-export class ImageCardComponent extends Card implements OnInit {
+export class ImageCardComponent implements OnInit {
   @Input()
   data: AppImage;
-  $src: Observable<string | null>;
 
-  constructor(private imageDAO: ImageDalService, auth: AuthService, router: Router) {
-    super(auth, router, 'images');
+  $src: Observable<string | null>;
+  canEdit$ = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+
+  constructor(private store: Store<State>, private imageLoader: ImageLoaderService) {}
+
+  onTagClick(tag: string) {
+    this.store.dispatch(new TagClick({ tag }));
   }
 
   ngOnInit(): void {
-    this.$src = this.imageDAO.getDownloadURL(this.data.id);
+    this.$src = this.imageLoader.getDownloadURL(this.data.id);
   }
 }

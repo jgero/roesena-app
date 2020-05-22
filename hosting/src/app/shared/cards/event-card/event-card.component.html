@@ -1,8 +1,8 @@
 <mat-card>
-  <mat-card-title class="hide-text" [matBadge]="unseen">{{ data.title }}</mat-card-title>
+  <mat-card-title class="hide-text" [matBadge]="unseen$ | async">{{ data.title }}</mat-card-title>
   <mat-card-subtitle>
     <div>{{ data.startDate | toLocalDateString }} - {{ data.endDate | toLocalDateString }}</div>
-    <div>{{ status }}</div>
+    <div>{{ status$ | async }}</div>
   </mat-card-subtitle>
   <mat-card-content>
     <div class="content-preview">
@@ -15,6 +15,6 @@
   <mat-card-actions>
     <a mat-button [routerLink]="'/events/details/' + data.id">MEHR</a>
     <a mat-icon-button [routerLink]="'/calendar/' + data.startDate.toISOString()"><mat-icon>event</mat-icon></a>
-    <a mat-icon-button *ngIf="canEdit()" [routerLink]="'/events/edit/' + data.id"><mat-icon>edit</mat-icon></a>
+    <a mat-icon-button *ngIf="canEdit$ | async" [routerLink]="'/events/edit/' + data.id"><mat-icon>edit</mat-icon></a>
   </mat-card-actions>
 </mat-card>

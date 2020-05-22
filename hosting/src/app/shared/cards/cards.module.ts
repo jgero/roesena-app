@@ -13,6 +13,10 @@ import { EventCardComponent } from './event-card/event-card.component';
 import { ImageCardComponent } from './image-card/image-card.component';
 import { ArticleCardComponent } from './article-card/article-card.component';
 import { MatBadgeModule } from '@angular/material/badge';
+import { StoreModule } from '@ngrx/store';
+import * as fromCard from '@state/cards/reducers/card.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CardEffects } from '@state/cards/effects/card.effects';
 
 const components = [EventCardComponent, ImageCardComponent, ArticleCardComponent];
 
@@ -27,6 +31,8 @@ const components = [EventCardComponent, ImageCardComponent, ArticleCardComponent
     MatIconModule,
     MatChipsModule,
     MatBadgeModule,
+    StoreModule.forFeature(fromCard.cardFeatureKey, fromCard.reducer),
+    EffectsModule.forFeature([CardEffects]),
   ],
   exports: components,
 })

@@ -1,43 +1,56 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { AppEvent } from '../../../utils/interfaces';
-import { AuthService } from 'src/app/services/auth.service';
-import { Card } from 'src/app/utils/ui-abstractions';
-import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { State } from '@state/cards/reducers/card.reducer';
+import { TagClick } from '@state/cards/actions/card.actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-event-card',
   templateUrl: './event-card.component.html',
   styleUrls: ['./event-card.component.scss'],
 })
-export class EventCardComponent extends Card {
+export class EventCardComponent implements OnInit {
   @Input()
-  public data: AppEvent;
+  data: AppEvent;
 
-  get unseen(): number | null {
-    const user = this.auth.$user.getValue();
-    if (!this.data) { return null; }
-    const part = this.data.participants.find((p) => p.id === user.id);
-    if (!part) { return null; }
-    return part.hasUnseenChanges ? 1 : null;
+  canEdit$ = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  unseen$: Observable<number>;
+  status$: Observable<string>;
+
+  constructor(private store: Store<State>) {}
+
+  ngOnInit() {
+    this.unseen$ = this.store.select('user', 'user').pipe(
+      map((user) => {
+        const part = this.data.participants.find((p) => p.id === user.id);
+        if (!part) {
+          return null;
+        }
+        return part.hasUnseenChanges ? 1 : null;
+      })
+    );
+    this.status$ = this.store.select('user', 'user').pipe(
+      map((user) => {
+        const part = this.data.participants.find((p) => p.id === user.id);
+        if (!part) {
+          return '';
+        }
+        switch (part.amount) {
+          case -1:
+            return 'Rückmeldung ausstehend';
+          case 0:
+            return 'abgelehnt';
+          default:
+            return 'angemeldet';
+        }
+      })
+    );
   }
 
-  get status(): string {
-    const user = this.auth.$user.getValue();
-    if (!user || !this.data) { return ''; }
-    const part = this.data.participants.find((p) => p.id === user.id);
-    if (!part) { return ''; }
-    switch (part.amount) {
-      case -1:
-        return 'Rückmeldung ausstehend';
-      case 0:
-        return 'abgelehnt';
-      default:
-        return 'angemeldet';
-    }
-  }
-
-  constructor(auth: AuthService, router: Router) {
-    super(auth, router, 'events');
+  onTagClick(tag: string) {
+    this.store.dispatch(new TagClick({ tag }));
   }
 }
