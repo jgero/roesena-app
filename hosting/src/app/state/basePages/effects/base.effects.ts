@@ -8,7 +8,7 @@ import { State } from '../reducers/base.reducer';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BrowserService } from '@services/browser.service';
-import { AngularFirestore } from '@angular/fire/firestore/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { StoreableEvent, AppPerson, AppEvent } from '@utils/interfaces';
 
 import 'firebase/firestore';
@@ -21,7 +21,7 @@ export class BaseEffects {
   loadBases$ = this.store.select('user', 'user').pipe(
     // request the events the user is invited to and has not responded
     switchMap((user) => {
-      if (user !== null) {
+      if (user !== null && user.isConfirmedMember) {
         return this.firestore
           .collection<StoreableEvent>('events', (qFn) =>
             qFn.where(`deadline`, '>=', new Date()).where('participantsArray', 'array-contains', user.id).orderBy('deadline')

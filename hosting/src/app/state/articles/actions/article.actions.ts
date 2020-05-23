@@ -1,14 +1,15 @@
 import { Action } from '@ngrx/store';
-import { AppArticle } from '@utils/interfaces';
+import { AppArticle, AppImage } from '@utils/interfaces';
 
 export enum ArticleActionTypes {
   PageForward = '[Article] Move Page Forward',
   PageBackwards = '[Article] Move Page Backwards',
   LoadArticles = '[Article] Load Articles',
   LoadArticlesSuccess = '[Article] Load Articles Success',
-  LoadArticlesFailure = '[Article] Load Articles Failure',
   LoadLengthSuccess = '[Article] Load Length Success',
-  LoadLengthFailure = '[Article] Load Length Failure',
+  LoadSingleArticle = '[Article] Load Article',
+  LoadSingleArticleSuccess = '[Article] Load Article Success',
+  DataFailure = '[Article] error while interacting with database',
 }
 
 export class PageForward implements Action {
@@ -17,44 +18,36 @@ export class PageForward implements Action {
 export class PageBackwards implements Action {
   readonly type = ArticleActionTypes.PageBackwards;
 }
-
 export class LoadArticles implements Action {
   readonly type = ArticleActionTypes.LoadArticles;
 }
-
 export class LoadArticlesSuccess implements Action {
   readonly type = ArticleActionTypes.LoadArticlesSuccess;
-  constructor(
-    public payload: {
-      articles: AppArticle[];
-      pageFirst: AppArticle;
-      pageLast: AppArticle;
-    }
-  ) {}
+  constructor(public payload: { articles: AppArticle[] }) {}
 }
-export class LoadArticlesFailure implements Action {
-  readonly type = ArticleActionTypes.LoadArticlesFailure;
-  constructor(public payload: { error: any }) {}
-}
-
 export class LoadLengthSuccess implements Action {
   readonly type = ArticleActionTypes.LoadLengthSuccess;
-  constructor(
-    public payload: {
-      dataLength: number;
-    }
-  ) {}
+  constructor(public payload: { dataLength: number }) {}
 }
-export class LoadLengthFailure implements Action {
-  readonly type = ArticleActionTypes.LoadLengthFailure;
-  constructor(public payload: { error: any }) {}
+export class LoadSingleArticle implements Action {
+  readonly type = ArticleActionTypes.LoadSingleArticle;
+  constructor(public payload: { withImage: boolean } = { withImage: true }) {}
+}
+export class LoadSingleArticleSuccess implements Action {
+  readonly type = ArticleActionTypes.LoadSingleArticleSuccess;
+  constructor(public payload: { article: AppArticle; image: AppImage }) {}
+}
+export class DataFailure implements Action {
+  readonly type = ArticleActionTypes.DataFailure;
+  constructor(public payload: { error: any; source: string }) {}
 }
 
 export type ArticleActions =
   | PageForward
   | PageBackwards
+  | LoadArticles
   | LoadArticlesSuccess
-  | LoadArticlesFailure
   | LoadLengthSuccess
-  | LoadLengthFailure
-  | LoadArticles;
+  | LoadSingleArticle
+  | LoadSingleArticleSuccess
+  | DataFailure;

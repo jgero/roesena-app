@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, OnDestroy } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { cardFlyIn } from 'src/app/utils/animations';
-import { AppArticle } from 'src/app/utils/interfaces';
-import { PageEvent } from '@angular/material/paginator';
+import { Store } from '@ngrx/store';
 import { State } from '@state/articles/reducers/article.reducer';
 import { AddSearchString } from '@state/searching/actions/search.actions';
-import { PageForward, PageBackwards } from '@state/articles/actions/article.actions';
+import { PageForward, PageBackwards, LoadArticles } from '@state/articles/actions/article.actions';
+import { SubscriptionService } from '@services/subscription.service';
+import { cardFlyIn } from '@utils/animations';
+import { AppArticle } from '@utils/interfaces';
 
 @Component({
   selector: 'app-overview',
@@ -16,7 +16,7 @@ import { PageForward, PageBackwards } from '@state/articles/actions/article.acti
   styleUrls: ['./overview.component.scss'],
   animations: [cardFlyIn],
 })
-export class OverviewComponent {
+export class OverviewComponent implements OnDestroy {
   data$: Observable<AppArticle[]> = this.store.select('article', 'articles');
   dataLength$: Observable<number> = this.store.select('article', 'dataLength');
   isLoading$: Observable<boolean> = this.store.select('article', 'isLoading');
@@ -25,7 +25,9 @@ export class OverviewComponent {
   limit$: Observable<number> = this.store.select('article', 'limit');
   pageIndex$: Observable<number> = this.store.select('article', 'pageIndex');
 
-  constructor(public store: Store<State>) {}
+  constructor(private store: Store<State>, private sub: SubscriptionService) {
+    this.store.dispatch(new LoadArticles());
+  }
 
   addSearchString(searchString: string) {
     this.store.dispatch(new AddSearchString({ searchString }));
@@ -37,5 +39,9 @@ export class OverviewComponent {
     } else {
       this.store.dispatch(new PageBackwards());
     }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribeComponent$.next();
   }
 }

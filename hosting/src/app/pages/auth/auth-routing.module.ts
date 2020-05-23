@@ -3,12 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { UnauthenticatedGuard } from '@guards/unauthenticated.guard';
 
-import { MyEventsComponent } from './my-events/my-events.component';
+// import { MyEventsComponent } from './my-events/my-events.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ResetComponent } from './reset/reset.component';
-import { GroupManagerComponent } from './group-manager/group-manager.component';
+// import { GroupManagerComponent } from './group-manager/group-manager.component';
 import { LoggedInGuard } from '@guards/logged-in.guard';
 
 const routes: Routes = [
@@ -17,21 +17,21 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'my-events',
   },
-  {
-    path: 'my-events',
-    component: MyEventsComponent,
-    canActivate: [LoggedInGuard],
-  },
-  {
-    path: 'group-manager',
-    component: GroupManagerComponent,
-    canActivate: [LoggedInGuard],
-  },
-  {
-    path: 'group-manager/:searchString',
-    component: GroupManagerComponent,
-    canActivate: [LoggedInGuard],
-  },
+  // {
+  //   path: 'my-events',
+  //   component: MyEventsComponent,
+  //   canActivate: [LoggedInGuard],
+  // },
+  // {
+  //   path: 'group-manager',
+  //   component: GroupManagerComponent,
+  //   canActivate: [LoggedInGuard],
+  // },
+  // {
+  //   path: 'group-manager/:searchString',
+  //   component: GroupManagerComponent,
+  //   canActivate: [LoggedInGuard],
+  // },
   {
     path: 'profile',
     component: ProfileComponent,

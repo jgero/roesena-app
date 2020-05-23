@@ -68,3 +68,10 @@ export interface StoreableEvent {
   participants: { [key: string]: { amount: number; name: string; hasUnseenChanges: boolean | null } };
   participantsArray: string[];
 }
+
+export interface StoreableImage {
+  ownerId: string;
+  ownerName: string;
+  created: fbs.firestore.Timestamp;
+  tags: { [key: string]: boolean };
+}

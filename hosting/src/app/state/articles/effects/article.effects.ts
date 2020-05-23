@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, withLatestFrom, filter, switchMap, tap } from 'rxjs/operators';
-import { EMPTY, of, Observable, merge } from 'rxjs';
+import { catchError, map, concatMap, withLatestFrom, filter, switchMap, tap, takeUntil } from 'rxjs/operators';
+import { EMPTY, of, Observable, merge, combineLatest } from 'rxjs';
 import {
-  LoadArticlesFailure,
   LoadArticlesSuccess,
   ArticleActionTypes,
   ArticleActions,
   LoadArticles,
   LoadLengthSuccess,
+  LoadSingleArticleSuccess,
 } from '../actions/article.actions';
 import { ROUTER_NAVIGATED } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
-import { convertMany } from '@utils/converters/article-documents';
-import { StoreableArticle } from '@utils/interfaces';
+import { convertMany as convertManyArticles, convertOne as convertOneArticle } from '@utils/converters/article-documents';
+import { StoreableArticle, StoreableImage } from '@utils/interfaces';
 import { CollectionReference, Query } from '@angular/fire/firestore/interfaces';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { State } from '../reducers/article.reducer';
+import { SubscriptionService } from '@services/subscription.service';
+import { convertMany as convertManyImages } from '@utils/converters/image-documents';
 
 enum LoadMode {
   forward,
@@ -26,20 +28,67 @@ enum LoadMode {
 
 @Injectable()
 export class ArticleEffects {
-  // implement effects here and also add the unsubscribe logic
   @Effect()
-  initPage$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATED),
+  loadArticle$ = this.actions$.pipe(
+    ofType(ArticleActionTypes.LoadSingleArticle),
     withLatestFrom(this.store),
-    filter(([action, storeState]) => (storeState.router.state.url as string).includes('/articles/overview')),
-    map(() => new LoadArticles())
+    switchMap(([action, storeState]) => {
+      const id = storeState.router.state.params.id;
+      if (id) {
+        // first get the article
+        return this.firestore
+          .collection<StoreableArticle>('articles')
+          .doc(id)
+          .snapshotChanges()
+          .pipe(
+            map(convertOneArticle),
+            // then add the image
+            switchMap((article) => {
+              if (action.payload.withImage) {
+                return this.firestore
+                  .collection<StoreableImage>('images', (qFn) => {
+                    let query: CollectionReference | Query = qFn;
+                    article.tags.forEach((tag) => {
+                      query = query.where(`tags.${tag}`, '==', true);
+                    });
+                    query = query.limit(1);
+                    return query;
+                  })
+                  .snapshotChanges()
+                  .pipe(
+                    map(convertManyImages),
+                    map((images) => ({ article, image: images.length > 0 ? images[0] : null }))
+                  );
+              } else {
+                return of({ article, image: null });
+              }
+            }),
+            // only listen until the module gets changed
+            takeUntil(this.subs.unsubscribe$)
+          );
+      } else {
+        return of({
+          article: {
+            id: '',
+            ownerId: storeState.user.user.id,
+            ownerName: storeState.user.user.name,
+            tags: [],
+            title: '',
+            content: '',
+            created: new Date(),
+          },
+          image: null,
+        });
+      }
+    }),
+    map(({ article, image }) => new LoadSingleArticleSuccess({ article, image }))
+    // catchError((error) => of(new LoadSingleArticleFailure({ error }))),
   );
 
   @Effect()
   loadArticles$ = this.actions$.pipe(
     ofType(ArticleActionTypes.LoadArticles),
     withLatestFrom(this.store),
-    tap((el) => console.log(el)),
     switchMap(([action, storeState]) => this.getDocumentStream(storeState, LoadMode.init))
   );
   @Effect()
@@ -91,8 +140,8 @@ export class ArticleEffects {
       })
       .snapshotChanges()
       .pipe(
-        map(convertMany),
-        map((data) => new LoadArticlesSuccess({ articles: data, pageFirst: data[0], pageLast: data[data.length - 1] })),
+        map(convertManyArticles),
+        map((data) => new LoadArticlesSuccess({ articles: data })),
         // merge it with the query of the data length and the data itself
         switchMap((res) => {
           if (storeState.search.searchStrings.length > 0) {
@@ -107,9 +156,15 @@ export class ArticleEffects {
               of(res)
             );
           }
-        })
+        }),
+        takeUntil(this.subs.unsubscribe$)
       );
   }
 
-  constructor(private actions$: Actions<ArticleActions>, private store: Store<State>, private firestore: AngularFirestore) {}
+  constructor(
+    private actions$: Actions<ArticleActions>,
+    private store: Store<State>,
+    private firestore: AngularFirestore,
+    private subs: SubscriptionService
+  ) {}
 }

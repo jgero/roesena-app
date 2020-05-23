@@ -15,7 +15,6 @@ import * as fbs from 'firebase/app';
 import 'firebase/firestore';
 
 import { AppEvent, AppElementDAL } from 'src/app/utils/interfaces';
-import { AuthService } from '../auth.service';
 import { Direction } from 'src/app/utils/enums';
 import { participantArrayToMap, participantMapToArray } from '@utils/converters/participants';
 import { arrayToMap, mapToArray } from '@utils/converters/map-array-general';
@@ -40,7 +39,7 @@ interface StoreableEvent {
 export class EventDALService implements AppElementDAL {
   private pageFirst: QueryDocumentSnapshot<StoreableEvent>;
   private pageLast: QueryDocumentSnapshot<StoreableEvent>;
-  constructor(private firestore: AngularFirestore, private snackbar: MatSnackBar, private auth: AuthService) {}
+  constructor(private firestore: AngularFirestore, private snackbar: MatSnackBar) {}
 
   getById(id: string): Observable<AppEvent | null> {
     return this.firestore

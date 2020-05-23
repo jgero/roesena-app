@@ -8,7 +8,7 @@
 
 <mat-grid-list *ngIf="data$ | async as articles" [cols]="columns$ | async" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let article of articles">
-    <app-article-card [data]="article" [navigateOnTagClick]="false" (tagClick)="addSearchString($event)"></app-article-card>
+    <app-article-card [data]="article"></app-article-card>
   </mat-grid-tile>
 </mat-grid-list>
 

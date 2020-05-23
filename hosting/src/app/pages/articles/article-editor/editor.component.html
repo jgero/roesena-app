@@ -3,7 +3,7 @@
   <div class="spacer"></div>
   <a mat-icon-button [routerLink]="'/articles/overview'"><mat-icon>apps</mat-icon></a>
 </mat-toolbar>
-<form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+<form *ngIf="articleForm" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
   <mat-form-field [style.grid-area]="'title'">
     <mat-label>Titel</mat-label>
     <input matInput formControlName="title" />

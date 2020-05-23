@@ -7,11 +7,7 @@ import { map } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
-import { PersonDalService } from 'src/app/services/DAL/person-dal.service';
 import { AppPerson } from 'src/app/utils/interfaces';
-import { PaginatedOverview } from 'src/app/utils/ui-abstractions';
-import { AuthService } from 'src/app/services/auth.service';
-import { ChipsInputService } from 'src/app/services/chips-input.service';
 
 interface AppPersonWithForm extends AppPerson {
   form: FormGroup;
@@ -22,7 +18,7 @@ interface AppPersonWithForm extends AppPerson {
   templateUrl: './group-manager.component.html',
   styleUrls: ['./group-manager.component.scss'],
 })
-export class GroupManagerComponent extends PaginatedOverview implements OnDestroy {
+export class GroupManagerComponent implements OnDestroy {
   $data: Observable<AppPerson[]>;
   $withForm: Observable<AppPersonWithForm[]>;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -31,19 +27,10 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
     return Math.ceil(window.innerWidth / 700);
   }
 
-  constructor(
-    private personsDAO: PersonDalService,
-    router: Router,
-    route: ActivatedRoute,
-    auth: AuthService,
-    public chips: ChipsInputService
-  ) {
-    super(['auth', 'group-manager'], personsDAO, route, router, auth);
-  }
+  constructor() {}
 
   updateDataStream() {
     // first let the base classes request the data
-    super.updateDataStream();
     // and then add the form to it
     this.updateForm();
   }
@@ -65,7 +52,6 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
 
   onPage(ev: PageEvent) {
     // let the super class do the update stuff
-    super.onPage(ev);
     if (ev.pageIndex !== ev.previousPageIndex) {
       // and update the observable if needed
       this.updateForm();
@@ -73,13 +59,13 @@ export class GroupManagerComponent extends PaginatedOverview implements OnDestro
   }
 
   onSubmit(id: string, isConfirmedMember: boolean, groups: string[], name: string, form: FormGroup) {
-    form.disable();
-    this.personsDAO.update({ id, isConfirmedMember, groups, name }).subscribe({
-      next: () => {
-        form.markAsPristine();
-        form.enable();
-      },
-    });
+    // form.disable();
+    // this.personsDAO.update({ id, isConfirmedMember, groups, name }).subscribe({
+    //   next: () => {
+    //     form.markAsPristine();
+    //     form.enable();
+    //   },
+    // });
   }
 
   ngOnDestroy() {
