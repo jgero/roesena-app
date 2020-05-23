@@ -8,10 +8,10 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class ImageLoaderService {
+export class UrlLoaderService {
   constructor(private storage: AngularFireStorage) {}
 
-  getDownloadURL(id: string): Observable<string | null> {
+  getImageURL(id: string): Observable<string | null> {
     return this.storage
       .ref('uploads')
       .child(`${id}_cropped`)
@@ -30,6 +30,19 @@ export class ImageLoaderService {
                 return of(null);
               })
             );
+        })
+      );
+  }
+
+  getStaticRscURL(path: string): Observable<string | null> {
+    return this.storage
+      .ref('static')
+      .child(path)
+      .getDownloadURL()
+      .pipe(
+        catchError((err) => {
+          // this.snackbar.open(`URL konnte nicht geladen werden: ${err}`, 'OK');
+          return of(null);
         })
       );
   }

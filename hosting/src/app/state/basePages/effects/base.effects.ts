@@ -1,19 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { catchError, map, concatMap, switchMap, tap, filter } from 'rxjs/operators';
-import { EMPTY, of } from 'rxjs';
-import { BaseActionTypes, BaseActions, LoadRespondablesSuccess, LoadRespondablesFailure } from '../actions/base.actions';
+import { catchError, map, concatMap, switchMap, tap, filter, withLatestFrom, takeUntil, mergeMap } from 'rxjs/operators';
+import { EMPTY, of, merge } from 'rxjs';
+import {
+  BaseActionTypes,
+  BaseActions,
+  LoadRespondablesSuccess,
+  LoadRespondablesFailure,
+  LoadHelpArticleSuccess,
+  LoadHelpArticleFailed,
+  LoadStartpageArticlesSuccess,
+  LoadStartpageEventsSuccess,
+  LoadStartpageArticlesFailure,
+  LoadStartpageEventsFailure,
+} from '../actions/base.actions';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/base.reducer';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BrowserService } from '@services/browser.service';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { StoreableEvent, AppPerson, AppEvent } from '@utils/interfaces';
+import { AngularFirestore, Query, CollectionReference } from '@angular/fire/firestore';
+import { StoreableEvent, AppPerson, AppEvent, StoreableArticle } from '@utils/interfaces';
 
 import 'firebase/firestore';
-import { convertMany } from '@utils/converters/event-documents';
+import { convertMany as convertManyEvents } from '@utils/converters/event-documents';
 import { Router } from '@angular/router';
+import { convertMany as convertManyArticles } from '@utils/converters/article-documents';
+import { SubscriptionService } from '@services/subscription.service';
 
 @Injectable()
 export class BaseEffects {
@@ -29,7 +42,7 @@ export class BaseEffects {
           .snapshotChanges()
           .pipe(
             // convert
-            map(convertMany),
+            map(convertManyEvents),
             // filter out events that are already responded
             map((vals) => vals.filter((val) => val.participants.find((paricipant) => paricipant.id === user.id).amount < 0)),
             // only return the amount of the events
@@ -74,6 +87,77 @@ export class BaseEffects {
     tap(() => this.browser.reload())
   );
 
+  @Effect()
+  loadHelp$ = this.actions$.pipe(
+    ofType(BaseActionTypes.LoadHelpArticle),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) =>
+      storeState.base.helpArticle === null
+        ? this.firestore
+            .collection<StoreableArticle>('articles', (qFn) => qFn.where('tags.Hilfe', '==', true).limit(1))
+            .snapshotChanges()
+            .pipe(takeUntil(this.subs.unsubscribe$))
+        : of(storeState.base.helpArticle)
+    ),
+    map(convertManyArticles),
+    map((articles) => new LoadHelpArticleSuccess({ article: articles[0] })),
+    catchError((error) => of(new LoadHelpArticleFailed({ error })))
+  );
+
+  @Effect()
+  loadStartpage$ = this.actions$.pipe(
+    ofType(BaseActionTypes.LoadStartpageContent),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) => {
+      // merge the queries, so both emits will be registered
+      return merge(
+        // get the articles
+        this.firestore
+          .collection<StoreableArticle>('articles', (qFn) => qFn.orderBy('created', 'desc').limit(3))
+          .snapshotChanges()
+          .pipe(
+            map(convertManyArticles),
+            map((articles) => new LoadStartpageArticlesSuccess({ articles })),
+            catchError((error) => of(new LoadStartpageArticlesFailure({ error }))),
+            takeUntil(this.subs.unsubscribe$)
+          ),
+        this.firestore
+          .collection<StoreableEvent>('events', (qFn) => {
+            let query: Query | CollectionReference = qFn;
+            query = query.orderBy('endDate').where('endDate', '>=', new Date());
+            if (!storeState.user.user || !storeState.user.user.isConfirmedMember) {
+              // if not logged in or not confirmed show public events
+              query = query.where('participants', '==', {});
+            }
+            return query;
+          })
+          .snapshotChanges()
+          .pipe(
+            map(convertManyEvents),
+            map((events) => {
+              // sort the events first, because after the merging of the observables order could be mixed up
+              events.sort((a, b) => a.endDate.getTime() - b.endDate.getTime());
+              // filter out events where the user is not invited
+              events = events.filter((ev) => {
+                if (ev.participants.length === 0) {
+                  return true;
+                } else {
+                  // if event has participants only keep the ones where the user is invited
+                  return ev.participants.findIndex((part) => part.id === storeState.user.user.id) > -1;
+                }
+              });
+              // apply limit
+              events = events.slice(0, 3);
+              return events;
+            }),
+            map((events) => new LoadStartpageEventsSuccess({ events })),
+            catchError((error) => of(new LoadStartpageEventsFailure({ error }))),
+            takeUntil(this.subs.unsubscribe$)
+          )
+      );
+    })
+  );
+
   constructor(
     private actions$: Actions<BaseActions>,
     private store: Store<State>,
@@ -81,6 +165,7 @@ export class BaseEffects {
     private snackbar: MatSnackBar,
     private browser: BrowserService,
     private firestore: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private subs: SubscriptionService
   ) {}
 }

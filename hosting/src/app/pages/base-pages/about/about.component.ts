@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
+import { UrlLoaderService } from '@services/url-loader.service';
 
 @Component({
   selector: 'app-about',
@@ -9,7 +9,7 @@ import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
 })
 export class AboutComponent {
   $applicationURL: Observable<string>;
-  constructor(DAO: ImageDalService) {
-    this.$applicationURL = DAO.getStaticRscURL('RoeSeNa_Anmeldung_Mitgliedschaft.pdf');
+  constructor(urlLoader: UrlLoaderService) {
+    this.$applicationURL = urlLoader.getStaticRscURL('RoeSeNa_Anmeldung_Mitgliedschaft.pdf');
   }
 }

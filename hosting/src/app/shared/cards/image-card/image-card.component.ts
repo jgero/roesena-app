@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { State } from '@state/cards/reducers/card.reducer';
 import { TagClick } from '@state/cards/actions/card.actions';
-import { ImageLoaderService } from '@services/image-loader.service';
+import { UrlLoaderService } from '@services/url-loader.service';
 import { AppImage } from '@utils/interfaces';
 
 @Component({
@@ -19,13 +19,13 @@ export class ImageCardComponent implements OnInit {
   $src: Observable<string | null>;
   canEdit$ = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
 
-  constructor(private store: Store<State>, private imageLoader: ImageLoaderService) {}
+  constructor(private store: Store<State>, private urlLoader: UrlLoaderService) {}
 
   onTagClick(tag: string) {
     this.store.dispatch(new TagClick({ tag }));
   }
 
   ngOnInit(): void {
-    this.$src = this.imageLoader.getDownloadURL(this.data.id);
+    this.$src = this.urlLoader.getImageURL(this.data.id);
   }
 }
