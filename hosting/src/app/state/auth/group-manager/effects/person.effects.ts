@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, mergeMap, switchMap, takeUntil, withLatestFrom, tap } from 'rxjs/operators';
+import { catchError, map, concatMap, mergeMap, switchMap, takeUntil, withLatestFrom, tap, filter } from 'rxjs/operators';
 import { EMPTY, of, merge } from 'rxjs';
 import {
   LoadPersonsFailure,
@@ -35,7 +35,8 @@ export class PersonEffects {
           .pipe(
             map(convertMany),
             map((persons) => new LoadPersonsSuccess({ persons })),
-            catchError((error) => of(new LoadPersonsFailure({ error })))
+            catchError((error) => of(new LoadPersonsFailure({ error }))),
+            takeUntil(this.subs.unsubscribe$)
           ),
         this.firestore
           .collection('meta')
@@ -44,9 +45,10 @@ export class PersonEffects {
           .pipe(
             map((docSnapshot) => (docSnapshot.payload.data() as any).amount),
             map((length) => new LoadPersonLengthSuccess({ length })),
-            catchError((error) => of(new LoadPersonLengthFailure({ error })))
+            catchError((error) => of(new LoadPersonLengthFailure({ error }))),
+            takeUntil(this.subs.unsubscribe$)
           )
-      ).pipe(takeUntil(this.subs.unsubscribe$))
+      )
     )
   );
 
@@ -54,6 +56,7 @@ export class PersonEffects {
   movePageForward$ = this.actions$.pipe(
     ofType(PageActionTypes.PageForward),
     withLatestFrom(this.store),
+    filter(([action, storeState]) => storeState.router.state.url.includes('auth/group-manager')),
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('persons', (qFn) =>
@@ -63,7 +66,8 @@ export class PersonEffects {
         .pipe(
           map(convertMany),
           map((persons) => new LoadPersonsSuccess({ persons })),
-          catchError((error) => of(new LoadPersonsFailure({ error })))
+          catchError((error) => of(new LoadPersonsFailure({ error }))),
+          takeUntil(this.subs.unsubscribe$)
         )
     )
   );
@@ -72,6 +76,7 @@ export class PersonEffects {
   movePageBackwards$ = this.actions$.pipe(
     ofType(PageActionTypes.PageBackwards),
     withLatestFrom(this.store),
+    filter(([action, storeState]) => storeState.router.state.url.includes('auth/group-manager')),
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('persons', (qFn) =>
@@ -96,17 +101,6 @@ export class PersonEffects {
     map(() => new UpdatePersonSuccess()),
     catchError((error) => of(new UpdatePersonFailure({ error })))
   );
-  // update(updated: AppPerson): Observable<boolean> {
-  //   return from(
-  //     this.firestore.collection<StoreablePerson>('persons').doc<StoreablePerson>(updated.id).update(toStorablePerson(updated))
-  //   ).pipe(
-  //     map(() => true),
-  //     catchError((err) => {
-  //       this.snackbar.open(`Fehler beim speichern von Person: ${err}`, 'OK');
-  //       return of(false);
-  //     })
-  //   );
-  // }
 
   constructor(
     private actions$: Actions<PersonActions | PageActions>,

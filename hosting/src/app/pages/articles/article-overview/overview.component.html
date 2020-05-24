@@ -2,11 +2,11 @@
   <div>Artikel</div>
 </mat-toolbar>
 
-<mat-progress-bar *ngIf="isLoading$ | async" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
+<!-- <mat-progress-bar *ngIf="isLoading$ | async" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar> -->
 
 <app-search-bar></app-search-bar>
 
-<mat-grid-list *ngIf="data$ | async as articles" [cols]="columns$ | async" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
+<mat-grid-list *ngIf="data$ | async as articles" [cols]="cols" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let article of articles">
     <app-article-card [data]="article"></app-article-card>
   </mat-grid-tile>
@@ -14,10 +14,4 @@
 
 <a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canEdit$ | async"><mat-icon>add</mat-icon></a>
 
-<mat-paginator
-  [pageSize]="limit$ | async"
-  [pageIndex]="pageIndex$ | async"
-  [hidePageSize]="true"
-  [length]="dataLength$ | async"
-  (page)="onPage($event)"
-></mat-paginator>
+<app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
