@@ -17,11 +17,10 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'my-events',
   },
-  // {
-  //   path: 'my-events',
-  //   component: MyEventsComponent,
-  //   canActivate: [LoggedInGuard],
-  // },
+  {
+    path: 'my-events',
+    loadChildren: () => import('./my-events/my-events.module').then((m) => m.MyEventsModule),
+  },
   // {
   //   path: 'group-manager',
   //   component: GroupManagerComponent,

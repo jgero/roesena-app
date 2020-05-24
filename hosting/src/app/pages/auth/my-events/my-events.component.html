@@ -1,6 +1,6 @@
 <mat-toolbar [color]="'accent'">Meine Events</mat-toolbar>
 
-<mat-grid-list *ngIf="$data | async as events" [cols]="cols" [rowHeight]="'175px'" [gutterSize]="'16px'">
+<mat-grid-list *ngIf="data$ | async as events" [cols]="cols" [rowHeight]="'175px'" [gutterSize]="'16px'">
   <mat-grid-tile *ngFor="let event of events">
     <mat-card>
       <mat-card-header>

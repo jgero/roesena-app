@@ -135,8 +135,6 @@ export class BaseEffects {
           .pipe(
             map(convertManyEvents),
             map((events) => {
-              // sort the events first, because after the merging of the observables order could be mixed up
-              events.sort((a, b) => a.endDate.getTime() - b.endDate.getTime());
               // filter out events where the user is not invited
               events = events.filter((ev) => {
                 if (ev.participants.length === 0) {
