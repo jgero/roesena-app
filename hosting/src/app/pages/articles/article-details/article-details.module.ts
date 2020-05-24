@@ -9,6 +9,7 @@ import { MarkdownViewerModule } from '@shared/markdown-viewer/markdown-viewer.mo
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { ConvertersModule } from '@shared/converters/converters.module';
+import { ArticleDetailsRoutingModule } from './article-details-routing.module';
 
 @NgModule({
   declarations: [DetailsComponent],
@@ -22,7 +23,7 @@ import { ConvertersModule } from '@shared/converters/converters.module';
     MatButtonModule,
     CardsModule,
     ConvertersModule,
+    ArticleDetailsRoutingModule,
   ],
-  exports: [DetailsComponent],
 })
 export class ArticleDetailsModule {}

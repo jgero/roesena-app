@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoggedInGuard } from 'src/app/guards/logged-in.guard';
-import { ArticleEditorModule } from './article-editor/article-editor.module';
-import { EditorComponent } from './article-editor/editor.component';
-import { ArticleDetailsModule } from './article-details/article-details.module';
-import { DetailsComponent } from './article-details/details.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'overview' },
@@ -12,13 +8,19 @@ const routes: Routes = [
     path: 'overview',
     loadChildren: () => import('./article-overview/article-overview.module').then((m) => m.ArticleOverviewModule),
   },
-  { path: 'details/:id', component: DetailsComponent },
-  { path: 'edit', component: EditorComponent, canActivate: [LoggedInGuard] },
-  { path: 'edit/:id', component: EditorComponent, canActivate: [LoggedInGuard] },
+  {
+    path: 'details',
+    loadChildren: () => import('./article-details/article-details.module').then((m) => m.ArticleDetailsModule),
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./article-editor/article-editor.module').then((m) => m.ArticleEditorModule),
+    canActivate: [LoggedInGuard],
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), ArticleEditorModule, ArticleDetailsModule],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class ArticlesRoutingModule {}

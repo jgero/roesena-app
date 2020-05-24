@@ -19,6 +19,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { EditorEffects } from '@state/articles/editor/effects/editor.effects';
 
 import { EditorComponent } from './editor.component';
+import { ArticleEditorRoutingModule } from './article-editor-routing.module';
 
 @NgModule({
   declarations: [EditorComponent],
@@ -36,7 +37,7 @@ import { EditorComponent } from './editor.component';
     MatProgressSpinnerModule,
     StoreModule.forFeature(fromEditor.editorFeatureKey, fromEditor.reducer),
     EffectsModule.forFeature([EditorEffects]),
+    ArticleEditorRoutingModule,
   ],
-  exports: [EditorComponent],
 })
 export class ArticleEditorModule {}
