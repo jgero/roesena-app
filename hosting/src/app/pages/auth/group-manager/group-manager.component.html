@@ -1,35 +1,12 @@
 <mat-toolbar [color]="'accent'">
   <div>Gruppen-Manager</div>
-  <div class="spacer"></div>
-  <div>
-    <mat-form-field class="search-field">
-      <mat-label>Suchbegriff</mat-label>
-      <input
-        matInput
-        #searchInput
-        matTooltip="Suchbegriffe durch Komma trennen"
-        type="text"
-        [(ngModel)]="searchString"
-        (keydown.enter)="searchButton._elementRef.nativeElement.click()"
-      />
-      <button *ngIf="searchString" matSuffix mat-icon-button aria-label="clear" (click)="searchString = ''">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <button mat-icon-button #searchButton aria-label="search" (click)="onSearchClick()">
-      <mat-icon>search</mat-icon>
-    </button>
-  </div>
 </mat-toolbar>
+
+<app-search-bar></app-search-bar>
 
 <mat-grid-list *ngIf="$withForm | async as persons; else loading" [cols]="cols" [rowHeight]="'200px'" [gutterSize]="'16px'">
   <mat-grid-tile *ngFor="let person of persons">
-    <form
-      [formGroup]="person.form"
-      (ngSubmit)="
-        onSubmit(person.id, person.form.get('confirmed').value, person.form.get('groups').value, person.name, person.form)
-      "
-    >
+    <form [formGroup]="person.form" (ngSubmit)="onSubmit(person)">
       <mat-toolbar>
         <span>{{ person.name }}</span>
         <div class="spacer"></div>
@@ -69,14 +46,7 @@
   </mat-grid-tile>
 </mat-grid-list>
 
-<mat-paginator
-  *ngIf="!searchString"
-  [pageSize]="limit"
-  [pageIndex]="pageIndex"
-  [hidePageSize]="true"
-  [length]="$dataLength | async"
-  (page)="onPage($event)"
-></mat-paginator>
+<app-paginator [pageSize]="limit" [pageIndex]="0" [length]="$length | async"></app-paginator>
 
 <ng-template #loading>
   <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>

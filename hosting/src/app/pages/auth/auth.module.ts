@@ -33,14 +33,7 @@ import * as fromAuth from '@state/auth/reducers/auth.reducer';
 import { AuthEffects } from '@state/auth/effects/auth.effects';
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    ProfileComponent,
-    RegisterComponent,
-    //  MyEventsComponent,
-    ResetComponent,
-    //  GroupManagerComponent
-  ],
+  declarations: [LoginComponent, ProfileComponent, RegisterComponent, ResetComponent],
   imports: [
     CommonModule,
     FormsModule,

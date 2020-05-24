@@ -21,16 +21,10 @@ const routes: Routes = [
     path: 'my-events',
     loadChildren: () => import('./my-events/my-events.module').then((m) => m.MyEventsModule),
   },
-  // {
-  //   path: 'group-manager',
-  //   component: GroupManagerComponent,
-  //   canActivate: [LoggedInGuard],
-  // },
-  // {
-  //   path: 'group-manager/:searchString',
-  //   component: GroupManagerComponent,
-  //   canActivate: [LoggedInGuard],
-  // },
+  {
+    path: 'group-manager',
+    loadChildren: () => import('./group-manager/group-manager.module').then((m) => m.GroupManagerModule),
+  },
   {
     path: 'profile',
     component: ProfileComponent,

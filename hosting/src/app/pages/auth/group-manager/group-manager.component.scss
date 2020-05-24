@@ -1,5 +1,9 @@
-.mat-grid-list,
-.mat-paginator {
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-grid-list {
   margin: 16px;
 }
 
