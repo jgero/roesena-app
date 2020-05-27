@@ -1,0 +1,20 @@
+<mat-toolbar class="header" [color]="'accent'">
+  <div>Events</div>
+</mat-toolbar>
+
+<mat-grid-list
+  *ngIf="data$ | async as events"
+  class="content"
+  [cols]="cols"
+  [rowHeight]="'300px'"
+  [gutterSize]="'16px'"
+  @cardFlyIn
+>
+  <mat-grid-tile *ngFor="let event of events">
+    <app-event-card [data]="event"></app-event-card>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<a mat-fab class="add-fab" [color]="'primary'" [routerLink]="'/events/edit'" *ngIf="canEdit$ | async">
+  <mat-icon>add</mat-icon>
+</a>

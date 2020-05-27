@@ -14,7 +14,7 @@ export const routes: Routes = [
     canActivateChild: [LoadUserGuard],
     children: [
       { path: '', component: StartPageComponent },
-      // { path: 'events', loadChildren: () => import('@pages/events/events.module').then((m) => m.EventsModule) },
+      { path: 'events', loadChildren: () => import('@pages/events/events.module').then((m) => m.EventsModule) },
       {
         path: 'auth',
         loadChildren: () => import('@pages/auth/auth.module').then((m) => m.AuthModule),
