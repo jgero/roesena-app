@@ -1,14 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AppEvent } from 'src/app/utils/interfaces';
-import { EventDALService } from 'src/app/services/DAL/event-dal.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { cardFlyIn } from 'src/app/utils/animations';
 import { Store } from '@ngrx/store';
 import { State } from '@state/events/overview/reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LoadEvents } from '@state/events/overview/actions/event.actions';
 
 @Component({

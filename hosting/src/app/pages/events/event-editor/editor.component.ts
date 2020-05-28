@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { tap, map, filter, take, takeUntil } from 'rxjs/operators';
 
 import { AppEvent, AppPerson, Participant } from 'src/app/utils/interfaces';
-import { EventDALService } from 'src/app/services/DAL/event-dal.service';
 import { ChipsInputService } from 'src/app/services/chips-input.service';
 import { ToLocalTimeStringPipe } from 'src/app/shared/converters/to-local-time/to-local-time-string.pipe';
 import { Store } from '@ngrx/store';
@@ -42,8 +41,8 @@ export class EditorComponent implements OnDestroy {
       )
       .subscribe({
         next: (event) => {
-          this.event = {} as any;
-          Object.assign(this.event, event);
+          // deep copy the object
+          this.event = JSON.parse(JSON.stringify(event));
           const p = new ToLocalTimeStringPipe();
           this.eventForm = new FormGroup({
             title: new FormControl(event.title, [Validators.required]),
@@ -79,8 +78,11 @@ export class EditorComponent implements OnDestroy {
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe({
         next: (persons) => {
-          this.persons = [] as any;
-          Object.assign(this.persons, persons);
+          // deep copy the object
+          this.persons = JSON.parse(JSON.stringify(persons));
+          // this.persons = [] as any;
+          // Object.assign(this.persons, persons);
+          // console.log(persons);
           persons.forEach((person) => {
             person.groups.forEach((group) => {
               if (!this.groups.includes(group)) {
@@ -167,7 +169,9 @@ export class EditorComponent implements OnDestroy {
       ),
       // not only add the participants, but also set the unseen changes for all to true
       participants: (this.eventForm.get('deadline').get('participants').value as Participant[]).map((participant) => {
-        participant.hasUnseenChanges = true;
+        const el: any = {};
+        Object.assign(el, participant);
+        el.hasUnseenChanges = true;
         return participant;
       }),
     };
