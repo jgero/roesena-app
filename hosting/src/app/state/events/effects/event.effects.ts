@@ -19,13 +19,28 @@ export class EventEffects {
     ofType(EventActionTypes.LoadEvent),
     withLatestFrom(this.store),
     // the case where there is no id param is missing -> return empty event
-    switchMap(([action, storeState]) =>
-      this.firestore
-        .collection<StoreableEvent>('events')
-        .doc(storeState.router.state.params.id)
-        .snapshotChanges()
-        .pipe(takeUntil(this.subs.unsubscribe$))
-    ),
+    switchMap(([action, storeState]) => {
+      if (storeState.router.state.params.id) {
+        return this.firestore
+          .collection<StoreableEvent>('events')
+          .doc(storeState.router.state.params.id)
+          .snapshotChanges()
+          .pipe(takeUntil(this.subs.unsubscribe$));
+      } else {
+        return of({
+          id: '',
+          ownerId: storeState.user.user.id,
+          ownerName: storeState.user.user.name,
+          tags: [],
+          description: '',
+          deadline: null,
+          startDate: new Date(),
+          endDate: new Date(),
+          title: '',
+          participants: [],
+        });
+      }
+    }),
     map(convertOne),
     map((event) => new LoadEventSuccess({ event })),
     catchError((error) => of(new LoadEventFailure({ error })))
