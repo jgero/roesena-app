@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppImage } from 'src/app/utils/interfaces';
-import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { cardFlyIn } from 'src/app/utils/animations';
-import { PaginatedOverview } from 'src/app/utils/ui-abstractions';
+import { cardFlyIn } from '@utils/animations';
+import { AppImage } from '@utils/interfaces';
+import { Store } from '@ngrx/store';
+import { State } from '@state/images/overview/reducers/image.reducer';
+import { SubscriptionService } from '@services/subscription.service';
+import { LoadImages } from '@state/images/overview/actions/image.actions';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-overview',
@@ -13,10 +15,24 @@ import { PaginatedOverview } from 'src/app/utils/ui-abstractions';
   styleUrls: ['./overview.component.scss'],
   animations: [cardFlyIn],
 })
-export class OverviewComponent extends PaginatedOverview {
-  $data: Observable<AppImage[]>;
+export class OverviewComponent implements OnInit, OnDestroy {
+  data$: Observable<AppImage[]> = this.store.select('imageOverview', 'images');
+  length$: Observable<number> = this.store.select('imageOverview', 'length');
+  canEdit$: Observable<boolean> = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  get cols(): number {
+    return Math.ceil(window.innerWidth / 700);
+  }
+  get limit(): number {
+    return this.cols * 5;
+  }
 
-  constructor(imageDAO: ImageDalService, auth: AuthService, route: ActivatedRoute, router: Router) {
-    super(['images', 'overview'], imageDAO, route, router, auth);
+  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+
+  ngOnInit() {
+    this.store.dispatch(new LoadImages({ limit: this.limit }));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribeComponent$.next();
   }
 }

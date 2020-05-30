@@ -1,27 +1,34 @@
-
 import { ImageActions, ImageActionTypes } from '../actions/image.actions';
+import * as fromRoot from '@state/images/reducers/image.reducer';
 
-export const imageFeatureKey = 'image';
+export const imageFeatureKey = 'imageEditor';
 
-export interface State {
-
+interface ImageEditorState {
+  isLoading: boolean;
 }
 
-export const initialState: State = {
+export interface State extends fromRoot.State {
+  imageEditor: ImageEditorState;
+}
 
+export const initialState: ImageEditorState = {
+  isLoading: false,
 };
 
-export function reducer(state = initialState, action: ImageActions): State {
+export function reducer(state = initialState, action: ImageActions): ImageEditorState {
   switch (action.type) {
+    case ImageActionTypes.CreateImage:
+    case ImageActionTypes.UpdateImage:
+    case ImageActionTypes.DeleteImage:
+      return { ...state, isLoading: true };
 
-    case ImageActionTypes.LoadImages:
-      return state;
-
-    case ImageActionTypes.LoadImagesSuccess:
-      return state;
-
-    case ImageActionTypes.LoadImagesFailure:
-      return state;
+    case ImageActionTypes.CreateImageSuccess:
+    case ImageActionTypes.CreateImageFailure:
+    case ImageActionTypes.UpdateImageSuccess:
+    case ImageActionTypes.UpdateImageFailure:
+    case ImageActionTypes.DeleteImageSuccess:
+    case ImageActionTypes.DeleteImageFailure:
+      return { ...state, isLoading: false };
 
     default:
       return state;

@@ -1,45 +1,47 @@
-<mat-toolbar [color]="'accent'">
-  <div>Bild bearbeiten</div>
-  <div class="spacer"></div>
-  <a mat-icon-button [routerLink]="'/images/overview'"><mat-icon>apps</mat-icon></a>
-</mat-toolbar>
-<form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
-  <img [attr.src]="url" />
-  <input hidden #imageInput type="file" (change)="onImageChange($event.target.files[0])" />
-  <button mat-flat-button type="button" (click)="imageInput.click()" [color]="'primary'">
-    <mat-icon>image</mat-icon> BILD AUSWÄHLEN
-  </button>
-
-  <mat-form-field>
-    <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
-      <mat-chip *ngFor="let tag of imageForm.get('tags').value" (removed)="chips.removeItem(tag, imageForm.get('tags'))">
-        {{ tag }}
-        <mat-icon matChipRemove>cancel</mat-icon>
-      </mat-chip>
-      <input
-        placeholder="Tags"
-        [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="chips.addItem($event, imageForm.get('tags'))"
-      />
-    </mat-chip-list>
-  </mat-form-field>
-  <div class="button-box">
-    <button
-      mat-flat-button
-      *ngIf="!imageForm.disabled; else saveSpinner"
-      type="submit"
-      [disabled]="imageForm.invalid || !imageForm.dirty"
-      [color]="'primary'"
-    >
-      <mat-icon>save</mat-icon>SPEICHERN
-    </button>
-    <ng-template #saveSpinner>
-      <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
-    </ng-template>
+<ng-container *ngIf="image && imageForm">
+  <mat-toolbar [color]="'accent'">
+    <div>Bild bearbeiten</div>
     <div class="spacer"></div>
-    <button mat-flat-button type="button" [disabled]="!initialImage.id" [color]="'warn'" (click)="onDelete()">
-      <mat-icon>delete</mat-icon>LÖSCHEN
+    <a mat-icon-button [routerLink]="'/images/overview'"><mat-icon>apps</mat-icon></a>
+  </mat-toolbar>
+  <form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
+    <img [attr.src]="url" />
+    <input hidden #imageInput type="file" (change)="onImageChange($event.target.files[0])" />
+    <button mat-flat-button type="button" (click)="imageInput.click()" [color]="'primary'">
+      <mat-icon>image</mat-icon> BILD AUSWÄHLEN
     </button>
-  </div>
-</form>
+
+    <mat-form-field>
+      <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
+        <mat-chip *ngFor="let tag of imageForm.get('tags').value" (removed)="chips.removeItem(tag, imageForm.get('tags'))">
+          {{ tag }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Tags"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="chips.addItem($event, imageForm.get('tags'))"
+        />
+      </mat-chip-list>
+    </mat-form-field>
+    <div class="button-box">
+      <button
+        mat-flat-button
+        *ngIf="!imageForm.disabled; else saveSpinner"
+        type="submit"
+        [disabled]="imageForm.invalid || !imageForm.dirty"
+        [color]="'primary'"
+      >
+        <mat-icon>save</mat-icon>SPEICHERN
+      </button>
+      <ng-template #saveSpinner>
+        <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
+      </ng-template>
+      <div class="spacer"></div>
+      <button mat-flat-button type="button" [disabled]="!image.id" [color]="'warn'" (click)="onDelete()">
+        <mat-icon>delete</mat-icon>LÖSCHEN
+      </button>
+    </div>
+  </form>
+</ng-container>

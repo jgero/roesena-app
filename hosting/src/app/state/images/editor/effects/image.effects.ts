@@ -1,28 +1,78 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap } from 'rxjs/operators';
-import { EMPTY, of } from 'rxjs';
-import { LoadImagesFailure, LoadImagesSuccess, ImageActionTypes, ImageActions } from '../actions/image.actions';
-
-
-
+import {
+  ImageActionTypes,
+  ImageActions,
+  CreateImageSuccess,
+  CreateImageFailure,
+  UpdateImageSuccess,
+  UpdateImageFailure,
+  DeleteImageSuccess,
+  DeleteImageFailure,
+} from '../actions/image.actions';
+import { switchMap, map, tap, catchError, withLatestFrom, endWith, filter } from 'rxjs/operators';
+import 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { toStorableImage } from '@utils/converters/image-documents';
+import { Router } from '@angular/router';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { from, of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State } from '../reducers/image.reducer';
 
 @Injectable()
 export class ImageEffects {
-
   @Effect()
-  loadImages$ = this.actions$.pipe(
-    ofType(ImageActionTypes.LoadImages),
-    concatMap(() =>
-      /** An EMPTY observable only emits completion. Replace with your own observable API request */
-      EMPTY.pipe(
-        map(data => new LoadImagesSuccess({ data })),
-        catchError(error => of(new LoadImagesFailure({ error }))))
-    )
+  createImage$ = this.actions$.pipe(
+    ofType(ImageActionTypes.CreateImage),
+    switchMap((action) =>
+      // add the image document
+      from(this.firestore.collection('images').add(toStorableImage(action.payload.image))).pipe(
+        map((doc: any) => doc.id),
+        // save the image into the storage at the correct id and map the observable back to the id
+        switchMap((id) => from(this.storage.ref(`uploads/${id}`).putString(action.payload.file, 'data_url')).pipe(map(() => id)))
+      )
+    ),
+    // navigate to the right editor
+    tap((id) => this.router.navigate(['images', 'edit', id])),
+    // endWith(new CreateImageSuccess()),
+    map(() => new CreateImageSuccess()),
+    catchError((error) => of(new CreateImageFailure({ error })))
   );
 
+  @Effect()
+  updateImage$ = this.actions$.pipe(
+    ofType(ImageActionTypes.UpdateImage),
+    // update the documnet
+    switchMap((action) =>
+      from(this.firestore.collection('images').doc(action.payload.image.id).update(toStorableImage(action.payload.image))).pipe(
+        // update the image if there is one
+        switchMap(() =>
+          action.payload.file
+            ? this.storage.ref(`uploads/${action.payload.image.id}`).putString(action.payload.file, 'data_url')
+            : of(true)
+        )
+      )
+    ),
+    map(() => new UpdateImageSuccess()),
+    catchError((error) => of(new UpdateImageFailure({ error })))
+  );
 
+  @Effect()
+  deleteImag$ = this.actions$.pipe(
+    ofType(ImageActionTypes.DeleteImage),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) => this.firestore.collection('images').doc(storeState.router.state.params.id).delete()),
+    tap(() => this.router.navigate(['images', 'overview'])),
+    map(() => new DeleteImageSuccess()),
+    catchError((error) => of(new DeleteImageFailure({ error })))
+  );
 
-  constructor(private actions$: Actions<ImageActions>) {}
-
+  constructor(
+    private actions$: Actions<ImageActions>,
+    private firestore: AngularFirestore,
+    private router: Router,
+    private store: Store<State>,
+    private storage: AngularFireStorage
+  ) {}
 }

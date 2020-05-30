@@ -1,14 +1,18 @@
-<main>
-  <img [attr.src]="url" alt="Bild Detailansicht" />
-  <mat-chip-list>
-    <mat-chip *ngFor="let tag of image.tags" [routerLink]="'/images/overview/' + tag">{{ tag }}</mat-chip>
-  </mat-chip-list>
-  <div class="fab-container">
-    <a mat-fab [color]="'primary'" *ngIf="canEdit(image)" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>
-    <a mat-fab [color]="'primary'" [routerLink]="getLinkToArticles(image)"><mat-icon>description</mat-icon></a>
-  </div>
-</main>
-<mat-toolbar class="footer">
-  <div class="spacer"></div>
-  <div>{{ image.ownerName }}</div>
-</mat-toolbar>
+<ng-container *ngIf="image$ | async as image">
+  <main>
+    <img [src]="url$ | async" alt="Bild Detailansicht" />
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of image.tags" [routerLink]="'/images/overview/' + tag">{{ tag }}</mat-chip>
+    </mat-chip-list>
+    <div class="fab-container">
+      <a mat-fab [color]="'primary'" *ngIf="canEdit$ | async" [routerLink]="'/images/edit/' + image.id"
+        ><mat-icon>edit</mat-icon></a
+      >
+      <a mat-fab [color]="'primary'" [routerLink]="getLinkToArticles(image)"><mat-icon>description</mat-icon></a>
+    </div>
+  </main>
+  <mat-toolbar class="footer">
+    <div class="spacer"></div>
+    <div>{{ image.ownerName }}</div>
+  </mat-toolbar>
+</ng-container>

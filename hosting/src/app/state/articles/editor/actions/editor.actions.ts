@@ -9,8 +9,8 @@ export enum EditorActionTypes {
   UpdateArticleSuccess = '[Article Editor] update article success',
   UpdateArticleFailure = '[Article Editor] update article failure',
   DeleteArticle = '[Article Editor] delete articel',
-  DeleteArticleSuccess = '[Article Editor] delete articel success',
-  DeleteArticleFailure = '[Article Editor] delete articel failure',
+  DeleteArticleSuccess = '[Article Editor] delete article success',
+  DeleteArticleFailure = '[Article Editor] delete article failure',
 }
 
 export class CreateArticle implements Action {

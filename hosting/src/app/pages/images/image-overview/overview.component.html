@@ -2,23 +2,14 @@
   <div>Bilder</div>
 </mat-toolbar>
 
-<mat-progress-bar *ngIf="($data | async) === null" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
-
 <app-search-bar></app-search-bar>
 
-<mat-grid-list *ngIf="$data | async as images" [cols]="cols" [rowHeight]="'450px'" [gutterSize]="'16px'" @cardFlyIn>
+<mat-grid-list *ngIf="data$ | async as images" [cols]="cols" [rowHeight]="'450px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let image of images">
-    <app-image-card [data]="image" [navigateOnTagClick]="false" (tagClick)="onTagClick($event)"></app-image-card>
+    <app-image-card [data]="image"></app-image-card>
   </mat-grid-tile>
 </mat-grid-list>
 
-<a mat-fab class="add-fab" color="primary" [routerLink]="'/images/edit'" *ngIf="canCreate()"><mat-icon>add</mat-icon></a>
+<a mat-fab class="add-fab" color="primary" [routerLink]="'/images/edit'" *ngIf="canEdit$ | async"><mat-icon>add</mat-icon></a>
 
-<mat-paginator
-  *ngIf="!searchString"
-  [pageSize]="limit"
-  [pageIndex]="pageIndex"
-  [hidePageSize]="true"
-  [length]="$dataLength | async"
-  (page)="onPage($event)"
-></mat-paginator>
+<app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>

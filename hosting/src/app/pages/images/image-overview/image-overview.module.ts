@@ -12,6 +12,8 @@ import { SearchModule } from '@shared/search/search.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CardsModule } from '@shared/cards/cards.module';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -21,8 +23,10 @@ import { PaginatorModule } from '@shared/paginator/paginator.module';
     MatToolbarModule,
     SearchModule,
     MatGridListModule,
+    MatIconModule,
     CardsModule,
     PaginatorModule,
+    MatButtonModule,
     StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer),
     EffectsModule.forFeature([ImageEffects]),
   ],
