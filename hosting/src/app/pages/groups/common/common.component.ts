@@ -1,26 +1,27 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AppImage, AppArticle } from 'src/app/utils/interfaces';
-import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
-import { ArticleDalService } from 'src/app/services/DAL/article-dal.service';
-import { map } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from '@state/groups/reducers/content.reducer';
+import { SubscriptionService } from '@services/subscription.service';
+import { LoadContent } from '@state/groups/actions/content.actions';
 
 @Component({
   selector: 'app-common',
   templateUrl: './common.component.html',
   styleUrls: ['./common.component.scss'],
 })
-export class CommonComponent {
-  $imageData: Observable<AppImage>;
-  $textData: Observable<AppArticle>;
-  groupName: string;
-  externalPageLink: string | null;
+export class CommonComponent implements OnDestroy, OnInit {
+  textData$ = this.store.select('group', 'article');
+  imageData$ = this.store.select('group', 'image');
+  groupName$ = this.store.select('router', 'state', 'data', 'groupName');
+  externalPageLink$ = this.store.select('router', 'state', 'data', 'externalPageLink');
 
-  constructor(route: ActivatedRoute, imageDAO: ImageDalService, articleDAO: ArticleDalService) {
-    this.groupName = route.snapshot.data.groupName;
-    this.externalPageLink = route.snapshot.data.externalPageLink;
-    this.$imageData = imageDAO.getBySearchStrings([this.groupName, 'Gruppenseite'], 1).pipe(map((val) => val[0]));
-    this.$textData = articleDAO.getBySearchStrings([this.groupName, 'Gruppenseite'], 1).pipe(map((val) => val[0]));
+  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+
+  ngOnInit() {
+    this.store.dispatch(new LoadContent());
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribeComponent$.next();
   }
 }

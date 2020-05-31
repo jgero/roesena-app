@@ -27,7 +27,7 @@ export const routes: Routes = [
       },
       { path: 'images', loadChildren: () => import('@pages/images/images.module').then((m) => m.ImagesModule) },
       { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },
-      // { path: 'groups', loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule) },
+      { path: 'groups', loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule) },
       { path: 'about', component: AboutComponent },
       { path: 'help', component: HelpComponent },
       { path: '**', component: NotFoundComponent },

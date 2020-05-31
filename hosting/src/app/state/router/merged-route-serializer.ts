@@ -1,5 +1,5 @@
 import { RouterStateSerializer } from '@ngrx/router-store';
-import { ActivatedRouteSnapshot, Params, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Params, RouterStateSnapshot, Data } from '@angular/router';
 import { MergedRoute } from './merged-route';
 
 export class MergedRouterStateSerializer implements RouterStateSerializer<MergedRoute> {
@@ -8,6 +8,7 @@ export class MergedRouterStateSerializer implements RouterStateSerializer<Merged
       url: routerState.url,
       params: mergeRouteParams(routerState.root, (r) => r.params),
       queryParams: mergeRouteParams(routerState.root, (r) => r.queryParams),
+      data: mergeRouteData(routerState.root),
     };
   }
 }
@@ -19,4 +20,14 @@ function mergeRouteParams(route: ActivatedRouteSnapshot, getter: (r: ActivatedRo
   const currentParams = getter(route);
   const primaryChild = route.children.find((c) => c.outlet === 'primary') || route.firstChild;
   return { ...currentParams, ...mergeRouteParams(primaryChild, getter) };
+}
+
+function mergeRouteData(route: ActivatedRouteSnapshot): Data {
+  if (!route) {
+    return {};
+  }
+
+  const currentData = route.data;
+  const primaryChild = route.children.find((c) => c.outlet === 'primary') || route.firstChild;
+  return { ...currentData, ...mergeRouteData(primaryChild) };
 }

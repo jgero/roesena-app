@@ -13,6 +13,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonComponent } from './common/common.component';
 import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-viewer.module';
+import { StoreModule } from '@ngrx/store';
+import * as fromContent from '../../state/groups/reducers/content.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ContentEffects } from '../../state/groups/effects/content.effects';
 
 @NgModule({
   declarations: [GardenComponent, CommonComponent],
@@ -28,6 +32,8 @@ import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-vi
     MatTableModule,
     MatChipsModule,
     MarkdownViewerModule,
+    StoreModule.forFeature(fromContent.contentFeatureKey, fromContent.reducer),
+    EffectsModule.forFeature([ContentEffects]),
   ],
 })
 export class GroupsModule {}
