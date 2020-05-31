@@ -1,66 +1,27 @@
-import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
-
-import { AppEvent } from 'src/app/utils/interfaces';
-import { EventDALService } from 'src/app/services/DAL/event-dal.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from '@state/calendar/reducers/event.reducer';
+import { SubscriptionService } from '@services/subscription.service';
+import { GoNextMonth, GoPreviousMonth, LoadEvents } from '@state/calendar/actions/event.actions';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnDestroy {
-  $activeMonth: Observable<{ date: Date; days: AppEvent[][] }>;
-  loading: boolean;
-  private subs: Subscription[] = [];
+export class CalendarComponent implements OnDestroy, OnInit {
+  currentDate$ = this.store.select('calendar', 'currentDate');
+  days$ = this.store.select('calendar', 'days');
+  user$ = this.store.select('user', 'user');
 
-  constructor(route: ActivatedRoute, eventDAO: EventDALService, cdr: ChangeDetectorRef, public router: Router) {
-    let currentDate: Date;
-    this.$activeMonth = route.paramMap.pipe(
-      // set loading state and detect changes
-      tap(() => {
-        this.loading = true;
-        cdr.detectChanges();
-      }),
-      // convert paramMap to date
-      map((pm) => new Date(pm.get('date'))),
-      // convert it to the first day of the month
-      map((date) => new Date(date.getFullYear(), date.getMonth(), 1)),
-      // save the date for later user
-      tap((date) => (currentDate = date)),
-      // request some events starting from that specific date
-      switchMap((date) => eventDAO.getForMonth(date.getFullYear(), date.getMonth())),
-      // distribute the events into the day 2D-Array
-      map((events) => {
-        // empty array with the length of the current month
-        const value: AppEvent[][] = new Array(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()).fill(
-          []
-        );
-        return value.map((_, index) => {
-          const eventsForDay: AppEvent[] = [];
-          const startDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 0, 0).getTime();
-          const endDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 24, 0).getTime();
-          events.forEach((event) => {
-            if (event.startDate.getTime() <= endDay && event.endDate.getTime() >= startDay) {
-              eventsForDay.push(event);
-            }
-          });
-          return eventsForDay;
-        });
-      }),
-      map((days) => ({ date: currentDate, days })),
-      // set loading state and detect changes
-      tap(() => {
-        this.loading = false;
-        cdr.detectChanges();
-      })
-    );
+  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+
+  ngOnInit() {
+    this.store.dispatch(new LoadEvents());
   }
 
   ngOnDestroy() {
-    this.subs.forEach((sub) => sub.unsubscribe());
+    this.subs.unsubscribeComponent$.next();
   }
 
   getOffsetArray(d: Date): any[] {
@@ -72,11 +33,11 @@ export class CalendarComponent implements OnDestroy {
     return new Array(offset).fill(null);
   }
 
-  navigateToNextMonth(d: Date) {
-    this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() + 1).toISOString()]);
+  navigateToNextMonth() {
+    this.store.dispatch(new GoNextMonth());
   }
-  navigateToPreviousMonth(d: Date) {
-    this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() - 1).toISOString()]);
+  navigateToPreviousMonth() {
+    this.store.dispatch(new GoPreviousMonth());
   }
 
   getTitle(d: Date): string {

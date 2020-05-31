@@ -1,8 +1,7 @@
 import { Component, Input, ElementRef, HostBinding } from '@angular/core';
 
-import { AppEvent } from 'src/app/utils/interfaces';
+import { AppEvent, AppPerson } from 'src/app/utils/interfaces';
 import { expandCollapseAnimation } from 'src/app/utils/animations';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-day',
@@ -13,14 +12,15 @@ import { AuthService } from 'src/app/services/auth.service';
 export class DayComponent {
   @Input()
   day: number;
+  @Input()
+  user: AppPerson;
   @Input('events')
   set _events(ev: AppEvent[]) {
     this.events = ev;
-    const user = this.auth.$user.getValue();
     this.eventTableData = this.events.map((evIter) => {
       const res = { name: evIter.title, status: 'öffentlich', id: evIter.id, hasUnseenChanges: false };
       if (evIter.participants.length > 0) {
-        const p = evIter.participants.find((part) => part.id === user.id);
+        const p = evIter.participants.find((part) => part.id === this.user.id);
         if (p.hasUnseenChanges) {
           res.hasUnseenChanges = true;
         }
@@ -77,7 +77,7 @@ export class DayComponent {
     };
   }
 
-  constructor(private calendarCardRef: ElementRef<HTMLElement>, public auth: AuthService) {}
+  constructor(private calendarCardRef: ElementRef<HTMLElement>) {}
 
   onCardClick() {
     if (!this.isPopupVisible) {

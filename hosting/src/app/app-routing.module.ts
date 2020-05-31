@@ -26,7 +26,7 @@ export const routes: Routes = [
         canDeactivate: [SubGuard],
       },
       { path: 'images', loadChildren: () => import('@pages/images/images.module').then((m) => m.ImagesModule) },
-      // { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },
+      { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },
       // { path: 'groups', loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule) },
       { path: 'about', component: AboutComponent },
       { path: 'help', component: HelpComponent },

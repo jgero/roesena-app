@@ -2,30 +2,27 @@
   ><div>Kalender</div>
   <div class="spacer"></div>
   <div class="change-month-buttons"></div>
-  <mat-progress-bar *ngIf="loading" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 </mat-toolbar>
-<main
-  *ngIf="$activeMonth | async as month"
-  (swipeleft)="navigateToNextMonth(month.date)"
-  (swiperight)="navigateToPreviousMonth(month.date)"
->
+<main *ngIf="currentDate$ | async as date" (swipeleft)="navigateToNextMonth()" (swiperight)="navigateToPreviousMonth()">
   <mat-toolbar>
     <div class="spacer"></div>
     <div class="title-container">
-      <a mat-icon-button (click)="navigateToPreviousMonth(month.date)">
+      <a mat-icon-button (click)="navigateToPreviousMonth()">
         <mat-icon>navigate_before</mat-icon>
       </a>
-      <div class="title">{{ getTitle(month.date) }}</div>
-      <a mat-icon-button (click)="navigateToNextMonth(month.date)">
+      <div class="title">{{ getTitle(date) }}</div>
+      <a mat-icon-button (click)="navigateToNextMonth()">
         <mat-icon>navigate_next</mat-icon>
       </a>
     </div>
     <div class="spacer"></div>
   </mat-toolbar>
-  <mat-grid-list id="calendar" cols="7" rowHeight="4:3" gutterSize="8px">
-    <mat-grid-tile *ngFor="let filler of getOffsetArray(month.date)"> </mat-grid-tile>
-    <mat-grid-tile *ngFor="let day of month.days; let i = index">
-      <app-day [day]="i + 1" [events]="day"></app-day>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <ng-container *ngIf="user$ | async as user">
+    <mat-grid-list id="calendar" cols="7" rowHeight="4:3" gutterSize="8px" *ngIf="days$ | async as days">
+      <mat-grid-tile *ngFor="let filler of getOffsetArray(date)"> </mat-grid-tile>
+      <mat-grid-tile *ngFor="let day of days; let i = index">
+        <app-day [user]="user" [day]="i + 1" [events]="day"></app-day>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </ng-container>
 </main>

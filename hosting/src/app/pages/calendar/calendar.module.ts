@@ -12,6 +12,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatBadgeModule } from '@angular/material/badge';
+import { StoreModule } from '@ngrx/store';
+import * as fromEvent from '../../state/calendar/reducers/event.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { EventEffects } from '../../state/calendar/effects/event.effects';
 
 @NgModule({
   declarations: [CalendarComponent, DayComponent],
@@ -26,6 +30,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatProgressBarModule,
     MatTableModule,
     MatBadgeModule,
+    StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
+    EffectsModule.forFeature([EventEffects]),
   ],
 })
 export class CalendarModule {}
