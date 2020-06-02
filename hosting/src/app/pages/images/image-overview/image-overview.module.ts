@@ -8,7 +8,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { ImageEffects } from '../../../state/images/overview/effects/image.effects';
 import { OverviewComponent } from './overview.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { SearchModule } from '@shared/search/search.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CardsModule } from '@shared/cards/cards.module';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
@@ -21,7 +20,6 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     ImageOverviewRoutingModule,
     MatToolbarModule,
-    SearchModule,
     MatGridListModule,
     MatIconModule,
     CardsModule,

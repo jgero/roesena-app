@@ -2,8 +2,10 @@
   <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
-  <img src="assets/icon-inverted.svg" alt="RöSeNa Logo" />
-  <a class="home" mat-button routerLink="/">RöSeNa</a>
+  <a class="logo" routerLink="/" mat-icon-button><mat-icon svgIcon="rsn"></mat-icon></a>
+  <a class="home" mat-button routerLink="/" *ngIf="!(isHandset$ | async)">RöSeNa</a>
+  <div class="spacer"></div>
+  <app-search-bar></app-search-bar>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container" (swipeleft)="closeNav()">
   <mat-sidenav

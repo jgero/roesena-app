@@ -5,7 +5,6 @@ import { EventOverviewRoutingModule } from './event-overview-routing.module';
 import { OverviewComponent } from './overview.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { SearchModule } from '@shared/search/search.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { CardsModule } from '@shared/cards/cards.module';
@@ -22,7 +21,6 @@ import { EventEffects } from '../../../state/events/overview/effects/event.effec
     EventOverviewRoutingModule,
     MatToolbarModule,
     MatProgressBarModule,
-    SearchModule,
     MatGridListModule,
     MatIconModule,
     CardsModule,

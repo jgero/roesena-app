@@ -22,12 +22,15 @@ import { StoreModule } from '@ngrx/store';
 import * as fromBase from '../../state/basePages/reducers/base.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { BaseEffects } from '../../state/basePages/effects/base.effects';
+import { HttpClientModule } from '@angular/common/http';
+import { SearchModule } from '@shared/search/search.module';
 
 @NgModule({
   declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
   imports: [
     CommonModule,
     RouterModule,
+    HttpClientModule,
     MatListModule,
     MatProgressBarModule,
     MatSidenavModule,
@@ -38,6 +41,7 @@ import { BaseEffects } from '../../state/basePages/effects/base.effects';
     MarkdownViewerModule,
     MatButtonModule,
     CardsModule,
+    SearchModule,
     StoreModule.forFeature(fromBase.baseFeatureKey, fromBase.reducer),
     EffectsModule.forFeature([BaseEffects]),
   ],

@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, concatMap, switchMap, withLatestFrom, takeUntil, tap } from 'rxjs/operators';
 import { EMPTY, of } from 'rxjs';
-import { LoadEventsFailure, LoadEventsSuccess, EventActionTypes, EventActions, DateLoaded } from '../actions/event.actions';
+import {
+  LoadEventsFailure,
+  LoadEventsSuccess,
+  EventActionTypes,
+  EventActions,
+  DateLoaded,
+  LoadEvents,
+} from '../actions/event.actions';
 import 'firebase/firestore';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
@@ -49,24 +56,26 @@ export class EventEffects {
     map(([action, storeState]) => new DateLoaded({ currentDate: new Date(storeState.router.state.params.date) }))
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   navigateNext$ = this.actions$.pipe(
     ofType(EventActionTypes.GoNextMonth),
     withLatestFrom(this.store),
     tap(([action, storeState]) => {
       const d = new Date(storeState.router.state.params.date);
       this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() + 1).toISOString()]);
-    })
+    }),
+    map(() => new LoadEvents())
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   navigatePrevious$ = this.actions$.pipe(
     ofType(EventActionTypes.GoPreviousMonth),
     withLatestFrom(this.store),
     tap(([action, storeState]) => {
       const d = new Date(storeState.router.state.params.date);
       this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() - 1).toISOString()]);
-    })
+    }),
+    map(() => new LoadEvents())
   );
 
   constructor(

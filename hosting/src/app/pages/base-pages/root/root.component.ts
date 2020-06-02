@@ -8,6 +8,8 @@ import { Actions, ofType } from '@ngrx/effects';
 import { ROUTER_REQUEST } from '@ngrx/router-store';
 import { environment } from 'src/environments/environment';
 import { State } from '@state/basePages/reducers/base.reducer';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +31,14 @@ export class RootComponent implements OnDestroy {
   @ViewChild('drawer')
   private sidenav: MatDrawer;
 
-  constructor(private breakpointObserver: BreakpointObserver, private store: Store<State>, updates$: Actions) {
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private store: Store<State>,
+    updates$: Actions,
+    matIconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
+    matIconRegistry.addSvgIcon('rsn', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-inverted.svg'));
     this.version = environment.buildVersion;
     // close sidenav on navigation
     updates$

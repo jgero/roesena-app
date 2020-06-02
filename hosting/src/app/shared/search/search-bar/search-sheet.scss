@@ -1,0 +1,28 @@
+::ng-deep.mat-bottom-sheet-container-medium {
+  width: calc(100vw - 128px);
+}
+
+:host {
+  display: block;
+  position: relative;
+  padding: 16px;
+  width: calc(100% - 32px);
+}
+button.help {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+}
+
+div {
+  display: flex;
+  align-items: center;
+
+  .strut {
+    width: 16px;
+  }
+}
+
+.mat-form-field {
+  flex: 1;
+}

@@ -2,8 +2,6 @@
   <div>Bilder</div>
 </mat-toolbar>
 
-<app-search-bar></app-search-bar>
-
 <mat-grid-list *ngIf="data$ | async as images" [cols]="cols" [rowHeight]="'450px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let image of images">
     <app-image-card [data]="image"></app-image-card>

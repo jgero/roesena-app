@@ -12,10 +12,13 @@ $background: mat-palette($mat-grey);
   }
 }
 
-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+.logo {
+  mat-icon,
+  ::ng-deep mat-icon > * {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 }
 
 .home {
