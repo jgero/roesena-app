@@ -14,13 +14,23 @@ button.help {
   right: -12px;
 }
 
-div {
+.radio-option {
+  margin-right: 16px;
+}
+
+.tag-input {
   display: flex;
   align-items: center;
+  margin-top: 8px;
 
   .strut {
     width: 16px;
   }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .mat-form-field {

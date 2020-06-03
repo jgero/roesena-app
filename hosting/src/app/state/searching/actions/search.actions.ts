@@ -9,14 +9,11 @@ export enum SearchActionTypes {
 
 export class RunSearch implements Action {
   readonly type = SearchActionTypes.RunSearch;
+  constructor(public payload: { dataType: string }) {}
 }
 export class InitSearch implements Action {
   readonly type = SearchActionTypes.InitSearch;
-  constructor(
-    public payload: {
-      searchStrings: string[];
-    }
-  ) {}
+  constructor(public payload: { searchStrings: string[] }) {}
 }
 
 export class AddSearchString implements Action {

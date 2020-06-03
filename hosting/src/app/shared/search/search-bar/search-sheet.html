@@ -1,26 +1,34 @@
 <button mat-icon-button [color]="'accent'" class="help" (click)="isHelpVisible = !isHelpVisible">
   <mat-icon>{{ isHelpVisible ? 'cancel' : 'help' }}</mat-icon>
 </button>
-<div *ngIf="!isHelpVisible; else help">
-  <mat-form-field>
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAddTag($event, chipInput)">
-      <mat-option
-        *ngFor="let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value:(searchStrings$ | async)"
-        [value]="option"
-      >
-        {{ option }}
-      </mat-option>
-    </mat-autocomplete>
-    <mat-chip-list #chipList>
-      <mat-chip *ngFor="let item of searchStrings$ | async" (removed)="onRemoveTag(item)">
-        {{ item }}
-        <mat-icon matChipRemove>cancel</mat-icon>
-      </mat-chip>
-      <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
-    </mat-chip-list>
-  </mat-form-field>
-  <div class="strut"></div>
-  <button mat-flat-button [color]="'primary'" (click)="onSearch()">GO</button>
+<div class="wrapper" *ngIf="!isHelpVisible; else help">
+  <label id="type-radio-group">Suche nach:</label>
+  <mat-radio-group aria-labelledby="type-radio-group" [(ngModel)]="selectedOption">
+    <mat-radio-button class="radio-option" *ngFor="let label of options" [value]="label" [color]="'primary'">
+      {{label}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <div class="tag-input">
+    <mat-form-field>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAddTag($event, chipInput)">
+        <mat-option
+          *ngFor="let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value:(searchStrings$ | async)"
+          [value]="option"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let item of searchStrings$ | async" (removed)="onRemoveTag(item)">
+          {{ item }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
+      </mat-chip-list>
+    </mat-form-field>
+    <div class="strut"></div>
+    <button mat-flat-button [color]="'primary'" (click)="onSearch()">GO</button>
+  </div>
 </div>
 
 <ng-template #help>

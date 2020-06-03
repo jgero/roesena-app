@@ -9,6 +9,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ConvertersModule } from '../converters/converters.module';
 import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [SearchBarComponent, SearchSheet],
@@ -23,6 +24,7 @@ import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular
     MatChipsModule,
     MatAutocompleteModule,
     MatBottomSheetModule,
+    MatRadioModule,
     ConvertersModule,
   ],
   providers: [{ provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }],
