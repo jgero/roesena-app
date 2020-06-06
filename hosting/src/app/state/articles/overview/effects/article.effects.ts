@@ -31,17 +31,10 @@ export class ArticleEffects {
         this.firestore
           .collection<StoreableArticle>('articles', (qFn) => {
             let query: Query | CollectionReference = qFn;
-            if (storeState.search.searchStrings.length > 0) {
-              // add search constraints if there are some
-              storeState.search.searchStrings.forEach((searchString) => {
-                query = query.where(`tags.${searchString}`, '==', true);
-              });
-            } else {
-              // sort the data for pagination if there are no search stirngs
-              // both at the same time is not possible, because that would require composite indexes between
-              // the search string combination and the date
-              query = query.orderBy('created', 'desc');
-            }
+            // sort the data for pagination if there are no search stirngs
+            // both at the same time is not possible, because that would require composite indexes between
+            // the search string combination and the date
+            query = query.orderBy('created', 'desc');
             // the limit applies in both cases to avoid page getting too slow and do unnecessary reads in the database
             query = query.limit(action.payload.limit);
             return query;

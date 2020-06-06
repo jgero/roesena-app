@@ -6,7 +6,6 @@ import { AboutComponent } from '@pages/base-pages/about/about.component';
 import { HelpComponent } from '@pages/base-pages/help/help.component';
 import { NotFoundComponent } from '@pages/base-pages/not-found/not-found.component';
 import { LoadUserGuard } from '@guards/load-user.guard';
-import { SubGuard } from '@guards/sub.guard';
 import { SearchPageComponent } from '@shared/search/search-page/search-page.component';
 
 export const routes: Routes = [
@@ -16,16 +15,8 @@ export const routes: Routes = [
     children: [
       { path: '', component: StartPageComponent },
       { path: 'events', loadChildren: () => import('@pages/events/events.module').then((m) => m.EventsModule) },
-      {
-        path: 'auth',
-        loadChildren: () => import('@pages/auth/auth.module').then((m) => m.AuthModule),
-        canDeactivate: [SubGuard],
-      },
-      {
-        path: 'articles',
-        loadChildren: () => import('@pages/articles/articles.module').then((m) => m.ArticlesModule),
-        canDeactivate: [SubGuard],
-      },
+      { path: 'auth', loadChildren: () => import('@pages/auth/auth.module').then((m) => m.AuthModule) },
+      { path: 'articles', loadChildren: () => import('@pages/articles/articles.module').then((m) => m.ArticlesModule) },
       { path: 'images', loadChildren: () => import('@pages/images/images.module').then((m) => m.ImagesModule) },
       { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },
       { path: 'groups', loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule) },

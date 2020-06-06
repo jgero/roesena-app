@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, withLatestFrom, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, map, concatMap, withLatestFrom, switchMap, takeUntil, filter } from 'rxjs/operators';
 import { EMPTY, of, merge } from 'rxjs';
 import {
   LoadImagesFailure,
@@ -50,6 +50,7 @@ export class ImageEffects {
   pageForward$ = this.actions$.pipe(
     ofType(PageActionTypes.PageForward),
     withLatestFrom(this.store),
+    filter(([action, storeState]) => storeState.router.state.url.includes('images/overview')),
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('images', (qFn) =>
@@ -72,6 +73,7 @@ export class ImageEffects {
   pageBackwards$ = this.actions$.pipe(
     ofType(PageActionTypes.PageBackwards),
     withLatestFrom(this.store),
+    filter(([action, storeState]) => storeState.router.state.url.includes('images/overview')),
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('images', (qFn) =>

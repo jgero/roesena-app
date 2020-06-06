@@ -2,10 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { State } from '@state/cards/reducers/card.reducer';
-import { TagClick } from '@state/cards/actions/card.actions';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { AppImage } from '@utils/interfaces';
+import { State } from '@state/state.module';
+import { AddSearchString } from '@state/searching/actions/search.actions';
 
 @Component({
   selector: 'app-image-card',
@@ -22,7 +22,7 @@ export class ImageCardComponent implements OnInit {
   constructor(private store: Store<State>, private urlLoader: UrlLoaderService) {}
 
   onTagClick(tag: string) {
-    this.store.dispatch(new TagClick({ tag }));
+    this.store.dispatch(new AddSearchString({ searchString: tag }));
   }
 
   ngOnInit(): void {

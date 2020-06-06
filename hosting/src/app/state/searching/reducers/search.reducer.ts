@@ -15,7 +15,7 @@ export interface State {
 
 export const initialState: State = {
   searchStrings: [],
-  dataType: null,
+  dataType: 'events',
   events: [],
   articles: [],
   images: [],

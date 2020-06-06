@@ -3,9 +3,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AppEvent } from '../../../utils/interfaces';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { State } from '@state/cards/reducers/card.reducer';
-import { TagClick } from '@state/cards/actions/card.actions';
 import { Observable } from 'rxjs';
+import { AddSearchString } from '@state/searching/actions/search.actions';
+import { State } from '@state/state.module';
 
 @Component({
   selector: 'app-event-card',
@@ -51,6 +51,6 @@ export class EventCardComponent implements OnInit {
   }
 
   onTagClick(tag: string) {
-    this.store.dispatch(new TagClick({ tag }));
+    this.store.dispatch(new AddSearchString({ searchString: tag }));
   }
 }
