@@ -1,17 +1,32 @@
 import { SearchActions, SearchActionTypes } from '../actions/search.actions';
+import { AppArticle, AppImage, AppEvent } from '@utils/interfaces';
+import { Store } from '@ngrx/store';
 
 export const searchFeatureKey = 'search';
 
 export interface State {
   searchStrings: string[];
+  dataType: string;
+  events: AppEvent[];
+  articles: AppArticle[];
+  images: AppImage[];
+  limit: number;
 }
 
 export const initialState: State = {
   searchStrings: [],
+  dataType: null,
+  events: [],
+  articles: [],
+  images: [],
+  limit: 3,
 };
 
 export function reducer(state = initialState, action: SearchActions): State {
   switch (action.type) {
+    case SearchActionTypes.InitSearch:
+      return { ...state, limit: action.payload.limit };
+
     case SearchActionTypes.AddSearchString: {
       let value = action.payload.searchString.trim();
       const searchStrings = [...state.searchStrings];
@@ -31,9 +46,15 @@ export function reducer(state = initialState, action: SearchActions): State {
       return { ...state, searchStrings };
     }
 
-    case SearchActionTypes.InitSearch: {
-      return { ...state, searchStrings: action.payload.searchStrings };
-    }
+    case SearchActionTypes.ChangeDataType:
+      return { ...state, dataType: action.payload.dataType };
+
+    case SearchActionTypes.SearchContentLoaded:
+      const { articles, images, events } = action.payload;
+      return { ...state, articles, images, events };
+
+    case SearchActionTypes.SearchContentLoadFailed:
+      return { ...state, articles: [], images: [], events: [] };
 
     default:
       return state;

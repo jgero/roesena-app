@@ -3,7 +3,7 @@
 </button>
 <div class="wrapper" *ngIf="!isHelpVisible; else help">
   <label id="type-radio-group">Suche nach:</label>
-  <mat-radio-group aria-labelledby="type-radio-group" [(ngModel)]="selectedOption">
+  <mat-radio-group aria-labelledby="type-radio-group" (change)="onRadioChange($event)" [value]="selectedOption">
     <mat-radio-button class="radio-option" *ngFor="let label of options" [value]="label" [color]="'primary'">
       {{label}}
     </mat-radio-button>

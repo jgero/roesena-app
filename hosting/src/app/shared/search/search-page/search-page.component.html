@@ -1,0 +1,15 @@
+<mat-toolbar class="header" [color]="'accent'">
+  <div>Artikel</div>
+</mat-toolbar>
+
+<mat-grid-list [cols]="cols" [rowHeight]="rowHeight$ | async" [gutterSize]="'16px'" @cardFlyIn>
+  <mat-grid-tile *ngFor="let article of articles$ | async">
+    <app-article-card [data]="article"></app-article-card>
+  </mat-grid-tile>
+  <mat-grid-tile *ngFor="let image of images$ | async">
+    <app-image-card [data]="image"></app-image-card>
+  </mat-grid-tile>
+  <mat-grid-tile *ngFor="let event of events$ | async">
+    <app-event-card [data]="event"></app-event-card>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -7,6 +7,7 @@ import { HelpComponent } from '@pages/base-pages/help/help.component';
 import { NotFoundComponent } from '@pages/base-pages/not-found/not-found.component';
 import { LoadUserGuard } from '@guards/load-user.guard';
 import { SubGuard } from '@guards/sub.guard';
+import { SearchPageComponent } from '@shared/search/search-page/search-page.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,7 @@ export const routes: Routes = [
       { path: 'images', loadChildren: () => import('@pages/images/images.module').then((m) => m.ImagesModule) },
       { path: 'calendar', loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule) },
       { path: 'groups', loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule) },
+      { path: 'search/:type/:searchStrings', component: SearchPageComponent },
       { path: 'about', component: AboutComponent },
       { path: 'help', component: HelpComponent },
       { path: '**', component: NotFoundComponent },

@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { AutocompleteService } from 'src/app/services/autocomplete.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { AddSearchString, RemoveSearchString, RunSearch, SearchActionTypes } from '@state/searching/actions/search.actions';
+import {
+  AddSearchString,
+  RemoveSearchString,
+  RunSearch,
+  SearchActionTypes,
+  InitSearch,
+  ChangeDataType,
+} from '@state/searching/actions/search.actions';
 import { State } from '@state/state.module';
 import { Actions, ofType } from '@ngrx/effects';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-search-bar',
@@ -16,7 +24,7 @@ import { Actions, ofType } from '@ngrx/effects';
 })
 export class SearchBarComponent {
   isOpen = false;
-  constructor(private bottomSheet: MatBottomSheet, private actions$: Actions) {
+  constructor(private bottomSheet: MatBottomSheet, actions$: Actions, private store: Store<State>) {
     actions$.pipe(ofType(SearchActionTypes.AddSearchString, SearchActionTypes.RemoveSearchString)).subscribe({
       next: () => {
         if (!this.isOpen) {
@@ -59,7 +67,8 @@ export class SearchSheet {
     this.store.dispatch(new RemoveSearchString({ searchString }));
   }
 
-  onSearch() {
+  onRadioChange(event: MatRadioChange) {
+    this.selectedOption = event.value;
     let dataType: string;
     switch (this.selectedOption) {
       case 'Events':
@@ -72,6 +81,10 @@ export class SearchSheet {
         dataType = 'images';
         break;
     }
-    this.store.dispatch(new RunSearch({ dataType }));
+    this.store.dispatch(new ChangeDataType({ dataType }));
+  }
+
+  onSearch() {
+    this.store.dispatch(new RunSearch());
   }
 }

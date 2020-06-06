@@ -10,10 +10,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ConvertersModule } from '../converters/converters.module';
 import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
 import { MatRadioModule } from '@angular/material/radio';
+import { SearchPageComponent } from './search-page/search-page.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { CardsModule } from '@shared/cards/cards.module';
 
 @NgModule({
-  declarations: [SearchBarComponent, SearchSheet],
-  exports: [SearchBarComponent],
+  declarations: [SearchBarComponent, SearchSheet, SearchPageComponent],
+  exports: [SearchBarComponent, SearchPageComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,6 +29,9 @@ import { MatRadioModule } from '@angular/material/radio';
     MatAutocompleteModule,
     MatBottomSheetModule,
     MatRadioModule,
+    MatToolbarModule,
+    MatGridListModule,
+    CardsModule,
     ConvertersModule,
   ],
   providers: [{ provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }],
