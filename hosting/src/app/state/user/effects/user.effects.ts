@@ -26,7 +26,8 @@ export class UserEffects {
               .snapshotChanges()
               .pipe(
                 map(convertOne),
-                map((person) => new LoadUserSuccess({ user: person }))
+                map((person) => new LoadUserSuccess({ user: person })),
+                catchError((err) => of(new LoadUserFailure(err)))
               );
           } else {
             // if noone is logged-in just send the empty person back
@@ -34,8 +35,7 @@ export class UserEffects {
           }
         })
       )
-    ),
-    catchError((err) => of(new LoadUserFailure(err)))
+    )
   );
 
   constructor(private actions$: Actions<UserActions>, private firestore: AngularFirestore, private auth: AngularFireAuth) {}

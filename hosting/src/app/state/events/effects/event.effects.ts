@@ -25,36 +25,49 @@ export class EventEffects {
           .collection<StoreableEvent>('events')
           .doc(storeState.router.state.params.id)
           .snapshotChanges()
-          .pipe(takeUntil(this.subs.unsubscribe$));
+          .pipe(
+            takeUntil(this.subs.unsubscribe$),
+            map(convertOne),
+            map((event) => new LoadEventSuccess({ event })),
+            catchError((error) => of(new LoadEventFailure({ error })))
+          );
       } else {
-        return of({
-          id: '',
-          ownerId: storeState.user.user.id,
-          ownerName: storeState.user.user.name,
-          tags: [],
-          description: '',
-          deadline: null,
-          startDate: new Date(),
-          endDate: new Date(),
-          title: '',
-          participants: [],
-        });
+        {
+          return of(
+            new LoadEventSuccess({
+              event: {
+                id: '',
+                ownerId: storeState.user.user.id,
+                ownerName: storeState.user.user.name,
+                tags: [],
+                description: '',
+                deadline: null,
+                startDate: new Date(),
+                endDate: new Date(),
+                title: '',
+                participants: [],
+              },
+            })
+          );
+        }
       }
-    }),
-    map(convertOne),
-    map((event) => new LoadEventSuccess({ event })),
-    catchError((error) => of(new LoadEventFailure({ error })))
+    })
   );
 
   @Effect({ dispatch: false })
   markEventAsSeen$ = this.actions$.pipe(
     ofType(EventActionTypes.MarkEventAsSeen),
     withLatestFrom(this.store),
-    switchMap(([action, storeState]) => this.fns.httpsCallable('changeSeenMarker')({ id: storeState.router.state.params.id })),
-    catchError((err) => {
-      console.log(err);
-      return of(null);
-    })
+    switchMap(([action, storeState]) =>
+      this.fns
+        .httpsCallable('changeSeenMarker')({ id: storeState.router.state.params.id })
+        .pipe(
+          catchError((err) => {
+            console.log(err);
+            return of(null);
+          })
+        )
+    )
   );
 
   constructor(

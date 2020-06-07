@@ -46,23 +46,23 @@ export class BaseEffects {
             // filter out events that are already responded
             map((vals) => vals.filter((val) => val.participants.find((paricipant) => paricipant.id === user.id).amount < 0)),
             // only return the amount of the events
-            map((events) => events.length)
+            map((events) => events.length),
+            tap((unresponded) => {
+              if (unresponded > 0) {
+                this.snackbar
+                  .open(`Unbeantwortete Termine: ${unresponded}`, 'ANTWORTEN')
+                  .onAction()
+                  .subscribe({ next: () => this.router.navigate(['auth', 'my-events']) });
+              }
+            }),
+            map((amount) => new LoadRespondablesSuccess({ amount })),
+            catchError((error) => of(new LoadRespondablesFailure({ error })))
           );
       } else {
         // of no user is logged in just return 0
-        return of(0);
+        return of(new LoadRespondablesSuccess({ amount: 0 }));
       }
-    }),
-    tap((unresponded) => {
-      if (unresponded > 0) {
-        this.snackbar
-          .open(`Unbeantwortete Termine: ${unresponded}`, 'ANTWORTEN')
-          .onAction()
-          .subscribe({ next: () => this.router.navigate(['auth', 'my-events']) });
-      }
-    }),
-    map((amount) => new LoadRespondablesSuccess({ amount })),
-    catchError((error) => of(new LoadRespondablesFailure({ error })))
+    })
   );
 
   @Effect({ dispatch: false })
@@ -91,17 +91,21 @@ export class BaseEffects {
   loadHelp$ = this.actions$.pipe(
     ofType(BaseActionTypes.LoadHelpArticle),
     withLatestFrom(this.store),
-    switchMap(([action, storeState]) =>
-      storeState.base.helpArticle === null
-        ? this.firestore
-            .collection<StoreableArticle>('articles', (qFn) => qFn.where('tags.Hilfe', '==', true).limit(1))
-            .snapshotChanges()
-            .pipe(takeUntil(this.subs.unsubscribe$))
-        : of(storeState.base.helpArticle)
-    ),
-    map(convertManyArticles),
-    map((articles) => new LoadHelpArticleSuccess({ article: articles[0] })),
-    catchError((error) => of(new LoadHelpArticleFailed({ error })))
+    switchMap(([action, storeState]) => {
+      if (storeState.base.helpArticle === null) {
+        return this.firestore
+          .collection<StoreableArticle>('articles', (qFn) => qFn.where('tags.Hilfe', '==', true).limit(1))
+          .snapshotChanges()
+          .pipe(
+            takeUntil(this.subs.unsubscribe$),
+            map(convertManyArticles),
+            map((articles) => new LoadHelpArticleSuccess({ article: articles[0] })),
+            catchError((error) => of(new LoadHelpArticleFailed({ error })))
+          );
+      } else {
+        return of(new LoadHelpArticleSuccess({ article: storeState.base.helpArticle }));
+      }
+    })
   );
 
   @Effect()

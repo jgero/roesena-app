@@ -22,19 +22,26 @@ export class ImageEffects {
           .collection('images')
           .doc(storeState.router.state.params.id)
           .snapshotChanges()
-          .pipe(takeUntil(this.subs.unsubscribe$), map(convertOne));
+          .pipe(
+            takeUntil(this.subs.unsubscribe$),
+            map(convertOne),
+            map((image) => new LoadImageSuccess({ image })),
+            catchError((error) => of(new LoadImageFailure({ error })))
+          );
       } else {
-        return of({
-          id: '',
-          ownerId: storeState.user.user.id,
-          ownerName: storeState.user.user.name,
-          tags: [],
-          created: null,
-        });
+        return of(
+          new LoadImageSuccess({
+            image: {
+              id: '',
+              ownerId: storeState.user.user.id,
+              ownerName: storeState.user.user.name,
+              tags: [],
+              created: null,
+            },
+          })
+        );
       }
-    }),
-    map((image) => new LoadImageSuccess({ image })),
-    catchError((error) => of(new LoadImageFailure({ error })))
+    })
   );
 
   constructor(

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, map, catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, from } from 'rxjs';
 import {
   EditorActionTypes,
   EditorActions,
@@ -23,28 +23,37 @@ export class EditorEffects {
   updateArticle$ = this.actions$.pipe(
     ofType(EditorActionTypes.UpdateArticle),
     switchMap((action) =>
-      this.firestore.collection('articles').doc(action.payload.article.id).update(toStorableArticle(action.payload.article))
-    ),
-    map(() => new UpdateArticleSuccess()),
-    catchError((error) => of(new UpdateArticleFailure({ error })))
+      from(
+        this.firestore.collection('articles').doc(action.payload.article.id).update(toStorableArticle(action.payload.article))
+      ).pipe(
+        map(() => new UpdateArticleSuccess()),
+        catchError((error) => of(new UpdateArticleFailure({ error })))
+      )
+    )
   );
 
   @Effect()
   createArticle$ = this.actions$.pipe(
     ofType(EditorActionTypes.CreateArticle),
-    switchMap((action) => this.firestore.collection('articles').add(toStorableArticle(action.payload.article))),
-    tap((result) => this.router.navigate(['articles', 'edit', result.id])),
-    map(() => new CreateArticleSuccess()),
-    catchError((error) => of(new CreateArticleFailure({ error })))
+    switchMap((action) =>
+      from(this.firestore.collection('articles').add(toStorableArticle(action.payload.article))).pipe(
+        tap((result) => this.router.navigate(['articles', 'edit', result.id])),
+        map(() => new CreateArticleSuccess()),
+        catchError((error) => of(new CreateArticleFailure({ error })))
+      )
+    )
   );
 
   @Effect()
   deleteArticle$ = this.actions$.pipe(
     ofType(EditorActionTypes.DeleteArticle),
-    switchMap((action) => this.firestore.collection('articles').doc(action.payload.article.id).delete()),
-    tap(() => this.router.navigate(['articles', 'overview'])),
-    map(() => new DeleteArticleSuccess()),
-    catchError((error) => of(new DeleteArticleFailure({ error })))
+    switchMap((action) =>
+      from(this.firestore.collection('articles').doc(action.payload.article.id).delete()).pipe(
+        tap(() => this.router.navigate(['articles', 'overview'])),
+        map(() => new DeleteArticleSuccess()),
+        catchError((error) => of(new DeleteArticleFailure({ error })))
+      )
+    )
   );
 
   constructor(private actions$: Actions<EditorActions>, private firestore: AngularFirestore, private router: Router) {}

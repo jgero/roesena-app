@@ -34,14 +34,17 @@ import { toStorablePerson, convertOne } from '@utils/converters/person-documents
 
 @Injectable()
 export class AuthEffects {
-  // login
   @Effect()
   login$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoLogin),
-    switchMap((action) => this.auth.signInWithEmailAndPassword(action.payload.email, action.payload.password)),
-    map(() => new LoginLoaded()),
-    catchError((error) => of(new LoginFailed({ error })))
+    switchMap((action) =>
+      from(this.auth.signInWithEmailAndPassword(action.payload.email, action.payload.password)).pipe(
+        map(() => new LoginLoaded()),
+        catchError((error) => of(new LoginFailed({ error })))
+      )
+    )
   );
+
   @Effect({ dispatch: false })
   redirectAfterLogin$ = this.actions$.pipe(
     ofType(AuthActionTypes.LoginLoaded),
@@ -54,14 +57,17 @@ export class AuthEffects {
     })
   );
 
-  // logout
   @Effect()
   logout$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoLogout),
-    switchMap(() => this.auth.signOut()),
-    map(() => new LogoutLoaded()),
-    catchError((error) => of(new LogoutFailed({ error })))
+    switchMap(() =>
+      from(this.auth.signOut()).pipe(
+        map(() => new LogoutLoaded()),
+        catchError((error) => of(new LogoutFailed({ error })))
+      )
+    )
   );
+
   @Effect({ dispatch: false })
   redirectAfterLogout$ = this.actions$.pipe(
     ofType(AuthActionTypes.LogoutLoaded),
@@ -69,7 +75,6 @@ export class AuthEffects {
     tap(() => this.browser.reload())
   );
 
-  //register
   @Effect()
   registerUser$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoRegister),
@@ -83,13 +88,12 @@ export class AuthEffects {
         .snapshotChanges()
         .pipe(
           filter((el) => el.payload.exists),
-          take(1)
+          take(1),
+          catchError((error) => of(new RegisterFailed({ error })))
         )
-    ),
-    catchError((error) => of(new RegisterFailed({ error })))
+    )
   );
 
-  //change name
   @Effect()
   changeName$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoChangeName),
@@ -99,32 +103,36 @@ export class AuthEffects {
       let updated: any = {};
       Object.assign(updated, store.user.user);
       updated.name = action.payload.newName;
-      return this.firestore
-        .collection<StoreablePerson>('persons')
-        .doc<StoreablePerson>(updated.id)
-        .update(toStorablePerson(updated));
-    }),
-    map(() => new ChangeNameLoaded()),
-    catchError((error) => of(new ChangeNameFailed({ error })))
+      return from(
+        this.firestore.collection<StoreablePerson>('persons').doc<StoreablePerson>(updated.id).update(toStorablePerson(updated))
+      ).pipe(
+        map(() => new ChangeNameLoaded()),
+        catchError((error) => of(new ChangeNameFailed({ error })))
+      );
+    })
   );
 
-  // reset/change password
   @Effect()
   sendChangePasswordMail$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoReset),
-    switchMap((action) => this.auth.sendPasswordResetEmail(action.payload.email)),
-    map(() => new ResetLoaded()),
-    catchError((error) => of(new ResetFailed({ error })))
+    switchMap((action) =>
+      from(this.auth.sendPasswordResetEmail(action.payload.email)).pipe(
+        map(() => new ResetLoaded()),
+        catchError((error) => of(new ResetFailed({ error })))
+      )
+    )
   );
+
   @Effect()
   changePasswordWithCode$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoChangePasswordWithCode),
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
-      this.auth.confirmPasswordReset(storeState.router.state.queryParams.oobCode, action.payload.password)
-    ),
-    map(() => new ChangePasswordWithCodeLoaded()),
-    catchError((error) => of(new ChangePasswordWithCodeFailed({ error })))
+      from(this.auth.confirmPasswordReset(storeState.router.state.queryParams.oobCode, action.payload.password)).pipe(
+        map(() => new ChangePasswordWithCodeLoaded()),
+        catchError((error) => of(new ChangePasswordWithCodeFailed({ error })))
+      )
+    )
   );
 
   constructor(

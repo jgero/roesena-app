@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import { withLatestFrom, tap, switchMap, mergeMap, takeUntil, map } from 'rxjs/operators';
+import { withLatestFrom, tap, switchMap, mergeMap, takeUntil, map, catchError } from 'rxjs/operators';
 import {
   SearchActionTypes,
   SearchActions,
@@ -9,6 +9,7 @@ import {
   RunSearch,
   SearchContentLoaded,
   ChangeDataType,
+  SearchContentLoadFailed,
 } from '../actions/search.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
@@ -67,7 +68,8 @@ export class SearchEffects {
             .pipe(
               takeUntil(this.subs.unsubscribe$),
               map(convertManyEvents),
-              map((events) => new SearchContentLoaded({ events, articles: [], images: [] }))
+              map((events) => new SearchContentLoaded({ events, articles: [], images: [] })),
+              catchError((error) => of(new SearchContentLoadFailed({ error })))
             );
         case 'articles':
           return this.firestore
@@ -76,7 +78,8 @@ export class SearchEffects {
             .pipe(
               takeUntil(this.subs.unsubscribe$),
               map(convertManyArticles),
-              map((articles) => new SearchContentLoaded({ events: [], articles, images: [] }))
+              map((articles) => new SearchContentLoaded({ events: [], articles, images: [] })),
+              catchError((error) => of(new SearchContentLoadFailed({ error })))
             );
         case 'images':
           return this.firestore
@@ -85,7 +88,8 @@ export class SearchEffects {
             .pipe(
               takeUntil(this.subs.unsubscribe$),
               map(convertManyImages),
-              map((images) => new SearchContentLoaded({ events: [], articles: [], images }))
+              map((images) => new SearchContentLoaded({ events: [], articles: [], images })),
+              catchError((error) => of(new SearchContentLoadFailed({ error })))
             );
       }
     })

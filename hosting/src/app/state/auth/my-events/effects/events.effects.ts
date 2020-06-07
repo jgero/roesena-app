@@ -43,19 +43,24 @@ export class EventsEffects {
             });
             return events;
           }),
-          takeUntil(this.subs.unsubscribe$)
+          takeUntil(this.subs.unsubscribe$),
+          map((events) => new LoadEventsSuccess({ events })),
+          catchError((error) => of(new LoadEventsFailure({ error })))
         )
-    ),
-    map((events) => new LoadEventsSuccess({ events })),
-    catchError((error) => of(new LoadEventsFailure({ error })))
+    )
   );
 
   @Effect()
   respondToEvent$ = this.actions$.pipe(
     ofType(EventsActionTypes.RespondToEvent),
-    switchMap((action) => this.fns.httpsCallable('respondToEvent')({ id: action.payload.id, amount: action.payload.amount })),
-    map(() => new RespondToEventSuccess()),
-    catchError((error) => of(new RespondToEventFailure({ error })))
+    switchMap((action) =>
+      this.fns
+        .httpsCallable('respondToEvent')({ id: action.payload.id, amount: action.payload.amount })
+        .pipe(
+          map(() => new RespondToEventSuccess()),
+          catchError((error) => of(new RespondToEventFailure({ error })))
+        )
+    )
   );
 
   constructor(

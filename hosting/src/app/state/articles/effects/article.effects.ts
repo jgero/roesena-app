@@ -55,25 +55,27 @@ export class ArticleEffects {
               }
             }),
             // only listen until the module gets changed
-            takeUntil(this.subs.unsubscribe$)
+            takeUntil(this.subs.unsubscribe$),
+            map(({ article, image }) => new LoadSingleArticleSuccess({ article, image })),
+            catchError((error) => of(new LoadSingleArticleFailure({ error })))
           );
       } else {
-        return of({
-          article: {
-            id: '',
-            ownerId: storeState.user.user.id,
-            ownerName: storeState.user.user.name,
-            tags: [],
-            title: '',
-            content: '',
-            created: new Date(),
-          },
-          image: null,
-        });
+        return of(
+          new LoadSingleArticleSuccess({
+            article: {
+              id: '',
+              ownerId: storeState.user.user.id,
+              ownerName: storeState.user.user.name,
+              tags: [],
+              title: '',
+              content: '',
+              created: new Date(),
+            },
+            image: null,
+          })
+        );
       }
-    }),
-    map(({ article, image }) => new LoadSingleArticleSuccess({ article, image })),
-    catchError((error) => of(new LoadSingleArticleFailure({ error })))
+    })
   );
 
   constructor(

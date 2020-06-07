@@ -42,11 +42,13 @@ export class EventEffects {
           return query;
         })
         .snapshotChanges()
-        .pipe(takeUntil(this.subs.unsubscribe$))
-    ),
-    map(convertMany),
-    map((events) => new LoadEventsSuccess({ events })),
-    catchError((error) => of(new LoadEventsFailure({ error })))
+        .pipe(
+          takeUntil(this.subs.unsubscribe$),
+          map(convertMany),
+          map((events) => new LoadEventsSuccess({ events })),
+          catchError((error) => of(new LoadEventsFailure({ error })))
+        )
+    )
   );
 
   @Effect()

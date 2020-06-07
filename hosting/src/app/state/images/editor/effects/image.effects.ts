@@ -19,6 +19,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/image.reducer';
+import { S } from '@angular/cdk/keycodes';
 
 @Injectable()
 export class ImageEffects {
@@ -30,14 +31,14 @@ export class ImageEffects {
       from(this.firestore.collection('images').add(toStorableImage(action.payload.image))).pipe(
         map((doc: any) => doc.id),
         // save the image into the storage at the correct id and map the observable back to the id
-        switchMap((id) => from(this.storage.ref(`uploads/${id}`).putString(action.payload.file, 'data_url')).pipe(map(() => id)))
+        switchMap((id) => from(this.storage.ref(`uploads/${id}`).putString(action.payload.file, 'data_url')).pipe(map(() => id))),
+        // navigate to the right editor
+        tap((id) => this.router.navigate(['images', 'edit', id])),
+        // endWith(new CreateImageSuccess()),
+        map(() => new CreateImageSuccess()),
+        catchError((error) => of(new CreateImageFailure({ error })))
       )
-    ),
-    // navigate to the right editor
-    tap((id) => this.router.navigate(['images', 'edit', id])),
-    // endWith(new CreateImageSuccess()),
-    map(() => new CreateImageSuccess()),
-    catchError((error) => of(new CreateImageFailure({ error })))
+    )
   );
 
   @Effect()
@@ -47,25 +48,30 @@ export class ImageEffects {
     switchMap((action) =>
       from(this.firestore.collection('images').doc(action.payload.image.id).update(toStorableImage(action.payload.image))).pipe(
         // update the image if there is one
-        switchMap(() =>
-          action.payload.file
-            ? this.storage.ref(`uploads/${action.payload.image.id}`).putString(action.payload.file, 'data_url')
-            : of(true)
-        )
+        switchMap(() => {
+          if (action.payload.file) {
+            return this.storage.ref(`uploads/${action.payload.image.id}`).putString(action.payload.file, 'data_url');
+          } else {
+            return of(true);
+          }
+        }),
+        map(() => new UpdateImageSuccess()),
+        catchError((error) => of(new UpdateImageFailure({ error })))
       )
-    ),
-    map(() => new UpdateImageSuccess()),
-    catchError((error) => of(new UpdateImageFailure({ error })))
+    )
   );
 
   @Effect()
   deleteImag$ = this.actions$.pipe(
     ofType(ImageActionTypes.DeleteImage),
     withLatestFrom(this.store),
-    switchMap(([action, storeState]) => this.firestore.collection('images').doc(storeState.router.state.params.id).delete()),
-    tap(() => this.router.navigate(['images', 'overview'])),
-    map(() => new DeleteImageSuccess()),
-    catchError((error) => of(new DeleteImageFailure({ error })))
+    switchMap(([action, storeState]) =>
+      from(this.firestore.collection('images').doc(storeState.router.state.params.id).delete()).pipe(
+        tap(() => this.router.navigate(['images', 'overview'])),
+        map(() => new DeleteImageSuccess()),
+        catchError((error) => of(new DeleteImageFailure({ error })))
+      )
+    )
   );
 
   constructor(

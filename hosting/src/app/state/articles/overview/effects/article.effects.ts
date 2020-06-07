@@ -25,8 +25,7 @@ export class ArticleEffects {
   @Effect()
   loadArticles$ = this.actions$.pipe(
     ofType(ArticleActionTypes.LoadArticles),
-    withLatestFrom(this.store),
-    switchMap(([action, storeState]) =>
+    switchMap((action) =>
       merge(
         this.firestore
           .collection<StoreableArticle>('articles', (qFn) => {
@@ -52,6 +51,7 @@ export class ArticleEffects {
           .snapshotChanges()
           .pipe(
             map((doc) => new LoadLengthSuccess({ length: (doc.payload.data() as any).amount })),
+            takeUntil(this.subs.unsubscribe$),
             catchError((error) => of(new LoadLengthFailure({ error })))
           )
       )
@@ -72,11 +72,13 @@ export class ArticleEffects {
             .limit(storeState.articleOverview.limit)
         )
         .snapshotChanges()
-        .pipe(takeUntil(this.subs.unsubscribe$))
-    ),
-    map(convertMany),
-    map((articles) => new LoadArticlesSuccess({ articles })),
-    catchError((error) => of(new LoadArticlesFailure({ error })))
+        .pipe(
+          takeUntil(this.subs.unsubscribe$),
+          map(convertMany),
+          map((articles) => new LoadArticlesSuccess({ articles })),
+          catchError((error) => of(new LoadArticlesFailure({ error })))
+        )
+    )
   );
 
   @Effect()
@@ -93,11 +95,13 @@ export class ArticleEffects {
             .limitToLast(storeState.articleOverview.limit)
         )
         .snapshotChanges()
-        .pipe(takeUntil(this.subs.unsubscribe$))
-    ),
-    map(convertMany),
-    map((articles) => new LoadArticlesSuccess({ articles })),
-    catchError((error) => of(new LoadArticlesFailure({ error })))
+        .pipe(
+          takeUntil(this.subs.unsubscribe$),
+          map(convertMany),
+          map((articles) => new LoadArticlesSuccess({ articles })),
+          catchError((error) => of(new LoadArticlesFailure({ error })))
+        )
+    )
   );
 
   constructor(

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, concatMap, mergeMap, switchMap, takeUntil, withLatestFrom, tap, filter } from 'rxjs/operators';
-import { EMPTY, of, merge } from 'rxjs';
+import { EMPTY, of, merge, from } from 'rxjs';
 import {
   LoadPersonsFailure,
   LoadPersonsSuccess,
@@ -83,23 +83,29 @@ export class PersonEffects {
           qFn.orderBy('name').endBefore(storeState.person.pageFirst.name).limitToLast(storeState.person.limit)
         )
         .snapshotChanges()
-        .pipe(map(convertMany), takeUntil(this.subs.unsubscribe$))
-    ),
-    map((persons) => new LoadPersonsSuccess({ persons })),
-    catchError((error) => of(new LoadPersonsFailure({ error })))
+        .pipe(
+          map(convertMany),
+          takeUntil(this.subs.unsubscribe$),
+          map((persons) => new LoadPersonsSuccess({ persons })),
+          catchError((error) => of(new LoadPersonsFailure({ error })))
+        )
+    )
   );
 
   @Effect()
   updatePerson$ = this.actions$.pipe(
     ofType(PersonActionTypes.UpdatePerson),
     switchMap((action) =>
-      this.firestore
-        .collection<StoreablePerson>('persons')
-        .doc(action.payload.person.id)
-        .update(toStorablePerson(action.payload.person))
-    ),
-    map(() => new UpdatePersonSuccess()),
-    catchError((error) => of(new UpdatePersonFailure({ error })))
+      from(
+        this.firestore
+          .collection<StoreablePerson>('persons')
+          .doc(action.payload.person.id)
+          .update(toStorablePerson(action.payload.person))
+      ).pipe(
+        map(() => new UpdatePersonSuccess()),
+        catchError((error) => of(new UpdatePersonFailure({ error })))
+      )
+    )
   );
 
   constructor(
