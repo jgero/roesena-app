@@ -46,6 +46,11 @@ export function reducer(state = initialState, action: EventActions): CalendarSta
     case EventActionTypes.LoadEventsFailure:
       return state;
 
+    case EventActionTypes.LoadEvents:
+    case EventActionTypes.GoNextMonth:
+    case EventActionTypes.GoPreviousMonth:
+      return { ...state, events: [], days: [] };
+
     default:
       return state;
   }

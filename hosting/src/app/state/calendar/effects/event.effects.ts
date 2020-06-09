@@ -1,15 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, switchMap, withLatestFrom, takeUntil, tap } from 'rxjs/operators';
-import { EMPTY, of } from 'rxjs';
-import {
-  LoadEventsFailure,
-  LoadEventsSuccess,
-  EventActionTypes,
-  EventActions,
-  DateLoaded,
-  LoadEvents,
-} from '../actions/event.actions';
+import { catchError, map, switchMap, withLatestFrom, takeUntil, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { LoadEventsFailure, LoadEventsSuccess, EventActionTypes, EventActions, DateLoaded } from '../actions/event.actions';
 import 'firebase/firestore';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
@@ -23,13 +16,13 @@ import { SubscriptionService } from '@services/subscription.service';
 export class EventEffects {
   @Effect()
   loadEvents$ = this.actions$.pipe(
-    ofType(EventActionTypes.LoadEvents),
+    ofType(EventActionTypes.DateLoaded),
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('events', (qFn) => {
           let query: Query | CollectionReference = qFn;
-          const paramDate = new Date(storeState.router.state.params.date);
+          const paramDate = storeState.calendar.currentDate;
           // start date after first day of paramDate month
           query = query.where('startDate', '>=', new Date(paramDate.getFullYear(), paramDate.getMonth(), 1));
           // start date before last day of paramDate month
@@ -62,22 +55,28 @@ export class EventEffects {
   navigateNext$ = this.actions$.pipe(
     ofType(EventActionTypes.GoNextMonth),
     withLatestFrom(this.store),
-    tap(([action, storeState]) => {
+    map(([action, storeState]) => {
       const d = new Date(storeState.router.state.params.date);
-      this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() + 1).toISOString()]);
+      return new Date(d.getFullYear(), d.getMonth() + 1);
     }),
-    map(() => new LoadEvents())
+    tap((d) => {
+      this.router.navigate(['calendar', d.toISOString()]);
+    }),
+    map((d) => new DateLoaded({ currentDate: d }))
   );
 
   @Effect()
   navigatePrevious$ = this.actions$.pipe(
     ofType(EventActionTypes.GoPreviousMonth),
     withLatestFrom(this.store),
-    tap(([action, storeState]) => {
+    map(([action, storeState]) => {
       const d = new Date(storeState.router.state.params.date);
-      this.router.navigate(['calendar', new Date(d.getFullYear(), d.getMonth() - 1).toISOString()]);
+      return new Date(d.getFullYear(), d.getMonth() - 1);
     }),
-    map(() => new LoadEvents())
+    tap((d) => {
+      this.router.navigate(['calendar', d.toISOString()]);
+    }),
+    map((d) => new DateLoaded({ currentDate: d }))
   );
 
   constructor(
