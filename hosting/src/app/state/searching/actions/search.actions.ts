@@ -5,12 +5,16 @@ export enum SearchActionTypes {
   InitSearch = '[search component] init search strings',
   AddSearchString = '[search component] add search string',
   RemoveSearchString = '[search component] remove search string',
+  CleanSearch = '[search component] clean search strings',
   ChangeDataType = '[search component] change data type',
   RunSearch = '[search component] run search',
   SearchContentLoaded = '[search component] content loaded',
   SearchContentLoadFailed = '[search component] loading content failed',
 }
 
+export class CleanSearch implements Action {
+  readonly type = SearchActionTypes.CleanSearch;
+}
 export class ChangeDataType implements Action {
   readonly type = SearchActionTypes.ChangeDataType;
   constructor(public payload: { dataType: string }) {}
@@ -47,4 +51,5 @@ export type SearchActions =
   | InitSearch
   | SearchContentLoaded
   | SearchContentLoadFailed
-  | ChangeDataType;
+  | ChangeDataType
+  | CleanSearch;

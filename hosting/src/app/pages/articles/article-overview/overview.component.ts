@@ -7,6 +7,7 @@ import { cardFlyIn } from '@utils/animations';
 import { AppArticle } from '@utils/interfaces';
 import { State } from '@state/articles/overview/reducers/article.reducer';
 import { LoadArticles } from '@state/articles/overview/actions/article.actions';
+import { canCreate } from '@state/user/selectors/user.selectors';
 
 @Component({
   selector: 'app-overview',
@@ -17,7 +18,7 @@ import { LoadArticles } from '@state/articles/overview/actions/article.actions';
 export class OverviewComponent implements OnDestroy {
   data$: Observable<AppArticle[]> = this.store.select('articleOverview', 'articles');
   length$: Observable<number> = this.store.select('articleOverview', 'length');
-  canEdit$: Observable<boolean> = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  canCreate$: Observable<boolean> = this.store.select((state) => canCreate(state));
 
   get cols(): number {
     return Math.ceil(window.innerWidth / 700);

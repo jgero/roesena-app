@@ -16,7 +16,9 @@ export class EventCardComponent implements OnInit {
   @Input()
   data: AppEvent;
 
-  canEdit$ = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  canEdit$ = this.store
+    .select('user', 'user')
+    .pipe(map((user) => user && (user.groups.includes('admin') || (this.data && this.data.id === user.id))));
   unseen$: Observable<number>;
   status$: Observable<string>;
 

@@ -3,7 +3,7 @@
 </button>
 <div class="wrapper" *ngIf="!isHelpVisible; else help">
   <label id="type-radio-group">Suche nach:</label>
-  <mat-radio-group aria-labelledby="type-radio-group" (change)="onRadioChange($event)" [value]="selectedOption">
+  <mat-radio-group aria-labelledby="type-radio-group" (change)="onRadioChange($event)" [value]="selectedOption$ | async">
     <mat-radio-button class="radio-option" *ngFor="let label of options" [value]="label" [color]="'primary'">
       {{label}}
     </mat-radio-button>
@@ -24,6 +24,9 @@
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
         <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
       </mat-chip-list>
     </mat-form-field>
     <div class="strut"></div>

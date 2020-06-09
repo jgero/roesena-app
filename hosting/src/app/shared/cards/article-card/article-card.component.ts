@@ -15,7 +15,9 @@ export class ArticleCardComponent {
   @Input()
   data: AppArticle;
 
-  canEdit$ = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  canEdit$ = this.store
+    .select('user', 'user')
+    .pipe(map((user) => user && (user.groups.includes('admin') || (this.data && this.data.id === user.id))));
 
   constructor(private store: Store<State>) {}
 

@@ -8,13 +8,13 @@
     <app-image-card *ngIf="image$ | async as image" [data]="image"></app-image-card>
     <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of article.tags" [routerLink]="'/articles/overview/' + tag"> {{ tag }} </mat-chip>
+      <mat-chip *ngFor="let tag of article.tags" (click)="onTagClick(tag)"> {{ tag }} </mat-chip>
     </mat-chip-list>
     <div class="fab-container">
       <a mat-fab [color]="'primary'" *ngIf="canEdit$ | async" [routerLink]="'/articles/edit/' + article.id"
         ><mat-icon>edit</mat-icon></a
       >
-      <a mat-fab [color]="'primary'" [routerLink]="getLinkToImages(article)"><mat-icon>image</mat-icon></a>
+      <button mat-fab [color]="'primary'" (click)="fillSearchForImages(article)"><mat-icon>image</mat-icon></button>
     </div>
   </main>
 

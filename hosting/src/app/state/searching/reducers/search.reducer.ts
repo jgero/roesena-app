@@ -24,6 +24,8 @@ export const initialState: State = {
 
 export function reducer(state = initialState, action: SearchActions): State {
   switch (action.type) {
+    case SearchActionTypes.CleanSearch:
+      return { ...state, searchStrings: [] };
     case SearchActionTypes.InitSearch:
       return { ...state, limit: action.payload.limit };
 

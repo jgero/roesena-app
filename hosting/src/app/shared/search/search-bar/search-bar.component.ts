@@ -12,10 +12,12 @@ import {
   SearchActionTypes,
   InitSearch,
   ChangeDataType,
+  CleanSearch,
 } from '@state/searching/actions/search.actions';
 import { State } from '@state/state.module';
 import { Actions, ofType } from '@ngrx/effects';
 import { MatRadioChange } from '@angular/material/radio';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-bar',
@@ -55,7 +57,18 @@ export class SearchSheet {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isHelpVisible = false;
   options = ['Events', 'Artikel', 'Bilder'];
-  selectedOption: string = 'Events';
+  selectedOption$ = this.store.select('search', 'dataType').pipe(
+    map((dataType) => {
+      switch (dataType) {
+        case 'events':
+          return 'Events';
+        case 'articles':
+          return 'Artikel';
+        case 'images':
+          return 'Bilder';
+      }
+    })
+  );
   constructor(private store: Store<State>, public autocomplete: AutocompleteService) {}
 
   onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
@@ -67,10 +80,13 @@ export class SearchSheet {
     this.store.dispatch(new RemoveSearchString({ searchString }));
   }
 
+  onClearSearch() {
+    this.store.dispatch(new CleanSearch());
+  }
+
   onRadioChange(event: MatRadioChange) {
-    this.selectedOption = event.value;
     let dataType: string;
-    switch (this.selectedOption) {
+    switch (event.value) {
       case 'Events':
         dataType = 'events';
         break;
