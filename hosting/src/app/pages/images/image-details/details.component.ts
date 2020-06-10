@@ -7,6 +7,8 @@ import { switchMap, map } from 'rxjs/operators';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { SubscriptionService } from '@services/subscription.service';
 import { LoadImage } from '@state/images/actions/image.actions';
+import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
+import { canEdit } from '@state/images/selectors/image.selectors';
 
 @Component({
   selector: 'app-details',
@@ -15,7 +17,7 @@ import { LoadImage } from '@state/images/actions/image.actions';
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   image$ = this.store.select('image', 'image');
-  canEdit$ = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  canEdit$ = this.store.select(canEdit);
   url$ = this.image$.pipe(switchMap((image) => this.urlLoader.getImageURL(image.id)));
   constructor(private store: Store<State>, private urlLoader: UrlLoaderService, private subs: SubscriptionService) {}
 
@@ -27,7 +29,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.subs.unsubscribeComponent$.next();
   }
 
-  getLinkToArticles(val: AppImage): string {
-    return `/articles/overview/${val.tags.join(',')}`;
+  onTagClick(tag: string) {
+    this.store.dispatch(new AddSearchString({ searchString: tag }));
+  }
+
+  fillSearchForArticles(val: AppImage): void {
+    this.store.dispatch(new CleanSearch());
+    val.tags.forEach((tag) => this.store.dispatch(new AddSearchString({ searchString: tag })));
+    this.store.dispatch(new ChangeDataType({ dataType: 'articles' }));
   }
 }

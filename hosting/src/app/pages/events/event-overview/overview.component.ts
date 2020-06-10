@@ -7,6 +7,7 @@ import { State } from '@state/events/overview/reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { map } from 'rxjs/operators';
 import { LoadEvents } from '@state/events/overview/actions/event.actions';
+import { canCreate } from '@state/user/selectors/user.selectors';
 
 @Component({
   selector: 'app-overview',
@@ -15,7 +16,7 @@ import { LoadEvents } from '@state/events/overview/actions/event.actions';
   animations: [cardFlyIn],
 })
 export class OverviewComponent implements OnDestroy, OnInit {
-  canEdit$: Observable<boolean> = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  canCreate$: Observable<boolean> = this.store.select(canCreate);
   data$ = this.store.select('eventOverview', 'events');
   get cols(): number {
     return Math.ceil(window.innerWidth / 700);

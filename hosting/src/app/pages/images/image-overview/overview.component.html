@@ -2,12 +2,12 @@
   <div>Bilder</div>
 </mat-toolbar>
 
-<mat-grid-list *ngIf="data$ | async as images" [cols]="cols" [rowHeight]="'450px'" [gutterSize]="'16px'" @cardFlyIn>
+<mat-grid-list *ngIf="data$ | async as images" [cols]="cols" [rowHeight]="'420px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let image of images">
     <app-image-card [data]="image"></app-image-card>
   </mat-grid-tile>
 </mat-grid-list>
 
-<a mat-fab class="add-fab" color="primary" [routerLink]="'/images/edit'" *ngIf="canEdit$ | async"><mat-icon>add</mat-icon></a>
+<a mat-fab class="add-fab" color="primary" [routerLink]="'/images/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
 
 <app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>

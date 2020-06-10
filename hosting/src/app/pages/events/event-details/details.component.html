@@ -12,7 +12,7 @@
   <main>
     <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of event.tags" [routerLink]="'/events/overview/' + tag"> {{ tag }} </mat-chip>
+      <mat-chip *ngFor="let tag of event.tags" (click)="onTagClick(tag)"> {{ tag }} </mat-chip>
     </mat-chip-list>
     <mat-list *ngIf="event.participants.length > 0">
       <mat-divider></mat-divider>
@@ -50,9 +50,7 @@
         </mat-chip-list>
       </mat-list-item>
     </mat-list>
-    <a mat-fab class="edit-fab" [color]="'primary'" *ngIf="canEdit$ | async" [routerLink]="'/events/edit/' + event.id"
-      ><mat-icon>edit</mat-icon></a
-    >
+    <a mat-fab class="edit-fab" [color]="'primary'" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
   </main>
 
   <mat-toolbar class="footer">

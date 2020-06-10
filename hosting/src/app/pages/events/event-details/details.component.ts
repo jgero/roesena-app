@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { State } from '@state/events/reducers/event.reducer';
 import { LoadEvent, MarkEventAsSeen } from '@state/events/actions/event.actions';
 import { map } from 'rxjs/operators';
+import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
+import { AppEvent } from '@utils/interfaces';
 
 @Component({
   selector: 'app-details',
@@ -56,6 +58,10 @@ export class DetailsComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.store.dispatch(new LoadEvent());
     this.store.dispatch(new MarkEventAsSeen());
+  }
+
+  onTagClick(tag: string) {
+    this.store.dispatch(new AddSearchString({ searchString: tag }));
   }
 
   ngOnDestroy() {
