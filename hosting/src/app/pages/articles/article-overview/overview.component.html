@@ -2,12 +2,18 @@
   <div>Artikel</div>
 </mat-toolbar>
 
-<mat-grid-list *ngIf="data$ | async as articles" [cols]="cols" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
-  <mat-grid-tile *ngFor="let article of articles">
-    <app-article-card [data]="article"></app-article-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<mat-progress-bar [mode]="'indeterminate'" [color]="'primary'" *ngIf="isLoading$ | async"></mat-progress-bar>
 
-<a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
+<ng-container *ngIf="data$ | async as articles">
+  <mat-grid-list [cols]="cols" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
+    <mat-grid-tile *ngFor="let article of articles">
+      <app-article-card [data]="article"></app-article-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 
-<app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
+  <a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canCreate$ | async"
+    ><mat-icon>add</mat-icon></a
+  >
+
+  <app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
+</ng-container>

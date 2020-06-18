@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="isLoading$ | async" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 <ng-container *ngIf="article$ | async as article">
   <mat-toolbar [color]="'accent'">
     <div>{{ article.title }}</div>

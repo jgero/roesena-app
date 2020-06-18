@@ -9,7 +9,7 @@ import { LoadSingleArticle } from '@state/articles/actions/article.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { State } from '@state/articles/editor/reducers/editor.reducer';
 import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/editor/actions/editor.actions';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-editor',
@@ -25,7 +25,7 @@ export class EditorComponent implements OnDestroy {
     private store: Store<State>,
     public chips: ChipsInputService,
     private subs: SubscriptionService,
-    private snackbar: MatSnackBar
+    private dialog: MatDialog
   ) {
     this.store.dispatch(new LoadSingleArticle({ withImage: false }));
     this.store
@@ -76,21 +76,24 @@ export class EditorComponent implements OnDestroy {
   }
 
   deleteArticle(): void {
-    this.snackbar
-      .open('Sind Sie sich sicher?', 'LÖSCHEN', { duration: 5000 })
-      .afterDismissed()
-      .pipe(
-        tap((res) => {
-          console.log('asdf');
-          if (res.dismissedByAction) {
-            this.store.dispatch(new DeleteArticle({ article: this.article }));
-          }
-        })
-      )
-      .subscribe();
+    this.dialog
+      .open(DeleteDialogComponent)
+      .afterClosed()
+      .pipe(takeUntil(this.subs.unsubscribe$))
+      .subscribe((result) => {
+        if (result) {
+          this.store.dispatch(new DeleteArticle({ article: this.article }));
+        }
+      });
   }
 
   ngOnDestroy() {
     this.subs.unsubscribeComponent$.next();
   }
 }
+
+@Component({
+  selector: 'delete-dialog',
+  templateUrl: 'delete-dialog.html',
+})
+export class DeleteDialogComponent {}

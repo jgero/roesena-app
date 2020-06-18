@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { ConvertersModule } from '@shared/converters/converters.module';
 import { ArticleDetailsRoutingModule } from './article-details-routing.module';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [DetailsComponent],
@@ -19,6 +20,7 @@ import { ArticleDetailsRoutingModule } from './article-details-routing.module';
     MatToolbarModule,
     MatIconModule,
     MatChipsModule,
+    MatProgressBarModule,
     MarkdownViewerModule,
     MatButtonModule,
     CardsModule,

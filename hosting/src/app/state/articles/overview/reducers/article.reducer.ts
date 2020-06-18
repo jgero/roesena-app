@@ -10,6 +10,7 @@ interface ArticleOverviewState {
   pageFirst: AppArticle;
   pageLast: AppArticle;
   limit: number;
+  isLoading: boolean;
 }
 
 export interface State extends fromRoot.State {
@@ -22,12 +23,13 @@ export const initialState: ArticleOverviewState = {
   pageFirst: null,
   pageLast: null,
   limit: 3,
+  isLoading: false,
 };
 
 export function reducer(state = initialState, action: ArticleOverviewActions): ArticleOverviewState {
   switch (action.type) {
     case ArticleActionTypes.LoadArticles:
-      return { ...state, limit: action.payload.limit };
+      return { ...state, limit: action.payload.limit, isLoading: true };
 
     case ArticleActionTypes.LoadArticlesSuccess:
       return {
@@ -35,10 +37,11 @@ export function reducer(state = initialState, action: ArticleOverviewActions): A
         articles: action.payload.articles,
         pageFirst: action.payload.articles[0] || null,
         pageLast: action.payload.articles[action.payload.articles.length - 1] || null,
+        isLoading: false,
       };
 
     case ArticleActionTypes.LoadArticlesFailure:
-      return state;
+      return { ...state, isLoading: false };
 
     case ArticleActionTypes.LoadLengthSuccess:
       return { ...state, length: action.payload.length };

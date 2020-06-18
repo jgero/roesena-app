@@ -11,6 +11,7 @@ import { StoreableEvent } from '@utils/interfaces';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertOne } from '@utils/converters/event-documents';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class EventEffects {

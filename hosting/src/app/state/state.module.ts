@@ -12,6 +12,7 @@ import { SearchEffects } from './searching/effects/search.effects';
 import * as fromUser from './user/reducers/user.reducer';
 import { UserEffects } from './user/effects/user.effects';
 import { MergedRouteReducerState } from './router/merged-route';
+import { GlobalEffects } from './global.effects';
 
 export interface State {
   router: MergedRouteReducerState;
@@ -23,7 +24,7 @@ export interface State {
   imports: [
     StoreModule.forRoot({ search: fromSearch.reducer, user: fromUser.reducer }),
     NgrxRouterStoreModule,
-    EffectsModule.forRoot([SearchEffects, UserEffects]),
+    EffectsModule.forRoot([SearchEffects, UserEffects, GlobalEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   exports: [],

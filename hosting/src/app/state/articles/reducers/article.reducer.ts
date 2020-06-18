@@ -23,6 +23,9 @@ export const initialState: ArticleState = {
 
 export function reducer(state = initialState, action: ArticleActions): ArticleState {
   switch (action.type) {
+    case ArticleActionTypes.LoadSingleArticle:
+      return { ...state, isLoading: true };
+
     case ArticleActionTypes.LoadSingleArticleSuccess:
       return { ...state, isLoading: false, article: action.payload.article, image: action.payload.image };
 

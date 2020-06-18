@@ -18,6 +18,7 @@ import { canCreate } from '@state/user/selectors/user.selectors';
 export class OverviewComponent implements OnDestroy {
   data$: Observable<AppArticle[]> = this.store.select('articleOverview', 'articles');
   length$: Observable<number> = this.store.select('articleOverview', 'length');
+  isLoading$: Observable<boolean> = this.store.select('articleOverview', 'isLoading');
   canCreate$: Observable<boolean> = this.store.select((state) => canCreate(state));
 
   get cols(): number {

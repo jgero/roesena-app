@@ -57,6 +57,7 @@ export class ArticleEffects {
             // only listen until the module gets changed
             takeUntil(this.subs.unsubscribe$),
             map(({ article, image }) => new LoadSingleArticleSuccess({ article, image })),
+            // map(({ article, image }) => new LoadSingleArticleFailure({ error: { message: 'this is a bad error' } })),
             catchError((error) => of(new LoadSingleArticleFailure({ error })))
           );
       } else {

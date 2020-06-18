@@ -18,11 +18,12 @@ import * as fromEditor from '@state/articles/editor/reducers/editor.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EditorEffects } from '@state/articles/editor/effects/editor.effects';
 
-import { EditorComponent } from './editor.component';
+import { EditorComponent, DeleteDialogComponent } from './editor.component';
 import { ArticleEditorRoutingModule } from './article-editor-routing.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [EditorComponent],
+  declarations: [EditorComponent, DeleteDialogComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -35,6 +36,7 @@ import { ArticleEditorRoutingModule } from './article-editor-routing.module';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
     StoreModule.forFeature(fromEditor.editorFeatureKey, fromEditor.reducer),
     EffectsModule.forFeature([EditorEffects]),
     ArticleEditorRoutingModule,
