@@ -70,6 +70,7 @@ export class EventEffects {
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       from(this.firestore.collection('events').doc(storeState.router.state.params.id).delete()).pipe(
+        tap(() => this.router.navigate(['events', 'overview'])),
         map(() => new DeleteEventSuccess()),
         catchError((error) => of(new DeleteEventFailure({ error })))
       )

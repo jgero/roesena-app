@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { EventEditorRoutingModule } from './event-editor-routing.module';
-import { EditorComponent } from './editor.component';
+import { EditorComponent, DeleteDialogComponent } from './editor.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MarkdownViewerModule } from '@shared/markdown-viewer/markdown-viewer.module';
@@ -18,9 +18,10 @@ import { StoreModule } from '@ngrx/store';
 import * as fromEvent from '../../../state/events/editor/reducers/event.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EventEffects } from '../../../state/events/editor/effects/event.effects';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [EditorComponent],
+  declarations: [EditorComponent, DeleteDialogComponent],
   imports: [
     CommonModule,
     EventEditorRoutingModule,
@@ -29,6 +30,7 @@ import { EventEffects } from '../../../state/events/editor/effects/event.effects
     MarkdownViewerModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    MatDialogModule,
     ConvertersModule,
     MatIconModule,
     MatChipsModule,

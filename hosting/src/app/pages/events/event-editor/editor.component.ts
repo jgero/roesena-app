@@ -13,6 +13,7 @@ import { State } from '@state/events/editor/reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { LoadEvent } from '@state/events/actions/event.actions';
 import { LoadPersons, UpdateEvent, CreateEvent, DeleteEvent } from '@state/events/editor/actions/event.actions';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-editor',
@@ -26,7 +27,12 @@ export class EditorComponent implements OnDestroy {
   persons: AppPerson[];
   groups: string[] = [];
 
-  constructor(public chips: ChipsInputService, private store: Store<State>, private subs: SubscriptionService) {
+  constructor(
+    public chips: ChipsInputService,
+    private store: Store<State>,
+    private subs: SubscriptionService,
+    private dialog: MatDialog
+  ) {
     // dispatch the event to load the event that should be edited
     this.store.dispatch(new LoadEvent());
     // dispatch the event to load the persons who can be invited
@@ -183,7 +189,15 @@ export class EditorComponent implements OnDestroy {
   }
 
   deleteEvent(): void {
-    this.store.dispatch(new DeleteEvent());
+    this.dialog
+      .open(DeleteDialogComponent)
+      .afterClosed()
+      .pipe(takeUntil(this.subs.unsubscribe$))
+      .subscribe((result) => {
+        if (result) {
+          this.store.dispatch(new DeleteEvent());
+        }
+      });
   }
 
   private getDateFromDateAndTimeStrings(d: Date, time: string): Date {
@@ -247,3 +261,9 @@ export class EditorComponent implements OnDestroy {
     this.subs.unsubscribeComponent$.next();
   }
 }
+
+@Component({
+  selector: 'delete-dialog',
+  templateUrl: 'delete-dialog.html',
+})
+export class DeleteDialogComponent {}
