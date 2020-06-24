@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { ConvertersModule } from '@shared/converters/converters.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [DetailsComponent],
@@ -19,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatToolbarModule,
     MarkdownViewerModule,
     MatChipsModule,
+    MatProgressBarModule,
     MatListModule,
     ConvertersModule,
     MatIconModule,

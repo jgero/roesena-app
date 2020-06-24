@@ -3,6 +3,7 @@
   <div class="spacer"></div>
   <div class="change-month-buttons"></div>
 </mat-toolbar>
+<mat-progress-bar [mode]="'indeterminate'" *ngIf="isLoading$ | async"></mat-progress-bar>
 <main *ngIf="currentDate$ | async as date" (swipeleft)="navigateToNextMonth()" (swiperight)="navigateToPreviousMonth()">
   <mat-toolbar>
     <div class="spacer"></div>

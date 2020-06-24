@@ -6,6 +6,7 @@ export const eventFeatureKey = 'eventOverview';
 
 interface EventOverviewState {
   events: AppEvent[];
+  isLoading: boolean;
 }
 
 export interface State extends fromRoot.State {
@@ -14,18 +15,19 @@ export interface State extends fromRoot.State {
 
 export const initialState: EventOverviewState = {
   events: [],
+  isLoading: false,
 };
 
 export function reducer(state = initialState, action: EventActions): EventOverviewState {
   switch (action.type) {
     case EventActionTypes.LoadEvents:
-      return state;
+      return { ...state, isLoading: true };
 
     case EventActionTypes.LoadEventsSuccess:
-      return { ...state, events: action.payload.events };
+      return { ...state, events: action.payload.events, isLoading: false };
 
     case EventActionTypes.LoadEventsFailure:
-      return state;
+      return { ...state, events: [], isLoading: false };
 
     default:
       return state;

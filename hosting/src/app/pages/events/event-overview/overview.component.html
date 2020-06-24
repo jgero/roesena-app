@@ -1,6 +1,7 @@
 <mat-toolbar class="header" [color]="'accent'">
   <div>Events</div>
 </mat-toolbar>
+<mat-progress-bar [mode]="'indeterminate'" [color]="'primary'" *ngIf="isLoading$ | async"></mat-progress-bar>
 
 <mat-grid-list
   *ngIf="data$ | async as events"

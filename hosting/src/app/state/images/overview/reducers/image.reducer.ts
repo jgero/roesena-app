@@ -10,6 +10,7 @@ interface ImageOverviewState {
   limit: number;
   pageLast: AppImage;
   pageFirst: AppImage;
+  isLoading: boolean;
 }
 
 export interface State extends fromRoot.State {
@@ -22,12 +23,13 @@ export const initialState: ImageOverviewState = {
   limit: 3,
   pageLast: null,
   pageFirst: null,
+  isLoading: false,
 };
 
 export function reducer(state = initialState, action: ImageActions): ImageOverviewState {
   switch (action.type) {
     case ImageActionTypes.LoadImages:
-      return { ...state, limit: action.payload.limit };
+      return { ...state, limit: action.payload.limit, isLoading: true };
 
     case ImageActionTypes.LoadImagesSuccess:
       return {
@@ -35,10 +37,11 @@ export function reducer(state = initialState, action: ImageActions): ImageOvervi
         images: action.payload.images,
         pageLast: action.payload.images[action.payload.images.length - 1] || null,
         pageFirst: action.payload.images[0] || null,
+        isLoading: false,
       };
 
     case ImageActionTypes.LoadImagesFailure:
-      return state;
+      return { ...state, isLoading: false };
 
     case ImageActionTypes.LoadLengthSuccess:
       return { ...state, length: action.payload.length };

@@ -13,6 +13,7 @@ import { CardsModule } from '@shared/cards/cards.module';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -22,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatToolbarModule,
     MatGridListModule,
     MatIconModule,
+    MatProgressBarModule,
     CardsModule,
     PaginatorModule,
     MatButtonModule,

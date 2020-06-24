@@ -19,6 +19,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   image$ = this.store.select('image', 'image');
   canEdit$ = this.store.select(canEdit);
   url$ = this.image$.pipe(switchMap((image) => this.urlLoader.getImageURL(image.id)));
+  isLoading$ = this.store.select('image', 'isLoading');
   constructor(private store: Store<State>, private urlLoader: UrlLoaderService, private subs: SubscriptionService) {}
 
   ngOnInit() {

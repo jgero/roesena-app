@@ -1,3 +1,4 @@
+<mat-progress-bar [mode]="'indeterminate'" *ngIf="isLoading$ | async" [color]="'accent'"></mat-progress-bar>
 <ng-container *ngIf="data$ | async as event">
   <mat-toolbar [color]="'accent'">{{ event.title }}</mat-toolbar>
   <mat-toolbar class="date"

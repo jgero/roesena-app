@@ -15,6 +15,7 @@ import { AppEvent } from '@utils/interfaces';
 })
 export class DetailsComponent implements OnDestroy, OnInit {
   canEdit$: Observable<boolean> = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  isLoading$ = this.store.select('events', 'isLoading');
   data$ = this.store.select('events', 'event');
   amountAccumulated$ = this.data$.pipe(
     map((event) => {

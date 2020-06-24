@@ -7,9 +7,18 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [DetailsComponent],
-  imports: [CommonModule, ImageDetailsRoutingModule, MatChipsModule, MatToolbarModule, MatButtonModule, MatIconModule],
+  imports: [
+    CommonModule,
+    ImageDetailsRoutingModule,
+    MatChipsModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class ImageDetailsModule {}

@@ -8,6 +8,7 @@ interface CalendarState {
   events: AppEvent[];
   currentDate: Date;
   days: AppEvent[][];
+  isLoading: boolean;
 }
 
 export interface State extends fromRoot.State {
@@ -18,6 +19,7 @@ export const initialState: CalendarState = {
   events: [],
   currentDate: new Date(),
   days: [],
+  isLoading: false,
 };
 
 export function reducer(state = initialState, action: EventActions): CalendarState {
@@ -41,15 +43,15 @@ export function reducer(state = initialState, action: EventActions): CalendarSta
         });
         return eventsForDay;
       });
-      return { ...state, events: action.payload.events, days };
+      return { ...state, events: action.payload.events, days, isLoading: false };
 
     case EventActionTypes.LoadEventsFailure:
-      return state;
+      return { ...state, isLoading: false };
 
     case EventActionTypes.LoadEvents:
     case EventActionTypes.GoNextMonth:
     case EventActionTypes.GoPreviousMonth:
-      return { ...state, events: [], days: [] };
+      return { ...state, events: [], days: [], isLoading: true };
 
     default:
       return state;

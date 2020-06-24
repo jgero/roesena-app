@@ -1,3 +1,4 @@
+<mat-progress-bar [mode]="'indeterminate'" [color]="'accent'" *ngIf="isLoading$ | async"></mat-progress-bar>
 <ng-container *ngIf="image$ | async as image">
   <main>
     <img [src]="url$ | async" alt="Bild Detailansicht" />

@@ -18,6 +18,7 @@ import { canCreate } from '@state/user/selectors/user.selectors';
 export class OverviewComponent implements OnDestroy, OnInit {
   canCreate$: Observable<boolean> = this.store.select(canCreate);
   data$ = this.store.select('eventOverview', 'events');
+  isLoading$ = this.store.select('eventOverview', 'isLoading');
   get cols(): number {
     return Math.ceil(window.innerWidth / 700);
   }

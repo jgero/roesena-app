@@ -2,6 +2,8 @@
   <div>Bilder</div>
 </mat-toolbar>
 
+<mat-progress-bar [mode]="'indeterminate'" *ngIf="isLoading$ | async"></mat-progress-bar>
+
 <mat-grid-list *ngIf="data$ | async as images" [cols]="cols" [rowHeight]="'420px'" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let image of images">
     <app-image-card [data]="image"></app-image-card>
