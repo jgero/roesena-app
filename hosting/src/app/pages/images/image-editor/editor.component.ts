@@ -13,6 +13,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { LoadImage } from '@state/images/actions/image.actions';
 import { UpdateImage, CreateImage, DeleteImage } from '@state/images/editor/actions/image.actions';
 import { UrlLoaderService } from '@services/url-loader.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-editor',
@@ -29,7 +30,8 @@ export class EditorComponent implements OnDestroy {
     public chips: ChipsInputService,
     private store: Store<State>,
     private subs: SubscriptionService,
-    private urlLoader: UrlLoaderService
+    private urlLoader: UrlLoaderService,
+    private dialog: MatDialog
   ) {
     this.store.dispatch(new LoadImage());
     this.store
@@ -85,7 +87,15 @@ export class EditorComponent implements OnDestroy {
   }
 
   onDelete() {
-    this.store.dispatch(new DeleteImage());
+    this.dialog
+      .open(DeleteDialogComponent)
+      .afterClosed()
+      .pipe(takeUntil(this.subs.unsubscribe$))
+      .subscribe((result) => {
+        if (result) {
+          this.store.dispatch(new DeleteImage());
+        }
+      });
   }
 
   onImageChange(file: File) {
@@ -105,3 +115,9 @@ export class EditorComponent implements OnDestroy {
     this.subs.unsubscribeComponent$.next();
   }
 }
+
+@Component({
+  selector: 'delete-dialog',
+  templateUrl: 'delete-dialog.html',
+})
+export class DeleteDialogComponent {}
