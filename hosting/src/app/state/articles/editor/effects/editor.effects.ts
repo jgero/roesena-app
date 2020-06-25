@@ -16,6 +16,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { toStorableArticle } from '@utils/converters/article-documents';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class EditorEffects {
@@ -27,6 +28,7 @@ export class EditorEffects {
         this.firestore.collection('articles').doc(action.payload.article.id).update(toStorableArticle(action.payload.article))
       ).pipe(
         map(() => new UpdateArticleSuccess()),
+        tap(() => this.snackbar.open('Gespeichert')),
         catchError((error) => of(new UpdateArticleFailure({ error })))
       )
     )
@@ -39,6 +41,7 @@ export class EditorEffects {
       from(this.firestore.collection('articles').add(toStorableArticle(action.payload.article))).pipe(
         tap((result) => this.router.navigate(['articles', 'edit', result.id])),
         map(() => new CreateArticleSuccess()),
+        tap(() => this.snackbar.open('Gespeichert')),
         catchError((error) => of(new CreateArticleFailure({ error })))
       )
     )
@@ -51,10 +54,16 @@ export class EditorEffects {
       from(this.firestore.collection('articles').doc(action.payload.article.id).delete()).pipe(
         tap(() => this.router.navigate(['articles', 'overview'])),
         map(() => new DeleteArticleSuccess()),
+        tap(() => this.snackbar.open('Gelöscht')),
         catchError((error) => of(new DeleteArticleFailure({ error })))
       )
     )
   );
 
-  constructor(private actions$: Actions<EditorActions>, private firestore: AngularFirestore, private router: Router) {}
+  constructor(
+    private actions$: Actions<EditorActions>,
+    private firestore: AngularFirestore,
+    private router: Router,
+    private snackbar: MatSnackBar
+  ) {}
 }

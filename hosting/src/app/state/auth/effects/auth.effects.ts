@@ -31,6 +31,7 @@ import { State } from '../reducers/auth.reducer';
 import { Store } from '@ngrx/store';
 import { StoreablePerson } from '@utils/interfaces';
 import { toStorablePerson, convertOne } from '@utils/converters/person-documents';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthEffects {
@@ -89,6 +90,8 @@ export class AuthEffects {
         .pipe(
           filter((el) => el.payload.exists),
           take(1),
+          tap(() => this.snackbar.open('Registrierung erfolgreich')),
+          map(() => new RegisterLoaded()),
           catchError((error) => of(new RegisterFailed({ error })))
         )
     )
@@ -107,6 +110,7 @@ export class AuthEffects {
         this.firestore.collection<StoreablePerson>('persons').doc<StoreablePerson>(updated.id).update(toStorablePerson(updated))
       ).pipe(
         map(() => new ChangeNameLoaded()),
+        tap(() => this.snackbar.open('Name gespeichert')),
         catchError((error) => of(new ChangeNameFailed({ error })))
       );
     })
@@ -129,6 +133,7 @@ export class AuthEffects {
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       from(this.auth.confirmPasswordReset(storeState.router.state.queryParams.oobCode, action.payload.password)).pipe(
+        tap(() => this.snackbar.open('Password geändert')),
         map(() => new ChangePasswordWithCodeLoaded()),
         catchError((error) => of(new ChangePasswordWithCodeFailed({ error })))
       )
@@ -142,6 +147,7 @@ export class AuthEffects {
     private location: Location,
     private router: Router,
     private browser: BrowserService,
-    private store: Store<State>
+    private store: Store<State>,
+    private snackbar: MatSnackBar
   ) {}
 }

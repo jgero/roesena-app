@@ -8,7 +8,6 @@ import { filter, tap } from 'rxjs/operators';
 export class GlobalEffects {
   @Effect({ dispatch: false })
   globalErrorHandler$ = this.actions$.pipe(
-    tap((action) => console.log(action.type.toLowerCase())),
     filter((action) => new RegExp('.*((error)|(failure)|(failed)).*').test(action.type.toLowerCase())),
     tap((action) => this.snackbar.open(((action as any).payload.error as Error).message, 'OK'))
   );

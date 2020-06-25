@@ -12,7 +12,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { StateModule } from '@state/state.module';
 import { AppRoutingModule } from './app-routing.module';
 import { RootComponent } from '@pages/base-pages/root/root.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BasePagesModule } from '@pages/base-pages/base-pages.module';
 import { CommonModule } from '@angular/common';
 
@@ -37,6 +37,7 @@ import { CommonModule } from '@angular/common';
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },
     { provide: REGION, useValue: 'europe-west1' },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2000 } },
   ],
   bootstrap: [RootComponent],
 })
