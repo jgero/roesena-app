@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoggedInGuard } from '@guards/logged-in.guard';
+import { HasEventEditorLoadedGuard } from '@guards/has-event-editor-loaded.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'full' },
@@ -9,6 +10,7 @@ const routes: Routes = [
   {
     path: 'edit',
     canActivate: [LoggedInGuard],
+    canDeactivate: [HasEventEditorLoadedGuard],
     loadChildren: () => import('./event-editor/event-editor.module').then((e) => e.EventEditorModule),
   },
 ];

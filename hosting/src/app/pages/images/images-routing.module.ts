@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoggedInGuard } from '@guards/logged-in.guard';
+import { HasImageEditorLoadedGuard } from '@guards/has-image-editor-loaded.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'full' },
@@ -10,6 +11,7 @@ const routes: Routes = [
     path: 'edit',
     loadChildren: () => import('./image-editor/image-editor.module').then((m) => m.ImageEditorModule),
     canActivate: [LoggedInGuard],
+    canDeactivate: [HasImageEditorLoadedGuard],
   },
 ];
 
