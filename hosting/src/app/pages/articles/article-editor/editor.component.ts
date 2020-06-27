@@ -50,12 +50,11 @@ export class EditorComponent implements OnDestroy {
       )
       .subscribe({
         next: (article) => {
-          this.article = {} as any;
-          Object.assign(this.article, article);
+          this.article = JSON.parse(JSON.stringify(article));
           this.articleForm = new FormGroup({
-            title: new FormControl(article.title, [Validators.required, Validators.maxLength(35)]),
-            content: new FormControl(article.content, [Validators.required]),
-            tags: new FormControl(article.tags),
+            title: new FormControl(this.article.title, [Validators.required, Validators.maxLength(35)]),
+            content: new FormControl(this.article.content, [Validators.required]),
+            tags: new FormControl(this.article.tags),
           });
         },
       });

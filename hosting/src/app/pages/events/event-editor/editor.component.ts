@@ -49,28 +49,31 @@ export class EditorComponent implements OnDestroy {
         next: (event) => {
           // deep copy the object
           this.event = JSON.parse(JSON.stringify(event));
+          this.event.startDate = new Date(this.event.startDate);
+          this.event.endDate = new Date(this.event.endDate);
+          this.event.deadline = new Date(this.event.deadline);
           const p = new ToLocalTimeStringPipe();
           this.eventForm = new FormGroup({
-            title: new FormControl(event.title, [Validators.required]),
-            description: new FormControl(event.description, []),
-            startDate: new FormControl(event.startDate, [Validators.required]),
-            startTime: new FormControl(p.transform(event.startDate), [
+            title: new FormControl(this.event.title, [Validators.required]),
+            description: new FormControl(this.event.description, []),
+            startDate: new FormControl(this.event.startDate, [Validators.required]),
+            startTime: new FormControl(p.transform(this.event.startDate), [
               Validators.required,
               Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
             ]),
-            endDate: new FormControl(event.endDate, [Validators.required]),
-            endTime: new FormControl(p.transform(event.endDate), [
+            endDate: new FormControl(this.event.endDate, [Validators.required]),
+            endTime: new FormControl(p.transform(this.event.endDate), [
               Validators.required,
               Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
             ]),
-            tags: new FormControl(event.tags),
+            tags: new FormControl(this.event.tags),
             deadline: new FormGroup(
               {
-                deadlineDate: new FormControl(event.deadline),
-                deadlineTime: new FormControl(event.deadline ? p.transform(event.deadline) : '', [
+                deadlineDate: new FormControl(this.event.deadline),
+                deadlineTime: new FormControl(this.event.deadline ? p.transform(this.event.deadline) : '', [
                   Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
                 ]),
-                participants: new FormControl(event.participants),
+                participants: new FormControl(this.event.participants),
               },
               [this.getDeadlineFormValidatorFn()]
             ),
