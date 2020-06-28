@@ -18,7 +18,7 @@ export interface State extends fromRoot.State {
 }
 
 export const initialState: ArticleOverviewState = {
-  articles: [],
+  articles: null,
   length: 0,
   pageFirst: null,
   pageLast: null,
@@ -29,12 +29,12 @@ export const initialState: ArticleOverviewState = {
 export function reducer(state = initialState, action: ArticleOverviewActions): ArticleOverviewState {
   switch (action.type) {
     case ArticleActionTypes.LoadArticles:
-      return { ...state, limit: action.payload.limit, isLoading: true };
+      return { ...state, limit: action.payload.limit, isLoading: true, articles: null };
 
     case ArticleActionTypes.LoadArticlesSuccess:
       return {
         ...state,
-        articles: action.payload.articles,
+        articles: action.payload.articles || null,
         pageFirst: action.payload.articles[0] || null,
         pageLast: action.payload.articles[action.payload.articles.length - 1] || null,
         isLoading: false,

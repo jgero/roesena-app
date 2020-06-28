@@ -14,20 +14,20 @@ export interface State extends fromRoot.State {
 }
 
 export const initialState: EventOverviewState = {
-  events: [],
+  events: null,
   isLoading: false,
 };
 
 export function reducer(state = initialState, action: EventActions): EventOverviewState {
   switch (action.type) {
     case EventActionTypes.LoadEvents:
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, events: null };
 
     case EventActionTypes.LoadEventsSuccess:
       return { ...state, events: action.payload.events, isLoading: false };
 
     case EventActionTypes.LoadEventsFailure:
-      return { ...state, events: [], isLoading: false };
+      return { ...state, events: null, isLoading: false };
 
     default:
       return state;

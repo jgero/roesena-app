@@ -18,7 +18,7 @@ export interface State extends fromRoot.State {
 }
 
 export const initialState: ImageOverviewState = {
-  images: [],
+  images: null,
   length: 0,
   limit: 3,
   pageLast: null,
@@ -29,7 +29,7 @@ export const initialState: ImageOverviewState = {
 export function reducer(state = initialState, action: ImageActions): ImageOverviewState {
   switch (action.type) {
     case ImageActionTypes.LoadImages:
-      return { ...state, limit: action.payload.limit, isLoading: true };
+      return { ...state, limit: action.payload.limit, isLoading: true, images: null };
 
     case ImageActionTypes.LoadImagesSuccess:
       return {
@@ -41,7 +41,7 @@ export function reducer(state = initialState, action: ImageActions): ImageOvervi
       };
 
     case ImageActionTypes.LoadImagesFailure:
-      return { ...state, isLoading: false };
+      return { ...state, isLoading: false, images: null };
 
     case ImageActionTypes.LoadLengthSuccess:
       return { ...state, length: action.payload.length };
