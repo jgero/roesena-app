@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { cardFlyIn } from '@utils/animations';
 import { AppImage } from '@utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/images/overview/reducers/image.reducer';
@@ -9,6 +8,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { LoadImages } from '@state/images/overview/actions/image.actions';
 import { map } from 'rxjs/operators';
 import { canCreate } from '@state/user/selectors/user.selectors';
+import { cardFlyIn } from '@utils/animations/card-fly-in';
 
 @Component({
   selector: 'app-overview',

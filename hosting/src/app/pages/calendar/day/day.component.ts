@@ -1,7 +1,7 @@
 import { Component, Input, ElementRef, HostBinding } from '@angular/core';
 
 import { AppEvent, AppPerson } from 'src/app/utils/interfaces';
-import { expandCollapseAnimation } from 'src/app/utils/animations';
+import { expandCollapseAnimation } from '@utils/animations/expand-collapse';
 
 @Component({
   selector: 'app-day',

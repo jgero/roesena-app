@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { cardFlyIn } from 'src/app/utils/animations';
 import { Store } from '@ngrx/store';
 import { State } from '@state/events/overview/reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { map } from 'rxjs/operators';
 import { LoadEvents } from '@state/events/overview/actions/event.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
+import { cardFlyIn } from '@utils/animations/card-fly-in';
 
 @Component({
   selector: 'app-overview',

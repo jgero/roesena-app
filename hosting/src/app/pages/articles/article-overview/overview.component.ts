@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { SubscriptionService } from '@services/subscription.service';
-import { cardFlyIn } from '@utils/animations';
 import { AppArticle } from '@utils/interfaces';
 import { State } from '@state/articles/overview/reducers/article.reducer';
 import { LoadArticles } from '@state/articles/overview/actions/article.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
+import { cardFlyIn } from '@utils/animations/card-fly-in';
 
 @Component({
   selector: 'app-overview',

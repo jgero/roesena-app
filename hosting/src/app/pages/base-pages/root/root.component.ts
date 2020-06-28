@@ -10,11 +10,14 @@ import { environment } from 'src/environments/environment';
 import { State } from '@state/basePages/reducers/base.reducer';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterOutlet } from '@angular/router';
+import { pageTransition } from '@utils/animations/page-transition';
 
 @Component({
   selector: 'app-root',
   templateUrl: './root.component.html',
   styleUrls: ['./root.component.scss'],
+  animations: [pageTransition],
 })
 export class RootComponent implements OnDestroy {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -48,6 +51,10 @@ export class RootComponent implements OnDestroy {
         tap(() => this.closeNav())
       )
       .subscribe();
+  }
+
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
 
   closeNav() {

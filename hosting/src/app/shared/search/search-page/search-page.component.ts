@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { InitSearch } from '@state/searching/actions/search.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { cardFlyIn } from '@utils/animations';
 import { map } from 'rxjs/operators';
+import { cardFlyIn } from '@utils/animations/card-fly-in';
 
 @Component({
   selector: 'app-search-page',
