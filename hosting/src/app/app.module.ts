@@ -5,7 +5,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore';
 import { AngularFireFunctionsModule, REGION } from '@angular/fire/functions';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
@@ -37,6 +37,15 @@ import { CommonModule } from '@angular/common';
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },
     { provide: REGION, useValue: 'europe-west1' },
+    {
+      provide: SETTINGS,
+      useValue: environment.useEmulator
+        ? {
+            host: 'localhost:8080',
+            ssl: false,
+          }
+        : undefined,
+    },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2000 } },
   ],
   bootstrap: [RootComponent],

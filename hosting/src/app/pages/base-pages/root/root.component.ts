@@ -12,6 +12,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { pageTransition } from '@utils/animations/page-transition';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +40,8 @@ export class RootComponent implements OnDestroy {
     private store: Store<State>,
     updates$: Actions,
     matIconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
+    sanitizer: DomSanitizer,
+    fns: AngularFireFunctions
   ) {
     matIconRegistry.addSvgIcon('rsn', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-inverted.svg'));
     this.version = environment.buildVersion;
@@ -51,6 +53,11 @@ export class RootComponent implements OnDestroy {
         tap(() => this.closeNav())
       )
       .subscribe();
+
+    // configure functions for local endpoint if needed
+    if (environment.useEmulator) {
+      fns.useFunctionsEmulator('http://localhost:5001');
+    }
   }
 
   prepareRoute(outlet: RouterOutlet) {

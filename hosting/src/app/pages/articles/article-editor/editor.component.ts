@@ -51,6 +51,7 @@ export class EditorComponent implements OnDestroy {
       .subscribe({
         next: (article) => {
           this.article = JSON.parse(JSON.stringify(article));
+          this.article.created = new Date(this.article.created);
           this.articleForm = new FormGroup({
             title: new FormControl(this.article.title, [Validators.required, Validators.maxLength(35)]),
             content: new FormControl(this.article.content, [Validators.required]),
