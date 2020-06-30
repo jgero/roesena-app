@@ -1,50 +1,108 @@
+import * as express from 'express';
+import * as cors from 'cors';
+import * as cookieParser from 'cookie-parser';
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-const cors = require('cors')({ origin: true });
 
-export const respondToEvent = functions.region('europe-west1').https.onRequest((req, res) => {
-  cors(req, res, async () => {
-    if (!req.body.data || !req.body.data.id || req.body.data.amount === undefined || req.body.data.amount < 0) {
-      res.status(400).send('invalid request body');
-      return;
-    }
-    const authToken = req.get('Authorization');
-    if (!authToken) {
-      res.status(401).send('auth token missing');
-      return;
-    }
-    const tokenId = authToken.split('Bearer ')[1];
-    const decoded = await admin.auth().verifyIdToken(tokenId);
-    const doc = (await admin.firestore().collection('events').doc(req.body.data.id).get()).data();
-    // update the doc with the new amount
-    if (!doc) {
-      res.status(400).send('invalid request id');
-      return;
-    }
-    if (!doc.deadline) {
-      res.status(400).send('event does not have a deadline');
-      return;
-    }
-    // if deadline is already over
-    if (new Date(doc.deadline.toDate()).getTime() < new Date().getTime()) {
-      res.status(400).send('dedline already over');
-      return;
-    }
-    // if person is not invited to event
-    let invited = false;
-    for (const id in doc.participants) {
-      if (id === decoded.uid) invited = true;
-    }
-    if (!invited) {
-      res.status(400).send('person is not invited to event');
-      return;
-    }
-    // set the document again
+// middleware to check if all needed request data is present
+const checkRequestData: express.RequestHandler = (req, res, next) => {
+  if (!req.body.data || !req.body.data.id || !req.body.data.amount || req.body.data.amount < 0) {
+    res.status(400).send({ error: 'reques data is missing id or amount' });
+    return;
+  }
+  next();
+};
+
+const validateFirebaseIdToken: express.RequestHandler = async (req, res, next) => {
+  // no session cookie or bearer token found
+  if (
+    (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
+    !(req.cookies && req.cookies.__session)
+  ) {
+    res.status(403).send({ error: 'Unauthorized' });
+    return;
+  }
+
+  let idToken: string;
+  // check for auth header
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    // Read the ID Token from the Authorization header.
+    idToken = req.headers.authorization.split('Bearer ')[1];
+    // check for session cookie
+  } else if (req.cookies) {
+    // Read the ID Token from cookie.
+    idToken = req.cookies.__session;
+  } else {
+    // No cookie or header
+    res.status(403).send({ error: 'Unauthorized' });
+    return;
+  }
+
+  try {
+    const decodedIdToken = await admin.auth().verifyIdToken(idToken);
+    // append uid to request and pass to next middleware
+    (req as any).uid = decodedIdToken.uid;
+    next();
+    return;
+  } catch (error) {
+    // could not verify id token
+    res.status(403).send({ error: 'Unauthorized' });
+    return;
+  }
+};
+
+// check if user is authenticated and allowed to change the marker
+const checkInvitationStatus: express.RequestHandler = async (req, res, next) => {
+  // get event document
+  const doc = (await admin.firestore().collection('events').doc(req.body.data.id).get()).data();
+  // check if event exists
+  if (!doc) {
+    res.status(400).send({ error: 'invalid request id' });
+    return;
+  }
+  // check if event has a deadline (if not it can't have participants)
+  if (!doc.deadline) {
+    res.status(400).send({ error: 'event does not have a deadline' });
+    return;
+  }
+  // check if deadline is already over
+  if (new Date(doc.deadline.toDate()).getTime() < new Date().getTime()) {
+    res.status(400).send({ error: 'dedline already over' });
+    return;
+  }
+  // check if person is not invited to event
+  if (!doc.participants[(req as any).uid]) {
+    res.status(400).send('person is not invited to event');
+    return;
+  }
+  next();
+};
+
+const app = express();
+// allow cross-origin requests (currently only needed for testing in emulator)
+app.use(cors({ origin: true }));
+app.use(cookieParser());
+
+app.use(checkRequestData);
+app.use(validateFirebaseIdToken);
+app.use(checkInvitationStatus);
+
+app.post('/', async (req, res) => {
+  // update the document with updated amount
+  try {
     await admin
       .firestore()
       .collection('events')
       .doc(req.body.data.id)
-      .update({ [`participants.${decoded.uid}.amount`]: req.body.data.amount });
-    res.status(200).send({ data: { success: true } });
-  });
+      .update({ [`participants.${(req as any).uid}.amount`]: req.body.data.amount });
+  } catch (error) {
+    res.status(500).send({ error: 'failed to update event' });
+    return;
+  }
+  res
+    .status(200)
+    .send({ data: `amount for participant ${(req as any).uid} in event ${req.body.data.id} set to ${req.body.data.amount}` });
 });
+
+// export express app as cloud function
+export const respondToEvent = functions.region('europe-west1').https.onRequest(app);

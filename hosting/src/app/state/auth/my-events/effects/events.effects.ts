@@ -27,7 +27,7 @@ export class EventsEffects {
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       this.firestore
-        .collection<StoreableEvent>('events', (qFn) => qFn.orderBy('deadline').where('deadline', '>=', new Date()))
+        .collection<StoreableEvent>('events', (qFn) => qFn.orderBy('startDate').where('startDate', '>=', new Date()))
         .snapshotChanges()
         .pipe(
           map(convertMany),
