@@ -1,10 +1,16 @@
 {
   "hosting": [
     {
-      "predeploy": ["npm --prefix hosting run build:prod"],
+      "predeploy": [
+        "npm --prefix hosting run build:prod"
+      ],
       "target": "roesena-app",
       "public": "hosting/dist/roesena-app",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
       "rewrites": [
         {
           "source": "**",
@@ -25,6 +31,31 @@
     }
   ],
   "functions": {
-    "predeploy": ["npm --prefix functions run lint", "npm --prefix functions run build"]
+    "predeploy": [
+      "npm --prefix functions run lint",
+      "npm --prefix functions run build"
+    ],
+    "source": "functions"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

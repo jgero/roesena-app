@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+  	function isAdmin() {
+    	return get(/databases/$(database)/documents/persons/$(request.auth.uid)).data.groups.admin == true;
+    }
+    
+    function isConfirmedMember() {
+    	return get(/databases/$(database)/documents/persons/$(request.auth.uid)).data.isConfirmedMember == true;
+    }
+    
+    function isAllowedToCreate() {
+    	let person = get(/databases/$(database)/documents/persons/$(request.auth.uid)).data;
+      return (person.groups.admin == true || person.groups.Autor) && person.isConfirmedMember == true;
+    }
+    
+    match /persons/{personid} {
+    	// only confirmed members can see persons
+      allow read: if request.auth.uid == personid || isConfirmedMember();
+      // cloud functions always have full access, so setting it flase blocks anything but them
+      allow create, delete: if false;
+      // only let admins update or the user it's own document if only the name changes
+      allow update: if isAdmin() ||
+      	(
+        	request.auth.uid == personid &&
+          request.resource.data.groups == resource.data.groups &&
+          request.resource.data.isConfirmedMember == resource.data.isConfirmedMember
+        );
+    }
+    
+    function hasValidOwnerProp() {
+    	return request.resource.data.ownerId == resource.data.ownerId;
+    }
+    
+    function isOwnerInRsc() {
+    	return request.auth.uid == resource.data.ownerId;
+    }
+    
+    function isOwnerInReq() {
+    	return request.auth.uid == request.resource.data.ownerId;
+    }
+
+    match /events/{document=**} {
+    	// allow public events and if you are a confirmed member
+      allow read: if resource.data.participants == {} || isConfirmedMember();
+      // admins and owners can delete
+      allow delete: if isAdmin() || isOwnerInRsc();
+      // owner has to be the same and admins and owners can update
+      allow update: if hasValidOwnerProp() && (isOwnerInRsc() || isAdmin());
+      // owner has to be set right and you have to be a confirmed member
+      allow create: if isOwnerInReq() && isAllowedToCreate();
+    }
+    
+    match /images/{document=**} {
+    	// everyone can view images
+      allow read: if true;
+      // owner has to be set right and you have to be a confirmed member
+      allow create: if isOwnerInReq() && isAllowedToCreate();
+      // admins and owners can delete
+      allow delete: if isOwnerInRsc() || isAdmin();
+      // owner has to be the same and admins and owners can update
+      allow update: if hasValidOwnerProp() && (isOwnerInRsc() || isAdmin());
+    }
+    
+    match /meta/{document=**} {
+    	allow read: if true;
+      allow write: if false;
+    }
+    
+    match /articles/{document=**} {
+      // everyone can view articles
+      allow read: if true;
+      // owner has to be set right and you have to be a confirmed member
+      allow create: if isOwnerInReq() && isAllowedToCreate();
+      // admins and owners can delete
+      allow delete: if isOwnerInRsc() || isAdmin();
+      // owner has to be the same and admins and owners can update
+      allow update: if hasValidOwnerProp() && (isOwnerInRsc() || isAdmin());
+    }
+  }
+}
