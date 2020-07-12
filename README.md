@@ -8,9 +8,11 @@ This project is built using [Angular](https://angular.io/) and [Firebase](https:
 
 Run `ng serve` to start the Angular dev server. It will serve the app on [localhost](http://localhost:4200/).
 
-### Cloud Functions
+### Cloud Functions / Firestore
 
-In theory these can be run locally in a a dev environment with the [firebase emulators](https://firebase.google.com/docs/rules/emulator-setup), but this project was built without them.
+Can be run locally using the [firebase emulator suite](https://firebase.google.com/docs/emulator-suite) with `firebase emulators:start`. To make the Angular dev server use the emulator instead of the production database set the `useEmulator` property to `true` in the [dev environment file](hosting/src/environments/environment.ts).
+
+Restarting the emulators will clear all the data from the firestore emulator. The current contents of the emulators can be exported with `firebase emulators:export <export directory>` and imported with `firebase emulators:start --import <import directory>`.
 
 ## Build
 
@@ -24,7 +26,7 @@ By running `npm build:prod` in the hosting directory the Angular app will be bui
 
 The functions are a standard TypeScript project built with `tsc` or just with `npm run build` in the `functions` directory.
 
-## Running unit tests
+## Running unit tests (currently broken)
 
 Unit tests of the Angular app can be run in two ways:
 

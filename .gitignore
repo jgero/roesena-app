@@ -21,3 +21,6 @@ testem.log
 # firebase stuff
 .firebase
 /*.log
+
+# emulator exports
+/export

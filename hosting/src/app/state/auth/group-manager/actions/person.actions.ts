@@ -7,22 +7,39 @@ export enum PersonActionTypes {
   LoadPersonsFailure = '[Person] Load Persons Failure',
   LoadPersonLengthSuccess = '[Person] Load Person length success',
   LoadPersonLengthFailure = '[Person] Load Person length failure',
-  UpdatePerson = '[Person] update Persons',
-  UpdatePersonSuccess = '[Person] update Person Success',
-  UpdatePersonFailure = '[Person] update Person Failure',
+  ConfirmPerson = '[Person] confirm person',
+  ConfirmPersonSuccess = '[Person] confirm person success',
+  ConfirmPersonFailure = '[Person] confirm person failure',
+  DeletePerson = '[Person] delete person',
+  DeletePersonSuccess = '[Person] delete person success',
+  DeletePersonFailure = '[Person] delete person failure',
 }
 
-export class UpdatePerson implements Action {
-  readonly type = PersonActionTypes.UpdatePerson;
-  constructor(public payload: { person: AppPerson }) {}
+export class DeletePerson implements Action {
+  readonly type = PersonActionTypes.DeletePerson;
+  constructor(public payload: { id: string }) {}
 }
 
-export class UpdatePersonSuccess implements Action {
-  readonly type = PersonActionTypes.UpdatePersonSuccess;
+export class DeletePersonSuccess implements Action {
+  readonly type = PersonActionTypes.DeletePersonSuccess;
 }
 
-export class UpdatePersonFailure implements Action {
-  readonly type = PersonActionTypes.UpdatePersonFailure;
+export class DeletePersonFailure implements Action {
+  readonly type = PersonActionTypes.DeletePersonFailure;
+  constructor(public payload: { error: any }) {}
+}
+
+export class ConfirmPerson implements Action {
+  readonly type = PersonActionTypes.ConfirmPerson;
+  constructor(public payload: { id: string }) {}
+}
+
+export class ConfirmPersonSuccess implements Action {
+  readonly type = PersonActionTypes.ConfirmPersonSuccess;
+}
+
+export class ConfirmPersonFailure implements Action {
+  readonly type = PersonActionTypes.ConfirmPersonFailure;
   constructor(public payload: { error: any }) {}
 }
 
@@ -57,6 +74,9 @@ export type PersonActions =
   | LoadPersonsFailure
   | LoadPersonLengthSuccess
   | LoadPersonLengthFailure
-  | UpdatePerson
-  | UpdatePersonSuccess
-  | UpdatePersonFailure;
+  | ConfirmPerson
+  | ConfirmPersonSuccess
+  | ConfirmPersonFailure
+  | DeletePerson
+  | DeletePersonSuccess
+  | DeletePersonFailure;

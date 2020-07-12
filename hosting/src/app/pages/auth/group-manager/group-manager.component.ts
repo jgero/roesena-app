@@ -11,12 +11,13 @@ import { AppPerson } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/auth/group-manager/reducers/person.reducer';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadPersons, PersonActionTypes, UpdatePerson, PersonActions } from '@state/auth/group-manager/actions/person.actions';
+import { LoadPersons, PersonActionTypes, PersonActions } from '@state/auth/group-manager/actions/person.actions';
 import { ChipsInputService } from '@services/chips-input.service';
 import { Actions, ofType } from '@ngrx/effects';
 
-interface AppPersonWithForm extends AppPerson {
-  form: FormGroup;
+interface AppPersonWithLoading extends AppPerson {
+  isConfrimationLoading: boolean;
+  isDeletionLoading: boolean;
 }
 
 @Component({
@@ -25,17 +26,14 @@ interface AppPersonWithForm extends AppPerson {
   styleUrls: ['./group-manager.component.scss'],
 })
 export class GroupManagerComponent implements OnInit, OnDestroy {
-  $length = this.store.select('person', 'length');
-  $withForm: Observable<AppPersonWithForm[]> = this.store.select('person', 'persons').pipe(
-    map((persons) => {
-      persons = persons.map((person) => ({
+  length$ = this.store.select('person', 'length');
+  withLoading$: Observable<AppPersonWithLoading[]> = this.store.select('person', 'persons').pipe(
+    map((persons: AppPerson[]): AppPersonWithLoading[] => {
+      return persons.map((person) => ({
         ...person,
-        form: new FormGroup({
-          groups: new FormControl(person.groups),
-          confirmed: new FormControl(person.isConfirmedMember),
-        }),
+        isConfrimationLoading: false,
+        isDeletionLoading: false,
       }));
-      return persons as AppPersonWithForm[];
     })
   );
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -58,27 +56,27 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new LoadPersons({ limit: this.limit }));
   }
 
-  onSubmit(result: AppPersonWithForm) {
-    const person: AppPerson = {
-      groups: result.form.get('groups').value,
-      isConfirmedMember: result.form.get('confirmed').value,
-      id: result.id,
-      name: result.name,
-    };
-    this.store.dispatch(new UpdatePerson({ person }));
-    result.form.disable();
-    this.actions$
-      .pipe(
-        ofType(PersonActionTypes.UpdatePersonSuccess, PersonActionTypes.UpdatePersonFailure),
-        takeUntil(this.subs.unsubscribe$)
-      )
-      .subscribe({
-        next: () => {
-          result.form.markAsPristine();
-          result.form.enable();
-        },
-      });
-  }
+  // onSubmit(result: AppPersonWithForm) {
+  //   const person: AppPerson = {
+  //     groups: result.form.get('groups').value,
+  //     isConfirmedMember: result.form.get('confirmed').value,
+  //     id: result.id,
+  //     name: result.name,
+  //   };
+  //   this.store.dispatch(new UpdatePerson({ person }));
+  //   result.form.disable();
+  //   this.actions$
+  //     .pipe(
+  //       ofType(PersonActionTypes.UpdatePersonSuccess, PersonActionTypes.UpdatePersonFailure),
+  //       takeUntil(this.subs.unsubscribe$)
+  //     )
+  //     .subscribe({
+  //       next: () => {
+  //         result.form.markAsPristine();
+  //         result.form.enable();
+  //       },
+  //     });
+  // }
 
   ngOnDestroy() {
     this.subs.unsubscribeComponent$.next();

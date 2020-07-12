@@ -9,8 +9,6 @@ import {
   PersonActions,
   LoadPersonLengthSuccess,
   LoadPersonLengthFailure,
-  UpdatePersonSuccess,
-  UpdatePersonFailure,
 } from '../actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -20,6 +18,7 @@ import { Store } from '@ngrx/store';
 import { State } from '../reducers/person.reducer';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 import { StoreablePerson } from '@utils/interfaces';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable()
 export class PersonEffects {
@@ -92,26 +91,43 @@ export class PersonEffects {
     )
   );
 
-  @Effect()
-  updatePerson$ = this.actions$.pipe(
-    ofType(PersonActionTypes.UpdatePerson),
-    switchMap((action) =>
-      from(
-        this.firestore
-          .collection<StoreablePerson>('persons')
-          .doc(action.payload.person.id)
-          .update(toStorablePerson(action.payload.person))
-      ).pipe(
-        map(() => new UpdatePersonSuccess()),
-        catchError((error) => of(new UpdatePersonFailure({ error })))
-      )
+  @Effect({ dispatch: false })
+  markEventAsSeen$ = this.actions$.pipe(
+    ofType(PersonActionTypes.ConfirmPerson),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) =>
+      this.fns
+        .httpsCallable(`confirmPerson/${action.payload.id}`)({})
+        .pipe(
+          catchError((err) => {
+            console.log(err);
+            return of(null);
+          })
+        )
     )
   );
+
+  // @Effect()
+  // updatePerson$ = this.actions$.pipe(
+  //   ofType(PersonActionTypes.UpdatePerson),
+  //   switchMap((action) =>
+  //     from(
+  //       this.firestore
+  //         .collection<StoreablePerson>('persons')
+  //         .doc(action.payload.person.id)
+  //         .update(toStorablePerson(action.payload.person))
+  //     ).pipe(
+  //       map(() => new UpdatePersonSuccess()),
+  //       catchError((error) => of(new UpdatePersonFailure({ error })))
+  //     )
+  //   )
+  // );
 
   constructor(
     private actions$: Actions<PersonActions | PageActions>,
     private subs: SubscriptionService,
     private firestore: AngularFirestore,
+    private fns: AngularFireFunctions,
     private store: Store<State>
   ) {}
 }

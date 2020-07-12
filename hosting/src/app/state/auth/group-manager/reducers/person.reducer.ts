@@ -9,7 +9,6 @@ interface PerosonState {
   length: number;
   persons: AppPerson[];
   limit: number;
-  pageIndex: number;
   pageFirst: AppPerson;
   pageLast: AppPerson;
 }
@@ -22,17 +21,12 @@ export const initialState: PerosonState = {
   length: 0,
   persons: [],
   limit: 3,
-  pageIndex: 0,
   pageFirst: null,
   pageLast: null,
 };
 
-export function reducer(state = initialState, action: PersonActions | PageActions): PerosonState {
+export function reducer(state = initialState, action: PersonActions): PerosonState {
   switch (action.type) {
-    case PageActionTypes.PageForward:
-      return { ...state, pageIndex: state.pageIndex + 1 };
-    case PageActionTypes.PageBackwards:
-      return { ...state, pageIndex: state.pageIndex === 0 ? 0 : state.pageIndex - 1 };
     case PersonActionTypes.LoadPersons:
       return { ...state, limit: action.payload.limit };
 

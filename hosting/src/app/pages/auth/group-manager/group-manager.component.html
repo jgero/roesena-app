@@ -2,51 +2,14 @@
   <div>Gruppen-Manager</div>
 </mat-toolbar>
 
-<app-search-bar></app-search-bar>
-
-<mat-grid-list *ngIf="$withForm | async as persons; else loading" [cols]="cols" [rowHeight]="'200px'" [gutterSize]="'16px'">
+<mat-grid-list *ngIf="withLoading$ | async as persons; else loading" [cols]="cols" [rowHeight]="'170px'" [gutterSize]="'16px'">
   <mat-grid-tile *ngFor="let person of persons">
-    <form [formGroup]="person.form" (ngSubmit)="onSubmit(person)">
-      <mat-toolbar>
-        <span>{{ person.name }}</span>
-        <div class="spacer"></div>
-        <button
-          *ngIf="!person.form.disabled; else saveSpinner"
-          mat-flat-button
-          [color]="'primary'"
-          type="submit"
-          [disabled]="person.form.invalid || !person.form.dirty || person.form.disabled"
-        >
-          <mat-icon>save</mat-icon>SPEICHERN
-        </button>
-        <ng-template #saveSpinner>
-          <mat-spinner [color]="'accent'" [diameter]="36"></mat-spinner>
-        </ng-template>
-      </mat-toolbar>
-      <mat-checkbox formControlName="confirmed">Bestätigtes Mitglied</mat-checkbox>
-
-      <mat-form-field>
-        <mat-chip-list #chipList formControlName="groups">
-          <mat-chip
-            *ngFor="let group of this.person.form.get('groups').value"
-            (removed)="chips.removeItem(group, person.form.get('groups'))"
-          >
-            {{ group }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
-          <input
-            placeholder="Gruppen"
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="chips.addItem($event, person.form.get('groups'))"
-          />
-        </mat-chip-list>
-      </mat-form-field>
-    </form>
+    <app-person-tile [person]="person"></app-person-tile>
+    <div class="tileWrapper"></div>
   </mat-grid-tile>
 </mat-grid-list>
 
-<app-paginator [pageSize]="limit" [pageIndex]="0" [length]="$length | async"></app-paginator>
+<app-paginator [pageSize]="limit" [pageIndex]="0" [length]="length$ | async"></app-paginator>
 
 <ng-template #loading>
   <mat-progress-bar [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>

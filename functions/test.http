@@ -1,0 +1,6 @@
+POST http://localhost:5001/sechta-narren/europe-west1/confirmPerson/tbgpj2vpHiivQE1crapY HTTP/1.1
+content-type: application/json
+
+{
+  "data": {}
+}

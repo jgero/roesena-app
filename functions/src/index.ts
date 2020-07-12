@@ -12,3 +12,4 @@ export * from './aggregation-denormalization/meta-tags';
 
 export * from './rest-endpoints/event-responder';
 export * from './rest-endpoints/change-seen-marker';
+export * from './rest-endpoints/confirm-person';

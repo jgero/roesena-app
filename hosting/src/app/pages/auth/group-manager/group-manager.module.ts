@@ -20,9 +20,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SearchModule } from '@shared/search/search.module';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
+import { PersonTileComponent } from './person-tile/person-tile.component';
 
 @NgModule({
-  declarations: [GroupManagerComponent],
+  declarations: [GroupManagerComponent, PersonTileComponent],
   imports: [
     CommonModule,
     FormsModule,
