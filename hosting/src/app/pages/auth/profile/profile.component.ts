@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { State } from '@state/auth/reducers/auth.reducer';
 import { DoLogout, DoChangeName } from '@state/auth/actions/auth.actions';
+import { DeletePerson } from '@state/auth/group-manager/actions/person.actions';
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +32,10 @@ export class ProfileComponent implements OnDestroy {
         },
       })
     );
+  }
+
+  onDeleteProfile(id: string) {
+    this.store.dispatch(new DeletePerson({ id }));
   }
 
   onUpdateNameSubmit() {

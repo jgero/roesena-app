@@ -14,6 +14,8 @@ Can be run locally using the [firebase emulator suite](https://firebase.google.c
 
 Restarting the emulators will clear all the data from the firestore emulator. The current contents of the emulators can be exported with `firebase emulators:export <export directory>` and imported with `firebase emulators:start --import <import directory>`.
 
+To enable functions in the emulator to access the production auth API admin credentials are needed. Follow setup in the [official docs](https://firebase.google.com/docs/functions/local-emulator#set_up_admin_credentials_optional). Be very careful with the key here, this is a private key!
+
 ## Build
 
 Running `firebase deploy` in the root directory of the repo will automatically build and deploy the entire project. For this firebase-tools need to be installed globally and you have to be logged into your google account.

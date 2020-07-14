@@ -65,12 +65,28 @@ export const personWriteListener = functions
         return Promise.all(writeOps);
       }
     } else if (!change.after.exists) {
+      const writeOps: Promise<any>[] = [];
       // Deleting document : subtract one from count
-      return admin
-        .firestore()
-        .collection('meta')
-        .doc('persons')
-        .update({ amount: admin.firestore.FieldValue.increment(-1) });
+      writeOps.push(
+        admin
+          .firestore()
+          .collection('meta')
+          .doc('persons')
+          .update({ amount: admin.firestore.FieldValue.increment(-1) })
+      );
+      // delete person from all events as participant
+      writeOps.push(
+        ...(
+          await admin.firestore().collection('events').where(`participants.${change.before.id}.amount`, '>=', -1).get()
+        ).docs.map((eventDoc) =>
+          admin
+            .firestore()
+            .collection('events')
+            .doc(eventDoc.id)
+            .update({ [`participants.${change.before.id}`]: admin.firestore.FieldValue.delete() })
+        )
+      );
+      return Promise.all(writeOps);
     }
     return false;
   });

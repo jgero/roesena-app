@@ -3,7 +3,7 @@ import { AppPerson } from '@utils/interfaces';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Store } from '@ngrx/store';
 import { State } from '@state/auth/group-manager/reducers/person.reducer';
-import { ConfirmPerson } from '@state/auth/group-manager/actions/person.actions';
+import { ConfirmPerson, DeletePerson } from '@state/auth/group-manager/actions/person.actions';
 
 @Component({
   selector: 'app-person-tile',
@@ -22,6 +22,11 @@ export class PersonTileComponent implements OnInit {
   onConfrimClick() {
     this.store.dispatch(new ConfirmPerson({ id: this.person.id }));
     this.isLoadingConfirmation = true;
+  }
+
+  onDeleteClick() {
+    this.store.dispatch(new DeletePerson({ id: this.person.id }));
+    this.isLoadingDeletion = true;
   }
 
   ngOnInit(): void {}

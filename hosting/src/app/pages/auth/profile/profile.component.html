@@ -34,5 +34,8 @@
         <mat-spinner *ngIf="updateNameForm.disabled" [color]="'accent'" [diameter]="36"></mat-spinner>
       </mat-list-item>
     </form>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Account löschen</div>
+    <button mat-flat-button [color]="'warn'" (click)="onDeleteProfile(user.id)">ACCOUNT LÖSCHEN</button>
   </mat-list>
 </main>

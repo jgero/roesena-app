@@ -19,7 +19,7 @@
     <button
       *ngIf="!isLoadingDeletion; else deleteSpinner"
       type="button"
-      (click)="isLoadingDeletion = !isLoadingDeletion"
+      (click)="onDeleteClick()"
       mat-icon-button
       [color]="'warn'"
       type="button"

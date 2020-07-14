@@ -92,12 +92,28 @@ export class PersonEffects {
   );
 
   @Effect({ dispatch: false })
-  markEventAsSeen$ = this.actions$.pipe(
+  confirmPerson$ = this.actions$.pipe(
     ofType(PersonActionTypes.ConfirmPerson),
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       this.fns
         .httpsCallable(`confirmPerson/${action.payload.id}`)({})
+        .pipe(
+          catchError((err) => {
+            console.log(err);
+            return of(null);
+          })
+        )
+    )
+  );
+
+  @Effect({ dispatch: false })
+  deletePerson$ = this.actions$.pipe(
+    ofType(PersonActionTypes.DeletePerson),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) =>
+      this.fns
+        .httpsCallable(`deletePerson/${action.payload.id}`)({})
         .pipe(
           catchError((err) => {
             console.log(err);
