@@ -81,7 +81,7 @@ export class ChangePasswordWithCodeFailed implements Action {
 }
 export class DoChangeName implements Action {
   readonly type = AuthActionTypes.DoChangeName;
-  constructor(public payload: { newName: string }) {}
+  constructor(public payload: { newName: string; id: string }) {}
 }
 export class ChangeNameLoaded implements Action {
   readonly type = AuthActionTypes.ChangeNameLoaded;

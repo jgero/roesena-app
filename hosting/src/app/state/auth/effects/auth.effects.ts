@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import { switchMap, map, catchError, tap, withLatestFrom, take, filter } from 'rxjs/operators';
+import { switchMap, map, catchError, tap, withLatestFrom, take, filter, takeUntil } from 'rxjs/operators';
 import { of, from, Observable } from 'rxjs';
 import {
   AuthActionTypes,
@@ -32,6 +32,8 @@ import { Store } from '@ngrx/store';
 import { StoreablePerson } from '@utils/interfaces';
 import { toStorablePerson, convertOne } from '@utils/converters/person-documents';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AngularFireFunctions } from '@angular/fire/functions';
+import { SubscriptionService } from '@services/subscription.service';
 
 @Injectable()
 export class AuthEffects {
@@ -100,20 +102,16 @@ export class AuthEffects {
   @Effect()
   changeName$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoChangeName),
-    withLatestFrom(this.store),
-    switchMap(([action, store]) => {
-      // has to be assigned this way because the store is read-only
-      let updated: any = {};
-      Object.assign(updated, store.user.user);
-      updated.name = action.payload.newName;
-      return from(
-        this.firestore.collection<StoreablePerson>('persons').doc<StoreablePerson>(updated.id).update(toStorablePerson(updated))
-      ).pipe(
-        map(() => new ChangeNameLoaded()),
-        tap(() => this.snackbar.open('Name gespeichert')),
-        catchError((error) => of(new ChangeNameFailed({ error })))
-      );
-    })
+    switchMap((action) =>
+      this.fns
+        .httpsCallable(`updatePersonName/${action.payload.id}`)({ name: action.payload.newName })
+        .pipe(
+          map(() => new ChangeNameLoaded()),
+          tap(() => this.snackbar.open('Name gespeichert')),
+          catchError((error) => of(new ChangeNameFailed({ error }))),
+          takeUntil(this.subs.unsubscribe$)
+        )
+    )
   );
 
   @Effect()
@@ -144,6 +142,8 @@ export class AuthEffects {
     private actions$: Actions<AuthActions>,
     private auth: AngularFireAuth,
     private firestore: AngularFirestore,
+    private fns: AngularFireFunctions,
+    private subs: SubscriptionService,
     private location: Location,
     private router: Router,
     private browser: BrowserService,

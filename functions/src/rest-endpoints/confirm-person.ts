@@ -23,6 +23,7 @@ const checkAdminGroup: express.RequestHandler = async (req, res, next) => {
   // check if user is in 'admin' group
   if (!doc.groups.admin) {
     res.status(403).send({ error: 'current user is no admin' });
+    return;
   }
   // user is admin
   next();

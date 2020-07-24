@@ -1,10 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Subscription, SubscriptionLike } from 'rxjs';
 import { State } from '@state/auth/reducers/auth.reducer';
 import { DoLogout, DoChangeName } from '@state/auth/actions/auth.actions';
 import { DeletePerson } from '@state/auth/group-manager/actions/person.actions';
+import { SubscriptionService } from '@services/subscription.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,35 +13,18 @@ import { DeletePerson } from '@state/auth/group-manager/actions/person.actions';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnDestroy {
-  updateNameForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZäöüÄÖÜß -]+$')]),
-  });
-  private subs: Subscription[] = [];
   isLoading$ = this.store.select('auth', 'isLoading');
   user$ = this.store.select('user', 'user');
 
-  constructor(private store: Store<State>) {
-    this.subs.push(
-      // enable and disable the form while loading
-      this.store.select('auth', 'isLoading').subscribe({
-        next: (isLoading) => {
-          if (isLoading) {
-            this.updateNameForm.disable();
-          } else {
-            this.updateNameForm.enable();
-          }
-        },
-      })
-    );
-  }
+  constructor(private store: Store<State>, private subs: SubscriptionService) {}
 
   onDeleteProfile(id: string) {
     this.store.dispatch(new DeletePerson({ id }));
   }
 
-  onUpdateNameSubmit() {
-    this.store.dispatch(new DoChangeName({ newName: this.updateNameForm.get('name').value }));
-    this.updateNameForm.reset();
+  onUpdateNameSubmit(inputElement: HTMLInputElement, id: string) {
+    this.store.dispatch(new DoChangeName({ newName: inputElement.value, id }));
+    inputElement.value = '';
   }
 
   logout() {
@@ -48,6 +32,6 @@ export class ProfileComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs.forEach((sub) => sub.unsubscribe());
+    this.subs.unsubscribeComponent$.next();
   }
 }
