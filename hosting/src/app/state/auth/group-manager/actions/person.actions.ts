@@ -13,6 +13,38 @@ export enum PersonActionTypes {
   DeletePerson = '[Person] delete person',
   DeletePersonSuccess = '[Person] delete person success',
   DeletePersonFailure = '[Person] delete person failure',
+  AddGroup = '[Person] add group to person',
+  AddGroupSuccess = '[Person] add group to person success',
+  AddGroupFailure = '[Person] add group to person failure',
+  RemoveGroup = '[Person] remove group from person',
+  RemoveGroupSuccess = '[Person] remove group from person success',
+  RemoveGroupFailure = '[Person] remove group from person failure',
+}
+export class AddGroup implements Action {
+  readonly type = PersonActionTypes.AddGroup;
+  constructor(public payload: { id: string; group: string }) {}
+}
+
+export class AddGroupSuccess implements Action {
+  readonly type = PersonActionTypes.AddGroupSuccess;
+}
+
+export class AddGroupFailure implements Action {
+  readonly type = PersonActionTypes.AddGroupFailure;
+  constructor(public payload: { error: any }) {}
+}
+export class RemoveGroup implements Action {
+  readonly type = PersonActionTypes.RemoveGroup;
+  constructor(public payload: { id: string; group: string }) {}
+}
+
+export class RemoveGroupSuccess implements Action {
+  readonly type = PersonActionTypes.RemoveGroupSuccess;
+}
+
+export class RemoveGroupFailure implements Action {
+  readonly type = PersonActionTypes.RemoveGroupFailure;
+  constructor(public payload: { error: any }) {}
 }
 
 export class DeletePerson implements Action {
@@ -79,4 +111,10 @@ export type PersonActions =
   | ConfirmPersonFailure
   | DeletePerson
   | DeletePersonSuccess
-  | DeletePersonFailure;
+  | DeletePersonFailure
+  | AddGroup
+  | AddGroupSuccess
+  | AddGroupFailure
+  | RemoveGroup
+  | RemoveGroupSuccess
+  | RemoveGroupFailure;

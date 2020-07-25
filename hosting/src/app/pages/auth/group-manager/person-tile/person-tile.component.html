@@ -34,12 +34,15 @@
 
 <mat-form-field>
   <mat-chip-list #chipList>
-    <mat-chip *ngFor="let group of person.groups">
-      <!-- (removed)="chips.removeItem(group, person.form.get('groups'))" -->
+    <mat-chip *ngFor="let group of person.groups" (removed)="onRemoveGroup(person.id, group)">
       {{ group }}
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
-    <input placeholder="Gruppen" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" />
-    <!-- (matChipInputTokenEnd)="chips.addItem($event, person.form.get('groups'))" -->
+    <input
+      placeholder="Gruppen"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="onAddGroup(person.id, $event.value)"
+    />
   </mat-chip-list>
 </mat-form-field>

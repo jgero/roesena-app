@@ -15,3 +15,4 @@ export * from './rest-endpoints/change-seen-marker';
 export * from './rest-endpoints/confirm-person';
 export * from './rest-endpoints/delete-person';
 export * from './rest-endpoints/update-person-name';
+export * from './rest-endpoints/edit-groups';

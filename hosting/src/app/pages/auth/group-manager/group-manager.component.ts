@@ -27,15 +27,7 @@ interface AppPersonWithLoading extends AppPerson {
 })
 export class GroupManagerComponent implements OnInit, OnDestroy {
   length$ = this.store.select('person', 'length');
-  withLoading$: Observable<AppPersonWithLoading[]> = this.store.select('person', 'persons').pipe(
-    map((persons: AppPerson[]): AppPersonWithLoading[] => {
-      return persons.map((person) => ({
-        ...person,
-        isConfrimationLoading: false,
-        isDeletionLoading: false,
-      }));
-    })
-  );
+  persons$ = this.store.select('person', 'persons');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   get cols(): number {

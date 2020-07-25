@@ -9,6 +9,12 @@ import {
   PersonActions,
   LoadPersonLengthSuccess,
   LoadPersonLengthFailure,
+  DeletePersonSuccess,
+  DeletePersonFailure,
+  AddGroupSuccess,
+  AddGroupFailure,
+  RemoveGroupSuccess,
+  RemoveGroupFailure,
 } from '../actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -19,6 +25,7 @@ import { State } from '../reducers/person.reducer';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 import { StoreablePerson } from '@utils/interfaces';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { DeleteArticleFailure } from '@state/articles/editor/actions/editor.actions';
 
 @Injectable()
 export class PersonEffects {
@@ -94,8 +101,7 @@ export class PersonEffects {
   @Effect({ dispatch: false })
   confirmPerson$ = this.actions$.pipe(
     ofType(PersonActionTypes.ConfirmPerson),
-    withLatestFrom(this.store),
-    switchMap(([action, storeState]) =>
+    switchMap((action) =>
       this.fns
         .httpsCallable(`confirmPerson/${action.payload.id}`)({})
         .pipe(
@@ -110,34 +116,47 @@ export class PersonEffects {
   @Effect({ dispatch: false })
   deletePerson$ = this.actions$.pipe(
     ofType(PersonActionTypes.DeletePerson),
-    withLatestFrom(this.store),
-    switchMap(([action, storeState]) =>
+    switchMap((action) =>
       this.fns
         .httpsCallable(`deletePerson/${action.payload.id}`)({})
         .pipe(
-          catchError((err) => {
-            console.log(err);
-            return of(null);
-          })
+          map(convertMany),
+          takeUntil(this.subs.unsubscribe$),
+          map(() => new DeletePersonSuccess()),
+          catchError((error) => of(new DeletePersonFailure({ error })))
         )
     )
   );
 
-  // @Effect()
-  // updatePerson$ = this.actions$.pipe(
-  //   ofType(PersonActionTypes.UpdatePerson),
-  //   switchMap((action) =>
-  //     from(
-  //       this.firestore
-  //         .collection<StoreablePerson>('persons')
-  //         .doc(action.payload.person.id)
-  //         .update(toStorablePerson(action.payload.person))
-  //     ).pipe(
-  //       map(() => new UpdatePersonSuccess()),
-  //       catchError((error) => of(new UpdatePersonFailure({ error })))
-  //     )
-  //   )
-  // );
+  @Effect({ dispatch: false })
+  addGroup$ = this.actions$.pipe(
+    ofType(PersonActionTypes.AddGroup),
+    switchMap((action) =>
+      this.fns
+        .httpsCallable(`editGroups/addGroup`)({ id: action.payload.id, group: action.payload.group })
+        .pipe(
+          map(convertMany),
+          takeUntil(this.subs.unsubscribe$),
+          map(() => new AddGroupSuccess()),
+          catchError((error) => of(new AddGroupFailure({ error })))
+        )
+    )
+  );
+
+  @Effect({ dispatch: false })
+  removeGroup$ = this.actions$.pipe(
+    ofType(PersonActionTypes.RemoveGroup),
+    switchMap((action) =>
+      this.fns
+        .httpsCallable(`editGroups/removeGroup`)({ id: action.payload.id, group: action.payload.group })
+        .pipe(
+          map(convertMany),
+          takeUntil(this.subs.unsubscribe$),
+          map(() => new RemoveGroupSuccess()),
+          catchError((error) => of(new RemoveGroupFailure({ error })))
+        )
+    )
+  );
 
   constructor(
     private actions$: Actions<PersonActions | PageActions>,

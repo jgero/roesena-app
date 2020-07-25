@@ -3,7 +3,7 @@ import { AppPerson } from '@utils/interfaces';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Store } from '@ngrx/store';
 import { State } from '@state/auth/group-manager/reducers/person.reducer';
-import { ConfirmPerson, DeletePerson } from '@state/auth/group-manager/actions/person.actions';
+import { ConfirmPerson, DeletePerson, AddGroup, RemoveGroup } from '@state/auth/group-manager/actions/person.actions';
 
 @Component({
   selector: 'app-person-tile',
@@ -18,6 +18,14 @@ export class PersonTileComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(private store: Store<State>) {}
+
+  onAddGroup(id: string, group: string) {
+    this.store.dispatch(new AddGroup({ id, group }));
+  }
+
+  onRemoveGroup(id: string, group: string) {
+    this.store.dispatch(new RemoveGroup({ id, group }));
+  }
 
   onConfrimClick() {
     this.store.dispatch(new ConfirmPerson({ id: this.person.id }));

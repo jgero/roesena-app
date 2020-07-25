@@ -2,7 +2,7 @@
   <div>Gruppen-Manager</div>
 </mat-toolbar>
 
-<mat-grid-list *ngIf="withLoading$ | async as persons; else loading" [cols]="cols" [rowHeight]="'170px'" [gutterSize]="'16px'">
+<mat-grid-list *ngIf="persons$ | async as persons; else loading" [cols]="cols" [rowHeight]="'170px'" [gutterSize]="'16px'">
   <mat-grid-tile *ngFor="let person of persons">
     <app-person-tile [person]="person"></app-person-tile>
     <div class="tileWrapper"></div>
