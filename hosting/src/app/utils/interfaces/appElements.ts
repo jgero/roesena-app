@@ -17,8 +17,7 @@ export interface AppPerson {
 export interface AppEvent extends AppElement {
   title: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  date: Date;
   deadline: Date | null;
   participants: Participant[];
 }
@@ -61,12 +60,9 @@ export interface StoreableEvent {
   title: string;
   description: string;
   startDate: fbs.firestore.Timestamp;
-  endDate: fbs.firestore.Timestamp;
-  months: { year: number; month: number }[];
   tags: { [key: string]: boolean };
   deadline: fbs.firestore.Timestamp;
   participants: { [key: string]: { amount: number; name: string; hasUnseenChanges: boolean | null } };
-  participantsArray: string[];
 }
 
 export interface StoreableImage {

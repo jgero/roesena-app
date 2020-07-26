@@ -37,7 +37,7 @@ export function reducer(state = initialState, action: EventActions): CalendarSta
         const startDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 0, 0).getTime();
         const endDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 24, 0).getTime();
         action.payload.events.forEach((event) => {
-          if (event.startDate.getTime() <= endDay && event.endDate.getTime() >= startDay) {
+          if (event.date.getTime() <= endDay && event.date.getTime() >= startDay) {
             eventsForDay.push(event);
           }
         });

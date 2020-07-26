@@ -5,33 +5,16 @@ import { participantArrayToMap, participantMapToArray } from './participants';
 import { Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/firestore/interfaces';
 
 export function toStorableEvent(app: AppEvent): StoreableEvent {
-  const { title, description, ownerId, ownerName, startDate, endDate } = app;
-  // create the array with the month and year numbers for calendar month queries
-  const months: { year: number; month: number }[] = [];
-  let month = startDate.getMonth();
-  let year = startDate.getFullYear();
-  months.push({ year, month });
-  while (year !== endDate.getFullYear() || month !== endDate.getMonth()) {
-    if (month === 11) {
-      month = 0;
-      year += 1;
-    } else {
-      month += 1;
-    }
-    months.push({ year, month });
-  }
+  const { title, description, ownerId, ownerName, date } = app;
   return {
     title,
     description,
     ownerId,
     ownerName,
-    startDate: fbs.firestore.Timestamp.fromDate(app.startDate),
-    endDate: fbs.firestore.Timestamp.fromDate(app.endDate),
-    months,
+    startDate: fbs.firestore.Timestamp.fromDate(app.date),
     tags: arrayToMap(app.tags),
     deadline: app.deadline ? fbs.firestore.Timestamp.fromDate(app.deadline) : null,
     participants: participantArrayToMap(app.participants),
-    participantsArray: app.participants.map((participant) => participant.id),
   };
 }
 
@@ -58,8 +41,7 @@ function convertSnapshot(snapshot: DocumentSnapshot<StoreableEvent> | QueryDocum
     ownerId,
     ownerName,
     id: snapshot.id,
-    startDate: new Date(snapshot.data().startDate.toDate()),
-    endDate: new Date(snapshot.data().endDate.toDate()),
+    date: new Date(snapshot.data().startDate.toDate()),
     deadline: snapshot.data().deadline ? new Date(snapshot.data().deadline.toDate()) : null,
     tags: mapToArray(snapshot.data().tags),
     participants: participantMapToArray(snapshot.data().participants),

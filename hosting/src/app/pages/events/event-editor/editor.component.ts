@@ -49,20 +49,14 @@ export class EditorComponent implements OnDestroy {
         next: (event) => {
           // deep copy the object
           this.event = JSON.parse(JSON.stringify(event));
-          this.event.startDate = new Date(this.event.startDate);
-          this.event.endDate = new Date(this.event.endDate);
+          this.event.date = new Date(this.event.date);
           this.event.deadline = new Date(this.event.deadline);
           const p = new ToLocalTimeStringPipe();
           this.eventForm = new FormGroup({
             title: new FormControl(this.event.title, [Validators.required]),
             description: new FormControl(this.event.description, []),
-            startDate: new FormControl(this.event.startDate, [Validators.required]),
-            startTime: new FormControl(p.transform(this.event.startDate), [
-              Validators.required,
-              Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
-            ]),
-            endDate: new FormControl(this.event.endDate, [Validators.required]),
-            endTime: new FormControl(p.transform(this.event.endDate), [
+            date: new FormControl(this.event.date, [Validators.required]),
+            time: new FormControl(p.transform(this.event.date), [
               Validators.required,
               Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
             ]),
@@ -170,8 +164,7 @@ export class EditorComponent implements OnDestroy {
       title: this.eventForm.get('title').value,
       description: this.eventForm.get('description').value,
       tags: this.eventForm.get('tags').value,
-      startDate: this.getDateFromDateAndTimeStrings(this.eventForm.get('startDate').value, this.eventForm.get('startTime').value),
-      endDate: this.getDateFromDateAndTimeStrings(this.eventForm.get('endDate').value, this.eventForm.get('endTime').value),
+      date: this.getDateFromDateAndTimeStrings(this.eventForm.get('date').value, this.eventForm.get('time').value),
       deadline: this.getDateFromDateAndTimeStrings(
         this.eventForm.get('deadline').get('deadlineDate').value,
         this.eventForm.get('deadline').get('deadlineTime').value

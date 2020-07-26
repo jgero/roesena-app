@@ -22,20 +22,20 @@
     </mat-form-field>
 
     <mat-form-field class="date-time" [style.grid-area]="'start-date'">
-      <mat-label>Start-Datum</mat-label>
-      <input matInput placeholder="DD.MM.YYYY" [matDatepicker]="picker1" formControlName="startDate" />
-      <mat-error *ngIf="eventForm.controls.startDate.invalid"> {{ eventForm.controls.startDate | errorMessage }} </mat-error>
+      <mat-label>Datum</mat-label>
+      <input matInput placeholder="DD.MM.YYYY" [matDatepicker]="picker1" formControlName="date" />
+      <mat-error *ngIf="eventForm.controls.date.invalid"> {{ eventForm.controls.date | errorMessage }} </mat-error>
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field class="date-time" [style.grid-area]="'start-time'">
-      <mat-label>Start-Zeit</mat-label>
-      <input matInput placeholder="HH:MM" formControlName="startTime" />
-      <mat-error *ngIf="eventForm.controls.startTime.invalid"> {{ eventForm.controls.startTime | errorMessage }} </mat-error>
+      <mat-label>Zeit</mat-label>
+      <input matInput placeholder="HH:MM" formControlName="time" />
+      <mat-error *ngIf="eventForm.controls.time.invalid"> {{ eventForm.controls.time | errorMessage }} </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="date-time" [style.grid-area]="'end-date'">
+    <!-- <mat-form-field class="date-time" [style.grid-area]="'end-date'">
       <mat-label>End-Datum</mat-label>
       <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker2" formControlName="endDate" />
       <mat-error *ngIf="eventForm.controls.endDate.invalid"> {{ eventForm.controls.endDate | errorMessage }} </mat-error>
@@ -47,7 +47,7 @@
       <mat-label>End-Zeit</mat-label>
       <input matInput placeholder="HH:MM" formControlName="endTime" />
       <mat-error *ngIf="eventForm.controls.endTime.invalid"> {{ eventForm.controls.endTime | errorMessage }} </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <mat-form-field [style.grid-area]="'tags'">
       <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
