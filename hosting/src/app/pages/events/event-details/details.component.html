@@ -3,11 +3,7 @@
   <mat-toolbar [color]="'accent'">{{ event.title }}</mat-toolbar>
   <mat-toolbar class="date"
     ><span>
-      <time [dateTime]="event.startDate"
-        >{{ event.startDate | toLocalDateString }} {{ event.startDate | toLocalTimeString }}</time
-      >
-      <span> - </span>
-      <time [dateTime]="event.endDate">{{ event.endDate | toLocalDateString }} {{ event.endDate | toLocalTimeString }}</time>
+      <time [dateTime]="event.date">{{ event.date | toLocalDateString }} {{ event.date | toLocalTimeString }}</time>
     </span>
   </mat-toolbar>
   <main>
@@ -51,7 +47,10 @@
         </mat-chip-list>
       </mat-list-item>
     </mat-list>
-    <a mat-fab class="edit-fab" [color]="'primary'" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
+    <div class="fab-container">
+      <a mat-fab [color]="'primary'" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
+      <a mat-fab [color]="'primary'" [routerLink]="'/auth/my-events'"><mat-icon>reply</mat-icon></a>
+    </div>
   </main>
 
   <mat-toolbar class="footer">

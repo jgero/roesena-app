@@ -33,10 +33,14 @@ main {
   }
 }
 
-.edit-fab {
+.fab-container {
   position: sticky;
   z-index: 1;
   bottom: 16px;
+
+  a {
+    margin: 8px;
+  }
 }
 
 .footer {
