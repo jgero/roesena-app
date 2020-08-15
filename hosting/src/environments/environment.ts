@@ -5,7 +5,7 @@
 export const environment = {
   buildVersion: 'v0.0.0-0-as12df34',
   production: false,
-  useEmulator: false,
+  useEmulator: true,
   firebase: {
     apiKey: 'AIzaSyC9voJXeCNhUiNfZDoE6M_7F2eAvDm1MGg',
     authDomain: 'sechta-narren.firebaseapp.com',

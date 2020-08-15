@@ -37,7 +37,7 @@ export class BaseEffects {
       if (user !== null && user.isConfirmedMember) {
         return this.firestore
           .collection<StoreableEvent>('events', (qFn) =>
-            qFn.where(`deadline`, '>=', new Date()).where('participantsArray', 'array-contains', user.id).orderBy('deadline')
+            qFn.where(`deadline`, '>=', new Date()).where(`participants.${user.id}.amount`, '==', -1).orderBy('deadline')
           )
           .snapshotChanges()
           .pipe(
@@ -128,7 +128,7 @@ export class BaseEffects {
         this.firestore
           .collection<StoreableEvent>('events', (qFn) => {
             let query: Query | CollectionReference = qFn;
-            query = query.orderBy('endDate').where('endDate', '>=', new Date());
+            query = query.orderBy('startDate').where('startDate', '>=', new Date());
             if (!storeState.user.user || !storeState.user.user.isConfirmedMember) {
               // if not logged in or not confirmed show public events
               query = query.where('participants', '==', {});
