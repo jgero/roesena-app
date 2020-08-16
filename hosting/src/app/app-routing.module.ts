@@ -46,6 +46,7 @@ export const routes: Routes = [
       },
       { path: 'about', component: AboutComponent, data: { animation: 'about' } },
       { path: 'help', component: HelpComponent, data: { animation: 'help' } },
+      { path: 'search/:type/:searchStrings', component: SearchPageComponent, data: { animation: 'search' } },
       { path: '**', component: NotFoundComponent, data: { animation: 'error' } },
     ],
   },

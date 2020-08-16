@@ -25,13 +25,15 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent {
-  isOpen = false;
+  get isOpen(): boolean {
+    return !!this.bottomSheet._openedBottomSheetRef;
+  }
+
   constructor(private bottomSheet: MatBottomSheet, actions$: Actions, private store: Store<State>) {
     actions$.pipe(ofType(SearchActionTypes.AddSearchString, SearchActionTypes.RemoveSearchString)).subscribe({
       next: () => {
         if (!this.isOpen) {
           this.bottomSheet.open(SearchSheet);
-          this.isOpen = true;
         }
       },
     });
@@ -43,7 +45,6 @@ export class SearchBarComponent {
     } else {
       this.bottomSheet.open(SearchSheet);
     }
-    this.isOpen = !this.isOpen;
   }
 }
 
@@ -69,7 +70,7 @@ export class SearchSheet {
       }
     })
   );
-  constructor(private store: Store<State>, public autocomplete: AutocompleteService) {}
+  constructor(private bottomSheetRef: MatBottomSheet, private store: Store<State>, public autocomplete: AutocompleteService) {}
 
   onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
     input.value = '';
@@ -102,5 +103,9 @@ export class SearchSheet {
 
   onSearch() {
     this.store.dispatch(new RunSearch());
+  }
+
+  onClose() {
+    this.bottomSheetRef.dismiss();
   }
 }

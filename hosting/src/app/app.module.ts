@@ -15,6 +15,7 @@ import { RootComponent } from '@pages/base-pages/root/root.component';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BasePagesModule } from '@pages/base-pages/base-pages.module';
 import { CommonModule } from '@angular/common';
+import { SearchModule } from '@shared/search/search.module';
 
 @NgModule({
   declarations: [],
@@ -33,6 +34,7 @@ import { CommonModule } from '@angular/common';
     MatSnackBarModule,
     MatNativeDateModule,
     BasePagesModule,
+    SearchModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de' },
