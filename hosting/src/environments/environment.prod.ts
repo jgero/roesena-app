@@ -1,5 +1,5 @@
 export const environment = {
-  buildVersion: 'v2.4.0-1-g722ba8d-dirty',
+  buildVersion: '{BUILD_VERSION}',
   production: true,
   useEmulator: false,
   firebase: {
