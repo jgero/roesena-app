@@ -9,9 +9,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { MarkdownViewerModule } from '@shared/markdown-viewer/markdown-viewer.module';
-import { CardsModule } from '@shared/cards/cards.module';
 
 import { AboutComponent } from './about/about.component';
 import { HelpComponent } from './help/help.component';
@@ -41,6 +41,7 @@ import { ConvertersModule } from '@shared/converters/converters.module';
     MatToolbarModule,
     MarkdownViewerModule,
     MatButtonModule,
+    MatMenuModule,
     ConvertersModule,
     SearchModule,
     StoreModule.forFeature(fromBase.baseFeatureKey, fromBase.reducer),

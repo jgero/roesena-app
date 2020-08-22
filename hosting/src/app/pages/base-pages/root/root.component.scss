@@ -1,14 +1,8 @@
-@import '~@angular/material/theming';
-@include mat-core();
-$background: mat-palette($mat-grey);
-
-.sidenav-container {
-  height: calc(100% - 64px);
-}
-
-@media screen and (max-width: 599px) {
-  .sidenav-container {
-    height: calc(100% - 56px);
+:host {
+  @media screen and (min-width: 601px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
@@ -25,17 +19,8 @@ $background: mat-palette($mat-grey);
   font-size: 20px;
 }
 
-.sidenav {
-  width: 240px;
-}
-
-.mat-toolbar.mat-primary {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.version {
-  padding-left: 16px;
-  color: mat-color($background, 500);
+.outletContainer {
+  width: 100%;
+  max-width: min(1400px, 100%);
+  overflow: hidden;
 }
