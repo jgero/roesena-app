@@ -9,10 +9,10 @@ import {
   LoadRespondablesFailure,
   LoadHelpArticleSuccess,
   LoadHelpArticleFailed,
-  LoadStartpageArticlesSuccess,
-  LoadStartpageEventsSuccess,
-  LoadStartpageArticlesFailure,
-  LoadStartpageEventsFailure,
+  LoadStartpageArticleSuccess,
+  LoadStartpageEventSuccess,
+  LoadStartpageArticleFailure,
+  LoadStartpageEventFailure,
 } from '../actions/base.actions';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/base.reducer';
@@ -117,18 +117,18 @@ export class BaseEffects {
       return merge(
         // get the articles
         this.firestore
-          .collection<StoreableArticle>('articles', (qFn) => qFn.orderBy('created', 'desc').limit(3))
+          .collection<StoreableArticle>('articles', (qFn) => qFn.orderBy('created', 'desc').limit(1))
           .snapshotChanges()
           .pipe(
             map(convertManyArticles),
-            map((articles) => new LoadStartpageArticlesSuccess({ articles })),
-            catchError((error) => of(new LoadStartpageArticlesFailure({ error }))),
+            map((articles) => new LoadStartpageArticleSuccess({ article: articles[0] })),
+            catchError((error) => of(new LoadStartpageArticleFailure({ error }))),
             takeUntil(this.subs.unsubscribe$)
           ),
         this.firestore
           .collection<StoreableEvent>('events', (qFn) => {
             let query: Query | CollectionReference = qFn;
-            query = query.orderBy('endDate').where('endDate', '>=', new Date());
+            query = query.orderBy('startDate').where('startDate', '>=', new Date());
             if (!storeState.user.user || !storeState.user.user.isConfirmedMember) {
               // if not logged in or not confirmed show public events
               query = query.where('participants', '==', {});
@@ -149,11 +149,11 @@ export class BaseEffects {
                 }
               });
               // apply limit
-              events = events.slice(0, 3);
+              events = events.slice(0, 1);
               return events;
             }),
-            map((events) => new LoadStartpageEventsSuccess({ events })),
-            catchError((error) => of(new LoadStartpageEventsFailure({ error }))),
+            map((events) => new LoadStartpageEventSuccess({ event: events[0] })),
+            catchError((error) => of(new LoadStartpageEventFailure({ error }))),
             takeUntil(this.subs.unsubscribe$)
           )
       );

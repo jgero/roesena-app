@@ -24,6 +24,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { BaseEffects } from '../../state/basePages/effects/base.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchModule } from '@shared/search/search.module';
+import { ConvertersModule } from '@shared/converters/converters.module';
 
 @NgModule({
   declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
@@ -40,7 +41,7 @@ import { SearchModule } from '@shared/search/search.module';
     MatToolbarModule,
     MarkdownViewerModule,
     MatButtonModule,
-    CardsModule,
+    ConvertersModule,
     SearchModule,
     StoreModule.forFeature(fromBase.baseFeatureKey, fromBase.reducer),
     EffectsModule.forFeature([BaseEffects]),

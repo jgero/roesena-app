@@ -8,10 +8,10 @@ export enum BaseActionTypes {
   LoadHelpArticleSuccess = '[Base] load help article success',
   LoadHelpArticleFailed = '[Base] loading help article failed',
   LoadStartpageContent = '[Base] load startpage content',
-  LoadStartpageArticlesSuccess = '[Base] startpage articles loaded',
-  LoadStartpageArticlesFailure = '[Base] startpage articles loading failed',
-  LoadStartpageEventsSuccess = '[Base] startpage events loaded',
-  LoadStartpageEventsFailure = '[Base] startpage events loading failed',
+  LoadStartpageArticleSuccess = '[Base] startpage article loaded',
+  LoadStartpageArticleFailure = '[Base] startpage article loading failed',
+  LoadStartpageEventSuccess = '[Base] startpage event loaded',
+  LoadStartpageEventFailure = '[Base] startpage event loading failed',
 }
 
 export class LoadRespondablesSuccess implements Action {
@@ -42,23 +42,23 @@ export class LoadStartpageContent implements Action {
   readonly type = BaseActionTypes.LoadStartpageContent;
 }
 
-export class LoadStartpageArticlesSuccess implements Action {
-  readonly type = BaseActionTypes.LoadStartpageArticlesSuccess;
-  constructor(public payload: { articles: AppArticle[] }) {}
+export class LoadStartpageArticleSuccess implements Action {
+  readonly type = BaseActionTypes.LoadStartpageArticleSuccess;
+  constructor(public payload: { article: AppArticle }) {}
 }
 
-export class LoadStartpageArticlesFailure implements Action {
-  readonly type = BaseActionTypes.LoadStartpageArticlesFailure;
+export class LoadStartpageArticleFailure implements Action {
+  readonly type = BaseActionTypes.LoadStartpageArticleFailure;
   constructor(public payload: { error: any }) {}
 }
 
-export class LoadStartpageEventsSuccess implements Action {
-  readonly type = BaseActionTypes.LoadStartpageEventsSuccess;
-  constructor(public payload: { events: AppEvent[] }) {}
+export class LoadStartpageEventSuccess implements Action {
+  readonly type = BaseActionTypes.LoadStartpageEventSuccess;
+  constructor(public payload: { event: AppEvent }) {}
 }
 
-export class LoadStartpageEventsFailure implements Action {
-  readonly type = BaseActionTypes.LoadStartpageEventsFailure;
+export class LoadStartpageEventFailure implements Action {
+  readonly type = BaseActionTypes.LoadStartpageEventFailure;
   constructor(public payload: { error: any }) {}
 }
 
@@ -69,7 +69,7 @@ export type BaseActions =
   | LoadHelpArticleSuccess
   | LoadHelpArticleFailed
   | LoadStartpageContent
-  | LoadStartpageArticlesSuccess
-  | LoadStartpageArticlesFailure
-  | LoadStartpageEventsSuccess
-  | LoadStartpageEventsFailure;
+  | LoadStartpageArticleSuccess
+  | LoadStartpageArticleFailure
+  | LoadStartpageEventSuccess
+  | LoadStartpageEventFailure;

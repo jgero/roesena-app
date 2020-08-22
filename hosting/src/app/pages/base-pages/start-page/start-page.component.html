@@ -1,9 +1,39 @@
-<div class="cardContainer">
-  <a mat-flat-button [color]="'accent'" [routerLink]="'/events/overview'">NÄCHSTE EVENTS</a>
-  <app-event-card *ngFor="let event of events$ | async" [data]="event"></app-event-card>
+<div class="title">
+  <h1>Röhlinger<br />Sechtanarren</h1>
+  <h2>e.V.1970</h2>
+  <img src="../../../../assets/icons/icon-512x512.png" alt="logo-background" />
 </div>
 
-<div class="cardContainer">
-  <a mat-flat-button [color]="'accent'" [routerLink]="'/articles/overview'">AKTUELLSTE ARTIKEL</a>
-  <app-article-card *ngFor="let article of articles$ | async" [data]="article"></app-article-card>
+<div class="stripes">
+  <div class="stripe blue"></div>
+  <div class="stripe red"></div>
+  <div class="stripe yellow"></div>
+</div>
+
+<div class="content">
+  <div class="header">
+    <h2>News</h2>
+    <a mat-flat-button [color]="'accent'" [routerLink]="'/articles/overview'">MEHR ANZEIGEN</a>
+  </div>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="article$ | async as article">
+    <h3>{{ article.title }}</h3>
+    <p class="subtitle">{{ article.ownerName }} - {{ article.created | toLocalDateString }}</p>
+    <p class="content">{{ article.content }}</p>
+    <a mat-button [color]="'primary'" [routerLink]="'/articles/details/' + article.id">MEHR</a>
+  </ng-container>
+</div>
+
+<div class="content">
+  <div class="header">
+    <h2>Events</h2>
+    <a mat-flat-button [color]="'accent'" [routerLink]="'/events/overview'">MEHR ANZEIGEN</a>
+  </div>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="event$ | async as ev">
+    <h3>{{ ev.title }}</h3>
+    <p class="subtitle">{{ ev.ownerName }} - {{ ev.date | toLocalDateString }}</p>
+    <p class="content">{{ ev.description }}</p>
+    <a mat-button [color]="'primary'" [routerLink]="'/events/details/' + ev.id">MEHR</a>
+  </ng-container>
 </div>

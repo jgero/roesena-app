@@ -35,17 +35,6 @@ $background: mat-palette($mat-grey);
   z-index: 1;
 }
 
-.mat-sidenav-content {
-  display: relative;
-
-  .loading {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-  }
-}
-
 .version {
   padding-left: 16px;
   color: mat-color($background, 500);
