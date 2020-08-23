@@ -19,6 +19,8 @@ import * as fromEvent from '../../../state/events/editor/reducers/event.reducer'
 import { EffectsModule } from '@ngrx/effects';
 import { EventEffects } from '../../../state/events/editor/effects/event.effects';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [EditorComponent, DeleteDialogComponent],
@@ -34,8 +36,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     ConvertersModule,
     MatIconModule,
     MatChipsModule,
-    MatExpansionModule,
     MatButtonModule,
+    MatStepperModule,
+    MatTabsModule,
     MatProgressSpinnerModule,
     StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
     EffectsModule.forFeature([EventEffects]),

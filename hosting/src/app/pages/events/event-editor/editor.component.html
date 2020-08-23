@@ -1,84 +1,70 @@
-<ng-container *ngIf="event && eventForm && persons">
-  <mat-toolbar [color]="'accent'">
-    <div>Event Bearbeiten</div>
-    <div class="spacer"></div>
-    <a mat-icon-button [routerLink]="'/events/overview'"><mat-icon>apps</mat-icon></a>
-  </mat-toolbar>
-  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-    <mat-form-field [style.grid-area]="'title'">
-      <mat-label>Titel</mat-label>
-      <input matInput formControlName="title" />
-      <mat-error *ngIf="eventForm.controls.title.invalid"> {{ eventForm.controls.title | errorMessage }} </mat-error>
-    </mat-form-field>
+<mat-horizontal-stepper>
+  <mat-step [stepControl]="contentFormGroup" errorMessage="Inhalt unvollständig.">
+    <form [formGroup]="contentFormGroup">
+      <ng-template matStepLabel>Inhalt</ng-template>
+      <mat-form-field>
+        <mat-label>Titel</mat-label>
+        <input matInput formControlName="title" />
+        <mat-error *ngIf="contentFormGroup.controls.title.invalid">
+          {{ contentFormGroup.controls.title | errorMessage }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
+          <mat-chip
+            *ngFor="let tag of contentFormGroup.get('tags').value"
+            (removed)="chips.removeItem(tag, contentFormGroup.get('tags'))"
+          >
+            {{ tag }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Tags"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="chips.addItem($event, eventForm.get('tags'))"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+      <mat-tab-group>
+        <mat-tab label="Bearbeiten">
+          <mat-form-field class="description">
+            <mat-label>Beschreibung</mat-label>
+            <textarea matInput [rows]="10" formControlName="description"></textarea>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="Vorschau">
+          <app-markdown-preview [markdownText]="contentFormGroup.get('description').value"></app-markdown-preview>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="dateFormGroup" errorMessage="Datum fehlerhaft.">
+    <form [formGroup]="dateFormGroup">
+      <ng-template matStepLabel>Datum</ng-template>
+      <mat-form-field class="date-time">
+        <mat-label>Datum</mat-label>
+        <input matInput placeholder="DD.MM.YYYY" [matDatepicker]="picker1" formControlName="date" />
+        <mat-error *ngIf="dateFormGroup.controls.date.invalid"> {{ dateFormGroup.controls.date | errorMessage }} </mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
 
-    <app-markdown-preview
-      [style.grid-area]="'preview'"
-      [markdownText]="eventForm.get('description').value"
-    ></app-markdown-preview>
-
-    <mat-form-field class="description" [style.grid-area]="'description'">
-      <mat-label>Beschreibung</mat-label>
-      <textarea matInput [rows]="10" formControlName="description"></textarea>
-    </mat-form-field>
-
-    <mat-form-field class="date-time" [style.grid-area]="'start-date'">
-      <mat-label>Datum</mat-label>
-      <input matInput placeholder="DD.MM.YYYY" [matDatepicker]="picker1" formControlName="date" />
-      <mat-error *ngIf="eventForm.controls.date.invalid"> {{ eventForm.controls.date | errorMessage }} </mat-error>
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="date-time" [style.grid-area]="'start-time'">
-      <mat-label>Zeit</mat-label>
-      <input matInput placeholder="HH:MM" formControlName="time" />
-      <mat-error *ngIf="eventForm.controls.time.invalid"> {{ eventForm.controls.time | errorMessage }} </mat-error>
-    </mat-form-field>
-
-    <!-- <mat-form-field class="date-time" [style.grid-area]="'end-date'">
-      <mat-label>End-Datum</mat-label>
-      <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker2" formControlName="endDate" />
-      <mat-error *ngIf="eventForm.controls.endDate.invalid"> {{ eventForm.controls.endDate | errorMessage }} </mat-error>
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="date-time" [style.grid-area]="'end-time'">
-      <mat-label>End-Zeit</mat-label>
-      <input matInput placeholder="HH:MM" formControlName="endTime" />
-      <mat-error *ngIf="eventForm.controls.endTime.invalid"> {{ eventForm.controls.endTime | errorMessage }} </mat-error>
-    </mat-form-field> -->
-
-    <mat-form-field [style.grid-area]="'tags'">
-      <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
-        <mat-chip *ngFor="let tag of eventForm.get('tags').value" (removed)="chips.removeItem(tag, eventForm.get('tags'))">
-          {{ tag }}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <input
-          placeholder="Tags"
-          [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="chips.addItem($event, eventForm.get('tags'))"
-        />
-      </mat-chip-list>
-    </mat-form-field>
-
-    <mat-expansion-panel formGroupName="deadline" [style.grid-area]="'deadline'">
-      <mat-expansion-panel-header>
-        <mat-panel-title>Teilnehmer</mat-panel-title>
-        <mat-panel-description>{{
-          this.eventForm.get('deadline').invalid
-            ? (this.eventForm.get('deadline') | errorMessage)
-            : 'Teilnehmer einladen und Deadline festlegen'
-        }}</mat-panel-description>
-      </mat-expansion-panel-header>
-
+      <mat-form-field class="date-time">
+        <mat-label>Zeit</mat-label>
+        <input matInput placeholder="HH:MM" formControlName="time" />
+        <mat-error *ngIf="dateFormGroup.controls.time.invalid"> {{ dateFormGroup.controls.time | errorMessage }} </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="participantsFormGroup" errorMessage="Teilnehmer/Deadline fehlerhaft.">
+    <form [formGroup]="participantsFormGroup">
+      <ng-template matStepLabel>Teilnehmer</ng-template>
       <mat-form-field class="date-time">
         <mat-label>Deadline-Datum</mat-label>
         <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker3" formControlName="deadlineDate" />
-        <mat-error *ngIf="this.eventForm.get('deadline').get('deadlineDate').invalid">
-          {{ this.eventForm.get('deadline').get('deadlineDate') | errorMessage }}
+        <mat-error *ngIf="this.participantsFormGroup.get('deadlineDate').invalid">
+          {{ this.participantsFormGroup.get('deadlineDate') | errorMessage }}
         </mat-error>
         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
         <mat-datepicker #picker3></mat-datepicker>
@@ -87,12 +73,12 @@
       <mat-form-field class="date-time">
         <mat-label>Deadline-Zeit</mat-label>
         <input matInput placeholder="HH:MM" formControlName="deadlineTime" />
-        <mat-error *ngIf="this.eventForm.get('deadline').get('deadlineTime').invalid">
-          {{ this.eventForm.get('deadline').get('deadlineTime') | errorMessage }}
+        <mat-error *ngIf="this.participantsFormGroup.get('deadlineTime').invalid">
+          {{ this.participantsFormGroup.get('deadlineTime') | errorMessage }}
         </mat-error>
       </mat-form-field>
 
-      <mat-chip-list [style.grid-area]="'groups'">
+      <mat-chip-list>
         <mat-chip
           *ngFor="let group of groups"
           [color]="'accent'"
@@ -105,9 +91,8 @@
         </mat-chip>
       </mat-chip-list>
 
-      <mat-form-field [style.grid-area]="'participants'">
+      <mat-form-field>
         <mat-chip-list [selectable]="true" [multiple]="true" formControlName="participants">
-          <!-- for some strange reason the selected class of the chip has to be set manually here -->
           <mat-chip
             #chips
             *ngFor="let person of persons"
@@ -119,10 +104,36 @@
             {{ person.name }}
           </mat-chip>
         </mat-chip-list>
-        <mat-error *ngIf="this.eventForm.get('deadline').get('participants').invalid">
-          {{ this.eventForm.get('deadline').get('participants') | errorMessage }}
+        <mat-error *ngIf="this.participantsFormGroup.get('participants').invalid">
+          {{ this.participantsFormGroup.get('participants') | errorMessage }}
         </mat-error>
       </mat-form-field>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
+
+<!-- <ng-container *ngIf="event && eventForm && persons">
+  <mat-toolbar [color]="'accent'">
+    <div>Event Bearbeiten</div>
+    <div class="spacer"></div>
+    <a mat-icon-button [routerLink]="'/events/overview'"><mat-icon>apps</mat-icon></a>
+  </mat-toolbar>
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+
+
+
+
+
+    <mat-expansion-panel formGroupName="deadline" [style.grid-area]="'deadline'">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Teilnehmer</mat-panel-title>
+        <mat-panel-description>{{
+          this.eventForm.get('deadline').invalid
+            ? (this.eventForm.get('deadline') | errorMessage)
+            : 'Teilnehmer einladen und Deadline festlegen'
+        }}</mat-panel-description>
+      </mat-expansion-panel-header>
+
     </mat-expansion-panel>
     <button
       *ngIf="!eventForm.disabled; else saveSpinner"
@@ -148,4 +159,4 @@
       <mat-icon>delete</mat-icon> LÖSCHEN
     </button>
   </form>
-</ng-container>
+</ng-container> -->

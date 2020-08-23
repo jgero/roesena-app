@@ -4,6 +4,7 @@ import { FormControl, Validators, FormGroup, AbstractControl, ValidatorFn } from
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Subscription } from 'rxjs';
 import { tap, map, filter, take, takeUntil } from 'rxjs/operators';
+import { cloneDeep } from 'lodash';
 
 import { AppEvent, AppPerson, Participant } from 'src/app/utils/interfaces';
 import { ChipsInputService } from 'src/app/services/chips-input.service';
@@ -21,6 +22,10 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnDestroy {
+  contentFormGroup: FormGroup;
+  dateFormGroup: FormGroup;
+  participantsFormGroup: FormGroup;
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   event: AppEvent;
   eventForm: FormGroup;
@@ -48,30 +53,30 @@ export class EditorComponent implements OnDestroy {
       .subscribe({
         next: (event) => {
           // deep copy the object
-          this.event = JSON.parse(JSON.stringify(event));
-          this.event.date = new Date(this.event.date);
-          this.event.deadline = new Date(this.event.deadline);
+          this.event = cloneDeep(event);
           const p = new ToLocalTimeStringPipe();
-          this.eventForm = new FormGroup({
+          this.contentFormGroup = new FormGroup({
             title: new FormControl(this.event.title, [Validators.required]),
             description: new FormControl(this.event.description, []),
+            tags: new FormControl(this.event.tags),
+          });
+          this.dateFormGroup = new FormGroup({
             date: new FormControl(this.event.date, [Validators.required]),
             time: new FormControl(p.transform(this.event.date), [
               Validators.required,
               Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
             ]),
-            tags: new FormControl(this.event.tags),
-            deadline: new FormGroup(
-              {
-                deadlineDate: new FormControl(this.event.deadline),
-                deadlineTime: new FormControl(this.event.deadline ? p.transform(this.event.deadline) : '', [
-                  Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
-                ]),
-                participants: new FormControl(this.event.participants),
-              },
-              [this.getDeadlineFormValidatorFn()]
-            ),
           });
+          this.participantsFormGroup = new FormGroup(
+            {
+              deadlineDate: new FormControl(this.event.deadline),
+              deadlineTime: new FormControl(this.event.deadline ? p.transform(this.event.deadline) : '', [
+                Validators.pattern('^([01][0-9]|2[0-3]):([0-5][0-9])$'),
+              ]),
+              participants: new FormControl(this.event.participants),
+            },
+            [this.getDeadlineFormValidatorFn()]
+          );
         },
       });
 
@@ -231,7 +236,7 @@ export class EditorComponent implements OnDestroy {
   }
 
   isPersonSelected(id: string): boolean {
-    return !!(this.eventForm.get('deadline').get('participants').value as Participant[]).find((part) => part.id === id);
+    return !!(this.participantsFormGroup.get('participants').value as Participant[]).find((part) => part.id === id);
   }
 
   onPersonClick(id: string) {
