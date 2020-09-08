@@ -1,7 +1,5 @@
-<h4 class="title">Preview</h4>
-
 <button mat-icon-button (click)="isContentVisible = !isContentVisible" class="info-toggle" [color]="'primary'" type="button">
-  <mat-icon>{{ isContentVisible ? "info" : "cancel" }}</mat-icon>
+  <mat-icon>{{ isContentVisible ? 'info' : 'cancel' }}</mat-icon>
 </button>
 
 <div *ngIf="isContentVisible; else info" class="markdown content">
@@ -36,13 +34,9 @@
       - drittes Item
     </p>
     <h2>horizontale Trennlinie</h2>
-    <p>
-      ---
-    </p>
+    <p>---</p>
     <h2>Link</h2>
-    <p>
-      [titel](https://example.com)
-    </p>
+    <p>[titel](https://example.com)</p>
     <h2>Tabelle</h2>
     <p>
       | Kopfzelle 1 | Kopfzelle 2 | <br />

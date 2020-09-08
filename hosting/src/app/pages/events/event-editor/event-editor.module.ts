@@ -21,9 +21,11 @@ import { EventEffects } from '../../../state/events/editor/effects/event.effects
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ParticipantAutocompleteFilterPipe } from './autocomplete-filter.pipe';
 
 @NgModule({
-  declarations: [EditorComponent, DeleteDialogComponent],
+  declarations: [EditorComponent, DeleteDialogComponent, ParticipantAutocompleteFilterPipe],
   imports: [
     CommonModule,
     EventEditorRoutingModule,
@@ -40,6 +42,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatStepperModule,
     MatTabsModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
     StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
     EffectsModule.forFeature([EventEffects]),
   ],

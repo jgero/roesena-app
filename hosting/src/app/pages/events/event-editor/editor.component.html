@@ -1,16 +1,33 @@
-<mat-horizontal-stepper>
-  <mat-step [stepControl]="contentFormGroup" errorMessage="Inhalt unvollständig.">
-    <form [formGroup]="contentFormGroup">
-      <ng-template matStepLabel>Inhalt</ng-template>
+<header>
+  <h1 class="mat-display-2">Event Editor</h1>
+
+  <div class="submitButtons">
+    <ng-container *ngIf="!(isLoading$ | async); else spinner">
+      <button mat-raised-button [color]="'primary'" [disabled]="!canSave" (click)="onSubmit()">
+        <mat-icon>save</mat-icon> SPEICHERN
+      </button>
+      <button mat-raised-button [color]="'warn'" [disabled]="!event?.id" (click)="deleteEvent()">
+        <mat-icon>delete</mat-icon> LÖSCHEN
+      </button>
+    </ng-container>
+    <ng-template #spinner>
+      <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
+    </ng-template>
+  </div>
+</header>
+<mat-horizontal-stepper *ngIf="contentFormGroup && dateFormGroup && participantsFormGroup">
+  <mat-step [stepControl]="contentFormGroup" errorMessage="Inhalt unvollständig">
+    <form class="contentStep" [formGroup]="contentFormGroup">
+      <ng-template matStepLabel>Inhalt des Events</ng-template>
       <mat-form-field>
         <mat-label>Titel</mat-label>
-        <input matInput formControlName="title" />
+        <input matInput formControlName="title" required />
         <mat-error *ngIf="contentFormGroup.controls.title.invalid">
           {{ contentFormGroup.controls.title | errorMessage }}
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
+        <mat-chip-list #tagList aria-label="tag Auswahl" formControlName="tags">
           <mat-chip
             *ngFor="let tag of contentFormGroup.get('tags').value"
             (removed)="chips.removeItem(tag, contentFormGroup.get('tags'))"
@@ -20,9 +37,9 @@
           </mat-chip>
           <input
             placeholder="Tags"
-            [matChipInputFor]="chipList"
+            [matChipInputFor]="tagList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="chips.addItem($event, eventForm.get('tags'))"
+            (matChipInputTokenEnd)="chips.addItem($event, contentFormGroup.get('tags'))"
           />
         </mat-chip-list>
       </mat-form-field>
@@ -30,18 +47,27 @@
         <mat-tab label="Bearbeiten">
           <mat-form-field class="description">
             <mat-label>Beschreibung</mat-label>
-            <textarea matInput [rows]="10" formControlName="description"></textarea>
+            <textarea
+              matInput
+              [mat-autosize]="true"
+              [matAutosizeMinRows]="4"
+              [matAutosizeMaxRows]="10"
+              formControlName="description"
+            ></textarea>
           </mat-form-field>
         </mat-tab>
         <mat-tab label="Vorschau">
           <app-markdown-preview [markdownText]="contentFormGroup.get('description').value"></app-markdown-preview>
         </mat-tab>
       </mat-tab-group>
+      <div class="buttonBox">
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="dateFormGroup" errorMessage="Datum fehlerhaft.">
-    <form [formGroup]="dateFormGroup">
-      <ng-template matStepLabel>Datum</ng-template>
+  <mat-step [stepControl]="dateFormGroup" errorMessage="Datum fehlerhaft">
+    <form class="dateStep" [formGroup]="dateFormGroup">
+      <ng-template matStepLabel>Datum des Events</ng-template>
       <mat-form-field class="date-time">
         <mat-label>Datum</mat-label>
         <input matInput placeholder="DD.MM.YYYY" [matDatepicker]="picker1" formControlName="date" />
@@ -55,11 +81,15 @@
         <input matInput placeholder="HH:MM" formControlName="time" />
         <mat-error *ngIf="dateFormGroup.controls.time.invalid"> {{ dateFormGroup.controls.time | errorMessage }} </mat-error>
       </mat-form-field>
+      <div class="buttonBox">
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="participantsFormGroup" errorMessage="Teilnehmer/Deadline fehlerhaft.">
-    <form [formGroup]="participantsFormGroup">
-      <ng-template matStepLabel>Teilnehmer</ng-template>
+  <mat-step [stepControl]="participantsFormGroup" errorMessage="Teilnehmer/Deadline fehlerhaft">
+    <form class="participantStep" [formGroup]="participantsFormGroup">
+      <ng-template matStepLabel>Teilnehmer des Events</ng-template>
       <mat-form-field class="date-time">
         <mat-label>Deadline-Datum</mat-label>
         <input placeholder="DD.MM.YYYY" matInput [matDatepicker]="picker3" formControlName="deadlineDate" />
@@ -92,6 +122,36 @@
       </mat-chip-list>
 
       <mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addPerson($event.option.value)">
+          <mat-option
+            *ngFor="
+              let person of persons
+                | participantAutocompleteFilter: participantInput.value:participantsFormGroup.get('participants').value
+            "
+            [value]="person"
+          >
+            {{ person.name }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-chip-list #participantList>
+          <mat-chip *ngFor="let item of participantsFormGroup.get('participants').value" (removed)="removePerson(item)">
+            {{ item.name }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input #participantInput placeholder="Teilnehmer" [matChipInputFor]="participantList" [matAutocomplete]="auto" />
+          <button
+            mat-button
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="participantsFormGroup.get('participants').setValue([])"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-chip-list>
+      </mat-form-field>
+
+      <!-- <mat-form-field>
         <mat-chip-list [selectable]="true" [multiple]="true" formControlName="participants">
           <mat-chip
             #chips
@@ -107,56 +167,10 @@
         <mat-error *ngIf="this.participantsFormGroup.get('participants').invalid">
           {{ this.participantsFormGroup.get('participants') | errorMessage }}
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
+      <div class="buttonBox">
+        <button mat-button matStepperPrevious>Zurück</button>
+      </div>
     </form>
   </mat-step>
 </mat-horizontal-stepper>
-
-<!-- <ng-container *ngIf="event && eventForm && persons">
-  <mat-toolbar [color]="'accent'">
-    <div>Event Bearbeiten</div>
-    <div class="spacer"></div>
-    <a mat-icon-button [routerLink]="'/events/overview'"><mat-icon>apps</mat-icon></a>
-  </mat-toolbar>
-  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-
-
-
-
-
-    <mat-expansion-panel formGroupName="deadline" [style.grid-area]="'deadline'">
-      <mat-expansion-panel-header>
-        <mat-panel-title>Teilnehmer</mat-panel-title>
-        <mat-panel-description>{{
-          this.eventForm.get('deadline').invalid
-            ? (this.eventForm.get('deadline') | errorMessage)
-            : 'Teilnehmer einladen und Deadline festlegen'
-        }}</mat-panel-description>
-      </mat-expansion-panel-header>
-
-    </mat-expansion-panel>
-    <button
-      *ngIf="!eventForm.disabled; else saveSpinner"
-      mat-raised-button
-      type="submit"
-      [color]="'primary'"
-      [style.grid-area]="'save'"
-      [disabled]="eventForm.invalid || !eventForm.dirty"
-    >
-      <mat-icon>save</mat-icon> SPEICHERN
-    </button>
-    <ng-template #saveSpinner>
-      <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
-    </ng-template>
-    <button
-      mat-raised-button
-      type="button"
-      [color]="'warn'"
-      [style.grid-area]="'delete'"
-      [disabled]="!event.id"
-      (click)="deleteEvent()"
-    >
-      <mat-icon>delete</mat-icon> LÖSCHEN
-    </button>
-  </form>
-</ng-container> -->
