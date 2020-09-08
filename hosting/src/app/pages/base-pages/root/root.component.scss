@@ -26,9 +26,16 @@
 }
 
 .outletContainer {
-  width: 100%;
-  max-width: min(1400px, 100%);
-  overflow: hidden;
-  padding: 0 16px;
-  box-sizing: border-box;
+  width: min(1400px, 100%);
+
+  @media screen and (min-width: 601px) {
+    height: calc(100% - 64px);
+  }
+  @media screen and (max-width: 600px) {
+    height: 100%;
+  }
+}
+
+.mat-drawer-container {
+  height: calc(100% - 56px);
 }

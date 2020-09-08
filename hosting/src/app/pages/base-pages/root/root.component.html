@@ -33,9 +33,7 @@
 
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              Account
-            </mat-panel-title>
+            <mat-panel-title> Account </mat-panel-title>
           </mat-expansion-panel-header>
           <ng-container *ngIf="user$ | async as user; else authenticate">
             <a mat-list-item routerLink="/auth/profile">Profil</a>
@@ -78,12 +76,14 @@
       <a mat-menu-item routerLink="/groups/wildes-heer">Das Wilde Heer</a>
     </mat-menu>
     <div class="spacer"></div>
-    <button mat-icon-button [matMenuTriggerFor]="accountMenu"><mat-icon>account_circle</mat-icon></button>
+    <button mat-icon-button [matMenuTriggerFor]="accountMenu">
+      <mat-icon [matBadge]="badgeContentStream$ | async" matBadgeColor="accent">account_circle</mat-icon>
+    </button>
     <mat-menu #accountMenu="matMenu" xPosition="before">
       <ng-container *ngIf="user$ | async as user; else authenticate">
         <a mat-menu-item routerLink="/auth/profile">Profil</a>
         <a mat-menu-item *ngIf="user.isConfirmedMember" routerLink="/auth/my-events">
-          <span [matBadge]="badgeContentStream$ | async">Meine Events</span>
+          <span>Meine Events</span>
         </a>
         <a mat-menu-item *ngIf="user.groups.includes('admin')" routerLink="/auth/group-manager">Gruppen Manager</a>
       </ng-container>
