@@ -1,4 +1,9 @@
+@import '~@angular/material/theming';
+
 :host {
+  background-color: mat-color(mat-palette($mat-grey, 50));
+  min-height: 100%;
+
   @media screen and (min-width: 601px) {
     display: flex;
     flex-direction: column;
@@ -30,9 +35,6 @@
 
   @media screen and (min-width: 601px) {
     height: calc(100% - 64px);
-  }
-  @media screen and (max-width: 600px) {
-    height: 100%;
   }
 }
 

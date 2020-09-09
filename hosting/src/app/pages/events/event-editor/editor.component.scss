@@ -1,3 +1,5 @@
+@import '~@angular/material/theming';
+
 :host > header {
   margin-top: 0.5em;
   display: flex;
@@ -13,8 +15,8 @@
   }
 }
 
-.mat-horizontal-stepper {
-  width: 100%;
+.mat-stepper-horizontal {
+  background-color: mat-color(mat-palette($mat-grey, 50));
 }
 
 .contentStep,
