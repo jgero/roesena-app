@@ -119,6 +119,11 @@
     opacity: 0.5;
   }
 
+  .content {
+    max-height: 200px;
+    overflow: hidden;
+  }
+
   a {
     transform: translateX(-16px);
   }

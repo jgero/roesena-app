@@ -1,10 +1,6 @@
-<mat-toolbar class="header" [color]="'accent'">
-  <div>Artikel</div>
-</mat-toolbar>
+<h1 class="mat-display-4">Artikel</h1>
 
-<mat-progress-bar [mode]="'indeterminate'" [color]="'primary'" *ngIf="isLoading$ | async"></mat-progress-bar>
-
-<ng-container *ngIf="data$ | async as articles">
+<ng-container *ngIf="data$ | async as articles; else loading">
   <mat-grid-list [cols]="cols" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
     <mat-grid-tile *ngFor="let article of articles">
       <app-article-card [data]="article"></app-article-card>
@@ -15,5 +11,9 @@
     ><mat-icon>add</mat-icon></a
   >
 
-  <app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
+  <app-paginator class="mat-elevation-z2" [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
 </ng-container>
+
+<ng-template #loading>
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</ng-template>

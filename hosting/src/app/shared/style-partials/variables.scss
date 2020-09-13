@@ -1,0 +1,14 @@
+@import '~@angular/material/theming';
+
+// define palettes
+$primary-palette: mat-palette($mat-pink, 700, 600, 800);
+$accent-palette: mat-palette($mat-yellow, 700, 600, 800);
+$warn-palette: mat-palette($mat-red);
+
+// define colors
+$primary: mat-color($primary-palette, 700);
+$accent: mat-color($accent-palette, 700);
+$warn: mat-color($warn-palette, 700);
+
+// create the theme
+$theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);

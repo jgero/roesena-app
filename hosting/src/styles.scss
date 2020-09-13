@@ -1,15 +1,6 @@
-@import '~@angular/material/theming';
-// only include the mat-core once!
+@import './app/shared/style-partials/variables.scss';
+// only include the mat-core once in the project!
 @include mat-core();
-
-// define colors
-$primary: mat-palette($mat-pink, 700, 600, 800);
-$accent: mat-palette($mat-yellow, 700, 600, 800);
-$warn: mat-palette($mat-red);
-
-// create the theme
-$theme: mat-light-theme($primary, $accent, $warn);
-
 // apply the theme
 @include angular-material-theme($theme);
 

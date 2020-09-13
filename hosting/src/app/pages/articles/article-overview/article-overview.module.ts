@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CardsModule } from '@shared/cards/cards.module';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,13 +13,14 @@ import * as fromArticle from '../../../state/articles/overview/reducers/article.
 import { EffectsModule } from '@ngrx/effects';
 import { ArticleEffects } from '../../../state/articles/overview/effects/article.effects';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [OverviewComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
-    MatProgressBarModule,
+    MatProgressSpinnerModule,
     PaginatorModule,
     MatGridListModule,
     CardsModule,
