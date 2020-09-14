@@ -1,43 +1,83 @@
-@import "~@angular/material/theming";
-@include mat-core();
-$secondary: mat-palette($mat-blue-gray);
+@import '../../../shared/style-partials/variables.scss';
 
 :host {
+  display: block;
+  padding: 16px;
+}
+
+:host > header {
+  margin-top: 0.5em;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .submitButtons {
+    display: flex;
+    flex-wrap: wrap;
+    button {
+      margin: 0.5rem;
+    }
+  }
 }
 
 form {
-  display: grid;
-  width: 100%;
-  max-width: 800px;
-  padding: 8px;
-  box-sizing: border-box;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 16px;
-  grid-template-rows: auto auto minmax(0, 300px) auto auto auto;
-  row-gap: 16px;
-  grid-template-areas:
-    ". edit"
-    "title title"
-    "preview preview"
-    "content content"
-    "tags tags"
-    "save delete";
+  display: flex;
+  flex-direction: column;
 
-  a {
-    justify-self: right;
+  & > .mat-form-field:not(.mat-form-field-type-mat-chip-list) {
+    max-width: 350px;
   }
 
-  .preview {
-    overflow: auto;
-    border: 1px solid mat-color($secondary, 200);
-    padding: 8px;
-    border-radius: 4px;
+  .description,
+  app-markdown-preview {
+    margin-top: 0.5rem;
+  }
+  .description {
+    width: 100%;
   }
 
-  .mat-spinner {
-    justify-self: center;
+  app-markdown-preview {
+    min-height: 10vh;
+    max-height: 50vh;
   }
 }
+
+// :host {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+// form {
+//   display: grid;
+//   width: 100%;
+//   max-width: 800px;
+//   padding: 8px;
+//   box-sizing: border-box;
+//   grid-template-columns: 1fr 1fr;
+//   column-gap: 16px;
+//   grid-template-rows: auto auto minmax(0, 300px) auto auto auto;
+//   row-gap: 16px;
+//   grid-template-areas:
+//     '. edit'
+//     'title title'
+//     'preview preview'
+//     'content content'
+//     'tags tags'
+//     'save delete';
+
+//   a {
+//     justify-self: right;
+//   }
+
+//   .preview {
+//     overflow: auto;
+//     border: 1px solid $accent;
+//     padding: 8px;
+//     border-radius: 4px;
+//   }
+
+//   .mat-spinner {
+//     justify-self: center;
+//   }
+// }

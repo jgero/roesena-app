@@ -1,5 +1,10 @@
 @import '~@angular/material/theming';
 
+:host {
+  display: block;
+  padding: 16px;
+}
+
 :host > header {
   margin-top: 0.5em;
   display: flex;

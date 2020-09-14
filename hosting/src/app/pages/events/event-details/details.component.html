@@ -1,15 +1,6 @@
-<ng-container *ngIf="data$ | async as event">
+<ng-container *ngIf="data$ | async as event; else loading">
   <h1 class="mat-display-3">{{ event.title }}</h1>
   <h4 class="">{{ event.date | toLocalDateString }} {{ event.date | toLocalTimeString }}</h4>
-  <!-- <mat-toolbar class="date"
-    ><span>
-      <time [dateTime]="event.startDate"
-        >{{ event.startDate | toLocalDateString }} {{ event.startDate | toLocalTimeString }}</time
-      >
-      <span> - </span>
-      <time [dateTime]="event.endDate">{{ event.endDate | toLocalDateString }} {{ event.endDate | toLocalTimeString }}</time>
-    </span>
-  </mat-toolbar> -->
   <main>
     <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
     <mat-chip-list>
@@ -60,6 +51,6 @@
   </mat-toolbar>
 </ng-container>
 
-<ng-template>
+<ng-template #loading>
   <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
 </ng-template>
