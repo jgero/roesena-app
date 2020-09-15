@@ -21,10 +21,18 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnDestroy {
+  isLoading$ = this.store.select('imageEditor', 'isLoading');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   imageForm: FormGroup;
   image: AppImage;
   url: string;
+  get canSave(): boolean {
+    if (!this.imageForm) {
+      return false;
+    }
+    // user can save if everything is valid and something actually changed
+    return this.imageForm.valid && this.imageForm.dirty;
+  }
 
   constructor(
     public chips: ChipsInputService,

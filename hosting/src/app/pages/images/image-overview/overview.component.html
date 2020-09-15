@@ -1,15 +1,17 @@
-<mat-toolbar class="header" [color]="'accent'">
-  <div>Bilder</div>
-</mat-toolbar>
+<h1 class="mat-display-4">Bilder</h1>
 
-<mat-progress-bar [mode]="'indeterminate'" *ngIf="isLoading$ | async"></mat-progress-bar>
+<ng-container *ngIf="data$ | async as images; else loading">
+  <mat-grid-list [cols]="cols" [rowHeight]="'420px'" [gutterSize]="'16px'" @cardFlyIn>
+    <mat-grid-tile *ngFor="let image of images">
+      <app-image-card [data]="image"></app-image-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 
-<mat-grid-list *ngIf="data$ | async as images" [cols]="cols" [rowHeight]="'420px'" [gutterSize]="'16px'" @cardFlyIn>
-  <mat-grid-tile *ngFor="let image of images">
-    <app-image-card [data]="image"></app-image-card>
-  </mat-grid-tile>
-</mat-grid-list>
+  <a mat-fab class="add-fab" color="primary" [routerLink]="'/images/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
 
-<a mat-fab class="add-fab" color="primary" [routerLink]="'/images/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
+  <app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
+</ng-container>
 
-<app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
+<ng-template #loading>
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</ng-template>

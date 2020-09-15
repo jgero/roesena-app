@@ -1,10 +1,5 @@
-<!-- <mat-toolbar [color]="'accent'">
-  <div>Artikel Bearbeiten</div>
-  <div class="spacer"></div>
-  <a mat-icon-button [routerLink]="'/articles/overview'"><mat-icon>apps</mat-icon></a>
-</mat-toolbar> -->
 <header>
-  <h1 class="mat-display-2">Article Editor</h1>
+  <h1 class="mat-display-2">Artikel Editor</h1>
 
   <div class="submitButtons">
     <ng-container *ngIf="!(isLoading$ | async); else spinner">
@@ -60,29 +55,4 @@
       <app-markdown-preview [markdownText]="articleForm.get('content').value"></app-markdown-preview>
     </mat-tab>
   </mat-tab-group>
-
-  <!-- <button
-    mat-raised-button
-    *ngIf="!articleForm.disabled; else saveSpinner"
-    type="submit"
-    [color]="'primary'"
-    [style.grid-area]="'save'"
-    [disabled]="articleForm.invalid || !articleForm.dirty"
-  >
-    <mat-icon>save</mat-icon> SPEICHERN
-  </button>
-  <ng-template #saveSpinner>
-    <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
-  </ng-template>
-
-  <button
-    mat-raised-button
-    type="button"
-    [color]="'warn'"
-    [style.grid-area]="'delete'"
-    [disabled]="article.id === ''"
-    (click)="deleteArticle()"
-  >
-    <mat-icon>delete</mat-icon> LÖSCHEN
-  </button> -->
 </form>
