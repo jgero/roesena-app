@@ -25,9 +25,10 @@ import { BaseEffects } from '../../state/basePages/effects/base.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchModule } from '@shared/search/search.module';
 import { ConvertersModule } from '@shared/converters/converters.module';
+import { FooterComponent } from './root/footer/footer.component';
 
 @NgModule({
-  declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
+  declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent, FooterComponent],
   imports: [
     CommonModule,
     RouterModule,

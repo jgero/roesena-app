@@ -32,10 +32,7 @@
 
 .outletContainer {
   width: min(1400px, 100%);
-
-  @media screen and (min-width: 601px) {
-    height: calc(100% - 64px);
-  }
+  flex: 1;
 }
 
 .mat-drawer-container {

@@ -102,4 +102,5 @@
   <div class="outletContainer" [@pageTransition]="prepareRoute(outlet)">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
+  <app-footer *ngIf="!(isHandset$ | async)"></app-footer>
 </ng-template>
