@@ -1,5 +1,4 @@
 @import '~@angular/material/theming';
-@include mat-core();
 $background: mat-palette($mat-grey);
 
 :host {
@@ -37,7 +36,7 @@ $background: mat-palette($mat-grey);
       top: 0;
       align-items: flex-end;
       justify-content: space-between;
-      background-color: mat-color($background, 800);
+      // background-color: mat-color($background, 800);
     }
 
     ::ng-deep.mat-card-header-text {
