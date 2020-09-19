@@ -7,6 +7,7 @@ import { HelpComponent } from '@pages/base-pages/help/help.component';
 import { NotFoundComponent } from '@pages/base-pages/not-found/not-found.component';
 import { LoadUserGuard } from '@guards/load-user.guard';
 import { SearchPageComponent } from '@shared/search/search-page/search-page.component';
+import { DataProtectionComponent } from '@pages/base-pages/data-protection/data-protection.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +46,7 @@ export const routes: Routes = [
         data: { animation: 'groups' },
       },
       { path: 'about', component: AboutComponent, data: { animation: 'about' } },
+      { path: 'data-protection', component: DataProtectionComponent, data: { animation: 'data-protection' } },
       { path: 'help', component: HelpComponent, data: { animation: 'help' } },
       { path: 'search/:type/:searchStrings', component: SearchPageComponent, data: { animation: 'search' } },
       { path: '**', component: NotFoundComponent, data: { animation: 'error' } },

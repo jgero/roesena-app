@@ -1,6 +1,11 @@
 <h1 class="mat-display-2">Impressum</h1>
 
 <mat-list>
+  <mat-list-item>
+    <mat-icon mat-list-icon>schedule</mat-icon>
+    <div mat-line>Zuletzt aktualisiert: 17.09.2020</div>
+  </mat-list-item>
+
   <div mat-subheader>Vorstand des Vereins</div>
   <mat-list-item>
     <mat-icon mat-list-icon>people</mat-icon>
@@ -27,28 +32,6 @@
     <div mat-line><strong>LWK Nummer:</strong> 52</div>
   </mat-list-item>
 
-  <div mat-subheader>Webdesign</div>
-  <mat-list-item>
-    <mat-icon mat-list-icon>person</mat-icon>
-    <div mat-line>Johannes Gerold</div>
-  </mat-list-item>
-  <mat-list-item>
-    <mat-icon mat-list-icon>code</mat-icon>
-    <div mat-line>
-      <a mat-button [color]="'primary'" href="https://github.com/jgero/roesena-app" target="_blank">GitHub repository</a>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <mat-icon mat-list-icon>email</mat-icon>
-    <div mat-line>
-      <a mat-button [color]="'primary'" href="mailto: webmaster@roesena.de">webmaster@roesena.de</a>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <mat-icon mat-list-icon>comment</mat-icon>
-    <div mat-line>Lorem Ipsum</div>
-  </mat-list-item>
-
   <div mat-subheader>Mitgliedschaft</div>
   <mat-list-item>
     <mat-icon mat-list-icon>person_add</mat-icon>
@@ -66,27 +49,67 @@
     </div>
   </mat-list-item>
 
-  <div mat-subheader>Legal Disclamer</div>
-  <mat-list-item class="long-item">
-    <mat-icon mat-list-icon>gavel</mat-icon>
+  <div mat-subheader>Webmaster (verantwortliche Stelle zur Datenverarbeitung)</div>
+  <mat-list-item>
+    <mat-icon mat-list-icon>person</mat-icon>
+    <div mat-line>Johannes Gerold</div>
+    <div mat-line>An der Sechta 2</div>
+    <div mat-line>73479 Ellwangen-Röhlingen</div>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>email</mat-icon>
+    <div mat-line>
+      <a mat-button [color]="'primary'" href="mailto: webmaster@roesena.de">webmaster@roesena.de</a>
+    </div>
+  </mat-list-item>
+  <!-- <mat-list-item>
+    <mat-icon mat-list-icon>comment</mat-icon>
+    <div mat-line>Lorem Ipsum</div>
+  </mat-list-item> -->
+  <mat-list-item>
+    <mat-icon mat-list-icon>code</mat-icon>
+    <div mat-line>
+      <a mat-button [color]="'primary'" href="https://github.com/jgero/roesena-app" target="_blank">GitHub repository</a>
+    </div>
+  </mat-list-item>
+
+  <div mat-subheader>Rechtliche Hinweise</div>
+  <mat-list-item>
+    <mat-icon mat-list-icon>security</mat-icon>
+    <div mat-line>
+      In der <a routerLink="/data-protection">Datenschutzerklärung</a> ist dargestellt, was mit Ihren personenbezogenen Daten
+      passiert, wenn sie diese Webseite besuchen
+    </div>
+  </mat-list-item>
+  <mat-list-item>
     <div matLine>
       Die Fastnachtsgesellschaft Röhlinger Sechtanarren 1970 e.V. (RöSeNa) prüft und aktualisiert die Informationen auf dieser
-      Webseiten regelmäßig. Trotz aller Sorgfalt können sich die Daten zwischenzeitlich verändert haben. Eine Haftung oder
-      Garantie für die Aktualität, Richtigkeit und Vollständigkeit der Informationen kann daher nicht übernommen werden. <br />
-      <br />
+      Webseite regelmäßig. Trotz aller Sorgfalt können sich die Daten zwischenzeitlich verändert haben. Eine Haftung oder Garantie
+      für die Aktualität, Richtigkeit und Vollständigkeit der Informationen kann daher nicht übernommen werden.
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div matLine>
       Diese Website enthält Verweise auf Websites, die von Dritten eingerichtet wurden. Die RöSeNa hat keinerlei Kontrolle über
       die Websites und die dort angebotenen Informationen, Waren oder Dienstleistungen. Die RöSeNa übernimmt daher keinerlei
-      Verantwortung, aus welchem Rechtsgrund auch immer, für den Inhalt der Websites Dritter. <br />
-      <br />
+      Verantwortung, für den Inhalt der Websites Dritter.
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div matLine>
       Die RöSeNa behält sich das Recht vor, die auf dieser Website angebotenen Informationen ohne gesonderte Ankündigung jederzeit
-      zu verändern oder zu aktualisieren. <br />
-      <br />
+      zu verändern oder zu aktualisieren.
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div matLine>
       Für gegebenenfalls bestehende oder künftig entstehende Rechtsverhältnisse ist ausschließlich deutsches Recht anwendbar und
       sind nur deutsche Gerichte zuständig.
     </div>
   </mat-list-item>
 
-  <div mat-subheader>Datenschutz</div>
+  <!-- should be put into a sepearte page and reworked -->
+  <!-- <div mat-subheader>Datenschutz</div>
   <mat-list-item class="long-item">
     <mat-icon mat-list-icon>security</mat-icon>
     <div mat-line>
@@ -127,5 +150,5 @@
       zugänglich zu machen oder sonst zu nutzen. Diese Pflicht besteht auch über das Ausscheiden der oben genannten Personen aus
       dem Verein hinaus.
     </div>
-  </mat-list-item>
+  </mat-list-item> -->
 </mat-list>

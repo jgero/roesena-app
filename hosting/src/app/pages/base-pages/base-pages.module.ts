@@ -26,9 +26,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { SearchModule } from '@shared/search/search.module';
 import { ConvertersModule } from '@shared/converters/converters.module';
 import { FooterComponent } from './root/footer/footer.component';
+import { DataProtectionComponent } from './data-protection/data-protection.component';
 
 @NgModule({
-  declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent, FooterComponent],
+  declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent, FooterComponent, DataProtectionComponent],
   imports: [
     CommonModule,
     RouterModule,
