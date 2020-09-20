@@ -24,6 +24,7 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
 import { BasePagesModule } from '@pages/base-pages/base-pages.module';
 import { CommonModule } from '@angular/common';
 import { SearchModule } from '@shared/search/search.module';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [],
@@ -70,6 +71,7 @@ import { SearchModule } from '@shared/search/search.module';
     { provide: DEBUG_MODE, useValue: environment.production ? false : true },
     ScreenTrackingService,
     UserTrackingService,
+    CookieService,
   ],
   bootstrap: [RootComponent],
 })

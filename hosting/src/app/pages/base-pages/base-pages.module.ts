@@ -25,24 +25,14 @@ import { BaseEffects } from '../../state/basePages/effects/base.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchModule } from '@shared/search/search.module';
 import { ConvertersModule } from '@shared/converters/converters.module';
-import { FooterComponent } from './root/footer/footer.component';
 import { DataProtectionComponent } from './data-protection/data-protection.component';
-import { CookieManagerComponent } from './root/footer/cookie-manager/cookie-manager.component';
 import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { FooterModule } from './footer/footer.module';
 
 @NgModule({
-  declarations: [
-    AboutComponent,
-    HelpComponent,
-    NotFoundComponent,
-    RootComponent,
-    StartPageComponent,
-    FooterComponent,
-    DataProtectionComponent,
-    CookieManagerComponent,
-  ],
+  declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent, DataProtectionComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -57,14 +47,12 @@ import { FormsModule } from '@angular/forms';
     MarkdownViewerModule,
     MatButtonModule,
     MatMenuModule,
-    MatCheckboxModule,
-    FormsModule,
     ConvertersModule,
     SearchModule,
+    FooterModule,
     StoreModule.forFeature(fromBase.baseFeatureKey, fromBase.reducer),
     EffectsModule.forFeature([BaseEffects]),
   ],
   exports: [AboutComponent, DataProtectionComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
-  providers: [{ provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: true } }],
 })
 export class BasePagesModule {}

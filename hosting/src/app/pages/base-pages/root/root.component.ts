@@ -45,7 +45,6 @@ export class RootComponent implements OnDestroy {
     fns: AngularFireFunctions,
     private analytics: AngularFireAnalytics
   ) {
-    this.analytics.logEvent('i am a test');
     matIconRegistry.addSvgIcon('rsn', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-inverted.svg'));
     this.version = environment.buildVersion;
     // close sidenav on navigation
