@@ -36,6 +36,10 @@ main {
     content: counter(h2counter) '.' counter(h3counter) '.\0000a0\0000a0';
   }
 
+  button {
+    margin-bottom: 1rem;
+  }
+
   a:not(.mat-button) {
     color: $primary;
     text-decoration: none;
