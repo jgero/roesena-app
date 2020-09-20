@@ -47,9 +47,6 @@
             <a mat-list-item routerLink="/auth/register">Registrieren</a>
           </ng-template>
         </mat-expansion-panel>
-        <a mat-list-item [routerLink]="'/help'" aria-label="Impressum">Hilfe</a>
-        <a mat-list-item [routerLink]="'/about'" aria-label="Impressum">Impressum</a>
-        <div mat-list-item class="version">{{ version }}</div>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
@@ -102,5 +99,5 @@
   <div class="outletContainer" [@pageTransition]="prepareRoute(outlet)">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
-  <app-footer *ngIf="!(isHandset$ | async)"></app-footer>
+  <app-footer></app-footer>
 </ng-template>

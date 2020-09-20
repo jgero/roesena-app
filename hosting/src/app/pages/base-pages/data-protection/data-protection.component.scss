@@ -7,9 +7,13 @@
   padding: 16px;
 }
 
-h1 {
+:host > h1 {
   color: $accent;
   counter-reset: h2counter;
+
+  @media screen and (max-width: 600px) {
+    font-size: 2rem;
+  }
 }
 
 h2,

@@ -16,10 +16,9 @@
   <button mat-stroked-button color="accent" (click)="onAcceptSelection()">AUSWAHL AKZEPTIEREN</button>
   <button mat-flat-button color="primary" (click)="onAcceptAll()">ALLE AKZEPTIEREN</button>
 </div>
-<mat-expansion-panel hideToggle>
+<mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title>Details anzeigen</mat-panel-title>
-    <!-- <mat-panel-description> This is a summary of the content </mat-panel-description> -->
   </mat-expansion-panel-header>
   <mat-tab-group mat-align-tabs="start" [(selectedIndex)]="tabIndex">
     <mat-tab label="Notwendig">
