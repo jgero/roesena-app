@@ -1,5 +1,7 @@
 <mat-toolbar [color]="'accent'">
   <div>Gruppen-Manager</div>
+  <div class="spacer"></div>
+  <mat-checkbox (change)="onCheckboxChange($event)">nur unbestätigte</mat-checkbox>
 </mat-toolbar>
 
 <mat-grid-list *ngIf="persons$ | async as persons; else loading" [cols]="cols" [rowHeight]="'170px'" [gutterSize]="'16px'">

@@ -14,6 +14,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { LoadPersons, PersonActionTypes, PersonActions } from '@state/auth/group-manager/actions/person.actions';
 import { ChipsInputService } from '@services/chips-input.service';
 import { Actions, ofType } from '@ngrx/effects';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 interface AppPersonWithLoading extends AppPerson {
   isConfrimationLoading: boolean;
@@ -46,6 +47,10 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.dispatch(new LoadPersons({ limit: this.limit }));
+  }
+
+  onCheckboxChange(ev: MatCheckboxChange) {
+    this.store.dispatch(new LoadPersons({ limit: this.limit, onlyUnconfirmed: ev.checked }));
   }
 
   // onSubmit(result: AppPersonWithForm) {

@@ -17,26 +17,32 @@ import {
   RemoveGroupFailure,
 } from '../actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { convertMany, toStorablePerson } from '@utils/converters/person-documents';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/person.reducer';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
-import { StoreablePerson } from '@utils/interfaces';
 import { AngularFireFunctions } from '@angular/fire/functions';
-import { DeleteArticleFailure } from '@state/articles/editor/actions/editor.actions';
 
 @Injectable()
 export class PersonEffects {
   @Effect()
   loadPersons$ = this.actions$.pipe(
     ofType(PersonActionTypes.LoadPersons),
-    withLatestFrom(this.store),
-    switchMap(([action, storeState]) =>
+    switchMap((action) =>
       merge(
         this.firestore
-          .collection('persons', (qFn) => qFn.orderBy('name').limit(storeState.person.limit))
+          .collection('persons', (qFn) => {
+            let query: Query | CollectionReference = qFn;
+            query = qFn.orderBy('name');
+            if (action.payload.onlyUnconfirmed) {
+              query = query.where('isConfirmedMember', '==', false);
+            } else {
+              query = query.limit(action.payload.limit);
+            }
+            return query;
+          })
           .snapshotChanges()
           .pipe(
             map(convertMany),

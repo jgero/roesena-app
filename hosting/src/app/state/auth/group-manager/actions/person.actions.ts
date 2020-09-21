@@ -77,7 +77,7 @@ export class ConfirmPersonFailure implements Action {
 
 export class LoadPersons implements Action {
   readonly type = PersonActionTypes.LoadPersons;
-  constructor(public payload: { limit: number }) {}
+  constructor(public payload: { limit: number; onlyUnconfirmed?: boolean }) {}
 }
 
 export class LoadPersonsSuccess implements Action {
