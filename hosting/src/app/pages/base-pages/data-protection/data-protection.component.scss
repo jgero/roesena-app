@@ -1,0 +1,55 @@
+@import '../../../shared/style-partials/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+:host > h1 {
+  color: $accent;
+  counter-reset: h2counter;
+
+  @media screen and (max-width: 600px) {
+    font-size: 2rem;
+  }
+}
+
+h2,
+h3,
+h4 {
+  font-weight: 500;
+}
+
+main {
+  max-width: 700px;
+
+  h2 {
+    counter-increment: h2counter;
+    counter-reset: h3counter;
+  }
+  h2:before {
+    content: counter(h2counter) '.\0000a0\0000a0';
+    counter-reset: h3counter;
+  }
+  h3 {
+    counter-increment: h3counter;
+  }
+  h3:before {
+    content: counter(h2counter) '.' counter(h3counter) '.\0000a0\0000a0';
+  }
+
+  button {
+    margin-bottom: 1rem;
+  }
+
+  a:not(.mat-button) {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

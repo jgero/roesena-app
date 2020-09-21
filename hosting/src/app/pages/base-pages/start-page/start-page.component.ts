@@ -10,8 +10,8 @@ import { SubscriptionService } from '@services/subscription.service';
   styleUrls: ['./start-page.component.scss'],
 })
 export class StartPageComponent implements OnInit, OnDestroy {
-  events$ = this.store.select('base', 'startpageEvents');
-  articles$ = this.store.select('base', 'startpageArticles');
+  event$ = this.store.select('base', 'startpageEvent');
+  article$ = this.store.select('base', 'startpageArticle');
 
   constructor(private store: Store<State>, private subs: SubscriptionService) {}
 

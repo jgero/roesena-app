@@ -1,12 +1,18 @@
-@import "@angular/material/prebuilt-themes/pink-bluegrey.css";
+@import './app/shared/style-partials/variables.scss';
+// only include the mat-core once in the project!
+@include mat-core();
+// apply the theme
+@include angular-material-theme($theme);
 
 html,
 body {
   height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .spacer {

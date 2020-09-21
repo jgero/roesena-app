@@ -1,20 +1,21 @@
-<mat-toolbar class="header" [color]="'accent'">
-  <div>Events</div>
-</mat-toolbar>
-<mat-progress-bar [mode]="'indeterminate'" [color]="'primary'" *ngIf="isLoading$ | async"></mat-progress-bar>
+<h1 class="mat-display-4">Events</h1>
 
 <mat-grid-list
-  *ngIf="data$ | async as events"
+  *ngIf="data$ | async as events; else loading"
   class="content"
   [cols]="cols"
   [rowHeight]="'300px'"
-  [gutterSize]="'16px'"
+  [gutterSize]="'64px'"
   @cardFlyIn
 >
   <mat-grid-tile *ngFor="let event of events">
     <app-event-card [data]="event"></app-event-card>
   </mat-grid-tile>
 </mat-grid-list>
+
+<ng-template #loading>
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</ng-template>
 
 <a mat-fab class="add-fab" [color]="'primary'" [routerLink]="'/events/edit'" *ngIf="canCreate$ | async">
   <mat-icon>add</mat-icon>

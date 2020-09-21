@@ -7,7 +7,7 @@ export const environment = {
   production: false,
   useEmulator: true,
   firebase: {
-    apiKey: 'AIzaSyC9voJXeCNhUiNfZDoE6M_7F2eAvDm1MGg',
+    apiKey: 'AIzaSyBS2-HLUFE3VA2JG_bbhbDCJfBWBRurLFk',
     authDomain: 'sechta-narren.firebaseapp.com',
     databaseURL: 'https://sechta-narren.firebaseio.com',
     projectId: 'sechta-narren',

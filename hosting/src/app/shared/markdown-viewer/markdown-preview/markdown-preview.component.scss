@@ -1,17 +1,6 @@
-@import "~@angular/material/theming";
-@include mat-core();
-$secondary: mat-palette($mat-blue-gray);
-
 :host {
   display: block;
   position: relative;
-
-  .title {
-    position: absolute;
-    top: -21px;
-    left: 0;
-    color: mat-color($secondary, 200);
-  }
 
   .info-toggle {
     position: absolute;
@@ -21,7 +10,6 @@ $secondary: mat-palette($mat-blue-gray);
 
   .content {
     height: calc(100% - 18px);
-    border: 1px solid mat-color($secondary, 200);
     padding: 8px;
     overflow: auto;
     border-radius: 4px;

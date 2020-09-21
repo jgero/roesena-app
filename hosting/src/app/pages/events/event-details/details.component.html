@@ -1,11 +1,6 @@
-<mat-progress-bar [mode]="'indeterminate'" *ngIf="isLoading$ | async" [color]="'accent'"></mat-progress-bar>
-<ng-container *ngIf="data$ | async as event">
-  <mat-toolbar [color]="'accent'">{{ event.title }}</mat-toolbar>
-  <mat-toolbar class="date"
-    ><span>
-      <time [dateTime]="event.date">{{ event.date | toLocalDateString }} {{ event.date | toLocalTimeString }}</time>
-    </span>
-  </mat-toolbar>
+<ng-container *ngIf="data$ | async as event; else loading">
+  <h1 class="mat-display-3">{{ event.title }}</h1>
+  <h4 class="">{{ event.date | toLocalDateString }} {{ event.date | toLocalTimeString }}</h4>
   <main>
     <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
     <mat-chip-list>
@@ -58,3 +53,7 @@
     <div>{{ event.ownerName }}</div>
   </mat-toolbar>
 </ng-container>
+
+<ng-template #loading>
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</ng-template>

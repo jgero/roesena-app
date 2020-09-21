@@ -13,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { pageTransition } from '@utils/animations/page-transition';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,8 @@ export class RootComponent implements OnDestroy {
     updates$: Actions,
     matIconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    fns: AngularFireFunctions
+    fns: AngularFireFunctions,
+    private analytics: AngularFireAnalytics
   ) {
     matIconRegistry.addSvgIcon('rsn', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-inverted.svg'));
     this.version = environment.buildVersion;

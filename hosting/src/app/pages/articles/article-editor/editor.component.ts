@@ -10,6 +10,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { State } from '@state/articles/editor/reducers/editor.reducer';
 import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/editor/actions/editor.actions';
 import { MatDialog } from '@angular/material/dialog';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-editor',
@@ -20,6 +21,14 @@ export class EditorComponent implements OnDestroy {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   article: AppArticle;
   articleForm: FormGroup;
+  isLoading$ = this.store.select('articleEditor', 'isLoading');
+  get canSave(): boolean {
+    if (!this.articleForm) {
+      return false;
+    }
+    // user can save if everything is valid and something actually changed
+    return this.articleForm.valid && this.articleForm.dirty;
+  }
 
   constructor(
     private store: Store<State>,
@@ -50,7 +59,7 @@ export class EditorComponent implements OnDestroy {
       )
       .subscribe({
         next: (article) => {
-          this.article = JSON.parse(JSON.stringify(article));
+          this.article = cloneDeep(article);
           this.article.created = new Date(this.article.created);
           this.articleForm = new FormGroup({
             title: new FormControl(this.article.title, [Validators.required, Validators.maxLength(35)]),

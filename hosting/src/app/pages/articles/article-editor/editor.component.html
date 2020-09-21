@@ -1,20 +1,26 @@
-<mat-toolbar [color]="'accent'">
-  <div>Artikel Bearbeiten</div>
-  <div class="spacer"></div>
-  <a mat-icon-button [routerLink]="'/articles/overview'"><mat-icon>apps</mat-icon></a>
-</mat-toolbar>
-<form *ngIf="articleForm" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+<header>
+  <h1 class="mat-display-2">Artikel Editor</h1>
+
+  <div class="submitButtons">
+    <ng-container *ngIf="!(isLoading$ | async); else spinner">
+      <button mat-raised-button [color]="'primary'" [disabled]="!canSave" (click)="onSubmit()">
+        <mat-icon>save</mat-icon> SPEICHERN
+      </button>
+      <button mat-raised-button [color]="'warn'" [disabled]="!article?.id" (click)="deleteArticle()">
+        <mat-icon>delete</mat-icon> LÖSCHEN
+      </button>
+    </ng-container>
+    <ng-template #spinner>
+      <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
+    </ng-template>
+  </div>
+</header>
+
+<form *ngIf="articleForm" [formGroup]="articleForm">
   <mat-form-field [style.grid-area]="'title'">
     <mat-label>Titel</mat-label>
     <input matInput formControlName="title" />
     <mat-error *ngIf="articleForm.controls.title.invalid"> {{ articleForm.controls.title | errorMessage }} </mat-error>
-  </mat-form-field>
-
-  <app-markdown-preview [markdownText]="articleForm.get('content').value" [style.grid-area]="'preview'"></app-markdown-preview>
-
-  <mat-form-field [style.grid-area]="'content'">
-    <mat-label>Inhalt</mat-label>
-    <textarea matInput [rows]="10" formControlName="content"></textarea>
   </mat-form-field>
 
   <mat-form-field [style.grid-area]="'tags'">
@@ -32,28 +38,21 @@
     </mat-chip-list>
   </mat-form-field>
 
-  <button
-    mat-raised-button
-    *ngIf="!articleForm.disabled; else saveSpinner"
-    type="submit"
-    [color]="'primary'"
-    [style.grid-area]="'save'"
-    [disabled]="articleForm.invalid || !articleForm.dirty"
-  >
-    <mat-icon>save</mat-icon> SPEICHERN
-  </button>
-  <ng-template #saveSpinner>
-    <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
-  </ng-template>
-
-  <button
-    mat-raised-button
-    type="button"
-    [color]="'warn'"
-    [style.grid-area]="'delete'"
-    [disabled]="article.id === ''"
-    (click)="deleteArticle()"
-  >
-    <mat-icon>delete</mat-icon> LÖSCHEN
-  </button>
+  <mat-tab-group>
+    <mat-tab label="Bearbeiten">
+      <mat-form-field class="description">
+        <mat-label>Beschreibung</mat-label>
+        <textarea
+          matInput
+          [mat-autosize]="true"
+          [matAutosizeMinRows]="4"
+          [matAutosizeMaxRows]="10"
+          formControlName="content"
+        ></textarea>
+      </mat-form-field>
+    </mat-tab>
+    <mat-tab label="Vorschau">
+      <app-markdown-preview [markdownText]="articleForm.get('content').value"></app-markdown-preview>
+    </mat-tab>
+  </mat-tab-group>
 </form>

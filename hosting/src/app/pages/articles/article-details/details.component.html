@@ -1,9 +1,5 @@
-<mat-progress-bar *ngIf="isLoading$ | async" [color]="'accent'" [mode]="'indeterminate'"></mat-progress-bar>
 <ng-container *ngIf="article$ | async as article">
-  <mat-toolbar [color]="'accent'">
-    <div>{{ article.title }}</div>
-    <div class="spacer"></div>
-  </mat-toolbar>
+  <h1 class="mat-display-3">{{ article.title }}</h1>
 
   <main>
     <app-image-card *ngIf="image$ | async as image" [data]="image"></app-image-card>
@@ -25,3 +21,7 @@
     <div>{{ article.ownerName }}</div>
   </mat-toolbar>
 </ng-container>
+
+<ng-template #loading>
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</ng-template>

@@ -1,0 +1,59 @@
+@import '../../../../../shared/style-partials/variables.scss';
+
+:host {
+  display: block;
+  max-width: 700px;
+  padding: 16px;
+  position: relative;
+
+  button.close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  h3 {
+    color: $accent;
+  }
+
+  a:not(mat-button) {
+    text-decoration: none;
+    color: $primary;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .buttonContainer,
+  .checkboxContainer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    button {
+      margin-top: 1rem;
+    }
+  }
+
+  .checkboxContainer {
+    justify-content: space-evenly;
+  }
+
+  .buttonContainer {
+    justify-content: space-between;
+  }
+
+  .mat-expansion-panel {
+    margin-top: 1rem;
+
+    table {
+      margin-top: 1rem;
+      width: 100%;
+
+      td {
+        min-width: 100px;
+      }
+    }
+  }
+}

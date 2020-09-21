@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { EventOverviewRoutingModule } from './event-overview-routing.module';
 import { OverviewComponent } from './overview.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { CardsModule } from '@shared/cards/cards.module';
@@ -13,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromEvent from '../../../state/events/overview/reducers/event.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EventEffects } from '../../../state/events/overview/effects/event.effects';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -20,7 +20,7 @@ import { EventEffects } from '../../../state/events/overview/effects/event.effec
     CommonModule,
     EventOverviewRoutingModule,
     MatToolbarModule,
-    MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatGridListModule,
     MatIconModule,
     CardsModule,

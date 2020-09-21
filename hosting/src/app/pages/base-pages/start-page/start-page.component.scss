@@ -1,19 +1,130 @@
 :host {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin: 0 8px;
-  height: calc(100% - 16px);
+  $spacing: 3rem;
 
-  .cardContainer {
-    display: flex;
-    margin-top: 16px;
-    flex-direction: column;
+  box-sizing: border-box;
+  display: grid;
+  width: 100%;
+  min-height: 500px;
+  padding: 0 $spacing;
+  padding-bottom: $spacing;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: 'title' '.' '.';
+
+  @media screen and (min-width: 1400px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 'title stripes' '. .';
+  }
+  row-gap: $spacing;
+  column-gap: $spacing;
+}
+
+.title {
+  position: relative;
+  grid-area: title;
+
+  @media screen and (min-width: 1400px) {
+    clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+  }
+  @media screen and (min-width: 601px) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h1 {
+    margin-block-end: 0em;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+
+    @media screen and (min-width: 1400px) {
+      font-size: 4rem;
+      line-height: 4rem;
+    }
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1rem;
+    opacity: 0.5;
+  }
+
+  img {
+    position: absolute;
     width: 100%;
-    max-width: 400px;
+    opacity: 0.1;
+    transform: rotate(10deg);
+  }
+}
+
+.stripes {
+  overflow: hidden;
+  position: relative;
+  grid-area: stripes;
+  @media screen and (max-width: 1399px) {
+    display: none;
+  }
+
+  .stripe {
+    position: absolute;
+    top: -50%;
+    width: 3rem;
+    height: 200%;
+    transform: rotate(40deg);
+
+    &.blue {
+      background-color: #d4e9fd;
+      left: 30%;
+    }
+
+    &.red {
+      background-color: #ffb9d4;
+      left: 40%;
+    }
+
+    &.yellow {
+      background-color: #ffedc1;
+      left: 50%;
+    }
+  }
+}
+
+.content {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
 
     & > * {
-      max-height: 270px;
+      margin: 0;
     }
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin: 0;
+    margin-top: 1em;
+  }
+
+  .subtitle {
+    opacity: 0.5;
+  }
+
+  .content {
+    max-height: 200px;
+    overflow: hidden;
+  }
+
+  a {
+    transform: translateX(-16px);
   }
 }

@@ -1,4 +1,4 @@
-<mat-toolbar [color]="'accent'">Hilfe</mat-toolbar>
+<h1 class="mat-display-4">Hilfe</h1>
 
 <main>
   <app-markdown-viewer *ngIf="$textData | async as text" [markdownText]="text.content"></app-markdown-viewer>

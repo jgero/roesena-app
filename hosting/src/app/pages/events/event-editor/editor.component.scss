@@ -1,56 +1,51 @@
-@import "~@angular/material/theming";
-@include mat-core();
-$warn: mat-palette($mat-red);
-$secondary: mat-palette($mat-blue-gray);
+@import '~@angular/material/theming';
 
 :host {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
+  padding: 16px;
 }
 
-form {
-  display: grid;
-  width: 100%;
-  max-width: 800px;
-  padding: 8px;
-  box-sizing: border-box;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 16px;
-  grid-template-rows: auto minmax(0, 300px) auto auto auto auto auto;
-  row-gap: 16px;
-  grid-template-areas:
-    "title title"
-    "preview preview"
-    "description description"
-    "start-date start-time"
-    "end-date end-time"
-    "tags tags"
-    "deadline deadline"
-    "save delete";
+:host > header {
+  margin-top: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 
-  .date-time {
-    width: 150px;
-    justify-self: center;
-  }
-
-  .mat-spinner {
-    justify-self: center;
-  }
-
-  ::ng-deep.mat-expansion-panel-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    column-gap: 16px;
-    grid-template-areas:
-      ". ."
-      "groups groups"
-      "participants participants";
-  }
-  .mat-expansion-panel {
-    &.ng-invalid .mat-expansion-panel-header-description {
-      color: mat-color($warn, 500);
+  .submitButtons {
+    display: flex;
+    flex-wrap: wrap;
+    button {
+      margin: 0.5rem;
     }
+  }
+}
+
+.mat-stepper-horizontal {
+  background-color: mat-color(mat-palette($mat-grey, 50));
+}
+
+.contentStep,
+.dateStep,
+.participantStep {
+  display: flex;
+  flex-direction: column;
+
+  & > .mat-form-field:not(.mat-form-field-type-mat-chip-list) {
+    max-width: 350px;
+  }
+}
+
+.contentStep {
+  .description,
+  app-markdown-preview {
+    margin-top: 0.5rem;
+  }
+  .description {
+    width: 100%;
+  }
+
+  app-markdown-preview {
+    min-height: 10vh;
+    max-height: 50vh;
   }
 }

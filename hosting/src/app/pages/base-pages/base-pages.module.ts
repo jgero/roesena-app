@@ -9,9 +9,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { MarkdownViewerModule } from '@shared/markdown-viewer/markdown-viewer.module';
-import { CardsModule } from '@shared/cards/cards.module';
 
 import { AboutComponent } from './about/about.component';
 import { HelpComponent } from './help/help.component';
@@ -24,9 +24,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { BaseEffects } from '../../state/basePages/effects/base.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchModule } from '@shared/search/search.module';
+import { ConvertersModule } from '@shared/converters/converters.module';
+import { DataProtectionComponent } from './data-protection/data-protection.component';
+import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { FooterModule } from './footer/footer.module';
 
 @NgModule({
-  declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
+  declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent, DataProtectionComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -40,11 +46,13 @@ import { SearchModule } from '@shared/search/search.module';
     MatToolbarModule,
     MarkdownViewerModule,
     MatButtonModule,
-    CardsModule,
+    MatMenuModule,
+    ConvertersModule,
     SearchModule,
+    FooterModule,
     StoreModule.forFeature(fromBase.baseFeatureKey, fromBase.reducer),
     EffectsModule.forFeature([BaseEffects]),
   ],
-  exports: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
+  exports: [AboutComponent, DataProtectionComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent],
 })
 export class BasePagesModule {}

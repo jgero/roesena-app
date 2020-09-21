@@ -1,0 +1,76 @@
+@import '../../../../shared/style-partials/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10vh;
+}
+
+.versionNumber {
+  background-color: $accent;
+  text-align: center;
+  padding: 8px;
+
+  & > span {
+    opacity: 0.4;
+  }
+}
+
+footer {
+  background-color: $primary;
+  display: grid;
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 'contact info' 'address address';
+  }
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 'contact' 'info' 'address';
+  }
+  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-rows: auto;
+  grid-template-areas: 'contact address info';
+  color: white;
+
+  h4 {
+    font-weight: 500;
+  }
+
+  & > div {
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-self: center;
+
+    @media screen and (max-width: 600px) {
+      &.left,
+      &.right {
+        justify-self: flex-start;
+        margin-left: 3rem;
+      }
+    }
+
+    &.left {
+      grid-area: contact;
+    }
+
+    &.center {
+      grid-area: address;
+      text-align: center;
+      height: max-content;
+      align-self: center;
+      @media screen and (max-width: 600px) {
+        font-size: 0.8rem;
+      }
+    }
+
+    &.right {
+      grid-area: info;
+    }
+  }
+}

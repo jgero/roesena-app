@@ -1,6 +1,11 @@
-<button mat-icon-button [color]="'accent'" class="help" (click)="isHelpVisible = !isHelpVisible">
-  <mat-icon>{{ isHelpVisible ? 'cancel' : 'help' }}</mat-icon>
-</button>
+<div class="button-container">
+  <button mat-icon-button [color]="'accent'" (click)="isHelpVisible = !isHelpVisible">
+    <mat-icon>{{ isHelpVisible ? 'cancel' : 'help' }}</mat-icon>
+  </button>
+  <button mat-icon-button [color]="'accent'" mat-icon-button aria-label="close search" (click)="onClose()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 <div class="wrapper" *ngIf="!isHelpVisible; else help">
   <label id="type-radio-group">Suche nach:</label>
   <mat-radio-group aria-labelledby="type-radio-group" (change)="onRadioChange($event)" [value]="selectedOption$ | async">

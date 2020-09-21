@@ -1,0 +1,56 @@
+<h3 class="mat-display-2">Cookie-Einstellungen</h3>
+<button mat-icon-button class="close" (click)="onClose()"><mat-icon>close</mat-icon></button>
+<p>
+  Wir verwenden Cookies um Ihnen ein optimales Webseiten-Erlebnis zu bieten. Dazu zählen Cookies, die für den Betrieb der Seite
+  notwendig sind, sowie solche, die lediglich zu anonymen Statistikzwecken (mit Hilfe von Google Analytics) genutzt werden. Sie
+  können selbst entscheiden, welche Kategorien sie zulassen möchten. Bitte beachten Sie, dass auf Basis Ihrer Entscheidungen
+  womöglich nicht mehr alle Funktionalitäten der Seite zur Verfügung stehen. Weitere Informationen finden sie in unserer
+  <a href="/data-protection">Datenschutzerklärung</a>.
+</p>
+<div class="checkboxContainer">
+  <mat-checkbox color="primary" disabled="true" [(ngModel)]="essentialBox">Notwendig</mat-checkbox>
+  <mat-checkbox color="primary" [(ngModel)]="analyticsBox">Analyse</mat-checkbox>
+  <mat-checkbox color="primary" [(ngModel)]="comfortBox">Komfort</mat-checkbox>
+</div>
+<div class="buttonContainer">
+  <button mat-stroked-button color="accent" (click)="onAcceptSelection()">AUSWAHL AKZEPTIEREN</button>
+  <button mat-flat-button color="primary" (click)="onAcceptAll()">ALLE AKZEPTIEREN</button>
+</div>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Details anzeigen</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-tab-group mat-align-tabs="start" [(selectedIndex)]="tabIndex">
+    <mat-tab label="Notwendig">
+      <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
+    </mat-tab>
+    <mat-tab label="Analyse">
+      <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
+    </mat-tab>
+    <mat-tab label="Komfort">
+      <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</mat-expansion-panel>
+
+<ng-template #tableTemplate>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+    <!-- expiration Column -->
+    <ng-container matColumnDef="expiration">
+      <th mat-header-cell *matHeaderCellDef>Lebensdauer</th>
+      <td mat-cell *matCellDef="let element">{{ element.expiration }}</td>
+    </ng-container>
+    <!-- description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Beschreibung</th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-template>

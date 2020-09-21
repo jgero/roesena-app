@@ -1,23 +1,26 @@
+@import '../../../shared/style-partials/variables.scss';
+
 :host {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .search-field {
-    font-size: 12px;
-    width: 150px;
-  }
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
 
   .add-fab {
     position: sticky;
     z-index: 1;
     bottom: 16px;
-    margin-bottom: 16px;
+    margin: 16px 0;
   }
 
-  .mat-grid-list,
-  app-search-bar {
-    width: calc(100% - 32px);
-    margin: 16px;
+  h1 {
+    color: $accent;
+  }
+
+  .mat-grid-list {
+    width: 100%;
   }
 }
