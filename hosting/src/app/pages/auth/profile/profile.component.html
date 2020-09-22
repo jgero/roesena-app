@@ -21,7 +21,7 @@
         <mat-label>neuer Name</mat-label>
         <input matInput #nameInput pattern="^[a-zA-ZäöüÄÖÜß -]+$" />
       </mat-form-field>
-      <ng-container *ngIf="!(isLoading$ | async); else nameSpinner">
+      <ng-container *ngIf="(isLoading$ | async) !== true; else nameSpinner">
         <button
           mat-stroked-button
           [color]="'primary'"

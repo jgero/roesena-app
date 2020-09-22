@@ -2,7 +2,7 @@
   <h1 class="mat-display-2">Bild Editor</h1>
 
   <div class="submitButtons">
-    <ng-container *ngIf="!(isLoading$ | async); else spinner">
+    <ng-container *ngIf="(isLoading$ | async) !== true; else spinner">
       <button mat-raised-button [color]="'primary'" [disabled]="!canSave" (click)="onSubmit()">
         <mat-icon>save</mat-icon> SPEICHERN
       </button>

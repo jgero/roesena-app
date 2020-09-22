@@ -35,14 +35,14 @@ export class EventEffects {
           map(convertMany),
           map((res) => [res, storeState]),
           takeUntil(this.subs.unsubscribe$),
-          map(([events, storeState]: [AppEvent[], State]) => {
+          map(([events, state]: [AppEvent[], State]) => {
             // if user is not logged in or not confirmed no filtering is needed
-            if (!storeState.user.user || !storeState.user.user.isConfirmedMember) {
+            if (!state.user.user || !state.user.user.isConfirmedMember) {
               return events;
             } else {
               // keep the events where there are no participants or the user is participant
               return events.filter(
-                (ev) => ev.participants.length === 0 || ev.participants.findIndex((el) => el.id === storeState.user.user.id) > -1
+                (ev) => ev.participants.length === 0 || ev.participants.findIndex((el) => el.id === state.user.user.id) > -1
               );
             }
           }),

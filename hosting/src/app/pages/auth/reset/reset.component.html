@@ -1,6 +1,6 @@
 <mat-toolbar [color]="'accent'">Passwort zurücksetzen</mat-toolbar>
 <main>
-  <form *ngIf="!(hasCode$ | async); else newPassword" [formGroup]="resetForm" (ngSubmit)="onResetSubmit()">
+  <form *ngIf="(hasCode$ | async) !== true; else newPassword" [formGroup]="resetForm" (ngSubmit)="onResetSubmit()">
     <mat-form-field [style.grid-area]="'input'">
       <mat-label>E-Mail</mat-label>
       <input matInput formControlName="email" />

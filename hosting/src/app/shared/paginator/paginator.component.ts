@@ -13,7 +13,7 @@ export class PaginatorComponent implements OnInit {
   @Input()
   pageSize: number;
   @Input()
-  pageIndex: number = 0;
+  pageIndex = 0;
   @Input()
   length: number;
 

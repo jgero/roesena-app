@@ -9,8 +9,6 @@ interface TableData {
   description: string;
 }
 
-const ELEMENT_DATA: TableData[] = [,];
-
 @Component({
   selector: 'app-cookie-manager',
   templateUrl: './cookie-manager.component.html',

@@ -9,6 +9,11 @@ import { EventEffects } from '../../state/events/effects/event.effects';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, EventsRoutingModule, StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer), EffectsModule.forFeature([EventEffects])],
+  imports: [
+    CommonModule,
+    EventsRoutingModule,
+    StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
+    EffectsModule.forFeature([EventEffects]),
+  ],
 })
 export class EventsModule {}

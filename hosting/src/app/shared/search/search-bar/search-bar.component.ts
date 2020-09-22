@@ -33,7 +33,7 @@ export class SearchBarComponent {
     actions$.pipe(ofType(SearchActionTypes.AddSearchString, SearchActionTypes.RemoveSearchString)).subscribe({
       next: () => {
         if (!this.isOpen) {
-          this.bottomSheet.open(SearchSheet);
+          this.bottomSheet.open(SearchSheetComponent);
         }
       },
     });
@@ -43,17 +43,17 @@ export class SearchBarComponent {
     if (this.isOpen) {
       this.bottomSheet.dismiss();
     } else {
-      this.bottomSheet.open(SearchSheet);
+      this.bottomSheet.open(SearchSheetComponent);
     }
   }
 }
 
 @Component({
-  selector: 'search-sheet',
+  selector: 'app-search-sheet',
   templateUrl: 'search-sheet.html',
   styleUrls: ['./search-sheet.scss'],
 })
-export class SearchSheet {
+export class SearchSheetComponent {
   searchStrings$: Observable<string[]> = this.store.select('search', 'searchStrings');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isHelpVisible = false;

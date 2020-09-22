@@ -54,7 +54,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
 
   onSubmit(eventId: string, amount: string, form: FormGroup) {
     form.disable();
-    this.store.dispatch(new RespondToEvent({ amount: parseInt(amount), id: eventId }));
+    this.store.dispatch(new RespondToEvent({ amount: parseInt(amount, 10), id: eventId }));
     this.actions$
       .pipe(
         ofType(EventsActionTypes.RespondToEventSuccess, EventsActionTypes.RespondToEventFailure),

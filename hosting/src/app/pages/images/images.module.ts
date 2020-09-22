@@ -8,6 +8,10 @@ import { ImageEffects } from '../../state/images/effects/image.effects';
 
 @NgModule({
   declarations: [],
-  imports: [ImagesRoutingModule, StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer), EffectsModule.forFeature([ImageEffects])],
+  imports: [
+    ImagesRoutingModule,
+    StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer),
+    EffectsModule.forFeature([ImageEffects]),
+  ],
 })
 export class ImagesModule {}

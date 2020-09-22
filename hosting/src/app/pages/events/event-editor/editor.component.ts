@@ -166,7 +166,7 @@ export class EditorComponent implements OnDestroy {
         // remove the person if it is a participant
         if ((formEl.value as Participant[]).find((el) => el.id === person.id)) {
           // keep all persons, which do not have the id of the person that should be removed
-          formEl.setValue([...(formEl.value as Participant[]).filter((el) => el.id != person.id)]);
+          formEl.setValue([...(formEl.value as Participant[]).filter((el) => el.id !== person.id)]);
         }
       });
   }
@@ -253,7 +253,7 @@ export class EditorComponent implements OnDestroy {
 
   removePerson(person: Participant) {
     const formEl = this.participantsFormGroup.get('participants');
-    formEl.setValue([...(formEl.value as Participant[]).filter((el) => el.id != person.id)]);
+    formEl.setValue([...(formEl.value as Participant[]).filter((el) => el.id !== person.id)]);
   }
 
   // isPersonSelected(id: string): boolean {
@@ -285,7 +285,7 @@ export class EditorComponent implements OnDestroy {
 }
 
 @Component({
-  selector: 'delete-dialog',
+  selector: 'app-delete-dialog',
   templateUrl: 'delete-dialog.html',
 })
 export class DeleteDialogComponent {}

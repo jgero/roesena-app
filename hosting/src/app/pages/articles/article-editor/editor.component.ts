@@ -42,7 +42,9 @@ export class EditorComponent implements OnDestroy {
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe({
         next: (isLoading) => {
-          if (!this.articleForm) return;
+          if (!this.articleForm) {
+            return;
+          }
           if (isLoading) {
             this.articleForm.disable();
           } else {
@@ -102,7 +104,7 @@ export class EditorComponent implements OnDestroy {
 }
 
 @Component({
-  selector: 'delete-dialog',
+  selector: 'app-delete-dialog',
   templateUrl: 'delete-dialog.html',
 })
 export class DeleteDialogComponent {}

@@ -83,7 +83,7 @@ export class EditorComponent implements OnDestroy {
   }
 
   onSubmit() {
-    let updated: AppImage = {} as any;
+    const updated: AppImage = {} as any;
     Object.assign(updated, this.image);
     updated.tags = this.imageForm.get('tags').value;
     updated.created = new Date();
@@ -125,7 +125,7 @@ export class EditorComponent implements OnDestroy {
 }
 
 @Component({
-  selector: 'delete-dialog',
+  selector: 'app-delete-dialog',
   templateUrl: 'delete-dialog.html',
 })
 export class DeleteDialogComponent {}

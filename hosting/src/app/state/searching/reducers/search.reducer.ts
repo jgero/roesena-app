@@ -30,7 +30,7 @@ export function reducer(state = initialState, action: SearchActions): State {
       return { ...state, limit: action.payload.limit };
 
     case SearchActionTypes.AddSearchString: {
-      let value = action.payload.searchString.trim();
+      const value = action.payload.searchString.trim();
       const searchStrings = [...state.searchStrings];
       // add if searchString matches regex and it's not already in the array
       if (new RegExp('^[0-9a-zA-ZäöüÄÖÜß -]+$').test(value) && !searchStrings.includes(value)) {
