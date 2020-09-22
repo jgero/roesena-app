@@ -1,15 +1,15 @@
 {
   "indexes": [
     {
-      "collectionGroup": "events",
+      "collectionGroup": "persons",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "participants",
+          "fieldPath": "isConfirmedMember",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "endDate",
+          "fieldPath": "name",
           "order": "ASCENDING"
         }
       ]
@@ -24,34 +24,6 @@
         },
         {
           "fieldPath": "startDate",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "events",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "participantsArray",
-          "arrayConfig": "CONTAINS"
-        },
-        {
-          "fieldPath": "deadline",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "events",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "participantsArray",
-          "arrayConfig": "CONTAINS"
-        },
-        {
-          "fieldPath": "endDate",
           "order": "ASCENDING"
         }
       ]
