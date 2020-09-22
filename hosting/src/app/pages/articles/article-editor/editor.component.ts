@@ -10,7 +10,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { State } from '@state/articles/editor/reducers/editor.reducer';
 import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/editor/actions/editor.actions';
 import { MatDialog } from '@angular/material/dialog';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 @Component({
   selector: 'app-editor',
