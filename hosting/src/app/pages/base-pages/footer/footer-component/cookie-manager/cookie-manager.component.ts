@@ -65,23 +65,29 @@ export class CookieManagerComponent implements OnInit {
     this.setCookieAndDismiss();
   }
 
-  onAcceptAll() {
-    this.analytics.setAnalyticsCollectionEnabled(true);
-    this.setCookieAndDismiss();
+  async onAcceptAll() {
+    await this.analytics.setAnalyticsCollectionEnabled(true);
+    this.setCookieAndDismiss(true);
   }
 
   /**
    * all values have to be set explicitly, because user could be opening the sheet
    * again to disable some things
    */
-  private setCookieAndDismiss() {
+  private setCookieAndDismiss(acceptAll = false) {
+    this.cookies.delete('consent', '/');
     this.sheetRef.dismiss();
     const expiresAt = new Date();
     expiresAt.setMonth(new Date().getMonth() + 1);
-    this.cookies.set(
-      'consent',
-      JSON.stringify({ essential: this.essentialBox, analytics: this.analyticsBox, comfort: this.comfortBox }),
-      expiresAt
-    );
+    if (acceptAll) {
+      this.cookies.set('consent', JSON.stringify({ essential: true, analytics: true, comfort: true }), expiresAt, '/');
+    } else {
+      this.cookies.set(
+        'consent',
+        JSON.stringify({ essential: this.essentialBox, analytics: this.analyticsBox, comfort: this.comfortBox }),
+        expiresAt,
+        '/'
+      );
+    }
   }
 }

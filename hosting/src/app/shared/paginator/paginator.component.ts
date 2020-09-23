@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
-import { State } from '@state/pagination/reducers/page.reducer';
+// import { State } from '@state/pagination/reducers/page.reducer';
 import { PageForward, PageBackwards } from '@state/pagination/actions/page.actions';
 
 @Component({
@@ -17,7 +17,7 @@ export class PaginatorComponent implements OnInit {
   @Input()
   length: number;
 
-  constructor(private store: Store<State>, private compRef: ElementRef<HTMLElement>) {}
+  constructor(private store: Store<{}>, private compRef: ElementRef<HTMLElement>) {}
 
   onPage(event: PageEvent) {
     this.compRef.nativeElement.parentElement.scrollIntoView({ behavior: 'smooth' });

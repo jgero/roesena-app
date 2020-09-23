@@ -19,6 +19,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { convertMany } from '@utils/converters/article-documents';
 import { Query, CollectionReference } from '@angular/fire/firestore/interfaces';
 import { merge, of } from 'rxjs';
+import { MissingDocumentError } from '@utils/errors/missing-document-error';
 
 @Injectable()
 export class ArticleEffects {
@@ -50,7 +51,14 @@ export class ArticleEffects {
           .doc('articles')
           .snapshotChanges()
           .pipe(
-            map((doc) => new LoadLengthSuccess({ length: (doc.payload.data() as any).amount })),
+            map((doc) => {
+              // if there is no connection an empty document is returned
+              if (doc.payload.exists) {
+                return new LoadLengthSuccess({ length: (doc.payload.data() as any).amount });
+              } else {
+                return new LoadLengthFailure({ error: new MissingDocumentError('Document meta/articles does not exist') });
+              }
+            }),
             takeUntil(this.subs.unsubscribe$),
             catchError((error) => of(new LoadLengthFailure({ error })))
           )
