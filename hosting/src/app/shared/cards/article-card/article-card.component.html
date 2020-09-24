@@ -5,7 +5,9 @@
     <div>{{ data.ownerName }}</div>
   </mat-card-subtitle>
   <mat-card-content>
-    <div class="content-preview">{{ data.content }}</div>
+    <div class="content-preview">
+      <app-markdown-viewer [markdownText]="data.content"></app-markdown-viewer>
+    </div>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of data.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
     </mat-chip-list>

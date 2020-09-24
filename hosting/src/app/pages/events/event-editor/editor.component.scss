@@ -5,19 +5,8 @@
   padding: 16px;
 }
 
-:host > header {
-  margin-top: 0.5em;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  .submitButtons {
-    display: flex;
-    flex-wrap: wrap;
-    button {
-      margin: 0.5rem;
-    }
-  }
+:host > h1 {
+  margin: 16px 0;
 }
 
 .mat-stepper-horizontal {
@@ -47,5 +36,13 @@
   app-markdown-preview {
     min-height: 10vh;
     max-height: 50vh;
+  }
+}
+
+.submitButtons {
+  margin-top: 16px;
+
+  button {
+    margin: 0.5rem;
   }
 }

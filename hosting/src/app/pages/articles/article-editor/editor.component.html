@@ -1,20 +1,4 @@
-<header>
-  <h1 class="mat-display-2">Artikel Editor</h1>
-
-  <div class="submitButtons">
-    <ng-container *ngIf="(isLoading$ | async) !== true; else spinner">
-      <button mat-raised-button [color]="'primary'" [disabled]="!canSave" (click)="onSubmit()">
-        <mat-icon>save</mat-icon> SPEICHERN
-      </button>
-      <button mat-raised-button [color]="'warn'" [disabled]="!article?.id" (click)="deleteArticle()">
-        <mat-icon>delete</mat-icon> LÖSCHEN
-      </button>
-    </ng-container>
-    <ng-template #spinner>
-      <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
-    </ng-template>
-  </div>
-</header>
+<h1 class="mat-display-2">Artikel Editor</h1>
 
 <form *ngIf="articleForm" [formGroup]="articleForm">
   <mat-form-field [style.grid-area]="'title'">
@@ -56,3 +40,17 @@
     </mat-tab>
   </mat-tab-group>
 </form>
+
+<div class="submitButtons">
+  <ng-container *ngIf="(isLoading$ | async) !== true; else spinner">
+    <button mat-raised-button [color]="'primary'" [disabled]="!canSave" (click)="onSubmit()">
+      <mat-icon>save</mat-icon> SPEICHERN
+    </button>
+    <button mat-raised-button [color]="'warn'" [disabled]="!article?.id" (click)="deleteArticle()">
+      <mat-icon>delete</mat-icon> LÖSCHEN
+    </button>
+  </ng-container>
+  <ng-template #spinner>
+    <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
+  </ng-template>
+</div>

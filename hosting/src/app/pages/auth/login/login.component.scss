@@ -1,28 +1,17 @@
-:host {
+main {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-main {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 16px;
 
   form {
-    display: grid;
-    grid-template-columns: minmax(0px, 200px) min-content minmax(0, 200px);
-    column-gap: 8px;
-    grid-template-rows: auto auto auto auto;
-    row-gap: 8px;
-    grid-template-areas:
-      ". email ."
-      ". password ."
-      ". button ."
-      ". reset .";
-  }
+    display: flex;
+    width: min-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  .mat-spinner {
-    justify-self: center;
+    button {
+      width: 100%;
+    }
   }
 }

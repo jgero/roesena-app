@@ -1,5 +1,4 @@
-@import '~@angular/material/theming';
-$background: mat-palette($mat-grey);
+@import '../../style-partials/variables.scss';
 
 :host {
   display: flex;
@@ -34,8 +33,8 @@ $background: mat-palette($mat-grey);
         left: 0;
         width: 100%;
         display: block;
-        height: 20px;
-        background-image: linear-gradient(to top, mat-color($background, 800), transparent);
+        height: 40px;
+        background-image: linear-gradient(to top, $cardBackground, transparent);
       }
     }
   }

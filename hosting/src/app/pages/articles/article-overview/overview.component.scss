@@ -1,26 +1,20 @@
 :host {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
 
-  h1 {
-    color: #fbc02d;
+  .mat-grid-list {
+    margin: 0 16px;
   }
 
-  .search-field {
-    font-size: 12px;
-    width: 150px;
+  .spinnerContainer {
+    display: flex;
+    justify-content: center;
   }
 
-  .add-fab {
+  a {
     position: sticky;
     z-index: 1;
     bottom: 16px;
-  }
-
-  .mat-grid-list,
-  .mat-paginator {
-    width: calc(100% - 32px);
-    margin: 16px;
+    left: calc(50% - 28px);
+    margin: 16px 0;
   }
 }

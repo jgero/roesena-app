@@ -1,4 +1,4 @@
-<mat-toolbar [color]="'accent'">Passwort zurücksetzen</mat-toolbar>
+<app-page-header [title]="'Passwort zurücksetzen'" [matIcon]="'repeat'"></app-page-header>
 <main>
   <form *ngIf="(hasCode$ | async) !== true; else newPassword" [formGroup]="resetForm" (ngSubmit)="onResetSubmit()">
     <mat-form-field [style.grid-area]="'input'">

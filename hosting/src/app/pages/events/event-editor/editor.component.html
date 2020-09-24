@@ -1,21 +1,7 @@
-<header>
-  <h1 class="mat-display-2">Event Editor</h1>
-
-  <div class="submitButtons">
-    <ng-container *ngIf="(isLoading$ | async) !== true; else spinner">
-      <button mat-raised-button [color]="'primary'" [disabled]="!canSave" (click)="onSubmit()">
-        <mat-icon>save</mat-icon> SPEICHERN
-      </button>
-      <button mat-raised-button [color]="'warn'" [disabled]="!event?.id" (click)="deleteEvent()">
-        <mat-icon>delete</mat-icon> LÖSCHEN
-      </button>
-    </ng-container>
-    <ng-template #spinner>
-      <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
-    </ng-template>
-  </div>
-</header>
-<mat-horizontal-stepper *ngIf="contentFormGroup && dateFormGroup && participantsFormGroup">
+<!-- <header> -->
+<h1 class="mat-display-2">Event Editor</h1>
+<!-- </header> -->
+<mat-vertical-stepper *ngIf="contentFormGroup && dateFormGroup && participantsFormGroup">
   <mat-step [stepControl]="contentFormGroup" errorMessage="Inhalt unvollständig">
     <form class="contentStep" [formGroup]="contentFormGroup">
       <ng-template matStepLabel>Inhalt des Events</ng-template>
@@ -150,27 +136,23 @@
           </button>
         </mat-chip-list>
       </mat-form-field>
-
-      <!-- <mat-form-field>
-        <mat-chip-list [selectable]="true" [multiple]="true" formControlName="participants">
-          <mat-chip
-            #chips
-            *ngFor="let person of persons"
-            [color]="'primary'"
-            (click)="onPersonClick(person.id)"
-            [selected]="isPersonSelected(person.id)"
-            [class.mat-chip-selected]="isPersonSelected(person.id)"
-          >
-            {{ person.name }}
-          </mat-chip>
-        </mat-chip-list>
-        <mat-error *ngIf="this.participantsFormGroup.get('participants').invalid">
-          {{ this.participantsFormGroup.get('participants') | errorMessage }}
-        </mat-error>
-      </mat-form-field> -->
       <div class="buttonBox">
         <button mat-button matStepperPrevious>Zurück</button>
       </div>
     </form>
   </mat-step>
-</mat-horizontal-stepper>
+</mat-vertical-stepper>
+
+<div class="submitButtons">
+  <ng-container *ngIf="(isLoading$ | async) !== true; else spinner">
+    <button mat-raised-button [color]="'primary'" [disabled]="!canSave" (click)="onSubmit()">
+      <mat-icon>save</mat-icon> SPEICHERN
+    </button>
+    <button mat-raised-button [color]="'warn'" [disabled]="!event?.id" (click)="deleteEvent()">
+      <mat-icon>delete</mat-icon> LÖSCHEN
+    </button>
+  </ng-container>
+  <ng-template #spinner>
+    <mat-spinner [style.grid-area]="'save'" [color]="'accent'" [diameter]="36"></mat-spinner>
+  </ng-template>
+</div>

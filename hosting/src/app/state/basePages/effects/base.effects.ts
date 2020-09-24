@@ -73,7 +73,9 @@ export class BaseEffects {
     // if there are respondables
     filter((action) => action.payload.amount > 0),
     // switch to snackbar action
-    switchMap((action) => this.snackbar.open(`Unbeantwortete Termine: ${action.payload.amount}`, 'ANTWORTEN').onAction()),
+    switchMap((action) =>
+      this.snackbar.open(`Unbeantwortete Termine: ${action.payload.amount}`, 'ANTWORTEN', { duration: undefined }).onAction()
+    ),
     // navigate when action is clicked
     tap(() => this.router.navigate(['auth', 'my-events']))
   );

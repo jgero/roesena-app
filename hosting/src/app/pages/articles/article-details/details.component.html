@@ -1,27 +1,22 @@
-<ng-container *ngIf="article$ | async as article">
-  <h1 class="mat-display-3">{{ article.title }}</h1>
-
+<ng-container *ngIf="article$ | async as article; else loading">
+  <app-page-header [title]="article.title" [date]="article.created" [owner]="article.ownerName"></app-page-header>
   <main>
     <app-image-card *ngIf="image$ | async as image" [data]="image"></app-image-card>
     <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of article.tags" (click)="onTagClick(tag)"> {{ tag }} </mat-chip>
     </mat-chip-list>
-    <div class="fab-container">
-      <a mat-fab [color]="'primary'" *ngIf="canEdit$ | async" [routerLink]="'/articles/edit/' + article.id"
-        ><mat-icon>edit</mat-icon></a
-      >
-      <button mat-fab [color]="'primary'" (click)="fillSearchForImages(article)"><mat-icon>image</mat-icon></button>
-    </div>
   </main>
-
-  <mat-toolbar class="footer">
-    <div>{{ article.created | toLocalDateString }}</div>
-    <div class="spacer"></div>
-    <div>{{ article.ownerName }}</div>
-  </mat-toolbar>
+  <div class="fab-container">
+    <a mat-fab [color]="'primary'" *ngIf="canEdit$ | async" [routerLink]="'/articles/edit/' + article.id"
+      ><mat-icon>edit</mat-icon></a
+    >
+    <button mat-fab [color]="'primary'" (click)="fillSearchForImages(article)"><mat-icon>image</mat-icon></button>
+  </div>
 </ng-container>
 
 <ng-template #loading>
-  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  <div class="spinnerContainer">
+    <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  </div>
 </ng-template>

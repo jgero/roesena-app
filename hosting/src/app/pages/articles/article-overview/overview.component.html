@@ -1,4 +1,4 @@
-<h1 class="mat-display-4">Artikel</h1>
+<app-page-header [title]="'Artikel'" [subtitle]="'Neues aus dem Verein'" [matIcon]="'article'"></app-page-header>
 
 <ng-container *ngIf="data$ | async as articles; else loading">
   <mat-grid-list [cols]="cols" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
@@ -7,13 +7,11 @@
     </mat-grid-tile>
   </mat-grid-list>
 
-  <a mat-fab class="add-fab" color="primary" [routerLink]="'/articles/edit'" *ngIf="canCreate$ | async"
-    ><mat-icon>add</mat-icon></a
-  >
-
+  <a mat-fab color="primary" [routerLink]="'/articles/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
   <app-paginator class="mat-elevation-z2" [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
 </ng-container>
-
 <ng-template #loading>
-  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  <div class="spinnerContainer">
+    <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  </div>
 </ng-template>

@@ -1,4 +1,4 @@
-<h1 class="mat-display-4">Bilder</h1>
+<app-page-header [title]="'Bilder'" [subtitle]="'Die Gesichter der RöSeNa'" [matIcon]="'insert_photo'"></app-page-header>
 
 <ng-container *ngIf="data$ | async as images; else loading">
   <mat-grid-list [cols]="cols" [rowHeight]="'420px'" [gutterSize]="'16px'" @cardFlyIn>
@@ -7,11 +7,13 @@
     </mat-grid-tile>
   </mat-grid-list>
 
-  <a mat-fab class="add-fab" color="primary" [routerLink]="'/images/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
+  <a mat-fab color="primary" [routerLink]="'/images/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
 
   <app-paginator [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
 </ng-container>
 
 <ng-template #loading>
-  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  <div class="spinnerContainer">
+    <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  </div>
 </ng-template>

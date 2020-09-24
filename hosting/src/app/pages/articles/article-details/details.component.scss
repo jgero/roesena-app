@@ -1,42 +1,43 @@
 @import '../../../shared/style-partials/variables.scss';
 
-:host {
-  display: block;
-  padding: 16px;
-}
-
-:host > h1 {
-  color: $accent;
-}
-
 main {
-  width: 100%;
-  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas: 'content image' 'tags tags';
+
+  @media screen and (max-width: 600px) {
+    padding: 0 16px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 'image' 'content' 'tags';
+  }
+}
+
+.spinnerContainer {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.mat-chip-list {
-  width: 100%;
-}
-
-.mat-toolbar {
-  overflow: hidden;
+  justify-content: center;
 }
 
 app-image-card {
-  margin-bottom: 8px;
+  grid-area: image;
 }
 
-.footer {
-  font-size: 12px;
+app-markdown-viewer {
+  grid-area: content;
+}
+
+.mat-chip-list {
+  grid-area: tags;
 }
 
 .fab-container {
   position: sticky;
   z-index: 1;
   bottom: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 
   a {
     margin: 8px;

@@ -14,6 +14,7 @@ import { PaginatorModule } from '@shared/paginator/paginator.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HeadingsModule } from '@shared/headings/headings.module';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -25,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatIconModule,
     MatProgressSpinnerModule,
     CardsModule,
+    HeadingsModule,
     PaginatorModule,
     MatButtonModule,
     StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer),

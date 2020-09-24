@@ -2,7 +2,7 @@ import { EditorActions, EditorActionTypes } from '../actions/editor.actions';
 
 import * as fromArticles from '@state/articles/reducers/article.reducer';
 
-export const editorFeatureKey = 'editor';
+export const editorFeatureKey = 'articleEditor';
 
 interface EditorState {
   isLoading: boolean;

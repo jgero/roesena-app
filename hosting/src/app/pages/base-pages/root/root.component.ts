@@ -28,7 +28,7 @@ export class RootComponent implements OnDestroy {
     shareReplay()
   );
   brakpointMatches: boolean;
-  badgeContentStream$ = this.store.select('base', 'respondablesAmount');
+  badgeContentStream$ = this.store.select('base', 'respondablesAmount').pipe(map((el) => (el === 0 ? undefined : el)));
   user$ = this.store.select('user', 'user');
   version: string;
   destroyed$ = new Subject<boolean>();

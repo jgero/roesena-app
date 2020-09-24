@@ -2,7 +2,7 @@
   "name": "RöSeNa",
   "short_name": "RöSeNa",
   "theme_color": "#c2185b",
-  "background_color": "#303030",
+  "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

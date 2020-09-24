@@ -13,6 +13,7 @@ import { EventCardComponent } from './event-card/event-card.component';
 import { ImageCardComponent } from './image-card/image-card.component';
 import { ArticleCardComponent } from './article-card/article-card.component';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MarkdownViewerModule } from '@shared/markdown-viewer/markdown-viewer.module';
 
 const components = [EventCardComponent, ImageCardComponent, ArticleCardComponent];
 
@@ -27,6 +28,7 @@ const components = [EventCardComponent, ImageCardComponent, ArticleCardComponent
     MatIconModule,
     MatChipsModule,
     MatBadgeModule,
+    MarkdownViewerModule,
   ],
   exports: components,
 })

@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ArticleEffects } from '../../../state/articles/overview/effects/article.effects';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HeadingsModule } from '@shared/headings/headings.module';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -24,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PaginatorModule,
     MatGridListModule,
     CardsModule,
+    HeadingsModule,
     MatIconModule,
     MatButtonModule,
     RouterModule,

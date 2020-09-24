@@ -1,0 +1,85 @@
+@import '../../style-partials/variables.scss';
+
+$overlapSide: 200px;
+$headingHeight: 150px;
+
+:host {
+  display: grid;
+  grid-template-columns: $overlapSide minmax(0, $maxPageWidth) $overlapSide;
+  grid-template-rows: auto auto;
+  grid-template-areas: 'icon heading fill' 'icon subheading fill';
+  background-color: $accent;
+  color: white;
+  height: $headingHeight;
+  border-top-left-radius: #{$headingHeight / 2};
+  border-bottom-left-radius: #{$headingHeight / 2};
+  margin-top: #{$headingHeight / 2};
+  margin-bottom: #{$headingHeight / 2};
+
+  // delayed fade-in of the heading to hide the uncomplete display of the heading at the beginning
+  // to delay the fade in create an animation that starts immediately an does not increase the opacity
+  // for quite some time in the animation
+  animation: fadeIn 1s ease-out;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  // when the screen is wide enough overlap the icon to the sides
+  @media screen and (min-width: calc(#{ $maxPageWidth } + #{ 2 * $overlapSide })) {
+    margin-left: (-$overlapSide);
+    margin-right: (-$overlapSide);
+  }
+
+  // for mobile mode dont show the filler and the icon and remove the border-radius
+  @media screen and (max-width: 600px) {
+    grid-template-areas: 'heading heading heading' 'subheading subheading subheading';
+    border-radius: 0px;
+    padding: 0 10px;
+    overflow: hidden;
+    $headingHeight: 120px;
+
+    .filler,
+    .mat-icon {
+      display: none;
+      position: absolute;
+    }
+  }
+
+  h1 {
+    grid-area: heading;
+    margin: 0;
+    align-self: flex-end;
+  }
+
+  h4 {
+    grid-area: subheading;
+    opacity: 0.75;
+    margin: 0;
+    align-self: flex-start;
+  }
+
+  .filler {
+    grid-area: fill;
+    // it's very important, that the parent container is exactly 1000px in width
+    width: calc((100vw - 1000px) / 2 - 10px);
+    background-color: $accent;
+  }
+
+  .mat-icon {
+    grid-area: icon;
+    align-self: center;
+    justify-self: flex-end;
+    $iconSize: $headingHeight;
+    width: $iconSize;
+    height: $iconSize;
+    font-size: $iconSize;
+  }
+}

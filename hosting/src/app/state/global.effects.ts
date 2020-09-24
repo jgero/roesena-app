@@ -34,6 +34,9 @@ export class GlobalEffects {
     filter((action) => new RegExp('.*((error)|(Failure)|(failure)|(failed)).*').test(action.type.toLowerCase())),
     tap((action: ErrorAction) => {
       let message: string;
+      if (!action.payload.error) {
+        return;
+      }
       if (action.payload.error.name === 'FirebaseError') {
         this.analytics.logEvent('exception', { fatal: true, description: action.payload.error.message });
         message = 'Firebase-Fehler, versuchen sie es später erneut oder kontaktieren sie webmaster@roesena.de';

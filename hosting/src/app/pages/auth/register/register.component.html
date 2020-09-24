@@ -1,4 +1,4 @@
-<mat-toolbar [color]="'accent'">Registrieren</mat-toolbar>
+<app-page-header [title]="'Registrieren'" [matIcon]="'person_add'"></app-page-header>
 <main>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <mat-form-field [style.grid-area]="'email'">

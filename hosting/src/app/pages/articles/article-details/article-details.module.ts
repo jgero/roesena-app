@@ -8,9 +8,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MarkdownViewerModule } from '@shared/markdown-viewer/markdown-viewer.module';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
-import { ConvertersModule } from '@shared/converters/converters.module';
 import { ArticleDetailsRoutingModule } from './article-details-routing.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HeadingsModule } from '@shared/headings/headings.module';
 
 @NgModule({
   declarations: [DetailsComponent],
@@ -20,11 +20,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatToolbarModule,
     MatIconModule,
     MatChipsModule,
+    HeadingsModule,
     MatProgressSpinnerModule,
     MarkdownViewerModule,
     MatButtonModule,
     CardsModule,
-    ConvertersModule,
     ArticleDetailsRoutingModule,
   ],
 })

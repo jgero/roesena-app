@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AppImage } from '@utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/images/overview/reducers/image.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { LoadImages } from '@state/images/overview/actions/image.actions';
-import { map } from 'rxjs/operators';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
 
@@ -21,8 +19,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   length$: Observable<number> = this.store.select('imageOverview', 'length');
   canCreate$: Observable<boolean> = this.store.select(canCreate);
   isLoading$ = this.store.select('imageOverview', 'isLoading');
+
+  // Math.ceil guarantees that the colums will never get wider than the specified pixel width
   get cols(): number {
-    return Math.ceil(this.hostRef.nativeElement.clientWidth / 420);
+    return Math.ceil(this.hostRef.nativeElement.clientWidth / 370);
   }
   get limit(): number {
     return this.cols * 5;

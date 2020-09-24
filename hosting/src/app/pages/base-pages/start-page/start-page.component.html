@@ -19,7 +19,7 @@
   <ng-container *ngIf="article$ | async as article">
     <h3>{{ article.title }}</h3>
     <p class="subtitle">{{ article.ownerName }} - {{ article.created | toLocalDateString }}</p>
-    <p class="content">{{ article.content }}</p>
+    <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
     <a mat-button [color]="'primary'" [routerLink]="'/articles/details/' + article.id">MEHR</a>
   </ng-container>
 </div>
@@ -33,7 +33,7 @@
   <ng-container *ngIf="event$ | async as ev">
     <h3>{{ ev.title }}</h3>
     <p class="subtitle">{{ ev.ownerName }} - {{ ev.date | toLocalDateString }}</p>
-    <p class="content">{{ ev.description }}</p>
+    <app-markdown-viewer [markdownText]="ev.description"></app-markdown-viewer>
     <a mat-button [color]="'primary'" [routerLink]="'/events/details/' + ev.id">MEHR</a>
   </ng-container>
 </div>

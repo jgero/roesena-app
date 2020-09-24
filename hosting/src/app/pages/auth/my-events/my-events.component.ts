@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ElementRef } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { Observable, Subscription, of } from 'rxjs';
-import { map, tap, withLatestFrom, take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, withLatestFrom, take, takeUntil } from 'rxjs/operators';
 
 import { AppEvent } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
@@ -37,6 +37,8 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       });
     })
   );
+  displayedColumns = ['title', 'deadline', 'amount', 'open'];
+
   get cols(): number {
     return Math.ceil(this.hostRef.nativeElement.clientWidth / 550);
   }

@@ -18,9 +18,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
-// import { MyEventsComponent } from './my-events/my-events.component';
 import { ResetComponent } from './reset/reset.component';
-// import { GroupManagerComponent } from './group-manager/group-manager.component';
 import { ConvertersModule } from 'src/app/shared/converters/converters.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -31,6 +29,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import * as fromAuth from '@state/auth/reducers/auth.reducer';
 import { AuthEffects } from '@state/auth/effects/auth.effects';
+import { HeadingsModule } from '@shared/headings/headings.module';
 
 @NgModule({
   declarations: [LoginComponent, ProfileComponent, RegisterComponent, ResetComponent],
@@ -49,6 +48,7 @@ import { AuthEffects } from '@state/auth/effects/auth.effects';
     MatBadgeModule,
     MatChipsModule,
     MatCheckboxModule,
+    HeadingsModule,
     MatProgressBarModule,
     MatTooltipModule,
     MatPaginatorModule,

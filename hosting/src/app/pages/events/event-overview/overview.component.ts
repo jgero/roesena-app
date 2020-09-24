@@ -1,10 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-
 import { Store } from '@ngrx/store';
 import { State } from '@state/events/overview/reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
-import { map } from 'rxjs/operators';
 import { LoadEvents } from '@state/events/overview/actions/event.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
@@ -19,11 +17,12 @@ export class OverviewComponent implements OnDestroy, OnInit {
   canCreate$: Observable<boolean> = this.store.select(canCreate);
   data$ = this.store.select('eventOverview', 'events');
   isLoading$ = this.store.select('eventOverview', 'isLoading');
+
   get cols(): number {
-    return Math.ceil(window.innerWidth / 700);
+    return Math.round(this.hostRef.nativeElement.clientWidth / 420);
   }
 
-  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+  constructor(private store: Store<State>, private subs: SubscriptionService, private hostRef: ElementRef<HTMLElement>) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadEvents());

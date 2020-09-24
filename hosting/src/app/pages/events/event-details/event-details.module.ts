@@ -11,6 +11,7 @@ import { ConvertersModule } from '@shared/converters/converters.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HeadingsModule } from '@shared/headings/headings.module';
 
 @NgModule({
   declarations: [DetailsComponent],
@@ -23,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,
     MatListModule,
     ConvertersModule,
+    HeadingsModule,
     MatIconModule,
     MatButtonModule,
   ],

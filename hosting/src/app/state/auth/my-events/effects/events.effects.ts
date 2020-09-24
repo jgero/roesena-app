@@ -35,7 +35,7 @@ export class EventsEffects {
             // filter out events where the user is not invited
             events = events.filter((ev) => {
               if (ev.participants.length === 0) {
-                return true;
+                return false;
               } else {
                 // if event has participants only keep the ones where the user is invited
                 return ev.participants.findIndex((part) => part.id === storeState.user.user.id) > -1;

@@ -1,9 +1,10 @@
-<mat-toolbar [color]="'accent'">Login</mat-toolbar>
+<app-page-header [title]="'Login'" [matIcon]="'login'"></app-page-header>
+
 <main>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <mat-form-field [style.grid-area]="'email'">
       <mat-label>E-Mail</mat-label>
-      <input matInput formControlName="email" />
+      <input matInput formControlName="email" #emailInput />
       <mat-error *ngIf="loginForm.get('email').invalid"> {{ loginForm.get('email') | errorMessage }} </mat-error>
     </mat-form-field>
     <mat-form-field [style.grid-area]="'password'">

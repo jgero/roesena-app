@@ -7,8 +7,14 @@ import { validateFirebaseIdToken } from '../utils/validate-firebase-token-middle
 
 // middleware to check if all needed request data is present
 const checkRequestData: express.RequestHandler = (req, res, next) => {
-  if (!req.body.data || !req.body.data.id || !req.body.data.amount || req.body.data.amount < 0) {
-    res.status(400).send({ error: 'reques data is missing id or amount' });
+  if (
+    !req.body.data ||
+    !req.body.data.id ||
+    req.body.data.amount === undefined ||
+    req.body.data.amount === null ||
+    req.body.data.amount < 0
+  ) {
+    res.status(400).send({ error: 'request data is missing id or amount' });
     return;
   }
   next();

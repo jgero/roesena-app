@@ -13,6 +13,7 @@ import * as fromEvent from '../../../state/events/overview/reducers/event.reduce
 import { EffectsModule } from '@ngrx/effects';
 import { EventEffects } from '../../../state/events/overview/effects/event.effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HeadingsModule } from '@shared/headings/headings.module';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -24,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatGridListModule,
     MatIconModule,
     CardsModule,
+    HeadingsModule,
     MatButtonModule,
     StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
     EffectsModule.forFeature([EventEffects]),
