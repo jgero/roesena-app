@@ -16,7 +16,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
-import { ProfileComponent } from './profile/profile.component';
+import { DeleteDialogComponent, ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { ResetComponent } from './reset/reset.component';
 import { ConvertersModule } from 'src/app/shared/converters/converters.module';
@@ -30,9 +30,10 @@ import { EffectsModule } from '@ngrx/effects';
 import * as fromAuth from '@state/auth/reducers/auth.reducer';
 import { AuthEffects } from '@state/auth/effects/auth.effects';
 import { HeadingsModule } from '@shared/headings/headings.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [LoginComponent, ProfileComponent, RegisterComponent, ResetComponent],
+  declarations: [LoginComponent, ProfileComponent, RegisterComponent, ResetComponent, DeleteDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -50,6 +51,7 @@ import { HeadingsModule } from '@shared/headings/headings.module';
     MatCheckboxModule,
     HeadingsModule,
     MatProgressBarModule,
+    MatDialogModule,
     MatTooltipModule,
     MatPaginatorModule,
     MatGridListModule,

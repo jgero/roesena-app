@@ -7,6 +7,8 @@ import { DoLogout, DoChangeName } from '@state/auth/actions/auth.actions';
 import { DeletePerson } from '@state/auth/group-manager/actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -17,12 +19,20 @@ export class ProfileComponent implements OnDestroy {
   isLoading$ = this.store.select('auth', 'isLoading');
   user$ = this.store.select('user', 'user');
 
-  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title) {
+  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title, private dialog: MatDialog) {
     titleService.setTitle('RöSeNa - Profil');
   }
 
   onDeleteProfile(id: string) {
-    this.store.dispatch(new DeletePerson({ id }));
+    this.dialog
+      .open(DeleteDialogComponent)
+      .afterClosed()
+      .pipe(takeUntil(this.subs.unsubscribe$))
+      .subscribe((result) => {
+        if (result) {
+          this.store.dispatch(new DeletePerson({ id }));
+        }
+      });
   }
 
   onUpdateNameSubmit(inputElement: HTMLInputElement, id: string) {
@@ -38,3 +48,9 @@ export class ProfileComponent implements OnDestroy {
     this.subs.unsubscribeComponent$.next();
   }
 }
+
+@Component({
+  selector: 'app-delete-dialog',
+  templateUrl: 'delete-dialog.html',
+})
+export class DeleteDialogComponent {}
