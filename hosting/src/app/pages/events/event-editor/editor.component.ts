@@ -70,7 +70,6 @@ export class EditorComponent implements OnDestroy {
       .select('events', 'event')
       .pipe(
         filter((event) => event !== null),
-        take(1),
         takeUntil(this.subs.unsubscribe$)
       )
       .subscribe({

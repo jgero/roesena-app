@@ -1,7 +1,7 @@
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { takeUntil, take, filter, tap } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import { AppArticle } from 'src/app/utils/interfaces';
 import { ChipsInputService } from 'src/app/services/chips-input.service';
 import { Store } from '@ngrx/store';
@@ -59,7 +59,6 @@ export class EditorComponent implements OnDestroy {
       .select('article', 'article')
       .pipe(
         filter((article) => article !== null),
-        take(1),
         takeUntil(this.subs.unsubscribe$)
       )
       .subscribe({
