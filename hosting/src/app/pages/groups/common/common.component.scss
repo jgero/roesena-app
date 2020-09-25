@@ -1,19 +1,40 @@
-:host {
+@import '../../../shared/style-partials/variables.scss';
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: 'content image';
+
+  @media screen and (max-width: 600px) {
+    padding: 0 16px;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'image' 'content';
+  }
+}
+
+.spinnerContainer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
 app-image-card {
-  margin-bottom: 16px;
+  grid-area: image;
 }
 
-main {
-  max-width: 800px;
-  width: calc(100% - 16px);
-  margin: 8px;
+app-markdown-viewer {
+  grid-area: content;
+}
 
-  div {
-    margin-top: 16px;
+.fab-container {
+  position: sticky;
+  z-index: 1;
+  bottom: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  a {
+    margin: 8px;
   }
 }

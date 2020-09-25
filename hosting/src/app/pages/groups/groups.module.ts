@@ -17,6 +17,8 @@ import { StoreModule } from '@ngrx/store';
 import * as fromContent from '../../state/groups/reducers/content.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ContentEffects } from '../../state/groups/effects/content.effects';
+import { HeadingsModule } from '@shared/headings/headings.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [GardenComponent, CommonComponent],
@@ -30,7 +32,9 @@ import { ContentEffects } from '../../state/groups/effects/content.effects';
     MatButtonModule,
     MatIconModule,
     MatTableModule,
+    HeadingsModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
     MarkdownViewerModule,
     StoreModule.forFeature(fromContent.contentFeatureKey, fromContent.reducer),
     EffectsModule.forFeature([ContentEffects]),

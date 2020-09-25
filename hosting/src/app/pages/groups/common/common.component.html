@@ -1,13 +1,19 @@
-<mat-toolbar [color]="'accent'" *ngIf="groupName$ | async as groupName">
-  <div>{{ groupName }}</div>
-  <div class="spacer"></div>
-  <a mat-icon-button [routerLink]="'/images/overview/' + groupName"> <mat-icon>image</mat-icon> </a>
-  <a mat-icon-button *ngIf="externalPageLink$ | async as externalPageLink" href="{{ externalPageLink }}" target="_blank">
-    <mat-icon>link</mat-icon>
-  </a>
-</mat-toolbar>
+<ng-container *ngIf="textData$ | async as article; else loading">
+  <app-page-header [title]="article.title" [date]="article.created" [owner]="article.ownerName"></app-page-header>
+  <main>
+    <app-image-card *ngIf="imageData$ | async as image" [data]="image"></app-image-card>
+    <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
+  </main>
+  <div class="fab-container">
+    <a mat-fab [color]="'primary'" [routerLink]="'/search/images/' + (groupName$ | async)"><mat-icon>image</mat-icon></a>
+    <a mat-fab [color]="'primary'" *ngIf="externalPageLink$ | async as link" [href]="link" target="_blank"
+      ><mat-icon>link</mat-icon></a
+    >
+  </div>
+</ng-container>
 
-<main>
-  <app-image-card *ngIf="imageData$ | async as image" [data]="image"></app-image-card>
-  <app-markdown-viewer *ngIf="textData$ | async as text" [markdownText]="text.content"></app-markdown-viewer>
-</main>
+<ng-template #loading>
+  <div class="spinnerContainer">
+    <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  </div>
+</ng-template>
