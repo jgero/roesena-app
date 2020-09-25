@@ -1,4 +1,7 @@
+:host {
+  display: block;
+}
+
 .mat-grid-list {
-  width: calc(100% - 32px);
-  margin: 16px;
+  margin: 0 16px;
 }

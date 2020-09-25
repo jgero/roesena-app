@@ -1,6 +1,4 @@
-<mat-toolbar class="header" [color]="'accent'">
-  <div>Suchergebnisse</div>
-</mat-toolbar>
+<app-page-header [title]="'Suchergebnisse'" [matIcon]="'search'"></app-page-header>
 
 <mat-grid-list [cols]="cols" [rowHeight]="rowHeight$ | async" [gutterSize]="'16px'" @cardFlyIn>
   <mat-grid-tile *ngFor="let article of articles$ | async">

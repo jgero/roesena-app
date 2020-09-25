@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { InitSearch } from '@state/searching/actions/search.actions';
@@ -18,12 +18,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   articles$ = this.store.select('search', 'articles');
   rowHeight$ = this.store.select('search', 'images').pipe(map((images) => (images.length > 0 ? '450px' : '300px')));
   get cols(): number {
-    return Math.ceil(window.innerWidth / 700);
+    return Math.ceil(this.hostRef.nativeElement.clientWidth / 370);
   }
   get limit(): number {
     return this.cols * 5;
   }
-  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+  constructor(private store: Store<State>, private subs: SubscriptionService, private hostRef: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {
     this.store.dispatch(new InitSearch({ limit: this.limit }));

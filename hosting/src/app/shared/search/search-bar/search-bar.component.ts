@@ -103,6 +103,7 @@ export class SearchSheetComponent {
 
   onSearch() {
     this.store.dispatch(new RunSearch());
+    this.bottomSheetRef.dismiss();
   }
 
   onClose() {
