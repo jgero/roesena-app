@@ -14,6 +14,7 @@ import { LoadImage } from '@state/images/actions/image.actions';
 import { UpdateImage, CreateImage, DeleteImage } from '@state/images/editor/actions/image.actions';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-editor',
@@ -39,8 +40,10 @@ export class EditorComponent implements OnDestroy {
     private store: Store<State>,
     private subs: SubscriptionService,
     private urlLoader: UrlLoaderService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    titleService: Title
   ) {
+    titleService.setTitle('RöSeNa - Bild Editor');
     this.store.dispatch(new LoadImage());
     this.store
       .select('imageEditor', 'isLoading')

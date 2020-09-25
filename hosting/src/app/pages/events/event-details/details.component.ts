@@ -7,6 +7,7 @@ import { LoadEvent, MarkEventAsSeen } from '@state/events/actions/event.actions'
 import { map } from 'rxjs/operators';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
 import { AppEvent } from '@utils/interfaces';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-details',
@@ -54,7 +55,9 @@ export class DetailsComponent implements OnDestroy, OnInit {
     })
   );
 
-  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title) {
+    titleService.setTitle('RöSeNa - Event Details');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadEvent());

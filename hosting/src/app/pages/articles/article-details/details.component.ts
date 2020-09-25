@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { SubscriptionService } from '@services/subscription.service';
 import { canEdit } from '@state/articles/selectors/article.selectors';
 import { AddSearchString, ChangeDataType, CleanSearch } from '@state/searching/actions/search.actions';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detail',
@@ -20,7 +21,8 @@ export class DetailsComponent implements OnDestroy {
   isLoading$ = this.store.select('article', 'isLoading');
   canEdit$ = this.store.select((state) => canEdit(state));
 
-  constructor(private store: Store<State>, private sub: SubscriptionService) {
+  constructor(private store: Store<State>, private sub: SubscriptionService, titleService: Title) {
+    titleService.setTitle('RöSeNa - Artikel Details');
     this.store.dispatch(new LoadSingleArticle());
   }
 

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { DoLogin } from '@state/auth/actions/auth.actions';
 import { State } from '@state/auth/reducers/auth.reducer';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnDestroy {
   private subs: Subscription[] = [];
   isLoading$ = this.store.select('auth', 'isLoading');
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<State>, titleService: Title) {
+    titleService.setTitle('RöSeNa - Login');
     this.subs.push(
       // enable and disable the form while loading
       this.store.select('auth', 'isLoading').subscribe({

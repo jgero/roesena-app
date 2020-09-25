@@ -6,6 +6,7 @@ import { State } from '@state/auth/reducers/auth.reducer';
 import { DoLogout, DoChangeName } from '@state/auth/actions/auth.actions';
 import { DeletePerson } from '@state/auth/group-manager/actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,9 @@ export class ProfileComponent implements OnDestroy {
   isLoading$ = this.store.select('auth', 'isLoading');
   user$ = this.store.select('user', 'user');
 
-  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title) {
+    titleService.setTitle('RöSeNa - Profil');
+  }
 
   onDeleteProfile(id: string) {
     this.store.dispatch(new DeletePerson({ id }));

@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@state/calendar/reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { GoNextMonth, GoPreviousMonth, LoadEvents } from '@state/calendar/actions/event.actions';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-calendar',
@@ -15,7 +16,9 @@ export class CalendarComponent implements OnDestroy, OnInit {
   user$ = this.store.select('user', 'user');
   isLoading$ = this.store.select('calendar', 'isLoading');
 
-  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title) {
+    titleService.setTitle('RöSeNa - Kalender');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadEvents());

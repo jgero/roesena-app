@@ -7,6 +7,7 @@ import { State } from '@state/articles/overview/reducers/article.reducer';
 import { LoadArticles } from '@state/articles/overview/actions/article.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-overview',
@@ -27,7 +28,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
     return this.cols * 5;
   }
 
-  constructor(private store: Store<State>, private sub: SubscriptionService, private hostRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private store: Store<State>,
+    private sub: SubscriptionService,
+    private hostRef: ElementRef<HTMLElement>,
+    titleService: Title
+  ) {
+    titleService.setTitle('RöSeNa - Artikel');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadArticles({ limit: this.limit }));

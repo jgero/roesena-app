@@ -9,6 +9,7 @@ import { State } from '@state/auth/my-events/reducers/events.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { LoadEvents, EventsActions, RespondToEvent, EventsActionTypes } from '@state/auth/my-events/actions/events.actions';
 import { Actions, ofType } from '@ngrx/effects';
+import { Title } from '@angular/platform-browser';
 
 interface AppEventWithForm extends AppEvent {
   form: FormGroup;
@@ -47,8 +48,11 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private actions$: Actions<EventsActions>,
     private subs: SubscriptionService,
-    private hostRef: ElementRef<HTMLElement>
-  ) {}
+    private hostRef: ElementRef<HTMLElement>,
+    titleService: Title
+  ) {
+    titleService.setTitle('RöSeNa - Meine Events');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadEvents());

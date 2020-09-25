@@ -3,6 +3,7 @@ import { State } from '@state/basePages/reducers/base.reducer';
 import { Store } from '@ngrx/store';
 import { LoadStartpageContent } from '@state/basePages/actions/base.actions';
 import { SubscriptionService } from '@services/subscription.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-start-page',
@@ -13,7 +14,9 @@ export class StartPageComponent implements OnInit, OnDestroy {
   event$ = this.store.select('base', 'startpageEvent');
   article$ = this.store.select('base', 'startpageArticle');
 
-  constructor(private store: Store<State>, private subs: SubscriptionService) {}
+  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title) {
+    titleService.setTitle('Röhlinger Sechtanarren');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadStartpageContent());

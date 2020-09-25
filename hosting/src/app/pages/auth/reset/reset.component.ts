@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { State } from '@state/auth/reducers/auth.reducer';
 import { DoReset, DoChangePasswordWithCode } from '@state/auth/actions/auth.actions';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reset',
@@ -19,7 +20,9 @@ export class ResetComponent {
   });
   hasCode$ = this.store.select('router', 'state', 'queryParams').pipe(map((params) => !!params && !!params.oobCode));
 
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>, titleService: Title) {
+    titleService.setTitle('RöSeNa - Passwort zurücksetzen');
+  }
 
   onResetSubmit() {
     this.store.dispatch(new DoReset({ email: this.resetForm.get('email').value }));

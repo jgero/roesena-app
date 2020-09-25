@@ -16,6 +16,7 @@ import { LoadEvent } from '@state/events/actions/event.actions';
 import { LoadPersons, UpdateEvent, CreateEvent, DeleteEvent } from '@state/events/editor/actions/event.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-editor',
@@ -56,8 +57,10 @@ export class EditorComponent implements OnDestroy {
     public chips: ChipsInputService,
     private store: Store<State>,
     private subs: SubscriptionService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    titleService: Title
   ) {
+    titleService.setTitle('RöSeNa - Event Editor');
     // dispatch the event to load the event that should be edited
     this.store.dispatch(new LoadEvent());
     // dispatch the event to load the persons who can be invited

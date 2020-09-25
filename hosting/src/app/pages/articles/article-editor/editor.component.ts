@@ -11,6 +11,7 @@ import { State } from '@state/articles/editor/reducers/editor.reducer';
 import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/editor/actions/editor.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash-es';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-editor',
@@ -34,8 +35,10 @@ export class EditorComponent implements OnDestroy {
     private store: Store<State>,
     public chips: ChipsInputService,
     private subs: SubscriptionService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    titleService: Title
   ) {
+    titleService.setTitle('RöSeNa - Artikel Editor');
     this.store.dispatch(new LoadSingleArticle({ withImage: false }));
     this.store
       .select('articleEditor', 'isLoading')

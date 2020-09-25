@@ -9,6 +9,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { LoadImage } from '@state/images/actions/image.actions';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
 import { canEdit } from '@state/images/selectors/image.selectors';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-details',
@@ -20,7 +21,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
   canEdit$ = this.store.select(canEdit);
   url$ = this.image$.pipe(switchMap((image) => this.urlLoader.getImageURL(image.id)));
   isLoading$ = this.store.select('image', 'isLoading');
-  constructor(private store: Store<State>, private urlLoader: UrlLoaderService, private subs: SubscriptionService) {}
+  constructor(
+    private store: Store<State>,
+    private urlLoader: UrlLoaderService,
+    private subs: SubscriptionService,
+    titleService: Title
+  ) {
+    titleService.setTitle('RöSeNa - Bild Details');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadImage());

@@ -6,6 +6,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { LoadEvents } from '@state/events/overview/actions/event.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-overview',
@@ -22,7 +23,14 @@ export class OverviewComponent implements OnDestroy, OnInit {
     return Math.round(this.hostRef.nativeElement.clientWidth / 420);
   }
 
-  constructor(private store: Store<State>, private subs: SubscriptionService, private hostRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private store: Store<State>,
+    private subs: SubscriptionService,
+    private hostRef: ElementRef<HTMLElement>,
+    titleService: Title
+  ) {
+    titleService.setTitle('RöSeNa - Events');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadEvents());

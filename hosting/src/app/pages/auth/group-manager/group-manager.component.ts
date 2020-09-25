@@ -15,6 +15,7 @@ import { LoadPersons, PersonActionTypes, PersonActions } from '@state/auth/group
 import { ChipsInputService } from '@services/chips-input.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Title } from '@angular/platform-browser';
 
 interface AppPersonWithLoading extends AppPerson {
   isConfrimationLoading: boolean;
@@ -40,10 +41,12 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<State>,
-    private actions$: Actions<PersonActions>,
     private subs: SubscriptionService,
-    public chips: ChipsInputService
-  ) {}
+    public chips: ChipsInputService,
+    titleService: Title
+  ) {
+    titleService.setTitle('RöSeNa - Gruppenmanager');
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadPersons({ limit: this.limit }));
@@ -52,28 +55,6 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
   onCheckboxChange(ev: MatCheckboxChange) {
     this.store.dispatch(new LoadPersons({ limit: this.limit, onlyUnconfirmed: ev.checked }));
   }
-
-  // onSubmit(result: AppPersonWithForm) {
-  //   const person: AppPerson = {
-  //     groups: result.form.get('groups').value,
-  //     isConfirmedMember: result.form.get('confirmed').value,
-  //     id: result.id,
-  //     name: result.name,
-  //   };
-  //   this.store.dispatch(new UpdatePerson({ person }));
-  //   result.form.disable();
-  //   this.actions$
-  //     .pipe(
-  //       ofType(PersonActionTypes.UpdatePersonSuccess, PersonActionTypes.UpdatePersonFailure),
-  //       takeUntil(this.subs.unsubscribe$)
-  //     )
-  //     .subscribe({
-  //       next: () => {
-  //         result.form.markAsPristine();
-  //         result.form.enable();
-  //       },
-  //     });
-  // }
 
   ngOnDestroy() {
     this.subs.unsubscribeComponent$.next();

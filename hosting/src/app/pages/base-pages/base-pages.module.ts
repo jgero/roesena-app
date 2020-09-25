@@ -30,6 +30,7 @@ import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { FooterModule } from './footer/footer.module';
+import { HeadingsModule } from '@shared/headings/headings.module';
 
 @NgModule({
   declarations: [AboutComponent, HelpComponent, NotFoundComponent, RootComponent, StartPageComponent, DataProtectionComponent],
@@ -46,6 +47,7 @@ import { FooterModule } from './footer/footer.module';
     MatToolbarModule,
     MarkdownViewerModule,
     MatButtonModule,
+    HeadingsModule,
     MatMenuModule,
     ConvertersModule,
     SearchModule,

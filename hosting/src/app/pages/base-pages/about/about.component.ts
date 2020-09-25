@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UrlLoaderService } from '@services/url-loader.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-about',
@@ -9,7 +10,8 @@ import { UrlLoaderService } from '@services/url-loader.service';
 })
 export class AboutComponent {
   $applicationURL: Observable<string>;
-  constructor(urlLoader: UrlLoaderService) {
+  constructor(urlLoader: UrlLoaderService, titleService: Title) {
     this.$applicationURL = urlLoader.getStaticRscURL('RoeSeNa_Anmeldung_Mitgliedschaft.pdf');
+    titleService.setTitle('RöSeNa - Impressum');
   }
 }

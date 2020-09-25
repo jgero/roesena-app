@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-not-found',
@@ -9,7 +10,9 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFoundComponent {
-  constructor(private location: Location, private router: Router) {}
+  constructor(private location: Location, private router: Router, titleService: Title) {
+    titleService.setTitle('RöSeNa - Fehler');
+  }
 
   public goBack() {
     if ((this.location.getState() as any).navigationId > 1) {
