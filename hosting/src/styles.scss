@@ -1,6 +1,6 @@
 @import './app/shared/style-partials/variables.scss';
 // only include the mat-core once in the project!
-@include mat-core();
+// @include mat-core();
 // apply the theme
 @include angular-material-theme($theme);
 // apply the typography

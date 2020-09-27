@@ -1,20 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { StartPageComponent } from '@pages/base-pages/start-page/start-page.component';
-import { AboutComponent } from '@pages/base-pages/about/about.component';
-import { HelpComponent } from '@pages/base-pages/help/help.component';
-import { NotFoundComponent } from '@pages/base-pages/not-found/not-found.component';
 import { LoadUserGuard } from '@guards/load-user.guard';
-import { SearchPageComponent } from '@shared/search/search-page/search-page.component';
-import { DataProtectionComponent } from '@pages/base-pages/data-protection/data-protection.component';
 
 export const routes: Routes = [
   {
     path: '',
     canActivateChild: [LoadUserGuard],
     children: [
-      { path: '', component: StartPageComponent, data: { animation: 'startpage' } },
+      {
+        path: '',
+        loadChildren: () => import('@pages/start-page/start-page.module').then((m) => m.StartPageModule),
+        data: { animation: 'startpage' },
+      },
       {
         path: 'events',
         loadChildren: () => import('@pages/events/events.module').then((m) => m.EventsModule),
@@ -45,11 +42,31 @@ export const routes: Routes = [
         loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule),
         data: { animation: 'groups' },
       },
-      { path: 'about', component: AboutComponent, data: { animation: 'about' } },
-      { path: 'data-protection', component: DataProtectionComponent, data: { animation: 'data-protection' } },
-      { path: 'help', component: HelpComponent, data: { animation: 'help' } },
-      { path: 'search/:type/:searchStrings', component: SearchPageComponent, data: { animation: 'search' } },
-      { path: '**', component: NotFoundComponent, data: { animation: 'error' } },
+      {
+        path: 'about',
+        loadChildren: () => import('@pages/about/about.module').then((m) => m.AboutModule),
+        data: { animation: 'about' },
+      },
+      {
+        path: 'data-protection',
+        loadChildren: () => import('@pages/data-protection/data-protection.module').then((m) => m.DataProtectionModule),
+        data: { animation: 'data-protection' },
+      },
+      {
+        path: 'help',
+        loadChildren: () => import('@pages/help/help.module').then((m) => m.HelpModule),
+        data: { animation: 'help' },
+      },
+      {
+        path: 'search',
+        loadChildren: () => import('@pages/search/search.module').then((m) => m.SearchModule),
+        data: { animation: 'search' },
+      },
+      {
+        path: '**',
+        loadChildren: () => import('@pages/error/error.module').then((m) => m.ErrorModule),
+        data: { animation: 'error' },
+      },
     ],
   },
 ];

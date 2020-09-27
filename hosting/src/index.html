@@ -9,8 +9,25 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="apple-touch-icon" href="assets/icons/icon-152x152.png" />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet" defer />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" defer />
+
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+      media="all"
+    />
+    <noscript
+      ><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" media="all"
+    /></noscript>
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+      media="all"
+    />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" media="all" /></noscript>
   </head>
   <body class="mat-typography">
     <app-root></app-root>

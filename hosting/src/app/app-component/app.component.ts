@@ -1,27 +1,26 @@
-import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatDrawer } from '@angular/material/sidenav';
-import { Observable, Subject } from 'rxjs';
-import { map, shareReplay, tap, takeUntil } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { Actions, ofType } from '@ngrx/effects';
-import { ROUTER_REQUEST } from '@ngrx/router-store';
-import { environment } from 'src/environments/environment';
-import { State } from '@state/basePages/reducers/base.reducer';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AngularFireFunctions } from '@angular/fire/functions';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MatDrawer } from '@angular/material/sidenav';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
+import { Actions, ofType } from '@ngrx/effects';
+import { ROUTER_REQUEST } from '@ngrx/router-store';
+import { Store } from '@ngrx/store';
 import { pageTransition } from '@utils/animations/page-transition';
-import { AngularFireFunctions } from '@angular/fire/functions';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { Observable, Subject } from 'rxjs';
+import { map, tap, shareReplay, takeUntil } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { State } from '@state/basePages/reducers/base.reducer';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './root.component.html',
-  styleUrls: ['./root.component.scss'],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
   animations: [pageTransition],
 })
-export class RootComponent implements OnDestroy {
+export class AppComponent implements OnDestroy {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
     tap((el) => (this.brakpointMatches = el)),
@@ -42,8 +41,7 @@ export class RootComponent implements OnDestroy {
     updates$: Actions,
     matIconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    fns: AngularFireFunctions,
-    private analytics: AngularFireAnalytics
+    fns: AngularFireFunctions
   ) {
     matIconRegistry.addSvgIcon('rsn', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-inverted.svg'));
     this.version = environment.buildVersion;

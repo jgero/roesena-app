@@ -7,12 +7,12 @@ import { map } from 'rxjs/operators';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
 
 @Component({
-  selector: 'app-search-page',
-  templateUrl: './search-page.component.html',
-  styleUrls: ['./search-page.component.scss'],
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss'],
   animations: [cardFlyIn],
 })
-export class SearchPageComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit, OnDestroy {
   events$ = this.store.select('search', 'events');
   images$ = this.store.select('search', 'images');
   articles$ = this.store.select('search', 'articles');
