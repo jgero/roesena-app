@@ -1,5 +1,103 @@
-<h1 class="mat-display-4">Hilfe</h1>
+<app-page-header [title]="'Hilfe'" [subtitle]="'Was finde ich auch dieser Webseite?'" [matIcon]="'help'"></app-page-header>
 
 <main>
-  <app-markdown-viewer *ngIf="$textData | async as text" [markdownText]="text.content"></app-markdown-viewer>
+  <aside>
+    Die RöSeNa-App ist die zentrale Anlaufstelle für Mitglieder der Rösena und interessierte Gäste. Sie ist darauf ausgelegt
+    sowohl am PC als auch auf mobilen Geräten gut lesbar und bedienbar zu sein. Aktualität der Inhalte und Organisation von
+    Gruppenaktivitäten sind die wichtigsten Ziele. Die App ist keine Bildergallerie im herkömmlichen Sinne und hat auch nicht den
+    üblichen Prospektcharakter von Homepages. Das Rückenmark der App sind die Tags (Stichworte) die den Events, Artikeln und
+    Bildern zugeordnet werden können. Mit ihnen kann sehr effizient nach Inhalten gesucht werden. Die App besteht aus drei
+    Bereichen: Events, Artikel und Bilder. In diesen drei Bereichen können ernannte Autoren erstellen, editieren und löschen. Die
+    Beschränkung auf unterwiesene Autoren hat rechtliche Gründe. Artikel sind für alle sichtbar, eingeloggte Mitglieder und Gäste.
+    Bei Events, hängt die Sichtbarkeit davon ab, ob individuelle Einladungen erstellt wurden. In diesem Fall ist das Event nur für
+    die Eingeladenen zu sehen. Mitglieder können Teil von einer oder mehreren Gruppen (MäBa, wildes Heer,...) sein. Das
+    erleichtert z.B. es dem Autor eine Einladung zu verfassen. Zudem gibt es Funktionsgruppen wie Admin und Autor die besondere
+    Rechte haben.
+  </aside>
+
+  <div class="num" [style.grid-area]="'home-num'">
+    <span class="text">1</span>
+    <span class="line long"></span>
+  </div>
+  <section [style.grid-area]="'home-content'">
+    <mat-icon [color]="'accent'">desktop_windows</mat-icon>
+    <div class="mat-display-1 section-heading">Home</div>
+    Beim Start der App oder beim Clicken auf "RöSeNa" links oben kommt man zum Homescreen. Hier werden die nächsten anstehenden
+    Events und die aktuellsten Artikel angezeigt. Über "MEHR" gelangt man zur Detailansicht des Events oder des Artikels. Ist das
+    Bleistift-Icon sichtbar, kann das Event oder der Artikel editiert werden.
+  </section>
+
+  <div class="num" [style.grid-area]="'events-num'">
+    <span class="text">2</span>
+    <span class="line long"></span>
+  </div>
+  <section [style.grid-area]="'events-content'">
+    <mat-icon [color]="'accent'">event</mat-icon>
+    <div class="mat-display-1 section-heading">Events</div>
+    Infos zu anstehenden Veranstaltungen. Es können durch den Autor allgemeine oder individuelle Einladungen zu dem Event
+    hinzugefügt werden. Bei individuellen Einladungen, werden diese dann automatisch um Rückmeldung gebeten, ob Sie und eventuell
+    Partner bei der Veranstaltung mit dabei sind. Bis zu einer eingestellten Deadline kann diese Rückmeldung editiert werden. Das
+    Mitglied sieht auch, wer sonst noch eingeladen ist und ob der sich bereits und wie entschieden hat. Auch eine Zusammenfassung
+    wieviele Eingeladene zugesagt, abgesagt oder noch unentschlossen sind ist vorhanden. Eine Meldung weist dich auf ausstehende
+    Entscheidungen hin.
+  </section>
+
+  <div class="num" [style.grid-area]="'articles-num'">
+    <span class="text">3</span>
+    <span class="line long"></span>
+  </div>
+  <section [style.grid-area]="'articles-content'">
+    <mat-icon [color]="'accent'">article</mat-icon>
+    <div class="mat-display-1 section-heading">Artikel</div>
+    Artikel, Berichte und Infos können ebenfalls von den benannten Autoren erstellt und bearbeitet werden. Wenn zu dem Artikel
+    Tags gespeichert werden kann der Artikel später in der Suche leichter gefunden werden. Ist bei dem Artikel ein Tag mit einem
+    Gruppennamen und ein Tag mit dem Inhalt "Gruppenseite" gespeichert, ist dieser Artikel unter dem Menüpunkt Gruppen->"Name der
+    Gruppe" einsortiert. Die Artikelliste ist nach Erstelldatum sortiert, der Aktuellste steht oben.
+  </section>
+
+  <div class="num" [style.grid-area]="'images-num'">
+    <span class="text">4</span>
+    <span class="line long"></span>
+  </div>
+  <section [style.grid-area]="'images-content'">
+    <mat-icon [color]="'accent'">wallpaper</mat-icon>
+    <div class="mat-display-1 section-heading">Bilder</div>
+    Auch die Bilder können nur von den Autoren hochgeladen werden. Die Suche bezieht sich auch hier auf die mitgespeicherten Tags.
+    Auch hier gilt, ist bei dem Bild ein Tag mit einem Gruppennamen und ein Tag mit dem Inhalt "Gruppenseite" gespeichert, ist
+    dieses Bild unter dem Menüpunkt Gruppen->"Name der Gruppe" einsortiert.
+  </section>
+
+  <div class="num" [style.grid-area]="'calendar-num'">
+    <span class="text">5</span>
+    <span class="line long"></span>
+  </div>
+  <section [style.grid-area]="'calendar-content'">
+    <mat-icon [color]="'accent'">date_range</mat-icon>
+    <div class="mat-display-1 section-heading">Kalender</div>
+    Über den Kalender kann man sich schnell einen Überblick über die Events verschaffen. Wählt man einen Tag an, gelangt man in
+    die Zoomansicht in der man die Events an diesem Tag anwählen kann. Durch die Anwahl gelangt man dann zur Detailansicht des
+    Events.
+  </section>
+
+  <div class="num" [style.grid-area]="'groups-num'">
+    <span class="text">6</span>
+    <span class="line long"></span>
+  </div>
+  <section [style.grid-area]="'groups-content'">
+    <mat-icon [color]="'accent'">groups</mat-icon>
+    <div class="mat-display-1 section-heading">Gruppen</div>
+    Die Informationen in den Gruppenseiten bestehen aus Artikeln und Bildern, die durch die oben genannten Tags gekennzeichnet
+    sind.
+  </section>
+
+  <div class="num" [style.grid-area]="'account-num'">
+    <span class="text">7</span>
+    <span class="line long"></span>
+  </div>
+  <section [style.grid-area]="'account-content'">
+    <mat-icon [color]="'accent'">person</mat-icon>
+    <div class="mat-display-1 section-heading">Account</div>
+    Bestimmte Inhalte sind nur für registrierte Mitglieder sichtbar. Dazu kann hier ein Account erstellt werden. Dieser wird dann
+    geprüft und freigeschaltet.
+  </section>
 </main>

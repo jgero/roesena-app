@@ -1,18 +1,69 @@
 @import '../../shared/style-partials/variables.scss';
 
-:host {
+$icon-size: 38px;
+
+main {
+  display: grid;
+  grid-template-columns: 32px auto max-content;
+  grid-template-areas:
+    'home-num home-content general'
+    'events-num events-content .'
+    'articles-num articles-content .'
+    'images-num images-content .'
+    'calendar-num calendar-content .'
+    'groups-num groups-content .'
+    'account-num account-content .';
+  column-gap: 2rem;
+}
+
+aside {
+  background-color: rgba(#000000, 0.1);
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 500px;
+  grid-area: general;
+}
+
+div.num {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
+
+  span {
+    background-color: $primary;
+  }
+
+  .line {
+    width: 3px;
+
+    &.short {
+      height: 16px;
+    }
+    &.long {
+      flex: 1;
+    }
+  }
+  .text {
+    width: $icon-size;
+    height: $icon-size;
+    line-height: $icon-size;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    border-radius: $icon-size / 2;
+    font-size: $icon-size * 0.7;
+  }
 }
 
-h1 {
-  color: $accent;
-}
-
-main {
-  margin: 8px;
-  width: calc(100% - 16px);
-  max-width: 800px;
+section {
+  .mat-icon,
+  .section-heading,
+  & {
+    margin-bottom: 1rem;
+  }
+  .mat-icon {
+    width: $icon-size;
+    height: $icon-size;
+    font-size: $icon-size;
+  }
 }
