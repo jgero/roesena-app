@@ -1,16 +1,10 @@
 {
   "hosting": [
     {
-      "predeploy": [
-        "npm --prefix hosting run build:prod"
-      ],
+      "predeploy": ["npm --prefix hosting run build:prod"],
       "target": "roesena-app",
       "public": "hosting/dist/roesena-app",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",
@@ -18,6 +12,24 @@
         }
       ],
       "headers": [
+        {
+          "source": "**/*.@(jpg|jpeg|gif|png|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=172800"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(html|css|js)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=43200"
+            }
+          ]
+        },
         {
           "source": "ngsw-worker.js",
           "headers": [
@@ -31,10 +43,7 @@
     }
   ],
   "functions": {
-    "predeploy": [
-      "npm --prefix functions run lint",
-      "npm --prefix functions run build"
-    ],
+    "predeploy": ["npm --prefix functions run lint", "npm --prefix functions run build"],
     "source": "functions"
   },
   "emulators": {
