@@ -93,8 +93,10 @@
   }
 }
 
-.content {
-  .header {
+figure {
+  margin: 0;
+
+  figcaption {
     display: flex;
     justify-content: space-between;
     align-items: center;

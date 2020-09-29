@@ -7,7 +7,7 @@
     <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
-    <a class="logo" routerLink="/" mat-icon-button><mat-icon svgIcon="rsn"></mat-icon></a>
+    <a class="logo" routerLink="/" aria-label="Startseite" mat-icon-button><mat-icon svgIcon="rsn"></mat-icon></a>
     <div class="spacer"></div>
     <app-search-bar></app-search-bar>
   </mat-toolbar>
@@ -58,7 +58,7 @@
 <!-- desktop mode -->
 <ng-template #desktop>
   <mat-toolbar color="primary">
-    <a class="logo" routerLink="/" mat-icon-button><mat-icon svgIcon="rsn"></mat-icon></a>
+    <a class="logo" routerLink="/" mat-icon-button aria-label="Startseite"><mat-icon svgIcon="rsn"></mat-icon></a>
     <a class="home" mat-button routerLink="/">RöSeNa</a>
     <a mat-button routerLink="/events/overview">Events</a>
     <a mat-button routerLink="/articles/overview">Artikel</a>
@@ -73,15 +73,13 @@
       <a mat-menu-item routerLink="/groups/wildes-heer">Das Wilde Heer</a>
     </mat-menu>
     <div class="spacer"></div>
-    <button mat-icon-button [matMenuTriggerFor]="accountMenu">
+    <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Account Menü">
       <mat-icon [matBadge]="badgeContentStream$ | async" matBadgeColor="accent">account_circle</mat-icon>
     </button>
     <mat-menu #accountMenu="matMenu" xPosition="before">
       <ng-container *ngIf="user$ | async as user; else authenticate">
         <a mat-menu-item routerLink="/auth/profile">Profil</a>
-        <a mat-menu-item *ngIf="user.isConfirmedMember" routerLink="/auth/my-events">
-          <span>Meine Events</span>
-        </a>
+        <a mat-menu-item *ngIf="user.isConfirmedMember" routerLink="/auth/my-events">Meine Events </a>
         <a mat-menu-item *ngIf="user.groups.includes('admin')" routerLink="/auth/group-manager">Gruppen Manager</a>
       </ng-container>
       <ng-template #authenticate>

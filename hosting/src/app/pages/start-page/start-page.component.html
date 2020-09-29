@@ -10,11 +10,11 @@
   <div class="stripe yellow"></div>
 </div>
 
-<div class="content">
-  <div class="header">
+<figure>
+  <figcaption>
     <h2>News</h2>
     <a mat-flat-button [color]="'accent'" [routerLink]="'/articles/overview'">MEHR ANZEIGEN</a>
-  </div>
+  </figcaption>
   <mat-divider></mat-divider>
   <ng-container *ngIf="article$ | async as article">
     <h3>{{ article.title }}</h3>
@@ -22,18 +22,17 @@
     <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
     <a mat-button [color]="'primary'" [routerLink]="'/articles/details/' + article.id">MEHR</a>
   </ng-container>
-</div>
+</figure>
 
-<div class="content">
-  <div class="header">
+<figure>
+  <figcaption>
     <h2>Events</h2>
     <a mat-flat-button [color]="'accent'" [routerLink]="'/events/overview'">MEHR ANZEIGEN</a>
-  </div>
-  <mat-divider></mat-divider>
+  </figcaption>
   <ng-container *ngIf="event$ | async as ev">
     <h3>{{ ev.title }}</h3>
     <p class="subtitle">{{ ev.ownerName }} - {{ ev.date | toLocalDateString }}</p>
     <app-markdown-viewer [markdownText]="ev.description"></app-markdown-viewer>
     <a mat-button [color]="'primary'" [routerLink]="'/events/details/' + ev.id">MEHR</a>
   </ng-container>
-</div>
+</figure>
