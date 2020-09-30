@@ -56,7 +56,6 @@ export class SearchBarComponent {
 export class SearchSheetComponent {
   searchStrings$: Observable<string[]> = this.store.select('search', 'searchStrings');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  isHelpVisible = false;
   options = ['Events', 'Artikel', 'Bilder'];
   selectedOption$ = this.store.select('search', 'dataType').pipe(
     map((dataType) => {

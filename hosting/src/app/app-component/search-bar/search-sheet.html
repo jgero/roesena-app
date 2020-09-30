@@ -1,12 +1,10 @@
 <div class="button-container">
-  <button mat-icon-button [color]="'accent'" (click)="isHelpVisible = !isHelpVisible">
-    <mat-icon>{{ isHelpVisible ? 'cancel' : 'help' }}</mat-icon>
-  </button>
+  <a href="/help#Suche" color="accent" mat-icon-button aria-label="Hilfe"><mat-icon>help</mat-icon></a>
   <button mat-icon-button [color]="'accent'" mat-icon-button aria-label="close search" (click)="onClose()">
     <mat-icon>close</mat-icon>
   </button>
 </div>
-<div class="wrapper" *ngIf="!isHelpVisible; else help">
+<div class="wrapper">
   <label id="type-radio-group">Suche nach:</label>
   <mat-radio-group aria-labelledby="type-radio-group" (change)="onRadioChange($event)" [value]="selectedOption$ | async">
     <mat-radio-button class="radio-option" *ngFor="let label of options" [value]="label" [color]="'primary'">
@@ -39,11 +37,11 @@
   </div>
 </div>
 
-<ng-template #help>
+<!-- <ng-template #help>
   <ul>
     <li>Suchbegriffe müssen mit "Enter" bestätigt werden</li>
     <li>Clicks auf Elemente in der Liste fügen neue Suchbegriffe hinzu</li>
     <li>Suche wird durch Click auf die Lupe gestartet</li>
     <li>Clicks auf Tags in Kacheln fügt diese zu den Suchbegriffen hinzu</li>
   </ul>
-</ng-template>
+</ng-template> -->

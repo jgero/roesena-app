@@ -6,13 +6,14 @@ main {
   display: grid;
   grid-template-columns: 32px auto max-content;
   grid-template-areas:
-    'home-num home-content general'
+    'startpage-num startpage-content general'
     'events-num events-content .'
     'articles-num articles-content .'
     'images-num images-content .'
     'calendar-num calendar-content .'
     'groups-num groups-content .'
-    'account-num account-content .';
+    'account-num account-content .'
+    'search-num search-content .';
   column-gap: 2rem;
 }
 
@@ -56,14 +57,29 @@ div.num {
 }
 
 section {
-  .mat-icon,
+  & > .mat-icon,
   .section-heading,
   & {
     margin-bottom: 1rem;
   }
-  .mat-icon {
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+  }
+
+  & > .mat-icon {
     width: $icon-size;
     height: $icon-size;
     font-size: $icon-size;
+  }
+}
+
+a:not(.mat-icon-button) {
+  color: $primary;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
