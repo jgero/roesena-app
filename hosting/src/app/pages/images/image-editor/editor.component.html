@@ -35,6 +35,7 @@
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           (matChipInputTokenEnd)="chips.addItem($event, imageForm.get('tags'))"
+          matTooltip="Tags nach Eingabe mit der ENTER-Taste bestätigen"
         />
       </mat-chip-list>
     </mat-form-field>

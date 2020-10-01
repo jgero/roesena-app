@@ -1,13 +1,11 @@
-<!-- <header> -->
 <h1 class="mat-display-2">Event Editor</h1>
-<!-- </header> -->
 <mat-vertical-stepper *ngIf="contentFormGroup && dateFormGroup && participantsFormGroup">
   <mat-step [stepControl]="contentFormGroup" errorMessage="Inhalt unvollständig">
     <form class="contentStep" [formGroup]="contentFormGroup">
       <ng-template matStepLabel>Inhalt des Events</ng-template>
       <mat-form-field>
         <mat-label>Titel</mat-label>
-        <input matInput formControlName="title" required />
+        <input matInput formControlName="title" required matTooltip="Titel des Artikels, maximal 35 Zeichen" />
         <mat-error *ngIf="contentFormGroup.controls.title.invalid">
           {{ contentFormGroup.controls.title | errorMessage }}
         </mat-error>
@@ -26,6 +24,8 @@
             [matChipInputFor]="tagList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="chips.addItem($event, contentFormGroup.get('tags'))"
+            matTooltip="Tags nach Eingabe mit der ENTER-Taste bestätigen"
+            matTooltipPosition="above"
           />
         </mat-chip-list>
       </mat-form-field>
@@ -39,6 +39,8 @@
               [matAutosizeMinRows]="4"
               [matAutosizeMaxRows]="10"
               formControlName="description"
+              matTooltip="Formatierungsoptionen sind mit i-Knopf in der Vorschau einsehbar"
+              required
             ></textarea>
           </mat-form-field>
         </mat-tab>
@@ -63,7 +65,7 @@
       </mat-form-field>
 
       <mat-form-field class="date-time">
-        <mat-label>Zeit</mat-label>
+        <mat-label>Uhrzeit</mat-label>
         <input matInput placeholder="HH:MM" formControlName="time" />
         <mat-error *ngIf="dateFormGroup.controls.time.invalid"> {{ dateFormGroup.controls.time | errorMessage }} </mat-error>
       </mat-form-field>
@@ -124,7 +126,14 @@
             {{ item.name }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
-          <input #participantInput placeholder="Teilnehmer" [matChipInputFor]="participantList" [matAutocomplete]="auto" />
+          <input
+            #participantInput
+            placeholder="Teilnehmer"
+            [matChipInputFor]="participantList"
+            [matAutocomplete]="auto"
+            matTooltip="Nur Personen aus der Dropdown-Liste können hinzugefügt werden"
+            matTooltipPosition="above"
+          />
           <button
             mat-button
             matSuffix

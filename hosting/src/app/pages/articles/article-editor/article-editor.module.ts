@@ -23,6 +23,7 @@ import { EditorEffects } from '@state/articles/editor/effects/editor.effects';
 
 import { EditorComponent } from './editor.component';
 import { ArticleEditorRoutingModule } from './article-editor-routing.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [EditorComponent],
@@ -41,6 +42,7 @@ import { ArticleEditorRoutingModule } from './article-editor-routing.module';
     MatProgressSpinnerModule,
     MatDialogModule,
     MatTabsModule,
+    MatTooltipModule,
     StoreModule.forFeature(fromEditor.editorFeatureKey, fromEditor.reducer),
     EffectsModule.forFeature([EditorEffects]),
     ArticleEditorRoutingModule,

@@ -23,6 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ParticipantAutocompleteFilterPipe } from './autocomplete-filter.pipe';
 import { DeleteConfirmModule } from '@shared/delete-confirm/delete-confirm.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [EditorComponent, ParticipantAutocompleteFilterPipe],
@@ -42,6 +43,7 @@ import { DeleteConfirmModule } from '@shared/delete-confirm/delete-confirm.modul
     MatButtonModule,
     MatStepperModule,
     MatTabsModule,
+    MatTooltipModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),

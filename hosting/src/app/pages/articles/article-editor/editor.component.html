@@ -3,7 +3,7 @@
 <form *ngIf="articleForm" [formGroup]="articleForm">
   <mat-form-field [style.grid-area]="'title'">
     <mat-label>Titel</mat-label>
-    <input matInput formControlName="title" />
+    <input matInput formControlName="title" matTooltip="Titel des Artikels, maximal 35 Zeichen" required />
     <mat-error *ngIf="articleForm.controls.title.invalid"> {{ articleForm.controls.title | errorMessage }} </mat-error>
   </mat-form-field>
 
@@ -18,6 +18,8 @@
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         (matChipInputTokenEnd)="chips.addItem($event, articleForm.get('tags'))"
+        matTooltip="Tags nach Eingabe mit der ENTER-Taste bestätigen"
+        matTooltipPosition="above"
       />
     </mat-chip-list>
   </mat-form-field>
@@ -32,6 +34,8 @@
           [matAutosizeMinRows]="4"
           [matAutosizeMaxRows]="10"
           formControlName="content"
+          matTooltip="Formatierungsoptionen sind mit i-Knopf in der Vorschau einsehbar"
+          required
         ></textarea>
       </mat-form-field>
     </mat-tab>

@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [EditorComponent],
@@ -28,6 +29,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
+    MatTooltipModule,
     MatProgressSpinnerModule,
     StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer),
     EffectsModule.forFeature([ImageEffects]),
