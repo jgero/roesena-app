@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Hinweis zur Veröffentlichung</h1>
+<mat-dialog-content>
+  <p>
+    Die Informationen die Sie nun speichern werden öffentlich auf der Webseite der RöSeNa angezeigt. Bitte beachten Sie, dass
+    keine Informationen veröffentlicht werden dürfen, die nicht für die Öffentlichkeit bestimmt sind oder anderen Personen oder
+    dem Verein schaden könnten.<br />
+    Ein Verstoß kann zur Löschung des Inhalts und Ihrem Profil/Zugng führen.
+  </p>
+  <mat-checkbox required [(ngModel)]="accepted" color="primary">Habe ich zur Kenntnis genommen</mat-checkbox>
+  <mat-checkbox [(ngModel)]="save" color="accent">nicht erneut fragen</mat-checkbox>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button color="accent" [mat-dialog-close]="true" [disabled]="!accepted" (click)="saveInCookie()">
+    SPEICHERN
+  </button>
+  <div class="spacer"></div>
+  <button mat-stroked-button color="warn" [mat-dialog-close]="false">ZURÜCK</button>
+</mat-dialog-actions>

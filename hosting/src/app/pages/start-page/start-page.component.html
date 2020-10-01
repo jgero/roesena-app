@@ -29,6 +29,7 @@
     <h2>Events</h2>
     <a mat-flat-button [color]="'accent'" [routerLink]="'/events/overview'">MEHR ANZEIGEN</a>
   </figcaption>
+  <mat-divider></mat-divider>
   <ng-container *ngIf="event$ | async as ev">
     <h3>{{ ev.title }}</h3>
     <p class="subtitle">{{ ev.ownerName }} - {{ ev.date | toLocalDateString }}</p>

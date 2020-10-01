@@ -12,6 +12,9 @@ import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/edi
 import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash-es';
 import { Title } from '@angular/platform-browser';
+import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
+import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-editor',
@@ -36,7 +39,8 @@ export class EditorComponent implements OnDestroy {
     public chips: ChipsInputService,
     private subs: SubscriptionService,
     private dialog: MatDialog,
-    titleService: Title
+    titleService: Title,
+    private cookies: CookieService
   ) {
     titleService.setTitle('RöSeNa - Artikel Editor');
     this.store.dispatch(new LoadSingleArticle({ withImage: false }));
@@ -75,6 +79,24 @@ export class EditorComponent implements OnDestroy {
   }
 
   onSubmit() {
+    // if cookie is set save directly, otherwise force user to accept
+    if (this.cookies.check('UsageAgreementAccepted')) {
+      this.saveArticle();
+    } else {
+      this.dialog
+        .open(UsageHintPopupComponent)
+        .afterClosed()
+        .pipe(takeUntil(this.subs.unsubscribe$))
+        .subscribe((result) => {
+          // only act if the user has accepted the usage hints
+          if (result) {
+            this.saveArticle();
+          }
+        });
+    }
+  }
+
+  private saveArticle() {
     const updated = this.article;
     updated.title = this.articleForm.get('title').value;
     updated.content = this.articleForm.get('content').value;
@@ -90,7 +112,7 @@ export class EditorComponent implements OnDestroy {
 
   deleteArticle(): void {
     this.dialog
-      .open(DeleteDialogComponent)
+      .open(DeleteConfirmPopupComponent)
       .afterClosed()
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe((result) => {
@@ -104,9 +126,3 @@ export class EditorComponent implements OnDestroy {
     this.subs.unsubscribeComponent$.next();
   }
 }
-
-@Component({
-  selector: 'app-delete-dialog',
-  templateUrl: 'delete-dialog.html',
-})
-export class DeleteDialogComponent {}

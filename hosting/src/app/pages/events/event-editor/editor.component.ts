@@ -17,6 +17,9 @@ import { LoadPersons, UpdateEvent, CreateEvent, DeleteEvent } from '@state/event
 import { MatDialog } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Title } from '@angular/platform-browser';
+import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
+import { CookieService } from 'ngx-cookie-service';
+import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 
 @Component({
   selector: 'app-editor',
@@ -58,7 +61,8 @@ export class EditorComponent implements OnDestroy {
     private store: Store<State>,
     private subs: SubscriptionService,
     private dialog: MatDialog,
-    titleService: Title
+    titleService: Title,
+    private cookies: CookieService
   ) {
     titleService.setTitle('RöSeNa - Event Editor');
     // dispatch the event to load the event that should be edited
@@ -174,6 +178,24 @@ export class EditorComponent implements OnDestroy {
   }
 
   onSubmit() {
+    // if cookie is set save directly, otherwise force user to accept
+    if (this.cookies.check('UsageAgreementAccepted')) {
+      this.saveEvent();
+    } else {
+      this.dialog
+        .open(UsageHintPopupComponent)
+        .afterClosed()
+        .pipe(takeUntil(this.subs.unsubscribe$))
+        .subscribe((result) => {
+          // only act if the user has accepted the usage hints
+          if (result) {
+            this.saveEvent();
+          }
+        });
+    }
+  }
+
+  private saveEvent() {
     const updated: AppEvent = {
       id: this.event.id,
       ownerId: this.event.ownerId,
@@ -203,7 +225,7 @@ export class EditorComponent implements OnDestroy {
 
   deleteEvent(): void {
     this.dialog
-      .open(DeleteDialogComponent)
+      .open(DeleteConfirmPopupComponent)
       .afterClosed()
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe((result) => {
@@ -258,36 +280,7 @@ export class EditorComponent implements OnDestroy {
     formEl.setValue([...(formEl.value as Participant[]).filter((el) => el.id !== person.id)]);
   }
 
-  // isPersonSelected(id: string): boolean {
-  //   return !!(this.participantsFormGroup.get('participants').value as Participant[]).find((part) => part.id === id);
-  // }
-
-  // onPersonClick(id: string) {
-  //   const index = (this.participantsFormGroup.get('participants').value as Participant[]).findIndex((part) => part.id === id);
-  //   if (index < 0) {
-  //     // add the person as participant
-  //     (this.participantsFormGroup.get('participants').value as Participant[]).push({
-  //       id,
-  //       amount: -1,
-  //       name: this.persons.find((p) => p.id === id).name,
-  //       hasUnseenChanges: true,
-  //     });
-  //   } else {
-  //     // remove the participant from the array of participants
-  //     (this.participantsFormGroup.get('participants').value as Participant[]).splice(index, 1);
-  //   }
-  //   // manually run the validity check after a person was clicked
-  //   this.participantsFormGroup.get('participants').updateValueAndValidity();
-  //   this.participantsFormGroup.get('participants').markAsDirty();
-  // }
-
   ngOnDestroy() {
     this.subs.unsubscribeComponent$.next();
   }
 }
-
-@Component({
-  selector: 'app-delete-dialog',
-  templateUrl: 'delete-dialog.html',
-})
-export class DeleteDialogComponent {}

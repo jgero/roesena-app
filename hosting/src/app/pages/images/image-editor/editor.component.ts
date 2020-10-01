@@ -15,6 +15,10 @@ import { UpdateImage, CreateImage, DeleteImage } from '@state/images/editor/acti
 import { UrlLoaderService } from '@services/url-loader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
+import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
+import { CookieService } from 'ngx-cookie-service';
+import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
+import { cloneDeep } from 'lodash-es';
 
 @Component({
   selector: 'app-editor',
@@ -41,7 +45,8 @@ export class EditorComponent implements OnDestroy {
     private subs: SubscriptionService,
     private urlLoader: UrlLoaderService,
     private dialog: MatDialog,
-    titleService: Title
+    titleService: Title,
+    private cookies: CookieService
   ) {
     titleService.setTitle('RöSeNa - Bild Editor');
     this.store.dispatch(new LoadImage());
@@ -69,7 +74,7 @@ export class EditorComponent implements OnDestroy {
             return;
           }
           // deep copy the image
-          this.image = JSON.parse(JSON.stringify(image));
+          this.image = cloneDeep(image);
           this.imageForm = new FormGroup({
             tags: new FormControl(this.image.tags),
             image: new FormControl(''),
@@ -86,8 +91,25 @@ export class EditorComponent implements OnDestroy {
   }
 
   onSubmit() {
-    const updated: AppImage = {} as any;
-    Object.assign(updated, this.image);
+    // if cookie is set save directly, otherwise force user to accept
+    if (this.cookies.check('UsageAgreementAccepted')) {
+      this.saveImage();
+    } else {
+      this.dialog
+        .open(UsageHintPopupComponent)
+        .afterClosed()
+        .pipe(takeUntil(this.subs.unsubscribe$))
+        .subscribe((result) => {
+          // only act if the user has accepted the usage hints
+          if (result) {
+            this.saveImage();
+          }
+        });
+    }
+  }
+
+  saveImage() {
+    const updated = this.image;
     updated.tags = this.imageForm.get('tags').value;
     updated.created = new Date();
     if (this.image.id) {
@@ -99,7 +121,7 @@ export class EditorComponent implements OnDestroy {
 
   onDelete() {
     this.dialog
-      .open(DeleteDialogComponent)
+      .open(DeleteConfirmPopupComponent)
       .afterClosed()
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe((result) => {
@@ -126,9 +148,3 @@ export class EditorComponent implements OnDestroy {
     this.subs.unsubscribeComponent$.next();
   }
 }
-
-@Component({
-  selector: 'app-delete-dialog',
-  templateUrl: 'delete-dialog.html',
-})
-export class DeleteDialogComponent {}

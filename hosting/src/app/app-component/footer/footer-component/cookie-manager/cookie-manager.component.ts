@@ -48,7 +48,13 @@ export class CookieManagerComponent implements OnInit {
           },
         ];
       case 2:
-        return [{ name: '??', expiration: '???', description: 'Momentan noch in Bearbeitung' }];
+        return [
+          {
+            name: 'UsageAgreementAccepted',
+            expiration: '3 Monate',
+            description: `Dieses Cookie speichert ob die wichtigen Hinweise zum Erstellen von Inhalten auf der Seite gelesen wurden.`,
+          },
+        ];
     }
   }
 
