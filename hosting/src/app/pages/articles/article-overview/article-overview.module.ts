@@ -15,6 +15,7 @@ import { ArticleEffects } from '../../../state/articles/overview/effects/article
 import { PaginatorModule } from '@shared/paginator/paginator.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HeadingsModule } from '@shared/headings/headings.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -27,6 +28,7 @@ import { HeadingsModule } from '@shared/headings/headings.module';
     CardsModule,
     HeadingsModule,
     MatIconModule,
+    MatTooltipModule,
     MatButtonModule,
     RouterModule,
     ArticleOverviewRoutingModule,

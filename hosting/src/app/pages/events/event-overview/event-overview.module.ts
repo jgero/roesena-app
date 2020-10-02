@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { EventEffects } from '../../../state/events/overview/effects/event.effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HeadingsModule } from '@shared/headings/headings.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -27,6 +28,7 @@ import { HeadingsModule } from '@shared/headings/headings.module';
     CardsModule,
     HeadingsModule,
     MatButtonModule,
+    MatTooltipModule,
     StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
     EffectsModule.forFeature([EventEffects]),
   ],

@@ -7,7 +7,15 @@
     </mat-grid-tile>
   </mat-grid-list>
 
-  <a mat-fab color="primary" [routerLink]="'/articles/edit'" *ngIf="canCreate$ | async"><mat-icon>add</mat-icon></a>
+  <a
+    mat-fab
+    color="primary"
+    [routerLink]="'/articles/edit'"
+    *ngIf="canCreate$ | async"
+    aria-label="Neuen Artikel erstellen"
+    matTooltip="Neuen Artikel erstellen"
+    ><mat-icon>add</mat-icon></a
+  >
   <app-paginator class="mat-elevation-z2" [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
 </ng-container>
 <ng-template #loading>

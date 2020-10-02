@@ -19,6 +19,14 @@
   </div>
 </ng-template>
 
-<a mat-fab class="add-fab" [color]="'primary'" [routerLink]="'/events/edit'" *ngIf="canCreate$ | async">
+<a
+  mat-fab
+  class="add-fab"
+  [color]="'primary'"
+  [routerLink]="'/events/edit'"
+  *ngIf="canCreate$ | async"
+  aria-label="Neues Event erstellen"
+  matTooltip="Neues Event erstellen"
+>
   <mat-icon>add</mat-icon>
 </a>

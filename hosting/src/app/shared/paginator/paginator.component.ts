@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
-// import { State } from '@state/pagination/reducers/page.reducer';
 import { PageForward, PageBackwards } from '@state/pagination/actions/page.actions';
 
 @Component({
@@ -30,5 +29,8 @@ export class PaginatorComponent implements OnInit {
     }, 300);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.paginatorRef._intl.nextPageLabel = 'Nächste Seite';
+    // this.paginatorRef._intl.lastPageLabel = 'Vorherige Seite';
+  }
 }

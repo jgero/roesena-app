@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HeadingsModule } from '@shared/headings/headings.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -29,6 +30,7 @@ import { HeadingsModule } from '@shared/headings/headings.module';
     HeadingsModule,
     PaginatorModule,
     MatButtonModule,
+    MatTooltipModule,
     StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer),
     EffectsModule.forFeature([ImageEffects]),
   ],
