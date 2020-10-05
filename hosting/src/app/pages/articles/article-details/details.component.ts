@@ -19,7 +19,7 @@ export class DetailsComponent implements OnDestroy {
   article$ = this.store.select('article', 'article');
   image$ = this.store.select('article', 'image');
   isLoading$ = this.store.select('article', 'isLoading');
-  canEdit$ = this.store.select((state) => canEdit(state));
+  canEdit$ = this.store.select(canEdit);
 
   constructor(private store: Store<State>, private sub: SubscriptionService, titleService: Title) {
     titleService.setTitle('RöSeNa - Artikel Details');

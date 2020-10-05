@@ -2,6 +2,14 @@
 
 <main *ngIf="user$ | async as user">
   <mat-list>
+    <div mat-subheader>Ausloggen</div>
+    <mat-list-item>
+      <mat-icon mat-list-icon>exit_to_app</mat-icon>
+      <div mat-line>
+        <button mat-stroked-button [color]="'accent'" (click)="logout()">LOGOUT</button>
+      </div>
+    </mat-list-item>
+
     <div mat-subheader>Anzeigename</div>
     <mat-list-item>
       <mat-icon mat-list-icon>label</mat-icon>
