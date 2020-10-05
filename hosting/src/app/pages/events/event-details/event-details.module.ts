@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HeadingsModule } from '@shared/headings/headings.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [DetailsComponent],
@@ -27,6 +28,7 @@ import { HeadingsModule } from '@shared/headings/headings.module';
     HeadingsModule,
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
 })
 export class EventDetailsModule {}

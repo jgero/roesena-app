@@ -48,8 +48,22 @@
     </mat-list>
   </main>
   <div class="fab-container">
-    <a mat-fab [color]="'primary'" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
-    <a mat-fab [color]="'primary'" [routerLink]="'/auth/my-events'"><mat-icon>reply</mat-icon></a>
+    <a
+      mat-fab
+      matTooltip="Event bearbeiten"
+      aria-label="Event bearbeiten"
+      [color]="'primary'"
+      [routerLink]="'/events/edit/' + event.id"
+      ><mat-icon>edit</mat-icon></a
+    >
+    <a
+      mat-fab
+      matTooltip="Für dieses Event zurückmelden"
+      aria-label="Für dieses Event zurückmelden"
+      [color]="'primary'"
+      [routerLink]="'/auth/my-events'"
+      ><mat-icon>reply</mat-icon></a
+    >
   </div>
 </ng-container>
 
