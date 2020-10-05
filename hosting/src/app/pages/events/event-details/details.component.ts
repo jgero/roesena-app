@@ -4,10 +4,11 @@ import { SubscriptionService } from '@services/subscription.service';
 import { Store } from '@ngrx/store';
 import { State } from '@state/events/reducers/event.reducer';
 import { LoadEvent, MarkEventAsSeen } from '@state/events/actions/event.actions';
-import { map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
 import { AppEvent } from '@utils/interfaces';
 import { Title } from '@angular/platform-browser';
+import { canEdit, canReply } from '@state/events/selectors/event.selectors';
 
 @Component({
   selector: 'app-details',
@@ -15,7 +16,8 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnDestroy, OnInit {
-  canEdit$: Observable<boolean> = this.store.select('user').pipe(map((state) => state.isAuthor || state.isAdmin));
+  canEdit$ = this.store.select(canEdit);
+  canReply$: Observable<boolean> = this.store.select(canReply);
   isLoading$ = this.store.select('events', 'isLoading');
   data$ = this.store.select('events', 'event');
   amountAccumulated$ = this.data$.pipe(

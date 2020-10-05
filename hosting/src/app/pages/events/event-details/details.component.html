@@ -1,10 +1,5 @@
 <ng-container *ngIf="data$ | async as event; else loading">
   <app-page-header [title]="event.title" [date]="event.date" [owner]="event.ownerName"></app-page-header>
-  <!-- <h1 class="mat-display-3">{{ event.title }}</h1>
-  <h4>
-    <span>{{ event.date | toLocalDateString }} {{ event.date | toLocalTimeString }}</span>
-    <span class="ownerName"> {{ event.ownerName }} </span>
-  </h4> -->
   <main>
     <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
     <mat-chip-list>
@@ -48,8 +43,10 @@
     </mat-list>
   </main>
   <div class="fab-container">
-    <a mat-fab [color]="'primary'" [routerLink]="'/events/edit/' + event.id"><mat-icon>edit</mat-icon></a>
-    <a mat-fab [color]="'primary'" [routerLink]="'/auth/my-events'"><mat-icon>reply</mat-icon></a>
+    <a mat-fab *ngIf="canEdit$ | async" [color]="'primary'" [routerLink]="'/events/edit/' + event.id"
+      ><mat-icon>edit</mat-icon></a
+    >
+    <a mat-fab *ngIf="canReply$ | async" [color]="'primary'" [routerLink]="'/auth/my-events'"><mat-icon>reply</mat-icon></a>
   </div>
 </ng-container>
 
