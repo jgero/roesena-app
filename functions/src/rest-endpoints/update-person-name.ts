@@ -27,7 +27,7 @@ app.post('/:id', async (req, res) => {
     return;
   }
   // check if user is in 'admin' group or current user changes his own name
-  if (!doc.groups.admin || (req as any).uid !== req.params.id) {
+  if (!doc.groups.admin && (req as any).uid !== req.params.id) {
     res.status(403).send({ error: 'current user is not admin or changing own name' });
     return;
   }
