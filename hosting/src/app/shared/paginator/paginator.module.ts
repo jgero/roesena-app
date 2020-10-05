@@ -12,7 +12,7 @@ class CustomMatPaginatorIntl extends MatPaginatorIntl {
   nextPageLabel = 'Nächste Seite';
   previousPageLabel = 'Vorherige Seite';
 
-  getRangeLabel = function (page, pageSize, length) {
+  getRangeLabel = (page, pageSize, length) => {
     if (length === 0 || pageSize === 0) {
       return '0 von ' + length;
     }
