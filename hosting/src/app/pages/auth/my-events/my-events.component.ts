@@ -29,7 +29,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
         const participant = event.participants.find((p) => p.id === user.id);
         return {
           ...event,
-          hasUnseenChanges: event.participants.find((participant) => participant.id === user.id).hasUnseenChanges,
+          hasUnseenChanges: event.participants.find((part) => part.id === user.id).hasUnseenChanges,
           form: new FormGroup({
             amount: new FormControl(participant.amount >= 0 ? participant.amount : '', [
               Validators.required,
