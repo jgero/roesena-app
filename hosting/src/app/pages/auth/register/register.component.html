@@ -11,6 +11,12 @@
       <input matInput type="password" formControlName="password" />
       <mat-error *ngIf="registerForm.get('password').invalid"> {{ registerForm.get('password') | errorMessage }} </mat-error>
     </mat-form-field>
+
+    <p>
+      Hinweise zum <a routerLink="/data-protection">Datenschutz</a> und zu den
+      <a routerLink="/help" fragment="Account">nächsten Schritten nach der Anmeldung</a>
+    </p>
+    <mat-checkbox formControlName="hints">Ich habe die Hinweise gelesen</mat-checkbox>
     <button
       mat-flat-button
       *ngIf="!registerForm.disabled; else loading"

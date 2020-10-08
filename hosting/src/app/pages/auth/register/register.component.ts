@@ -15,6 +15,7 @@ export class RegisterComponent implements OnDestroy {
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    hints: new FormControl(false, [Validators.required, Validators.requiredTrue]),
   });
   private subs: Subscription[] = [];
 
