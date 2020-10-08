@@ -1,9 +1,28 @@
+@import '../../../shared/style-partials/variables.scss';
+
 :host .newNameBox {
   display: flex;
   align-items: center;
 
   & > *:not(.mat-form-field) {
     margin-left: 16px;
+  }
+}
+
+.mat-list-item {
+  height: unset;
+
+  .mat-line {
+    white-space: pre-line;
+
+    a:not(.mat-button) {
+      color: $primary;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 

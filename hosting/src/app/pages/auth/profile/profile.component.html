@@ -2,6 +2,18 @@
 
 <main *ngIf="user$ | async as user">
   <mat-list>
+    <ng-container *ngIf="!user.isConfirmedMember">
+      <div mat-subheader>Wichtiger Hinweis</div>
+      <mat-list-item>
+        <mat-icon mat-list-icon color="warn">warning</mat-icon>
+        <div mat-line>
+          Ihr Account wurde noch nicht von einem Administrator der Seite freigeschaltet. Das könnte möglicherweise daran liegen,
+          dass aus Ihrem Anzeigenamen nicht genau hervorgeht um wen es sich handelt oder noch eine E-Mail Adresse ist. Falls dies
+          nicht der Fall sein sollte bitte wenden Sie sich an <a href="mailto: webmaster@roesena.de">webmaster@roesena.de</a>
+        </div>
+      </mat-list-item>
+    </ng-container>
+
     <div mat-subheader>Ausloggen</div>
     <mat-list-item>
       <mat-icon mat-list-icon>exit_to_app</mat-icon>
