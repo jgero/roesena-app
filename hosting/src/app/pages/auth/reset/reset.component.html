@@ -12,10 +12,10 @@
     <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">ANMELDEN</a>
   </form>
   <ng-template #newPassword>
-    <form [formGroup]="newPasswordForm" (ngSubmit)="onNewPasswordSubmit()">
+    <form [formGroup]="newPasswordForm" (ngSubmit)="onNewPasswordSubmit()" *ngIf="!loading; else loadingSpinner">
       <mat-form-field [style.grid-area]="'input'">
         <mat-label>Passwort</mat-label>
-        <input matInput formControlName="password" />
+        <input matInput formControlName="password" type="password" />
         <mat-error *ngIf="newPasswordForm.get('password').invalid"> Passwort ungültig </mat-error>
       </mat-form-field>
       <button mat-flat-button [color]="'primary'" type="submit" [disabled]="newPasswordForm.invalid" [style.grid-area]="'button'">
@@ -23,5 +23,8 @@
       </button>
       <a [style.grid-area]="'login'" mat-button [color]="'primary'" [routerLink]="'/auth/login'">ANMELDEN</a>
     </form>
+    <ng-template #loadingSpinner>
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </ng-template>
   </ng-template>
 </main>

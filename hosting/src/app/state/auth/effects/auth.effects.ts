@@ -34,6 +34,7 @@ import { toStorablePerson, convertOne } from '@utils/converters/person-documents
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { SubscriptionService } from '@services/subscription.service';
+import { CodeInvalidError } from '@utils/errors/code-invalid-error';
 
 @Injectable()
 export class AuthEffects {
@@ -51,13 +52,7 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   redirectAfterLogin$ = this.actions$.pipe(
     ofType(AuthActionTypes.LoginLoaded),
-    tap(() => {
-      if ((this.location.getState() as any).navigationId > 1) {
-        this.location.back();
-      } else {
-        this.router.navigate(['']);
-      }
-    })
+    tap(() => this.router.navigate(['auth', 'profile']))
   );
 
   @Effect()
@@ -119,6 +114,7 @@ export class AuthEffects {
     ofType(AuthActionTypes.DoReset),
     switchMap((action) =>
       from(this.auth.sendPasswordResetEmail(action.payload.email)).pipe(
+        tap(() => this.snackbar.open('Reset E-Mail wurde versendet')),
         map(() => new ResetLoaded()),
         catchError((error) => of(new ResetFailed({ error })))
       )
@@ -132,8 +128,14 @@ export class AuthEffects {
     switchMap(([action, storeState]) =>
       from(this.auth.confirmPasswordReset(storeState.router.state.queryParams.oobCode, action.payload.password)).pipe(
         tap(() => this.snackbar.open('Password geändert')),
+        tap(() => this.router.navigate(['auth', 'login'])),
         map(() => new ChangePasswordWithCodeLoaded()),
-        catchError((error) => of(new ChangePasswordWithCodeFailed({ error })))
+        catchError((error) => {
+          if (error.code === 'auth/invalid-action-code') {
+            return of(new ChangePasswordWithCodeFailed({ error: new CodeInvalidError(error.message) }));
+          }
+          return of(error);
+        })
       )
     )
   );

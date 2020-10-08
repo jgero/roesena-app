@@ -43,6 +43,9 @@ export class GlobalEffects {
       } else if (action.payload.error.name === 'MissingDocumentError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Daten konnten nicht abgerufen werden, möglicherweise besteht keine Verbindung zur Datenbank';
+      } else if (action.payload.error.name === 'CodeInvalidError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Mit diesem Link ist nicht mehr gültig, bitte fordern Sie einen neuen an';
       } else {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Interner Fehler, versuchen sie es später erneut';

@@ -19,6 +19,7 @@ export class ResetComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   hasCode$ = this.store.select('router', 'state', 'queryParams').pipe(map((params) => !!params && !!params.oobCode));
+  loading = false;
 
   constructor(private store: Store<State>, titleService: Title) {
     titleService.setTitle('RöSeNa - Passwort zurücksetzen');
@@ -29,6 +30,7 @@ export class ResetComponent {
   }
 
   onNewPasswordSubmit() {
+    this.loading = true;
     this.store.dispatch(new DoChangePasswordWithCode({ password: this.newPasswordForm.get('password').value }));
   }
 }
