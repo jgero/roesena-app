@@ -13,6 +13,7 @@ import { Title } from '@angular/platform-browser';
 
 interface AppEventWithForm extends AppEvent {
   form: FormGroup;
+  hasUnseenChanges: boolean;
 }
 
 @Component({
@@ -22,12 +23,13 @@ interface AppEventWithForm extends AppEvent {
 })
 export class MyEventsComponent implements OnInit, OnDestroy {
   data$: Observable<AppEventWithForm[]> = this.store.select('myEvents', 'events').pipe(
-    withLatestFrom(this.store),
-    map(([events, storeState]) => {
+    withLatestFrom(this.store.select('user', 'user')),
+    map(([events, user]) => {
       return events.map((event) => {
-        const participant = event.participants.find((p) => p.id === storeState.user.user.id);
+        const participant = event.participants.find((p) => p.id === user.id);
         return {
           ...event,
+          hasUnseenChanges: event.participants.find((part) => part.id === user.id).hasUnseenChanges,
           form: new FormGroup({
             amount: new FormControl(participant.amount >= 0 ? participant.amount : '', [
               Validators.required,
@@ -57,6 +59,8 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new LoadEvents());
   }
+
+  hasUnseenChanges(ev: AppEvent) {}
 
   onSubmit(eventId: string, amount: string, form: FormGroup) {
     form.disable();

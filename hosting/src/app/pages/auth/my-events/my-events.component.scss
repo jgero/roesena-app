@@ -14,3 +14,7 @@ table {
     }
   }
 }
+
+::ng-deep.mat-badge.hide-text .mat-badge-content {
+  color: transparent;
+}
