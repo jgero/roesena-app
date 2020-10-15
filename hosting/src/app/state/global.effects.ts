@@ -59,6 +59,12 @@ export class GlobalEffects {
       } else if (action.payload.error.name === 'WrongPasswordError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Das eingegebene Passwort ist falsch';
+      } else if (action.payload.error.name === 'EmailAlreadyInUseError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Es existiert bereits ein Account mit dieser E-Mail';
+      } else if (action.payload.error.name === 'WeakPasswordError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Passwort ist zu schwach';
       } else if (action.payload.error.name === 'PermissionDeniedError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Zugriff nicht gestattet';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
 import { switchMap, map, catchError, tap, withLatestFrom, take, filter, takeUntil, skip } from 'rxjs/operators';
-import { of, from, Observable } from 'rxjs';
+import { of, from } from 'rxjs';
 import {
   AuthActionTypes,
   AuthActions,
@@ -16,21 +16,18 @@ import {
   ResetFailed,
   ChangePasswordWithCodeLoaded,
   ChangePasswordWithCodeFailed,
-  DoRegister,
   RegisterLoaded,
   RegisterFailed,
 } from '../actions/auth.actions';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { BrowserService } from '@services/browser.service';
-import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import 'firebase/firestore';
 import { State } from '../reducers/auth.reducer';
 import { Store } from '@ngrx/store';
 import { StoreablePerson } from '@utils/interfaces';
-import { toStorablePerson, convertOne } from '@utils/converters/person-documents';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { SubscriptionService } from '@services/subscription.service';
@@ -39,6 +36,10 @@ import { InvalidEmailError } from '@utils/errors/invalid-email-error';
 import { UserDisabledError } from '@utils/errors/user-disabled-error';
 import { UserNotFoundError } from '@utils/errors/user-not-found-error';
 import { WrongPasswordError } from '@utils/errors/wrong-password-error';
+import { EmailAlreadyInUseError } from '@utils/errors/email-already-in-use-error';
+import { OperationNotAllowedError } from '@utils/errors/operation-not-allowed-error';
+import { WeakPasswordError } from '@utils/errors/weak-password-error';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class AuthEffects {
@@ -76,7 +77,9 @@ export class AuthEffects {
     // to prevent redirects when user gets emitted again only take the first
     take(1),
     // now the user is loaded and the redirect can be started
-    tap(() => setTimeout(() => this.router.navigate(['auth', 'profile'])))
+    tap(() => this.router.navigate(['auth', 'profile'])),
+    // report login to analytics
+    tap(() => this.analytics.logEvent('login'))
   );
 
   @Effect()
@@ -94,27 +97,47 @@ export class AuthEffects {
   redirectAfterLogout$ = this.actions$.pipe(
     ofType(AuthActionTypes.LogoutLoaded),
     // location reload will automatically navigate to the right pages
-    tap(() => this.browser.reload())
+    tap(() => this.browser.reload()),
+    // report logout to analytics
+    tap(() => this.analytics.logEvent('logout', { event_category: 'engagement' }))
   );
 
   @Effect()
   registerUser$ = this.actions$.pipe(
     ofType(AuthActionTypes.DoRegister),
     // create new user in firebase auth
-    switchMap((action) => from(this.auth.createUserWithEmailAndPassword(action.payload.email, action.payload.password))),
-    // wait until user doc is created via cloud function
-    switchMap((userCredential) =>
-      this.firestore
-        .collection('persons')
-        .doc<StoreablePerson>(userCredential.user.uid)
-        .snapshotChanges()
-        .pipe(
-          filter((el) => el.payload.exists),
-          take(1),
-          tap(() => this.snackbar.open('Registrierung erfolgreich')),
-          map(() => new RegisterLoaded()),
-          catchError((error) => of(new RegisterFailed({ error })))
-        )
+    switchMap((action) =>
+      from(this.auth.createUserWithEmailAndPassword(action.payload.email, action.payload.password)).pipe(
+        // wait until user doc is created via cloud function
+        switchMap((userCredential) =>
+          this.firestore
+            .collection('persons')
+            .doc<StoreablePerson>(userCredential.user.uid)
+            .snapshotChanges()
+            .pipe(
+              filter((el) => el.payload.exists),
+              take(1),
+              tap(() => this.snackbar.open('Registrierung erfolgreich')),
+              map(() => new RegisterLoaded())
+            )
+        ),
+        // report register to analytics
+        tap(() => this.analytics.logEvent('sign_up')),
+        catchError((error) => {
+          console.log(error.code);
+          if (error.code === 'auth/email-already-in-use') {
+            return of(new RegisterFailed({ error: new EmailAlreadyInUseError(error.message) }));
+          } else if (error.code === 'auth/invalid-email') {
+            return of(new RegisterFailed({ error: new InvalidEmailError(error.message) }));
+          } else if (error.code === 'auth/operation-not-allowed') {
+            return of(new RegisterFailed({ error: new OperationNotAllowedError(error.message) }));
+          } else if (error.code === 'auth/weak-password') {
+            return of(new RegisterFailed({ error: new WeakPasswordError(error.message) }));
+          } else {
+            return of(new RegisterFailed({ error }));
+          }
+        })
+      )
     )
   );
 
@@ -140,7 +163,15 @@ export class AuthEffects {
       from(this.auth.sendPasswordResetEmail(action.payload.email)).pipe(
         tap(() => this.snackbar.open('Reset E-Mail wurde versendet')),
         map(() => new ResetLoaded()),
-        catchError((error) => of(new ResetFailed({ error })))
+        catchError((error) => {
+          if (error.code === 'auth/invalid-email') {
+            return of(new ResetFailed({ error: new InvalidEmailError(error.message) }));
+          } else if (error.code === 'auth/user-not-found') {
+            return of(new ResetFailed({ error: new UserNotFoundError(error.message) }));
+          } else {
+            return of(new ResetFailed({ error }));
+          }
+        })
       )
     )
   );
@@ -170,7 +201,7 @@ export class AuthEffects {
     private firestore: AngularFirestore,
     private fns: AngularFireFunctions,
     private subs: SubscriptionService,
-    private location: Location,
+    private analytics: AngularFireAnalytics,
     private router: Router,
     private browser: BrowserService,
     private store: Store<State>,
