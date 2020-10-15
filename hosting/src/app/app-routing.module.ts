@@ -63,9 +63,13 @@ export const routes: Routes = [
         data: { animation: 'search' },
       },
       {
-        path: '**',
+        path: 'error',
         loadChildren: () => import('@pages/error/error.module').then((m) => m.ErrorModule),
         data: { animation: 'error' },
+      },
+      {
+        path: '**',
+        redirectTo: 'error',
       },
     ],
   },

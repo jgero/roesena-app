@@ -1,4 +1,14 @@
-<h1 class="mat-display-4">Ups</h1>
-<p class="number">404</p>
-<p>Hier scheint nichts zu sein</p>
-<button mat-button (click)="goBack()">ZURÜCK ZUR LETZTEN SEITE?</button>
+<app-page-header [title]="'Ups'" [matIcon]="'error'"></app-page-header>
+
+<ng-container *ngIf="code | async as errorCode">
+  <ng-container *ngIf="errorCode === '403'">
+    <p class="number">{{ errorCode }}</p>
+    <p>Zugriff verweigert</p>
+  </ng-container>
+
+  <ng-container *ngIf="errorCode === '404'">
+    <p class="number">{{ code | async }}</p>
+    <p>Hier scheint nichts zu sein</p>
+    <button mat-button (click)="goBack()">ZURÜCK ZUR LETZTEN SEITE?</button>
+  </ng-container>
+</ng-container>

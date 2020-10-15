@@ -6,6 +6,7 @@ import { filter, switchMap, tap } from 'rxjs/operators';
 import { SwUpdate } from '@angular/service-worker';
 import { BrowserService } from '@services/browser.service';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { Router } from '@angular/router';
 
 interface ErrorAction extends Action {
   payload: { error: Error };
@@ -58,6 +59,10 @@ export class GlobalEffects {
       } else if (action.payload.error.name === 'WrongPasswordError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Das eingegebene Passwort ist falsch';
+      } else if (action.payload.error.name === 'PermissionDeniedError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Zugriff nicht gestattet';
+        this.router.navigate(['error', '403']);
       } else {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Interner Fehler, versuchen sie es später erneut';
@@ -71,6 +76,7 @@ export class GlobalEffects {
     private snackbar: MatSnackBar,
     private swUpdate: SwUpdate,
     private analytics: AngularFireAnalytics,
-    private browser: BrowserService
+    private browser: BrowserService,
+    private router: Router
   ) {}
 }

@@ -12,6 +12,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { convertOne } from '@utils/converters/event-documents';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PermissionDeniedError } from '@utils/errors/permission-denied-error';
 
 @Injectable()
 export class EventEffects {
@@ -30,7 +31,13 @@ export class EventEffects {
             takeUntil(this.subs.unsubscribe$),
             map(convertOne),
             map((event) => new LoadEventSuccess({ event })),
-            catchError((error) => of(new LoadEventFailure({ error })))
+            catchError((error) => {
+              if (error.code === 'permission-denied') {
+                return of(new LoadEventFailure({ error: new PermissionDeniedError(error.message) }));
+              } else {
+                return of(new LoadEventFailure({ error }));
+              }
+            })
           );
       } else {
         {

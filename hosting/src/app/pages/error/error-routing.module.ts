@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found.component';
 
-const routes: Routes = [{ path: '', component: NotFoundComponent }];
+const routes: Routes = [
+  { path: '', redirectTo: '404' },
+  { path: ':code', component: NotFoundComponent },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
