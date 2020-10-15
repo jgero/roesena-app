@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import { switchMap, map, catchError, tap, withLatestFrom, take, filter, takeUntil } from 'rxjs/operators';
+import { switchMap, map, catchError, tap, withLatestFrom, take, filter, takeUntil, skip } from 'rxjs/operators';
 import { of, from, Observable } from 'rxjs';
 import {
   AuthActionTypes,
@@ -35,6 +35,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { SubscriptionService } from '@services/subscription.service';
 import { CodeInvalidError } from '@utils/errors/code-invalid-error';
+import { InvalidEmailError } from '@utils/errors/invalid-email-error';
+import { UserDisabledError } from '@utils/errors/user-disabled-error';
+import { UserNotFoundError } from '@utils/errors/user-not-found-error';
+import { WrongPasswordError } from '@utils/errors/wrong-password-error';
 
 @Injectable()
 export class AuthEffects {
@@ -44,7 +48,19 @@ export class AuthEffects {
     switchMap((action) =>
       from(this.auth.signInWithEmailAndPassword(action.payload.email, action.payload.password)).pipe(
         map(() => new LoginLoaded()),
-        catchError((error) => of(new LoginFailed({ error })))
+        catchError((error) => {
+          if (error.code === 'auth/invalid-email') {
+            return of(new LoginFailed({ error: new InvalidEmailError(error.message) }));
+          } else if (error.code === 'auth/user-disabled') {
+            return of(new LoginFailed({ error: new UserDisabledError(error.message) }));
+          } else if (error.code === 'auth/user-not-found') {
+            return of(new LoginFailed({ error: new UserNotFoundError(error.message) }));
+          } else if (error.code === 'auth/wrong-password') {
+            return of(new LoginFailed({ error: new WrongPasswordError(error.message) }));
+          } else {
+            return of(new LoginFailed({ error }));
+          }
+        })
       )
     )
   );
@@ -52,7 +68,15 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   redirectAfterLogin$ = this.actions$.pipe(
     ofType(AuthActionTypes.LoginLoaded),
-    tap(() => this.router.navigate(['auth', 'profile']))
+    // after login is success full wait until the user is loaded, otherwise redirect won't work
+    switchMap(() => this.store.select('user', 'user')),
+    // skip the first emit of the select
+    // this first emit would always be null because no user was logged in and new one is not loaded yet
+    skip(1),
+    // to prevent redirects when user gets emitted again only take the first
+    take(1),
+    // now the user is loaded and the redirect can be started
+    tap(() => setTimeout(() => this.router.navigate(['auth', 'profile'])))
   );
 
   @Effect()

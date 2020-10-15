@@ -46,6 +46,18 @@ export class GlobalEffects {
       } else if (action.payload.error.name === 'CodeInvalidError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Mit diesem Link ist nicht mehr gültig, bitte fordern Sie einen neuen an';
+      } else if (action.payload.error.name === 'InvalidEmailError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Diese E-Mail ist ungültig, wahrscheinlich existiert bereits ein Account mit dieser E-Mail';
+      } else if (action.payload.error.name === 'UserDisabledError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Dieser Account wurde gesperrt. Grund dafür könnten zu viele gescheiterte Login-Versuche sein';
+      } else if (action.payload.error.name === 'UserNotFoundError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Es existiert kein Account mit der angegebenen E-Mail';
+      } else if (action.payload.error.name === 'WrongPasswordError') {
+        this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
+        message = 'Das eingegebene Passwort ist falsch';
       } else {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Interner Fehler, versuchen sie es später erneut';
