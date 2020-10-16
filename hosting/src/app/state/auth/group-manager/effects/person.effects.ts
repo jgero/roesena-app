@@ -24,6 +24,7 @@ import { Store } from '@ngrx/store';
 import { State } from '../reducers/person.reducer';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
 
 @Injectable()
 export class PersonEffects {
@@ -129,7 +130,7 @@ export class PersonEffects {
           map(convertMany),
           takeUntil(this.subs.unsubscribe$),
           map(() => new DeletePersonSuccess()),
-          catchError((error) => of(new DeletePersonFailure({ error })))
+          catchError((error) => of(new DeletePersonFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
   );
@@ -144,7 +145,7 @@ export class PersonEffects {
           map(convertMany),
           takeUntil(this.subs.unsubscribe$),
           map(() => new AddGroupSuccess()),
-          catchError((error) => of(new AddGroupFailure({ error })))
+          catchError((error) => of(new AddGroupFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
   );
@@ -158,8 +159,7 @@ export class PersonEffects {
         .pipe(
           map(convertMany),
           takeUntil(this.subs.unsubscribe$),
-          map(() => new RemoveGroupSuccess()),
-          catchError((error) => of(new RemoveGroupFailure({ error })))
+          catchError((error) => of(new RemoveGroupFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
   );

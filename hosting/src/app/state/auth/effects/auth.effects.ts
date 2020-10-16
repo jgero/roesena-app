@@ -40,6 +40,7 @@ import { EmailAlreadyInUseError } from '@utils/errors/email-already-in-use-error
 import { OperationNotAllowedError } from '@utils/errors/operation-not-allowed-error';
 import { WeakPasswordError } from '@utils/errors/weak-password-error';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
 
 @Injectable()
 export class AuthEffects {
@@ -150,7 +151,7 @@ export class AuthEffects {
         .pipe(
           map(() => new ChangeNameLoaded()),
           tap(() => this.snackbar.open('Name gespeichert')),
-          catchError((error) => of(new ChangeNameFailed({ error }))),
+          catchError((error) => of(new ChangeNameFailed({ error: new CloudFunctionCallError(error.error) }))),
           takeUntil(this.subs.unsubscribe$)
         )
     )

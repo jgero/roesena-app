@@ -65,6 +65,10 @@ export class GlobalEffects {
       } else if (action.payload.error.name === 'WeakPasswordError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Passwort ist zu schwach';
+      } else if (action.payload.error.name === 'CloudFunctionCallError') {
+        this.analytics.logEvent('exception', { fatal: true, description: action.payload.error.message });
+        message =
+          'Fehler beim Aufrufen der Cloud-Function, bitte kontaktieren Sie webmaster@roesena.de falls dies reproduzierbar auftritt';
       } else if (action.payload.error.name === 'PermissionDeniedError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Zugriff nicht gestattet';

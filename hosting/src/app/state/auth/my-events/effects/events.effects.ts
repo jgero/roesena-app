@@ -18,6 +18,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { convertMany } from '@utils/converters/event-documents';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { of } from 'rxjs';
+import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
 
 @Injectable()
 export class EventsEffects {
@@ -58,7 +59,7 @@ export class EventsEffects {
         .httpsCallable('respondToEvent')({ id: action.payload.id, amount: action.payload.amount })
         .pipe(
           map(() => new RespondToEventSuccess()),
-          catchError((error) => of(new RespondToEventFailure({ error })))
+          catchError((error) => of(new RespondToEventFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
   );
