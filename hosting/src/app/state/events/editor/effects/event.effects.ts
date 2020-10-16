@@ -23,6 +23,7 @@ import { State } from '../reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertMany } from '@utils/converters/person-documents';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class EventEffects {
@@ -49,6 +50,8 @@ export class EventEffects {
       from(this.firestore.collection('events').doc(action.payload.event.id).update(toStorableEvent(action.payload.event))).pipe(
         map(() => new UpdateEventSuccess()),
         tap(() => this.snackbar.open('Gespeichert')),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_event', { event_category: 'engagement' })),
         catchError((error) => of(new UpdateEventFailure({ error })))
       )
     )
@@ -61,6 +64,8 @@ export class EventEffects {
       from(this.firestore.collection('events').add(toStorableEvent(action.payload.event))).pipe(
         tap((insert) => this.router.navigate(['events', 'edit', insert.id])),
         map(() => new CreateEventSuccess()),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_event', { event_category: 'engagement' })),
         tap(() => this.snackbar.open('Gespeichert')),
         catchError((error) => of(new CreateEventFailure({ error })))
       )
@@ -75,6 +80,8 @@ export class EventEffects {
       from(this.firestore.collection('events').doc(storeState.router.state.params.id).delete()).pipe(
         tap(() => this.router.navigate(['events', 'overview'])),
         map(() => new DeleteEventSuccess()),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_event', { event_category: 'engagement' })),
         tap(() => this.snackbar.open('Gelöscht')),
         catchError((error) => of(new DeleteEventFailure({ error })))
       )
@@ -85,6 +92,7 @@ export class EventEffects {
     private actions$: Actions<EventActions>,
     private store: Store<State>,
     private firestore: AngularFirestore,
+    private analytics: AngularFireAnalytics,
     private router: Router,
     private subs: SubscriptionService,
     private snackbar: MatSnackBar

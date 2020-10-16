@@ -151,6 +151,8 @@ export class AuthEffects {
         .pipe(
           map(() => new ChangeNameLoaded()),
           tap(() => this.snackbar.open('Name gespeichert')),
+          // report to analytics
+          tap(() => this.analytics.logEvent('username_changed', { event_category: 'engagement' })),
           catchError((error) => of(new ChangeNameFailed({ error: new CloudFunctionCallError(error.error) }))),
           takeUntil(this.subs.unsubscribe$)
         )

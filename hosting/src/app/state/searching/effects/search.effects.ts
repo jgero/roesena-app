@@ -21,6 +21,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { convertMany as convertManyEvents } from '@utils/converters/event-documents';
 import { convertMany as convertManyArticles } from '@utils/converters/article-documents';
 import { convertMany as convertManyImages } from '@utils/converters/image-documents';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class SearchEffects {
@@ -46,6 +47,8 @@ export class SearchEffects {
     tap(([action, storeState]) => {
       this.router.navigate(['search', storeState.search.dataType, storeState.search.searchStrings.join(',')]);
     }),
+    // report to analytics
+    tap(() => this.analytics.logEvent('search', { event_category: 'engagement' })),
     switchMap(([action, storeState]) => {
       // applies query
       const queryBuilder = (qFn: CollectionReference) => {
@@ -100,6 +103,7 @@ export class SearchEffects {
     private store: Store<State>,
     private router: Router,
     private firestore: AngularFirestore,
+    private analytics: AngularFireAnalytics,
     private subs: SubscriptionService
   ) {}
 }

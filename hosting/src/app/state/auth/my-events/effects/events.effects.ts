@@ -10,7 +10,7 @@ import {
 } from '../actions/events.actions';
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
-import { switchMap, withLatestFrom, takeUntil, map, catchError } from 'rxjs/operators';
+import { switchMap, withLatestFrom, takeUntil, map, catchError, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/events.reducer';
 import { StoreableEvent } from '@utils/interfaces';
@@ -19,6 +19,7 @@ import { convertMany } from '@utils/converters/event-documents';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { of } from 'rxjs';
 import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class EventsEffects {
@@ -59,6 +60,8 @@ export class EventsEffects {
         .httpsCallable('respondToEvent')({ id: action.payload.id, amount: action.payload.amount })
         .pipe(
           map(() => new RespondToEventSuccess()),
+          // report to analytics
+          tap(() => this.analytics.logEvent('respond_to_event', { event_category: 'engagement' })),
           catchError((error) => of(new RespondToEventFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
@@ -69,6 +72,7 @@ export class EventsEffects {
     private store: Store<State>,
     private firestore: AngularFirestore,
     private fns: AngularFireFunctions,
+    private analytics: AngularFireAnalytics,
     private subs: SubscriptionService
   ) {}
 }

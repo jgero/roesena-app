@@ -17,6 +17,7 @@ import 'firebase/firestore';
 import { toStorableArticle } from '@utils/converters/article-documents';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class EditorEffects {
@@ -29,6 +30,8 @@ export class EditorEffects {
       ).pipe(
         map(() => new UpdateArticleSuccess()),
         tap(() => this.snackbar.open('Gespeichert')),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_article', { event_category: 'engagement' })),
         catchError((error) => of(new UpdateArticleFailure({ error })))
       )
     )
@@ -42,6 +45,8 @@ export class EditorEffects {
         tap((result) => this.router.navigate(['articles', 'edit', result.id])),
         map(() => new CreateArticleSuccess()),
         tap(() => this.snackbar.open('Gespeichert')),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_article', { event_category: 'engagement' })),
         catchError((error) => of(new CreateArticleFailure({ error })))
       )
     )
@@ -55,6 +60,8 @@ export class EditorEffects {
         tap(() => this.router.navigate(['articles', 'overview'])),
         map(() => new DeleteArticleSuccess()),
         tap(() => this.snackbar.open('Gelöscht')),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_article', { event_category: 'engagement' })),
         catchError((error) => of(new DeleteArticleFailure({ error })))
       )
     )
@@ -63,6 +70,7 @@ export class EditorEffects {
   constructor(
     private actions$: Actions<EditorActions>,
     private firestore: AngularFirestore,
+    private analytics: AngularFireAnalytics,
     private router: Router,
     private snackbar: MatSnackBar
   ) {}

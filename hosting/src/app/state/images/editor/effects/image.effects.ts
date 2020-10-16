@@ -20,6 +20,7 @@ import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/image.reducer';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class ImageEffects {
@@ -36,6 +37,8 @@ export class ImageEffects {
         tap((id) => this.router.navigate(['images', 'edit', id])),
         // endWith(new CreateImageSuccess()),
         map(() => new CreateImageSuccess()),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_image', { event_category: 'engagement' })),
         tap(() => this.snackbar.open('Gespeichert')),
         catchError((error) => of(new CreateImageFailure({ error })))
       )
@@ -57,6 +60,8 @@ export class ImageEffects {
           }
         }),
         map(() => new UpdateImageSuccess()),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_image', { event_category: 'engagement' })),
         tap(() => this.snackbar.open('Gespeichert')),
         catchError((error) => of(new UpdateImageFailure({ error })))
       )
@@ -71,6 +76,8 @@ export class ImageEffects {
       from(this.firestore.collection('images').doc(storeState.router.state.params.id).delete()).pipe(
         tap(() => this.router.navigate(['images', 'overview'])),
         map(() => new DeleteImageSuccess()),
+        // report to analytics
+        tap(() => this.analytics.logEvent('update_image', { event_category: 'engagement' })),
         tap(() => this.snackbar.open('Gelöscht')),
         catchError((error) => of(new DeleteImageFailure({ error })))
       )
@@ -80,6 +87,7 @@ export class ImageEffects {
   constructor(
     private actions$: Actions<ImageActions>,
     private firestore: AngularFirestore,
+    private analytics: AngularFireAnalytics,
     private router: Router,
     private store: Store<State>,
     private storage: AngularFireStorage,
