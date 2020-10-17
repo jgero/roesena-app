@@ -7,7 +7,6 @@ export const baseFeatureKey = 'base';
 
 interface BaseState {
   respondablesAmount: number;
-  helpArticle: AppArticle;
   startpageArticle: AppArticle;
   startpageEvent: AppEvent;
 }
@@ -18,7 +17,6 @@ export interface State extends fromRoot.State {
 
 export const initialState: BaseState = {
   respondablesAmount: 0,
-  helpArticle: null,
   startpageArticle: null,
   startpageEvent: null,
 };
@@ -30,9 +28,6 @@ export function reducer(state = initialState, action: BaseActions): BaseState {
 
     case BaseActionTypes.LoadRespondablesFailure:
       return { ...state, respondablesAmount: 0 };
-
-    case BaseActionTypes.LoadHelpArticleSuccess:
-      return { ...state, helpArticle: action.payload.article };
 
     case BaseActionTypes.LoadStartpageArticleSuccess:
       return { ...state, startpageArticle: action.payload.article };

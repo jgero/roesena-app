@@ -4,9 +4,6 @@ import { AppArticle, AppElement, AppEvent } from '@utils/interfaces';
 export enum BaseActionTypes {
   LoadRespondablesSuccess = '[Base] respondable amount loaded',
   LoadRespondablesFailure = '[Base] respondable amount loading failed',
-  LoadHelpArticle = '[Base] load help article',
-  LoadHelpArticleSuccess = '[Base] load help article success',
-  LoadHelpArticleFailed = '[Base] loading help article failed',
   LoadStartpageContent = '[Base] load startpage content',
   LoadStartpageArticleSuccess = '[Base] startpage article loaded',
   LoadStartpageArticleFailure = '[Base] startpage article loading failed',
@@ -21,20 +18,6 @@ export class LoadRespondablesSuccess implements Action {
 
 export class LoadRespondablesFailure implements Action {
   readonly type = BaseActionTypes.LoadRespondablesFailure;
-  constructor(public payload: { error: any }) {}
-}
-
-export class LoadHelpArticle implements Action {
-  readonly type = BaseActionTypes.LoadHelpArticle;
-}
-
-export class LoadHelpArticleSuccess implements Action {
-  readonly type = BaseActionTypes.LoadHelpArticleSuccess;
-  constructor(public payload: { article: AppArticle }) {}
-}
-
-export class LoadHelpArticleFailed implements Action {
-  readonly type = BaseActionTypes.LoadHelpArticleFailed;
   constructor(public payload: { error: any }) {}
 }
 
@@ -65,9 +48,6 @@ export class LoadStartpageEventFailure implements Action {
 export type BaseActions =
   | LoadRespondablesSuccess
   | LoadRespondablesFailure
-  | LoadHelpArticle
-  | LoadHelpArticleSuccess
-  | LoadHelpArticleFailed
   | LoadStartpageContent
   | LoadStartpageArticleSuccess
   | LoadStartpageArticleFailure

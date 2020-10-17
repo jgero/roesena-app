@@ -7,8 +7,6 @@ import {
   BaseActions,
   LoadRespondablesSuccess,
   LoadRespondablesFailure,
-  LoadHelpArticleSuccess,
-  LoadHelpArticleFailed,
   LoadStartpageArticleSuccess,
   LoadStartpageEventSuccess,
   LoadStartpageArticleFailure,
@@ -16,11 +14,9 @@ import {
 } from '../actions/base.actions';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/base.reducer';
-import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BrowserService } from '@services/browser.service';
 import { AngularFirestore, Query, CollectionReference } from '@angular/fire/firestore';
-import { StoreableEvent, AppPerson, AppEvent, StoreableArticle } from '@utils/interfaces';
+import { StoreableEvent, StoreableArticle } from '@utils/interfaces';
 
 import 'firebase/firestore';
 import { convertMany as convertManyEvents } from '@utils/converters/event-documents';
@@ -78,27 +74,6 @@ export class BaseEffects {
     ),
     // navigate when action is clicked
     tap(() => this.router.navigate(['auth', 'my-events']))
-  );
-
-  @Effect()
-  loadHelp$ = this.actions$.pipe(
-    ofType(BaseActionTypes.LoadHelpArticle),
-    withLatestFrom(this.store),
-    switchMap(([action, storeState]) => {
-      if (storeState.base.helpArticle === null) {
-        return this.firestore
-          .collection<StoreableArticle>('articles', (qFn) => qFn.where('tags.Hilfe', '==', true).limit(1))
-          .snapshotChanges()
-          .pipe(
-            takeUntil(this.subs.unsubscribe$),
-            map(convertManyArticles),
-            map((articles) => new LoadHelpArticleSuccess({ article: articles[0] })),
-            catchError((error) => of(new LoadHelpArticleFailed({ error })))
-          );
-      } else {
-        return of(new LoadHelpArticleSuccess({ article: storeState.base.helpArticle }));
-      }
-    })
   );
 
   @Effect()
