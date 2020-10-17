@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [DetailsComponent],
@@ -27,6 +29,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ConvertersModule,
     HeadingsModule,
     MatIconModule,
+    MatTableModule,
+    MatSortModule,
     MatButtonModule,
     MatTooltipModule,
   ],
