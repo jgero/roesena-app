@@ -1,14 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SubscriptionService } from '@services/subscription.service';
 import { Store } from '@ngrx/store';
 import { State } from '@state/events/reducers/event.reducer';
 import { LoadEvent, MarkEventAsSeen } from '@state/events/actions/event.actions';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
-import { AppEvent } from '@utils/interfaces';
+import { AppEvent, Participant } from '@utils/interfaces';
 import { Title } from '@angular/platform-browser';
 import { canEdit, canReply } from '@state/events/selectors/event.selectors';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-details',
@@ -16,10 +18,28 @@ import { canEdit, canReply } from '@state/events/selectors/event.selectors';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnDestroy, OnInit {
+  displayedColumns = ['name', 'amount'];
   canEdit$ = this.store.select(canEdit);
   canReply$: Observable<boolean> = this.store.select(canReply);
   isLoading$ = this.store.select('events', 'isLoading');
-  data$ = this.store.select('events', 'event');
+
+  @ViewChild(MatSort, { static: false }) set content(sort: MatSort) {
+    if (this.dataSource) this.dataSource.sort = sort;
+    this.sort = sort;
+  }
+  sort: MatSort;
+  dataSource: MatTableDataSource<Participant>;
+  data$ = this.store.select('events', 'event').pipe(
+    tap((el) => {
+      if (!el) {
+        return;
+      }
+      this.dataSource = new MatTableDataSource(el.participants);
+      if (this.sort) {
+        this.dataSource.sort = this.sort;
+      }
+    })
+  );
   amountAccumulated$ = this.data$.pipe(
     map((event) => {
       let amount = 0;
@@ -30,30 +50,6 @@ export class DetailsComponent implements OnDestroy, OnInit {
         amount += part.amount;
       });
       return amount;
-    })
-  );
-  pendingPercent$ = this.data$.pipe(
-    map((event) => {
-      let pending = 0;
-      event.participants.forEach((part) => {
-        if (part.amount >= 0) {
-          return;
-        }
-        pending++;
-      });
-      return Math.floor((pending / event.participants.length) * 100);
-    })
-  );
-  pendingAmount$ = this.data$.pipe(
-    map((event) => {
-      let counter = 0;
-      event.participants.forEach((part) => {
-        if (part.amount >= 0) {
-          return;
-        }
-        counter++;
-      });
-      return counter;
     })
   );
 

@@ -6,6 +6,29 @@
       padding: 0 16px;
     }
 
+    .table-container {
+      margin: 16px 0;
+      max-height: 60vh;
+      overflow: auto;
+
+      table {
+        width: 100%;
+        box-sizing: border-box;
+
+        tr.declined {
+          background-color: rgba($warn, 0.2);
+        }
+
+        tr.pending {
+          background-color: rgba($accent, 0.2);
+        }
+
+        tr.mat-footer-row {
+          font-weight: bold;
+        }
+      }
+    }
+
     .mat-list-item {
       height: min-content;
       margin-bottom: 1em;
@@ -29,7 +52,7 @@
 
 .fab-container {
   position: sticky;
-  z-index: 1;
+  z-index: 100;
   bottom: 16px;
   display: flex;
   justify-content: flex-end;
