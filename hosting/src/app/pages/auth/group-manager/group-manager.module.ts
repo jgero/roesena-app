@@ -20,6 +20,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
 import { PersonTileComponent } from './person-tile/person-tile.component';
+import { HeadingsModule } from '@shared/headings/headings.module';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [GroupManagerComponent, PersonTileComponent],
@@ -28,10 +30,11 @@ import { PersonTileComponent } from './person-tile/person-tile.component';
     FormsModule,
     ReactiveFormsModule,
     GroupManagerRoutingModule,
+    HeadingsModule,
     MatToolbarModule,
     MatInputModule,
     MatIconModule,
-    MatGridListModule,
+    MatTableModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,

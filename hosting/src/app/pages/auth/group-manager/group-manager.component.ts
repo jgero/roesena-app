@@ -11,11 +11,18 @@ import { AppPerson } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/auth/group-manager/reducers/person.reducer';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadPersons, PersonActionTypes, PersonActions } from '@state/auth/group-manager/actions/person.actions';
+import {
+  LoadPersons,
+  PersonActionTypes,
+  PersonActions,
+  AddGroup,
+  RemoveGroup,
+} from '@state/auth/group-manager/actions/person.actions';
 import { ChipsInputService } from '@services/chips-input.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Title } from '@angular/platform-browser';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 interface AppPersonWithLoading extends AppPerson {
   isConfrimationLoading: boolean;
@@ -26,17 +33,24 @@ interface AppPersonWithLoading extends AppPerson {
   selector: 'app-group-manager',
   templateUrl: './group-manager.component.html',
   styleUrls: ['./group-manager.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class GroupManagerComponent implements OnInit, OnDestroy {
   length$ = this.store.select('person', 'length');
   persons$ = this.store.select('person', 'persons');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  columnsToDisplay = ['name', 'actions'];
+  expandedElement: AppPerson | null;
 
-  get cols(): number {
-    return Math.ceil(window.innerWidth / 700);
-  }
   get limit(): number {
-    return this.cols * 5;
+    return 15;
+    // return Math.ceil(window.innerHeight / 50 / 20);
   }
 
   constructor(
@@ -54,6 +68,15 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
 
   onCheckboxChange(ev: MatCheckboxChange) {
     this.store.dispatch(new LoadPersons({ limit: this.limit, onlyUnconfirmed: ev.checked }));
+  }
+
+  onAddGroup(id: string, group: string) {
+    // this.store.dispatch(new AddGroup({ id, group }));
+  }
+
+  onRemoveGroup(id: string, group: string) {
+    // this.store.dispatch(new RemoveGroup({ id, group }));
+    console.log('remove');
   }
 
   ngOnDestroy() {

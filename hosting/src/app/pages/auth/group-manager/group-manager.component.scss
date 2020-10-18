@@ -6,3 +6,43 @@
 .mat-grid-list {
   margin: 16px;
 }
+
+table {
+  width: 100%;
+
+  // the last column with the buttons
+  .mat-column-actions {
+    width: 150px;
+  }
+
+  td.mat-column-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .person-detail {
+    overflow: hidden;
+    display: flex;
+
+    .mat-chip-list {
+      margin-bottom: 16px;
+    }
+  }
+
+  //default is hiding detail row
+  tr.person-detail-row {
+    height: 0;
+  }
+  // hide border of person row because of the details below
+  .person-row td {
+    border-bottom-width: 0;
+  }
+  // row hover effect
+  tr.person-row:not(.person-expanded-row):hover {
+    background: whitesmoke;
+  }
+  // hide hover effect when expanded
+  tr.person-row:not(.person-expanded-row):active {
+    background: #efefef;
+  }
+}
