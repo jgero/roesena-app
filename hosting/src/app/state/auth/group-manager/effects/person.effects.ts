@@ -15,6 +15,8 @@ import {
   AddGroupFailure,
   RemoveGroupSuccess,
   RemoveGroupFailure,
+  ConfirmPersonSuccess,
+  ConfirmPersonFailure,
 } from '../actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
@@ -106,31 +108,36 @@ export class PersonEffects {
     )
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   confirmPerson$ = this.actions$.pipe(
     ofType(PersonActionTypes.ConfirmPerson),
     switchMap((action) =>
       this.fns
         .httpsCallable(`confirmPerson/${action.payload.id}`)({})
         .pipe(
+<<<<<<< HEAD
           // report to analytics
           tap(() => this.analytics.logEvent('confirm_person', { event_category: 'admin-action' })),
           catchError((err) => {
             console.log(err);
             return of(null);
           })
+=======
+          takeUntil(this.subs.unsubscribe$),
+          map(() => new ConfirmPersonSuccess()),
+          catchError((error) => of(new ConfirmPersonFailure({ error })))
+>>>>>>> group manager as table
         )
     )
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   deletePerson$ = this.actions$.pipe(
     ofType(PersonActionTypes.DeletePerson),
     switchMap((action) =>
       this.fns
         .httpsCallable(`deletePerson/${action.payload.id}`)({})
         .pipe(
-          map(convertMany),
           takeUntil(this.subs.unsubscribe$),
           map(() => new DeletePersonSuccess()),
           // report to analytics
@@ -140,31 +147,36 @@ export class PersonEffects {
     )
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   addGroup$ = this.actions$.pipe(
     ofType(PersonActionTypes.AddGroup),
     switchMap((action) =>
       this.fns
         .httpsCallable(`editGroups/addGroup`)({ id: action.payload.id, group: action.payload.group })
         .pipe(
+<<<<<<< HEAD
           map(convertMany),
           takeUntil(this.subs.unsubscribe$),
           // report to analytics
           tap(() => this.analytics.logEvent('edit_group', { event_category: 'admin-action' })),
           map(() => new AddGroupSuccess()),
           catchError((error) => of(new AddGroupFailure({ error: new CloudFunctionCallError(error.error) })))
+=======
+          map(() => new AddGroupSuccess()),
+          takeUntil(this.subs.unsubscribe$),
+          catchError((error) => of(new AddGroupFailure({ error })))
+>>>>>>> group manager as table
         )
     )
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   removeGroup$ = this.actions$.pipe(
     ofType(PersonActionTypes.RemoveGroup),
     switchMap((action) =>
       this.fns
         .httpsCallable(`editGroups/removeGroup`)({ id: action.payload.id, group: action.payload.group })
         .pipe(
-          map(convertMany),
           takeUntil(this.subs.unsubscribe$),
           // report to analytics
           tap(() => this.analytics.logEvent('edit_group', { event_category: 'admin-action' })),

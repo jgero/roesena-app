@@ -1,7 +1,6 @@
 import { PersonActions, PersonActionTypes } from '../actions/person.actions';
 import { AppPerson } from '@utils/interfaces';
 import * as fromRoot from '@state/state.module';
-import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 
 export const personFeatureKey = 'person';
 
@@ -11,6 +10,7 @@ interface PerosonState {
   limit: number;
   pageFirst: AppPerson;
   pageLast: AppPerson;
+  loadingAction: boolean;
 }
 
 export interface State extends fromRoot.State {
@@ -23,6 +23,7 @@ export const initialState: PerosonState = {
   limit: 3,
   pageFirst: null,
   pageLast: null,
+  loadingAction: false,
 };
 
 export function reducer(state = initialState, action: PersonActions): PerosonState {
@@ -38,14 +39,24 @@ export function reducer(state = initialState, action: PersonActions): PerosonSta
         pageLast: action.payload.persons[action.payload.persons.length - 1] || null,
       };
 
-    case PersonActionTypes.LoadPersonsFailure:
-      return state;
-
     case PersonActionTypes.LoadPersonLengthSuccess:
       return { ...state, length: action.payload.length };
 
-    case PersonActionTypes.LoadPersonLengthFailure:
-      return state;
+    case PersonActionTypes.ConfirmPerson:
+    case PersonActionTypes.DeletePerson:
+    case PersonActionTypes.AddGroup:
+    case PersonActionTypes.RemoveGroup:
+      return { ...state, loadingAction: true };
+
+    case PersonActionTypes.ConfirmPersonSuccess:
+    case PersonActionTypes.DeletePersonSuccess:
+    case PersonActionTypes.AddGroupSuccess:
+    case PersonActionTypes.RemoveGroupSuccess:
+    case PersonActionTypes.ConfirmPersonFailure:
+    case PersonActionTypes.DeletePersonFailure:
+    case PersonActionTypes.AddGroupFailure:
+    case PersonActionTypes.RemoveGroupFailure:
+      return { ...state, loadingAction: false };
 
     default:
       return state;

@@ -11,30 +11,32 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
-import { PersonTileComponent } from './person-tile/person-tile.component';
 import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatTableModule } from '@angular/material/table';
+import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
+import { DeleteConfirmModule } from '@shared/delete-confirm/delete-confirm.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [GroupManagerComponent, PersonTileComponent],
+  declarations: [GroupManagerComponent, AddGroupDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     GroupManagerRoutingModule,
     HeadingsModule,
+    DeleteConfirmModule,
     MatToolbarModule,
     MatInputModule,
     MatIconModule,
     MatTableModule,
+    MatDialogModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
