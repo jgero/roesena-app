@@ -1,33 +1,18 @@
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnDestroy, ElementRef, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-
-import { PageEvent } from '@angular/material/paginator';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 import { AppPerson } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/auth/group-manager/reducers/person.reducer';
 import { SubscriptionService } from '@services/subscription.service';
-import {
-  LoadPersons,
-  PersonActionTypes,
-  PersonActions,
-  AddGroup,
-  RemoveGroup,
-} from '@state/auth/group-manager/actions/person.actions';
+import { AddGroup, DeletePerson, LoadPersons, RemoveGroup } from '@state/auth/group-manager/actions/person.actions';
 import { ChipsInputService } from '@services/chips-input.service';
-import { Actions, ofType } from '@ngrx/effects';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Title } from '@angular/platform-browser';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-
-interface AppPersonWithLoading extends AppPerson {
-  isConfrimationLoading: boolean;
-  isDeletionLoading: boolean;
-}
+import { MatDialog } from '@angular/material/dialog';
+import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
+import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
 
 @Component({
   selector: 'app-group-manager',
@@ -44,19 +29,20 @@ interface AppPersonWithLoading extends AppPerson {
 export class GroupManagerComponent implements OnInit, OnDestroy {
   length$ = this.store.select('person', 'length');
   persons$ = this.store.select('person', 'persons');
+  isLoading$ = this.store.select('person', 'loadingAction');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   columnsToDisplay = ['name', 'actions'];
   expandedElement: AppPerson | null;
 
   get limit(): number {
-    return 15;
-    // return Math.ceil(window.innerHeight / 50 / 20);
+    return Math.ceil(window.innerHeight / 2 / 20);
   }
 
   constructor(
     private store: Store<State>,
     private subs: SubscriptionService,
     public chips: ChipsInputService,
+    private dialog: MatDialog,
     titleService: Title
   ) {
     titleService.setTitle('RöSeNa - Gruppenmanager');
@@ -70,13 +56,24 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new LoadPersons({ limit: this.limit, onlyUnconfirmed: ev.checked }));
   }
 
-  onAddGroup(id: string, group: string) {
-    // this.store.dispatch(new AddGroup({ id, group }));
+  onAddGroup(id: string) {
+    const dialogRef = this.dialog.open(AddGroupDialogComponent);
+    dialogRef.afterClosed().subscribe((group) => {
+      this.store.dispatch(new AddGroup({ id, group }));
+    });
   }
 
   onRemoveGroup(id: string, group: string) {
-    // this.store.dispatch(new RemoveGroup({ id, group }));
-    console.log('remove');
+    this.store.dispatch(new RemoveGroup({ id, group }));
+  }
+
+  onDeleteUser(id: string) {
+    const dialogRef = this.dialog.open(DeleteConfirmPopupComponent, { data: { title: 'Person' } });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result === true) {
+        this.store.dispatch(new DeletePerson({ id }));
+      }
+    });
   }
 
   ngOnDestroy() {
