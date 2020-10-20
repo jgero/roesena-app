@@ -4,13 +4,13 @@ import { AngularFireFunctions } from '@angular/fire/functions';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatDrawer } from '@angular/material/sidenav';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router, RouterEvent, RouterOutlet } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { ROUTER_REQUEST } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { pageTransition } from '@utils/animations/page-transition';
 import { Observable, Subject } from 'rxjs';
-import { map, tap, shareReplay, takeUntil } from 'rxjs/operators';
+import { map, tap, shareReplay, takeUntil, filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { State } from '@state/basePages/reducers/base.reducer';
 
@@ -35,13 +35,17 @@ export class AppComponent implements OnDestroy {
   @ViewChild('drawer')
   private sidenav: MatDrawer;
 
+  // store for page scroll restoration workaround in mobile mode
+  scrollTopPositions: { [url: string]: number } = {};
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<State>,
     updates$: Actions,
     matIconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    fns: AngularFireFunctions
+    fns: AngularFireFunctions,
+    router: Router
   ) {
     matIconRegistry.addSvgIcon('rsn', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-inverted.svg'));
     this.version = environment.buildVersion;
@@ -58,6 +62,25 @@ export class AppComponent implements OnDestroy {
     if (environment.useEmulator) {
       fns.useFunctionsEmulator('http://localhost:5001');
     }
+
+    // workaround for scroll restoration in mobile mode with mat-nav
+    router.events.pipe(filter((e: RouterEvent) => e instanceof NavigationStart || e instanceof NavigationEnd)).subscribe({
+      next: (e: RouterEvent) => {
+        const scrollContainer = document.getElementById('scrollableContent');
+        // if in desktop mode this is null and no workaround is needed
+        if (!scrollContainer) {
+          return;
+        }
+        if (e instanceof NavigationStart) {
+          this.scrollTopPositions[router.url] = scrollContainer.scrollTop;
+        } else if (e instanceof NavigationEnd) {
+          const newUrl = router.url;
+          setTimeout(() => {
+            scrollContainer.scrollTop = this.scrollTopPositions[newUrl];
+          }, 0);
+        }
+      },
+    });
   }
 
   prepareRoute(outlet: RouterOutlet) {
