@@ -28,6 +28,7 @@ import { PageActions, PageActionTypes } from '@state/pagination/actions/page.act
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PersonEffects {
@@ -117,9 +118,10 @@ export class PersonEffects {
         .pipe(
           // report to analytics
           tap(() => this.analytics.logEvent('confirm_person', { event_category: 'admin-action' })),
+          tap(() => this.snackbar.open('Person bestätigt')),
           takeUntil(this.subs.unsubscribe$),
           map(() => new ConfirmPersonSuccess()),
-          catchError((error) => of(new ConfirmPersonFailure({ error })))
+          catchError((error) => of(new ConfirmPersonFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
   );
@@ -135,6 +137,7 @@ export class PersonEffects {
           map(() => new DeletePersonSuccess()),
           // report to analytics
           tap(() => this.analytics.logEvent('delete_person', { event_category: 'admin-action' })),
+          tap(() => this.snackbar.open('Person gelöscht')),
           catchError((error) => of(new DeletePersonFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
@@ -147,11 +150,11 @@ export class PersonEffects {
       this.fns
         .httpsCallable(`editGroups/addGroup`)({ id: action.payload.id, group: action.payload.group })
         .pipe(
-          map(convertMany),
+          map(() => new AddGroupSuccess()),
           takeUntil(this.subs.unsubscribe$),
           // report to analytics
           tap(() => this.analytics.logEvent('edit_group', { event_category: 'admin-action' })),
-          map(() => new AddGroupSuccess()),
+          tap(() => this.snackbar.open('Gruppe hinzugefügt')),
           takeUntil(this.subs.unsubscribe$),
           catchError((error) => of(new AddGroupFailure({ error: new CloudFunctionCallError(error.error) })))
         )
@@ -165,9 +168,11 @@ export class PersonEffects {
       this.fns
         .httpsCallable(`editGroups/removeGroup`)({ id: action.payload.id, group: action.payload.group })
         .pipe(
+          map(() => new RemoveGroupSuccess()),
           takeUntil(this.subs.unsubscribe$),
           // report to analytics
           tap(() => this.analytics.logEvent('edit_group', { event_category: 'admin-action' })),
+          tap(() => this.snackbar.open('Gruppe gelöscht')),
           catchError((error) => of(new RemoveGroupFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
@@ -176,6 +181,7 @@ export class PersonEffects {
   constructor(
     private actions$: Actions<PersonActions | PageActions>,
     private subs: SubscriptionService,
+    private snackbar: MatSnackBar,
     private firestore: AngularFirestore,
     private fns: AngularFireFunctions,
     private analytics: AngularFireAnalytics,
