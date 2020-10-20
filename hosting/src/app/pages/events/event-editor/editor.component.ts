@@ -159,6 +159,7 @@ export class EditorComponent implements OnDestroy {
         // add the person if it is not already a participant
         if (!(formEl.value as Participant[]).find((el) => el.id === id)) {
           formEl.setValue([...formEl.value, { name, amount: -1, id, hasUnseenChanges: true }]);
+          formEl.markAsDirty();
         }
       });
   }
@@ -173,6 +174,7 @@ export class EditorComponent implements OnDestroy {
         if ((formEl.value as Participant[]).find((el) => el.id === person.id)) {
           // keep all persons, which do not have the id of the person that should be removed
           formEl.setValue([...(formEl.value as Participant[]).filter((el) => el.id !== person.id)]);
+          formEl.markAsDirty();
         }
       });
   }
@@ -273,11 +275,13 @@ export class EditorComponent implements OnDestroy {
     const { id, name } = person;
     const formEl = this.participantsFormGroup.get('participants');
     formEl.setValue([...(formEl.value as Participant[]), { id, amount: -1, name, hasUnseenChanges: true }]);
+    formEl.markAsDirty();
   }
 
   removePerson(person: Participant) {
     const formEl = this.participantsFormGroup.get('participants');
     formEl.setValue([...(formEl.value as Participant[]).filter((el) => el.id !== person.id)]);
+    formEl.markAsDirty();
   }
 
   ngOnDestroy() {
