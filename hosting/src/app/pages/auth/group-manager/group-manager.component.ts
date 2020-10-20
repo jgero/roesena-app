@@ -35,7 +35,7 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
   expandedElement: AppPerson | null;
 
   get limit(): number {
-    return Math.ceil(window.innerHeight / 2 / 20);
+    return Math.floor(window.innerHeight / 2 / 40);
   }
 
   constructor(
@@ -59,7 +59,9 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
   onAddGroup(id: string) {
     const dialogRef = this.dialog.open(AddGroupDialogComponent);
     dialogRef.afterClosed().subscribe((group) => {
-      this.store.dispatch(new AddGroup({ id, group }));
+      if (group && group !== '') {
+        this.store.dispatch(new AddGroup({ id, group }));
+      }
     });
   }
 

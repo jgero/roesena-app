@@ -115,18 +115,11 @@ export class PersonEffects {
       this.fns
         .httpsCallable(`confirmPerson/${action.payload.id}`)({})
         .pipe(
-<<<<<<< HEAD
           // report to analytics
           tap(() => this.analytics.logEvent('confirm_person', { event_category: 'admin-action' })),
-          catchError((err) => {
-            console.log(err);
-            return of(null);
-          })
-=======
           takeUntil(this.subs.unsubscribe$),
           map(() => new ConfirmPersonSuccess()),
           catchError((error) => of(new ConfirmPersonFailure({ error })))
->>>>>>> group manager as table
         )
     )
   );
@@ -154,18 +147,13 @@ export class PersonEffects {
       this.fns
         .httpsCallable(`editGroups/addGroup`)({ id: action.payload.id, group: action.payload.group })
         .pipe(
-<<<<<<< HEAD
           map(convertMany),
           takeUntil(this.subs.unsubscribe$),
           // report to analytics
           tap(() => this.analytics.logEvent('edit_group', { event_category: 'admin-action' })),
           map(() => new AddGroupSuccess()),
-          catchError((error) => of(new AddGroupFailure({ error: new CloudFunctionCallError(error.error) })))
-=======
-          map(() => new AddGroupSuccess()),
           takeUntil(this.subs.unsubscribe$),
-          catchError((error) => of(new AddGroupFailure({ error })))
->>>>>>> group manager as table
+          catchError((error) => of(new AddGroupFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
   );
