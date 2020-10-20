@@ -30,6 +30,7 @@
 .outletContainer {
   width: min(1000px, 100%);
   flex: 1;
+  min-height: 70vh;
 }
 
 .mat-drawer-container {
