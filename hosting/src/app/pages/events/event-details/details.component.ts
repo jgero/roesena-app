@@ -24,7 +24,9 @@ export class DetailsComponent implements OnDestroy, OnInit {
   isLoading$ = this.store.select('events', 'isLoading');
 
   @ViewChild(MatSort, { static: false }) set content(sort: MatSort) {
-    if (this.dataSource) this.dataSource.sort = sort;
+    if (this.dataSource) {
+      this.dataSource.sort = sort;
+    }
     this.sort = sort;
   }
   sort: MatSort;
