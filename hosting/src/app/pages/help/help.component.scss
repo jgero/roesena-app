@@ -15,6 +15,21 @@ main {
     'account-num account-content .'
     'search-num search-content .';
   column-gap: 2rem;
+
+  @media screen and (max-width: 600px) {
+    margin: 0 16px;
+    grid-template-columns: 32px auto;
+    grid-template-areas:
+      'general general'
+      'startpage-num startpage-content'
+      'events-num events-content'
+      'articles-num articles-content'
+      'images-num images-content'
+      'calendar-num calendar-content'
+      'groups-num groups-content'
+      'account-num account-content'
+      'search-num search-content';
+  }
 }
 
 aside {
@@ -23,6 +38,10 @@ aside {
   border-radius: 8px;
   max-width: 500px;
   grid-area: general;
+
+  @media screen and (max-width: 600px) {
+    margin-bottom: 16px;
+  }
 }
 
 div.num {
