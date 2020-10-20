@@ -7,10 +7,9 @@
     <br />
     <br />
     Hier auf dieser Webseite sind
-    <a fragment="Bilder" (click)="navigateToSection('Bilder')">Bilder</a>,
-    <a fragment="Artikel" (click)="navigateToSection('Artikel')">Artikel</a> und
-    <a fragment="Events" (click)="navigateToSection('Events')">Events</a> zu finden, an denen die RöSeNa als Veranstalter oder
-    auch Gast beteiligt war oder sein wird. Diese Inhalte werden von Mitgliedern der RöSeNa verfasst und aktuell gehalten.
+    <a fragment="Bilder" routerLink="/help">Bilder</a>, <a fragment="Artikel" routerLink="/help">Artikel</a> und
+    <a fragment="Events" routerLink="/help">Events</a> zu finden, an denen die RöSeNa als Veranstalter oder auch Gast beteiligt
+    war oder sein wird. Diese Inhalte werden von Mitgliedern der RöSeNa verfasst und aktuell gehalten.
   </aside>
 
   <div class="num" [style.grid-area]="'startpage-num'">
@@ -55,8 +54,8 @@
       >
     </div>
     Artikel, Berichte und Infos sind auf dieser Seite zu sehen. Ähnlich wie auch schon bei der Übersicht für die
-    <a fragment="Events" (click)="navigateToSection('Events')">Events</a> können über die "MEHR" Knöpfe Detailansichten zu den
-    einzelnen Artikeln geöffnet werden. <br />
+    <a fragment="Events" routerLink="/help">Events</a> können über die "MEHR" Knöpfe Detailansichten zu den einzelnen Artikeln
+    geöffnet werden. <br />
     Um auch ältere Artikel zu finden kann nach unten gescrollt werden. Dort sind Knöpfe zum Blättern zwischen verschiedenen Seiten
     angebracht. Die Artikel sind nach dem Erstelldatum sortiert, das bedeutet je weiter nach unten gescrollt und je höher die
     Seitenzahl wird, desto älter sind die Artikel.
@@ -72,7 +71,7 @@
       Bilder<a mat-icon-button href="/images/overview" color="primary" aria-label="Bilder Übersicht"><mat-icon>link</mat-icon></a>
     </div>
     Die übersicht der Bilder ist nach dem selben System wie die der
-    <a fragment="Artikel" (click)="navigateToSection('Artikel')">Artikel</a> aufgebaut.
+    <a fragment="Artikel" routerLink="/help">Artikel</a> aufgebaut.
   </section>
 
   <div class="num" [style.grid-area]="'calendar-num'">

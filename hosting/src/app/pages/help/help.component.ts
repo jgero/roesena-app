@@ -7,20 +7,9 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './help.component.html',
   styleUrls: ['./help.component.scss'],
 })
-export class HelpComponent implements OnDestroy, OnInit {
+export class HelpComponent implements OnDestroy {
   constructor(private subs: SubscriptionService, titleService: Title) {
     titleService.setTitle('RöSeNa - Hilfe');
-  }
-
-  ngOnInit() {
-    if (window.location.hash) {
-      this.navigateToSection(window.location.hash);
-    }
-  }
-
-  navigateToSection(section: string) {
-    window.location.hash = '';
-    window.location.hash = section;
   }
 
   ngOnDestroy() {
