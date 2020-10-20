@@ -15,10 +15,15 @@ table {
     width: 150px;
   }
 
-  td.mat-column-actions {
+  td.mat-column-actions,
+  th.mat-column-actions > div {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    .mat-checkbox {
+      margin-inline-end: 12px;
+    }
   }
 
   .person-detail {

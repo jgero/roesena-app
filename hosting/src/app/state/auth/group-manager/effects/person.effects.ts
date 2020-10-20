@@ -26,6 +26,7 @@ import { Store } from '@ngrx/store';
 import { State } from '../reducers/person.reducer';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PersonEffects {
@@ -115,6 +116,7 @@ export class PersonEffects {
         .pipe(
           takeUntil(this.subs.unsubscribe$),
           map(() => new ConfirmPersonSuccess()),
+          tap(() => this.snackbar.open('Person bestätigt')),
           catchError((error) => of(new ConfirmPersonFailure({ error })))
         )
     )
@@ -129,6 +131,7 @@ export class PersonEffects {
         .pipe(
           takeUntil(this.subs.unsubscribe$),
           map(() => new DeletePersonSuccess()),
+          tap(() => this.snackbar.open('Person gelöscht')),
           catchError((error) => of(new DeletePersonFailure({ error })))
         )
     )
@@ -143,6 +146,7 @@ export class PersonEffects {
         .pipe(
           map(() => new AddGroupSuccess()),
           takeUntil(this.subs.unsubscribe$),
+          tap(() => this.snackbar.open('Gruppe hinzugefügt')),
           catchError((error) => of(new AddGroupFailure({ error })))
         )
     )
@@ -157,6 +161,7 @@ export class PersonEffects {
         .pipe(
           takeUntil(this.subs.unsubscribe$),
           map(() => new RemoveGroupSuccess()),
+          tap(() => this.snackbar.open('Gruppe gelöscht')),
           catchError((error) => of(new RemoveGroupFailure({ error })))
         )
     )
@@ -165,6 +170,7 @@ export class PersonEffects {
   constructor(
     private actions$: Actions<PersonActions | PageActions>,
     private subs: SubscriptionService,
+    private snackbar: MatSnackBar,
     private firestore: AngularFirestore,
     private fns: AngularFireFunctions,
     private store: Store<State>
