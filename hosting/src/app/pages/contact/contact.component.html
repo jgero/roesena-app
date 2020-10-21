@@ -1,0 +1,38 @@
+<app-page-header [title]="'Kontakt'" [matIcon]="'contact_page'"></app-page-header>
+
+<form [formGroup]="contactForm" (ngSubmit)="onSend()">
+  <p>Betreff</p>
+  <mat-radio-group formControlName="subject">
+    <mat-radio-button value="Problem mit der Webseite">Problem an der Webseite melden</mat-radio-button>
+    <mat-radio-button value="Narrenstall-Anfrage">Narrenstall anfragen</mat-radio-button>
+    <mat-radio-button value="sonstiges">Sonstiges</mat-radio-button>
+  </mat-radio-group>
+
+  <div
+    class="optional"
+    [@checkboxExpand]="contactForm.get('subject').value === 'Problem mit der Webseite' ? 'expanded' : 'collapsed'"
+  >
+    <p>Problem-Details</p>
+    <div class="checkbox-container">
+      <mat-checkbox *ngFor="let box of problemCheckboxes" [(ngModel)]="box.checked" [ngModelOptions]="{ standalone: true }">
+        {{ box.text }}
+      </mat-checkbox>
+    </div>
+  </div>
+
+  <mat-form-field>
+    <mat-label>Meine E-Mail Adresse</mat-label>
+    <input matInput formControlName="email" type="text" matTooltip="Damit wir Ihnen antworten können" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Inhalt</mat-label>
+    <textarea matInput formControlName="comment" rows="5"></textarea>
+  </mat-form-field>
+
+  <mat-progress-spinner mode="indeterminate" diameter="32" *ngIf="isLoading$ | async; else sendButton"></mat-progress-spinner>
+
+  <ng-template #sendButton>
+    <button mat-flat-button color="primary" [disabled]="contactForm.invalid">SENDEN</button>
+  </ng-template>
+</form>

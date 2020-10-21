@@ -27,3 +27,6 @@ testem.log
 
 # admin sdk key to connect emulators to auth api
 /key.json
+
+# emulator runtime config
+.runtimeconfig.json

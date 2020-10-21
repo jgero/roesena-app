@@ -68,6 +68,11 @@ export const routes: Routes = [
         data: { animation: 'error' },
       },
       {
+        path: 'contact',
+        loadChildren: () => import('@pages/contact/contact.module').then((m) => m.ContactModule),
+        data: { animation: 'contact' },
+      },
+      {
         path: '**',
         redirectTo: 'error',
       },

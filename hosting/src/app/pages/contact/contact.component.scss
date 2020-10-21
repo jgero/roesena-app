@@ -1,0 +1,36 @@
+:host {
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mat-radio-group,
+  .checkbox-container {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+    margin-left: 16px;
+
+    .mat-radio-button {
+      margin: 4px 0;
+    }
+  }
+
+  .mat-form-field {
+    max-width: 400px;
+  }
+
+  .optional {
+    overflow: hidden;
+  }
+
+  .mat-flat-button {
+    width: min-content;
+  }
+
+  p {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+}

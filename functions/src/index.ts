@@ -16,3 +16,4 @@ export * from './rest-endpoints/confirm-person';
 export * from './rest-endpoints/delete-person';
 export * from './rest-endpoints/update-person-name';
 export * from './rest-endpoints/edit-groups';
+export * from './rest-endpoints/send-contact-mail';
