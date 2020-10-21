@@ -9,4 +9,8 @@ export class BrowserService {
   reload() {
     location.reload();
   }
+
+  scrollToTop() {
+    window.scrollTo(0, 0);
+  }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { BrowserService } from '@services/browser.service';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { CookieManagerComponent } from './cookie-manager/cookie-manager.component';
@@ -13,7 +14,12 @@ import { CookieManagerComponent } from './cookie-manager/cookie-manager.componen
 export class FooterComponent implements OnInit {
   versionNumber = environment.buildVersion;
 
-  constructor(private cookieSheet: MatBottomSheet, cookies: CookieService, analytics: AngularFireAnalytics) {
+  constructor(
+    private cookieSheet: MatBottomSheet,
+    cookies: CookieService,
+    analytics: AngularFireAnalytics,
+    private browserService: BrowserService
+  ) {
     // open cookie sheet when no consent cookie is set yet
     if (!cookies.check('consent')) {
       this.cookieSheet.open(CookieManagerComponent);
@@ -26,6 +32,10 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  scrollToTop() {
+    this.browserService.scrollToTop();
+  }
 
   openCookieSettings() {
     this.cookieSheet.open(CookieManagerComponent);
