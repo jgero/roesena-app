@@ -95,8 +95,8 @@
 
 <!-- reusable router outlet with page transitions -->
 <ng-template #animatedOutlet>
-  <div class="outletContainer" [@pageTransition]="prepareRoute(outlet)">
-    <router-outlet #outlet="outlet"></router-outlet>
+  <div class="outletContainer">
+    <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>
 </ng-template>

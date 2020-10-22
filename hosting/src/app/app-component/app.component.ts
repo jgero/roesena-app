@@ -83,10 +83,6 @@ export class AppComponent implements OnDestroy {
     });
   }
 
-  prepareRoute(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
-  }
-
   closeNav() {
     // only close sidenav if its in mobile mode
     if (this.brakpointMatches) {

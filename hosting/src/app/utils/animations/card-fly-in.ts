@@ -5,7 +5,7 @@ export const cardFlyIn = trigger('cardFlyIn', [
     query(
       ':enter',
       [
-        style({ transform: 'translateY(-100%)', opacity: 0 }),
+        style({ transform: 'translateY(-50%)', opacity: 0 }),
         stagger(90, [animate('0.2s ease-out', style({ transform: 'translateY(0)', opacity: 1 }))]),
       ],
       { optional: true }
