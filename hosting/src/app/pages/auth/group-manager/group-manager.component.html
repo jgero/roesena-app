@@ -15,7 +15,7 @@
       </th>
       <td mat-cell *matCellDef="let element">
         <ng-container *ngIf="(isLoading$ | async) === false; else loadingSpinner">
-          <button mat-icon-button *ngIf="!element.isConfirmedMember"><mat-icon>check</mat-icon></button>
+          <button mat-icon-button *ngIf="!element.isConfirmedMember" (click)="onConfirmPerson(element.id)"><mat-icon>check</mat-icon></button>
           <!-- open popup here and then add group -->
           <button mat-icon-button (click)="onAddGroup(element.id)"><mat-icon>group_add</mat-icon></button>
           <!-- open popup here and ask for confirmation-->

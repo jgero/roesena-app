@@ -5,7 +5,13 @@ import { AppPerson } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/auth/group-manager/reducers/person.reducer';
 import { SubscriptionService } from '@services/subscription.service';
-import { AddGroup, DeletePerson, LoadPersons, RemoveGroup } from '@state/auth/group-manager/actions/person.actions';
+import {
+  AddGroup,
+  DeletePerson,
+  LoadPersons,
+  RemoveGroup,
+  ConfirmPerson,
+} from '@state/auth/group-manager/actions/person.actions';
 import { ChipsInputService } from '@services/chips-input.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Title } from '@angular/platform-browser';
@@ -67,6 +73,10 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
 
   onRemoveGroup(id: string, group: string) {
     this.store.dispatch(new RemoveGroup({ id, group }));
+  }
+
+  onConfirmPerson(id: string) {
+    this.store.dispatch(new ConfirmPerson({ id }));
   }
 
   onDeleteUser(id: string) {
