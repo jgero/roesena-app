@@ -30,7 +30,7 @@ export class ContactComponent implements OnInit {
     { text: 'Mein Account wird nicht freigeschaltet', checked: false },
     { text: 'Rückmeldung funktioniert nicht', checked: false },
     { text: 'Layout sieht verschoben aus', checked: false },
-    { text: 'Text ragt über Container heraus oder ist abgeschnitten', checked: false },
+    { text: 'Text ist abgeschnitten', checked: false },
     { text: 'tritt auf einem Mobilgerät auf', checked: false },
     { text: 'tritt am PC auf', checked: false },
   ];
