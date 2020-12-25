@@ -22,7 +22,7 @@ export class ContactComponent implements OnInit {
   contactForm = new FormGroup({
     subject: new FormControl('sonstiges', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    comment: new FormControl('', [Validators.required, Validators.maxLength(1000), Validators.minLength(10)]),
+    comment: new FormControl('', [Validators.required, Validators.maxLength(1000), Validators.minLength(1), Validators.pattern('^[a-zA-Z@äöüÄÖÜ .-]+$')]),
   });
 
   problemCheckboxes = [
