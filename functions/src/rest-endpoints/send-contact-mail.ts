@@ -3,6 +3,8 @@ import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import * as functions from 'firebase-functions';
 import { createTransport } from 'nodemailer';
+const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
+const client = new SecretManagerServiceClient();
 
 const app = express();
 // allow cross-origin requests (currently only needed for testing in emulator)
@@ -17,11 +19,29 @@ app.post('/', async (req, res) => {
     return;
   }
 
+  // access the secret from google cloud
+  let responsePayloadPassword;
+  try {
+    const [accessResponsePassword] = await client.accessSecretVersion({
+      name: "projects/sechta-narren/secrets/mailpw/versions/latest",
+    });
+    if (!accessResponsePassword.payload || !accessResponsePassword.payload.data) {
+      res.status(500).send({ error: 'empty response for password secret in cloud function' });
+    return;
+    }
+    responsePayloadPassword = accessResponsePassword.payload.data.toString();
+  } catch (e) {
+    res.status(500).send({ error: 'could not access password secret in cloud function' });
+    return;
+  }
+
+  // create smtp transport
   const transporter = createTransport({
-    service: 'gmail',
+    host: "smtp.strato.de",
+    port: 465,
     auth: {
-      user: functions.config().gmail.email,
-      pass: functions.config().gmail.password,
+      user: "webmaster@roesena.de",
+      pass: responsePayloadPassword,
     },
   });
   let htmlMessage = '';
@@ -34,16 +54,16 @@ app.post('/', async (req, res) => {
   // add comment
   htmlMessage += `<p>${data.comment}</p>`;
 
-  let mailOptions = {
-    from: functions.config().gmail.email,
+  const mailOptions = {
+    from: 'webmaster@roesena.de',
     replyTo: data.replyTo,
     to: 'webmaster@roesena.de',
     cc: '',
     subject: `Kontaktformular RöSeNa-App | Betreff: ${data.subject}`,
     html: htmlMessage,
   };
+  // if the subject is not "problem with website" send the mail to info
   if (data.subject === 'sonstiges' || data.subject === 'Narrenstall-Anfrage') {
-    // change this to info@roesena.de later
     mailOptions.to = 'info@roesena.de';
     mailOptions.cc = 'webmaster@roesena.de';
   }
