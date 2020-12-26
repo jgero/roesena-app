@@ -10,5 +10,6 @@
     <p class="number">{{ code | async }}</p>
     <p>Hier scheint nichts zu sein</p>
     <button mat-button (click)="goBack()">ZURÜCK ZUR LETZTEN SEITE?</button>
+    <button mat-flat-button [color]="'warn'" routerLink="/contact">FEHLER MELDEN</button>
   </ng-container>
 </ng-container>

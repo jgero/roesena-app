@@ -20,7 +20,7 @@ import { State } from '@state/contact/reducers/contact.reducer';
 export class ContactComponent implements OnInit {
   isLoading$ = this.store.select('contact', 'isLoading');
   contactForm = new FormGroup({
-    subject: new FormControl('sonstiges', [Validators.required]),
+    subject: new FormControl('Problem mit der Webseite', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     comment: new FormControl('', [Validators.required, Validators.maxLength(1000), Validators.minLength(1), Validators.pattern('^[a-zA-Z@äöüÄÖÜ .-]+$')]),
   });
