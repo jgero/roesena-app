@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -68,7 +68,7 @@ export class GlobalEffects {
       } else if (action.payload.error.name === 'CloudFunctionCallError') {
         this.analytics.logEvent('exception', { fatal: true, description: action.payload.error.message });
         message =
-          'Fehler beim Aufrufen der Cloud-Function, bitte kontaktieren Sie webmaster@roesena.de falls dies reproduzierbar auftritt';
+          'Fehler beim Aufrufen der Cloud-Function, bitte melden Sie diesen Fehler wenn er reproduzierbar auftritt';
       } else if (action.payload.error.name === 'PermissionDeniedError') {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Zugriff nicht gestattet';
@@ -77,7 +77,11 @@ export class GlobalEffects {
         this.analytics.logEvent('exception', { fatal: false, description: action.payload.error.message });
         message = 'Interner Fehler, versuchen sie es später erneut';
       }
-      this.snackbar.open(message, 'OK', { duration: undefined });
+      this.zone.run(() => {
+        this.snackbar.open(message, 'Fehler melden', { duration: 5000 }).onAction().subscribe(() => {
+          this.router.navigate(['contact']);
+        });
+      });
     })
   );
 
@@ -87,6 +91,7 @@ export class GlobalEffects {
     private swUpdate: SwUpdate,
     private analytics: AngularFireAnalytics,
     private browser: BrowserService,
-    private router: Router
+    private router: Router,
+    private zone: NgZone
   ) {}
 }
