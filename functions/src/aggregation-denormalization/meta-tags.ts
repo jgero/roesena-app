@@ -1,8 +1,9 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
-export const metaTagCleaner = functions.pubsub
-  .schedule('5 2 * * *')
+export const metaTagCleaner = functions
+  .region('europe-west1')
+  .pubsub.schedule('0 2 * * *')
   .timeZone('Europe/Berlin')
   .onRun(async (_) => {
     // get existing document and delete tags that have 0 occurrences
@@ -17,5 +18,5 @@ export const metaTagCleaner = functions.pubsub
     if (tagsUpdateOp && Object.keys(tagsUpdateOp).length !== 0) {
       await admin.firestore().collection('meta').doc('tags').update(tagsUpdateOp);
     }
-    return true;
+    return null;
   });
