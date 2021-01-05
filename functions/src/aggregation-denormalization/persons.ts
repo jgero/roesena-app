@@ -37,61 +37,45 @@ export const personWriteListener = functions
         const writeOps: Promise<any>[] = [];
         // update article owner names
         writeOps.push(
-          ...(
-            await admin
-              .firestore()
-              .collection('articles')
-              // only articles where current user is owner
-              .where('ownerId', '==', uid)
-              // and only when the article was created after the cutoff date
-              .where('created', '>=', cutoffDate)
-              .get()
-          ).docs.map((personDoc) => admin.firestore().collection('articles').doc(personDoc.id).update({ ownerName: after.name }))
+          // get all articles with the right ownerId
+          ...(await admin.firestore().collection('articles').where('ownerId', '==', uid).get()).docs
+            // filter out all articles that were created after the coutoff date
+            .filter((personDoc) => new Date( personDoc.data().created.toDate() ) >= cutoffDate)
+            // update the names
+            .map((personDoc) => admin.firestore().collection('articles').doc(personDoc.id).update({ ownerName: after.name }))
         );
         // update image owner names
         writeOps.push(
-          ...(
-            await admin
-              .firestore()
-              .collection('images')
-              // only images where current user is owner
-              .where('ownerId', '==', uid)
-              // and only if image was crated after the cutoff date
-              .where('created', '>=', cutoffDate)
-              .get()
-          ).docs.map((imageDoc) => admin.firestore().collection('images').doc(imageDoc.id).update({ ownerName: after.name }))
+          // get all images with the right ownerId
+          ...(await admin.firestore().collection('images').where('ownerId', '==', uid).get()).docs
+            // filter out all images that were created after the coutoff date
+            .filter((imageDoc) => new Date(imageDoc.data().created.toDate()) >= cutoffDate)
+            // update the names
+            .map((imageDoc) => admin.firestore().collection('images').doc(imageDoc.id).update({ ownerName: after.name }))
         );
         // update event owner names
         writeOps.push(
-          ...(
-            await admin
-              .firestore()
-              .collection('events')
-              // only events where current user is owner
-              .where('ownerId', '==', uid)
-              // and only if event was after the cutoff date
-              .where('startDate', '>=', cutoffDate)
-              .get()
-          ).docs.map((eventDoc) => admin.firestore().collection('events').doc(eventDoc.id).update({ ownerName: after.name }))
+          // get all events with the right ownerId
+          ...(await admin.firestore().collection('events').where('ownerId', '==', uid).get()).docs
+            // filter out all events that end after the coutoff date
+            .filter((eventDoc) => new Date(eventDoc.data().startDate.toDate()) >= cutoffDate)
+            // update the names
+            .map((eventDoc) => admin.firestore().collection('events').doc(eventDoc.id).update({ ownerName: after.name }))
         );
         // update participant name in events
         writeOps.push(
-          ...(
-            await admin
-              .firestore()
-              .collection('events')
-              // only events where current user is participant
-              .where(`participants.${uid}.amount`, '>=', -1)
-              // and only if event was after the cutoff date
-              .where('startDate', '>=', cutoffDate)
-              .get()
-          ).docs.map((eventDoc) =>
-            admin
-              .firestore()
-              .collection('events')
-              .doc(eventDoc.id)
-              .update({ [`participants.${uid}.name`]: after.name })
-          )
+          // get all events with the right amout for the participant
+          ...(await admin.firestore().collection('events').where(`participants.${uid}.amount`, '>=', -1).get()).docs
+            // filter out all events that end after the coutoff date
+            .filter((eventDoc) => new Date(eventDoc.data().startDate.toDate()) >= cutoffDate)
+            // update the names
+            .map((eventDoc) =>
+              admin
+                .firestore()
+                .collection('events')
+                .doc(eventDoc.id)
+                .update({ [`participants.${uid}.name`]: after.name })
+            )
         );
         return Promise.all(writeOps);
       }
