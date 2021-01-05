@@ -34,6 +34,8 @@ app.post('/', async (req, res) => {
     res.status(500).send({ error: 'could not access password secret in cloud function' });
     return;
   }
+    res.status(500).send({ error: 'this is a test error' });
+    return;
 
   // create smtp transport
   const transporter = createTransport({
