@@ -32,34 +32,65 @@ export const personWriteListener = functions
       const after = change.after.data();
       const uid = context.params.personId;
       if (after && before && before.name !== after.name) {
+        // cutoff date is one year before the current date
+        const cutoffDate = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
         const writeOps: Promise<any>[] = [];
         // update article owner names
         writeOps.push(
-          ...(await admin.firestore().collection('articles').where('ownerId', '==', uid).get()).docs.map((personDoc) =>
-            admin.firestore().collection('articles').doc(personDoc.id).update({ ownerName: after.name })
-          )
+          ...(
+            await admin
+              .firestore()
+              .collection('articles')
+              // only articles where current user is owner
+              .where('ownerId', '==', uid)
+              // and only when the article was created after the cutoff date
+              .where('created', '>=', cutoffDate)
+              .get()
+          ).docs.map((personDoc) => admin.firestore().collection('articles').doc(personDoc.id).update({ ownerName: after.name }))
         );
         // update image owner names
         writeOps.push(
-          ...(await admin.firestore().collection('images').where('ownerId', '==', uid).get()).docs.map((imageDoc) =>
-            admin.firestore().collection('images').doc(imageDoc.id).update({ ownerName: after.name })
-          )
+          ...(
+            await admin
+              .firestore()
+              .collection('images')
+              // only images where current user is owner
+              .where('ownerId', '==', uid)
+              // and only if image was crated after the cutoff date
+              .where('created', '>=', cutoffDate)
+              .get()
+          ).docs.map((imageDoc) => admin.firestore().collection('images').doc(imageDoc.id).update({ ownerName: after.name }))
         );
         // update event owner names
         writeOps.push(
-          ...(await admin.firestore().collection('events').where('ownerId', '==', uid).get()).docs.map((eventDoc) =>
-            admin.firestore().collection('events').doc(eventDoc.id).update({ ownerName: after.name })
-          )
+          ...(
+            await admin
+              .firestore()
+              .collection('events')
+              // only events where current user is owner
+              .where('ownerId', '==', uid)
+              // and only if event was after the cutoff date
+              .where('startDate', '>=', cutoffDate)
+              .get()
+          ).docs.map((eventDoc) => admin.firestore().collection('events').doc(eventDoc.id).update({ ownerName: after.name }))
         );
         // update participant name in events
         writeOps.push(
-          ...(await admin.firestore().collection('events').where(`participants.${uid}.amount`, '>=', -1).get()).docs.map(
-            (eventDoc) =>
-              admin
-                .firestore()
-                .collection('events')
-                .doc(eventDoc.id)
-                .update({ [`participants.${uid}.name`]: after.name })
+          ...(
+            await admin
+              .firestore()
+              .collection('events')
+              // only events where current user is participant
+              .where(`participants.${uid}.amount`, '>=', -1)
+              // and only if event was after the cutoff date
+              .where('startDate', '>=', cutoffDate)
+              .get()
+          ).docs.map((eventDoc) =>
+            admin
+              .firestore()
+              .collection('events')
+              .doc(eventDoc.id)
+              .update({ [`participants.${uid}.name`]: after.name })
           )
         );
         return Promise.all(writeOps);
