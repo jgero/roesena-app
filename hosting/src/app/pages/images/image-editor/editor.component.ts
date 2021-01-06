@@ -121,7 +121,7 @@ export class EditorComponent implements OnDestroy {
 
   onDelete() {
     this.dialog
-      .open(DeleteConfirmPopupComponent)
+      .open(DeleteConfirmPopupComponent, { data: { title: 'Sicher?' } })
       .afterClosed()
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe((result) => {
