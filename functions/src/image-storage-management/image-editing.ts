@@ -22,8 +22,8 @@ export const cropImage = functions
 
     // Get the file name.
     const fileName: string = path.basename(filePath);
-    // Exit if the image is already a thumbnail.
-    if (fileName.endsWith('_cropped')) {
+    // Exit if the image is not in the uploads dir or already a thumbnail.
+    if (!fileName.startsWith('uploads') || fileName.endsWith('_cropped')) {
       console.log('Already cropped.');
       return false;
     }
