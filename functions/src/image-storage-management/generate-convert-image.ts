@@ -14,7 +14,7 @@ interface ConversionTarget {
   quality: number;
 }
 
-export const gerateTumbAndConvertImage = functions
+export const generateThumbAndConvertImage = functions
   .region('europe-west1')
   .storage.object()
   .onFinalize(async (object) => {
@@ -44,12 +44,12 @@ export const gerateTumbAndConvertImage = functions
 
     // set size, dir and quality for targets
     const targetSizes: ConversionTarget[] = [
-      { width: 550, height: 800, dir: 'full', quality: 80 },
+      { width: 800, height: 550, dir: 'full', quality: 80 },
       { width: 300, height: 200, dir: 'thumb', quality: 50 },
     ];
 
     const uploadPromises = targetSizes.map(async (target) => {
-      const imgName = `full@${target.width}x${target.height}_${fileName}`;
+      const imgName = `${target.dir}@${target.width}x${target.height}_${fileName}`;
       const imgPath = join(workingDir, imgName);
 
       // resize source image
@@ -64,7 +64,8 @@ export const gerateTumbAndConvertImage = functions
 
     // run the upload operations
     await Promise.all(uploadPromises);
-
+    // remove the source file from the bucket
+    await bucket.file(object.name).delete();
     // cleanup remove the tmp/images from the filesystem
     return fs.remove(workingDir);
   });

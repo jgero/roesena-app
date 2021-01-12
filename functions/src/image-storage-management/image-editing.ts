@@ -15,7 +15,7 @@ export const cropImage = functions
     const contentType = object.contentType; // File content type.
 
     // Exit if this is triggered on a file that is not an image.
-    if (!fileBucket || !filePath || !contentType || !contentType.startsWith('image/')) {
+    if (!fileBucket || !filePath || !contentType || !contentType.includes('image')) {
       console.log('This is not an image.');
       return false;
     }
@@ -23,7 +23,7 @@ export const cropImage = functions
     // Get the file name.
     const fileName: string = path.basename(filePath);
     // Exit if the image is not in the uploads dir or already a thumbnail.
-    if (!fileName.startsWith('uploads') || fileName.endsWith('_cropped')) {
+    if (path.dirname(filePath) !== 'uploads' || fileName.endsWith('_cropped')) {
       console.log('Already cropped.');
       return false;
     }
