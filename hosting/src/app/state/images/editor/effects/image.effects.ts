@@ -32,7 +32,7 @@ export class ImageEffects {
       from(this.firestore.collection('images').add(toStorableImage(action.payload.image))).pipe(
         map((doc: any) => doc.id),
         // save the image into the storage at the correct id and map the observable back to the id
-        switchMap((id) => from(this.storage.ref(`uploads/${id}`).putString(action.payload.file, 'data_url')).pipe(map(() => id))),
+        switchMap((id) => from(this.storage.ref(`tmp/${id}`).putString(action.payload.file, 'data_url')).pipe(map(() => id))),
         // navigate to the right editor
         tap((id) => this.router.navigate(['images', 'edit', id])),
         // endWith(new CreateImageSuccess()),
@@ -54,7 +54,7 @@ export class ImageEffects {
         // update the image if there is one
         switchMap(() => {
           if (action.payload.file) {
-            return this.storage.ref(`uploads/${action.payload.image.id}`).putString(action.payload.file, 'data_url');
+            return this.storage.ref(`tmp/${action.payload.image.id}`).putString(action.payload.file, 'data_url');
           } else {
             return of(true);
           }

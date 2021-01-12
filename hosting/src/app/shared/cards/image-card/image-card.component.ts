@@ -28,6 +28,6 @@ export class ImageCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.$src = this.urlLoader.getImageURL(this.data.id);
+    this.$src = this.urlLoader.getImageURL(this.data.id, true);
   }
 }
