@@ -25,7 +25,7 @@ export const generateThumbAndConvertImage = functions
     }
     // or in the wrong directory
     if (!object.name || dirname(object.name) !== 'tmp') {
-      console.log('File is in wrong directory.');
+      console.log('File is not in tmp directory.');
       return false;
     }
 
@@ -36,9 +36,12 @@ export const generateThumbAndConvertImage = functions
     const fileName: string = basename(object.name);
     const workingDir = join(tmpdir(), 'images');
     const tmpFilePath = join(workingDir, 'source');
+    console.log(`working on file ${fileName} in bucket ${object.bucket}`);
 
     // ensure images dir exists
     await fs.ensureDir(workingDir);
+    console.log(`current tempdir contents: ${fs.readdirSync(workingDir)}`);
+
     // download source image
     await bucket.file(object.name).download({ destination: tmpFilePath });
 
@@ -48,22 +51,22 @@ export const generateThumbAndConvertImage = functions
       { width: 300, height: 200, dir: 'thumb', quality: 50 },
     ];
 
-    const uploadPromises = targetSizes.map(async (target) => {
+    for (const target of targetSizes) {
       const imgName = `${target.dir}@${target.width}x${target.height}_${fileName}`;
-      const imgPath = join(workingDir, imgName);
+      const imgPathFunction = join(workingDir, imgName);
+      const imgPathBucket = join(target.dir, imgName);
 
       // resize source image
-      await sharp(tmpFilePath).resize(target.width, target.height).webp({ quality: target.quality }).toFile(imgPath);
+      await sharp(tmpFilePath).resize(target.width, target.height).webp({ quality: target.quality }).toFile(imgPathFunction);
 
       // Upload to storage
-      return bucket.upload(imgPath, {
-        destination: join(target.dir, imgName),
+      console.log(`converted ${fileName} and setting up upload to ${imgPathBucket} from local converted file ${imgPathFunction}`);
+      await bucket.upload(imgPathFunction, {
+        destination: imgPathBucket,
         metadata: { contentType: 'image/webp' },
       });
-    });
+    }
 
-    // run the upload operations
-    await Promise.all(uploadPromises);
     // remove the source file from the bucket
     await bucket.file(object.name).delete();
     // cleanup remove the tmp/images from the filesystem
