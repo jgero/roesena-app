@@ -35,7 +35,7 @@ export const generateThumbAndConvertImage = functions
     // setup file and dir names
     const fileName: string = basename(object.name);
     const workingDir = join(tmpdir(), 'images');
-    const tmpFilePath = join(workingDir, 'source');
+    const tmpFilePath = join(workingDir, fileName + '_source_' + Math.random().toString(36).substr(2, 9));
     console.log(`working on file ${fileName} in bucket ${object.bucket}`);
 
     // ensure images dir exists
@@ -53,7 +53,8 @@ export const generateThumbAndConvertImage = functions
 
     for (const target of targetSizes) {
       const imgName = `${target.dir}@${target.width}x${target.height}_${fileName}`;
-      const imgPathFunction = join(workingDir, imgName);
+      // add random id to end of filename to avoid weird file overwrite bug
+      const imgPathFunction = join(workingDir, imgName + '_' + Math.random().toString(36).substr(2, 9));
       const imgPathBucket = join(target.dir, imgName);
 
       // resize source image
@@ -65,10 +66,16 @@ export const generateThumbAndConvertImage = functions
         destination: imgPathBucket,
         metadata: { contentType: 'image/webp' },
       });
+      // delete the file in the function
+      console.log(`delete ${imgPathFunction} in the function`);
+      await fs.remove(imgPathFunction);
     }
 
     // remove the source file from the bucket
     await bucket.file(object.name).delete();
+    // delete the source file in the function
+    console.log(`delete ${tmpFilePath} in the function`);
+    await fs.remove(tmpFilePath);
     // cleanup remove the tmp/images from the filesystem
     return fs.remove(workingDir);
   });
