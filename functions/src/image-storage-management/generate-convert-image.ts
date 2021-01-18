@@ -3,16 +3,10 @@ import * as admin from 'firebase-admin';
 
 import { tmpdir } from 'os';
 import { join, dirname, basename } from 'path';
+import { targetSizes, getFilenameForTarget } from '../utils/image-conversion-filenames';
 
 import * as sharp from 'sharp';
 import * as fs from 'fs-extra';
-
-interface ConversionTarget {
-  width: number;
-  height: number;
-  dir: string;
-  quality: number;
-}
 
 export const generateThumbAndConvertImage = functions
   .region('europe-west1')
@@ -45,14 +39,8 @@ export const generateThumbAndConvertImage = functions
     // download source image
     await bucket.file(object.name).download({ destination: tmpFilePath });
 
-    // set size, dir and quality for targets
-    const targetSizes: ConversionTarget[] = [
-      { width: 800, height: 550, dir: 'full', quality: 80 },
-      { width: 300, height: 200, dir: 'thumb', quality: 50 },
-    ];
-
     for (const target of targetSizes) {
-      const imgName = `${target.dir}@${target.width}x${target.height}_${fileName}`;
+      const imgName = getFilenameForTarget(target, fileName);
       // add random id to end of filename to avoid weird file overwrite bug
       const imgPathFunction = join(workingDir, imgName + '_' + Math.random().toString(36).substr(2, 9));
       const imgPathBucket = join(target.dir, imgName);
