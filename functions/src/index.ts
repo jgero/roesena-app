@@ -5,8 +5,6 @@ export * from './image-storage-management/image-editing';
 export * from './image-storage-management/generate-convert-image';
 export * from './image-storage-management/storage-cleanup';
 
-export * from './image-storage-management/refactor-images';
-
 export * from './aggregation-denormalization/persons';
 export * from './aggregation-denormalization/articles';
 export * from './aggregation-denormalization/images';
