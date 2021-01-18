@@ -1,7 +1,6 @@
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 
-export * from './image-storage-management/image-editing';
 export * from './image-storage-management/generate-convert-image';
 export * from './image-storage-management/storage-cleanup';
 
