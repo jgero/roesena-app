@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { getFilenameForTarget, targetSizes } from '../utils/image-conversion-filenames';
+import { targetSizes, getFullObjectNameForTarget } from '../utils/image-conversion-filenames';
 
 export const deleteImages = functions
   .region('europe-west1')
@@ -11,13 +11,8 @@ export const deleteImages = functions
     const promises: Promise<any>[] = [];
     // all target sizes have to be deleted
     for (const target of targetSizes) {
-      // create delete operations for all target files
-      promises.push(
-        admin
-          .storage()
-          .bucket()
-          .deleteFiles({ prefix: getFilenameForTarget(target, imageId) })
-      );
+      // create the delete operation for the target
+      promises.push(admin.storage().bucket().file(getFullObjectNameForTarget(target, imageId)).delete());
     }
     // run the delete operations
     return Promise.all(promises);
