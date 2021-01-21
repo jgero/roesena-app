@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { SendContactMail } from '@state/contact/actions/contact.actions';
 import { State } from '@state/contact/reducers/contact.reducer';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-contact',
@@ -22,7 +23,12 @@ export class ContactComponent implements OnInit {
   contactForm = new FormGroup({
     subject: new FormControl('Problem mit der Webseite', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    comment: new FormControl('', [Validators.required, Validators.maxLength(1000), Validators.minLength(1), Validators.pattern('^[a-zA-Z@äöüÄÖÜ .-]+$')]),
+    comment: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(1000),
+      Validators.minLength(1),
+      Validators.pattern('^[a-zA-Z@äöüÄÖÜ .-]+$'),
+    ]),
   });
 
   problemCheckboxes = [
@@ -35,7 +41,9 @@ export class ContactComponent implements OnInit {
     { text: 'tritt am PC auf', checked: false },
   ];
 
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>, seo: SeoService) {
+    seo.setTags('Kontakt', 'Seite mit einem Formular zur einfachen Kontaktaufnahme mit der RöSeNa', undefined, '/contact');
+  }
 
   ngOnInit(): void {}
 

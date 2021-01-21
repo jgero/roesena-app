@@ -1,14 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Subscription, SubscriptionLike } from 'rxjs';
 import { State } from '@state/auth/reducers/auth.reducer';
 import { DoLogout, DoChangeName } from '@state/auth/actions/auth.actions';
 import { DeletePerson } from '@state/auth/group-manager/actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,8 +17,8 @@ export class ProfileComponent implements OnDestroy {
   isLoading$ = this.store.select('auth', 'isLoading');
   user$ = this.store.select('user', 'user');
 
-  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title, private dialog: MatDialog) {
-    titleService.setTitle('RöSeNa - Profil');
+  constructor(private store: Store<State>, private subs: SubscriptionService, seo: SeoService, private dialog: MatDialog) {
+    seo.setTags('Profil', 'Dein Profil der RöSeNa-App', undefined, '/auth/profile');
   }
 
   onDeleteProfile(id: string) {

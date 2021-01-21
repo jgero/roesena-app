@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
-import { AppImage } from 'src/app/utils/interfaces';
+import { AppImage } from '@utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/images/reducers/image.reducer';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { SubscriptionService } from '@services/subscription.service';
 import { LoadImage } from '@state/images/actions/image.actions';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
 import { canEdit } from '@state/images/selectors/image.selectors';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-details',
@@ -17,18 +16,25 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
+  private id: string;
   image$ = this.store.select('image', 'image');
   canEdit$ = this.store.select(canEdit);
-  url$ = this.image$.pipe(switchMap((image) => this.urlLoader.getImageURL(image.id)));
+  url$ = this.image$.pipe(
+    switchMap((image) => {
+      this.id = image.id;
+      return this.urlLoader.getImageURL(image.id);
+    }),
+    tap((url) => {
+      this.seo.setTags('Bild Detailansicht', undefined, url, `/images/details/${this.id}`);
+    })
+  );
   isLoading$ = this.store.select('image', 'isLoading');
   constructor(
     private store: Store<State>,
     private urlLoader: UrlLoaderService,
     private subs: SubscriptionService,
-    titleService: Title
-  ) {
-    titleService.setTitle('RöSeNa - Bild Details');
-  }
+    private seo: SeoService
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadImage());

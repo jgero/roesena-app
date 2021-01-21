@@ -6,7 +6,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { LoadEvents } from '@state/events/overview/actions/event.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-overview',
@@ -27,9 +27,9 @@ export class OverviewComponent implements OnDestroy, OnInit {
     private store: Store<State>,
     private subs: SubscriptionService,
     private hostRef: ElementRef<HTMLElement>,
-    titleService: Title
+    seo: SeoService
   ) {
-    titleService.setTitle('RöSeNa - Events');
+    seo.setTags('Events', 'Eine übersicht über die aktuellen Events der RöSeNa', undefined, '/events/overview');
   }
 
   ngOnInit() {

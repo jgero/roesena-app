@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { State } from '@state/auth/reducers/auth.reducer';
 import { DoRegister } from '@state/auth/actions/auth.actions';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-register',
@@ -19,8 +19,8 @@ export class RegisterComponent implements OnDestroy {
   });
   private subs: Subscription[] = [];
 
-  constructor(private store: Store<State>, titleService: Title) {
-    titleService.setTitle('RöSeNa - registrieren');
+  constructor(private store: Store<State>, seo: SeoService) {
+    seo.setTags('registrieren', 'Registriere dich in der RöSeNa-App', undefined, '/auth/register');
     this.subs.push(
       // enable and disable the form while loading
       this.store.select('auth', 'isLoading').subscribe({

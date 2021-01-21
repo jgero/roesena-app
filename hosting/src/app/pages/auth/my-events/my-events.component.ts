@@ -9,7 +9,7 @@ import { State } from '@state/auth/my-events/reducers/events.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { LoadEvents, EventsActions, RespondToEvent, EventsActionTypes } from '@state/auth/my-events/actions/events.actions';
 import { Actions, ofType } from '@ngrx/effects';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 interface AppEventWithForm extends AppEvent {
   form: FormGroup;
@@ -51,9 +51,14 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     private actions$: Actions<EventsActions>,
     private subs: SubscriptionService,
     private hostRef: ElementRef<HTMLElement>,
-    titleService: Title
+    seo: SeoService
   ) {
-    titleService.setTitle('RöSeNa - Meine Events');
+    seo.setTags(
+      'Meine Events',
+      'Eine Übersicht für Mitglieder für die Events die Rückmeldung erfordern',
+      undefined,
+      '/auth/my-events'
+    );
   }
 
   ngOnInit() {

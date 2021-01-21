@@ -14,11 +14,11 @@ import {
 } from '@state/auth/group-manager/actions/person.actions';
 import { ChipsInputService } from '@services/chips-input.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { Title } from '@angular/platform-browser';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-group-manager',
@@ -49,9 +49,9 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
     private subs: SubscriptionService,
     public chips: ChipsInputService,
     private dialog: MatDialog,
-    titleService: Title
+    seo: SeoService
   ) {
-    titleService.setTitle('RöSeNa - Gruppenmanager');
+    seo.setTags('Gruppenmanager', 'Hier können Administratoren die Benutzer der App verwalten', undefined, '/auth/group-manager');
   }
 
   ngOnInit() {

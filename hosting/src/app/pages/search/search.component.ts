@@ -3,8 +3,9 @@ import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { InitSearch } from '@state/searching/actions/search.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-search',
@@ -23,7 +24,21 @@ export class SearchComponent implements OnInit, OnDestroy {
   get limit(): number {
     return this.cols * 5;
   }
-  constructor(private store: Store<State>, private subs: SubscriptionService, private hostRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private store: Store<State>,
+    private subs: SubscriptionService,
+    private hostRef: ElementRef<HTMLElement>,
+    seo: SeoService
+  ) {
+    this.store.pipe(takeUntil(this.subs.unsubscribe$)).subscribe((state) => {
+      seo.setTags(
+        'Suchergebnisse',
+        `Ergebnisse zur Suche nach: ${state.search.searchStrings.join(', ')}`,
+        undefined,
+        state.router.state.url
+      );
+    });
+  }
 
   ngOnInit(): void {
     this.store.dispatch(new InitSearch({ limit: this.limit }));

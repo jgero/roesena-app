@@ -7,7 +7,7 @@ import { State } from '@state/articles/overview/reducers/article.reducer';
 import { LoadArticles } from '@state/articles/overview/actions/article.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-overview',
@@ -32,9 +32,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private sub: SubscriptionService,
     private hostRef: ElementRef<HTMLElement>,
-    titleService: Title
+    seo: SeoService
   ) {
-    titleService.setTitle('RöSeNa - Artikel');
+    seo.setTags('Artikel', 'Was gibt es Neues bei der RöSeNa?', undefined, '/articles/overview');
   }
 
   ngOnInit() {

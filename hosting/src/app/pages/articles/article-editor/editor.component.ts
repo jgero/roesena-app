@@ -11,10 +11,10 @@ import { State } from '@state/articles/editor/reducers/editor.reducer';
 import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/editor/actions/editor.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash-es';
-import { Title } from '@angular/platform-browser';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 import { CookieService } from 'ngx-cookie-service';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-editor',
@@ -39,10 +39,9 @@ export class EditorComponent implements OnDestroy {
     public chips: ChipsInputService,
     private subs: SubscriptionService,
     private dialog: MatDialog,
-    titleService: Title,
+    seo: SeoService,
     private cookies: CookieService
   ) {
-    titleService.setTitle('RöSeNa - Artikel Editor');
     this.store.dispatch(new LoadSingleArticle({ withImage: false }));
     this.store
       .select('articleEditor', 'isLoading')
@@ -67,6 +66,7 @@ export class EditorComponent implements OnDestroy {
       )
       .subscribe({
         next: (article) => {
+          seo.setTags(`Bearbeiten: ${article.title}`, undefined, undefined, `/articles/edit/${article.id}`);
           this.article = cloneDeep(article);
           this.article.created = new Date(this.article.created);
           this.articleForm = new FormGroup({
