@@ -7,7 +7,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { LoadImages } from '@state/images/overview/actions/image.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-overview',
@@ -33,9 +33,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private subs: SubscriptionService,
     private hostRef: ElementRef<HTMLElement>,
-    titleService: Title
+    seo: SeoService
   ) {
-    titleService.setTitle('RöSeNa - Bilder');
+    seo.setTags('Bilder Übersicht', 'Eine Überischt über alle Bilder der RöSeNa', undefined, '/images/overview');
   }
 
   ngOnInit() {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-data-protection',
@@ -8,8 +8,13 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./data-protection.component.scss'],
 })
 export class DataProtectionComponent implements OnInit {
-  constructor(private analytics: AngularFireAnalytics, titleService: Title) {
-    titleService.setTitle('RöSeNa - Datenschutzerklärung');
+  constructor(private analytics: AngularFireAnalytics, seo: SeoService) {
+    seo.setTags(
+      'Datenschutzerklärung',
+      'Die genaue Ausarbeitung der Erhebung und Verarbeitung von Daten auf der Webseite',
+      undefined,
+      '/data-protection'
+    );
   }
 
   ngOnInit(): void {}

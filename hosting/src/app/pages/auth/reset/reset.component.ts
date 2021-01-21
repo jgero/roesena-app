@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { State } from '@state/auth/reducers/auth.reducer';
 import { DoReset, DoChangePasswordWithCode } from '@state/auth/actions/auth.actions';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-reset',
@@ -21,8 +21,13 @@ export class ResetComponent {
   hasCode$ = this.store.select('router', 'state', 'queryParams').pipe(map((params) => !!params && !!params.oobCode));
   loading = false;
 
-  constructor(private store: Store<State>, titleService: Title) {
-    titleService.setTitle('RöSeNa - Passwort zurücksetzen');
+  constructor(private store: Store<State>, seo: SeoService) {
+    seo.setTags(
+      'Passwort zurücksetzen',
+      'Seite zum zurücksetzen des Passworts deines Profils in der RöSeNa-App',
+      undefined,
+      '/auth/reset'
+    );
   }
 
   onResetSubmit() {

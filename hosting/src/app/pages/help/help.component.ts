@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { SubscriptionService } from '@services/subscription.service';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-help',
@@ -8,8 +8,8 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./help.component.scss'],
 })
 export class HelpComponent implements OnDestroy {
-  constructor(private subs: SubscriptionService, titleService: Title) {
-    titleService.setTitle('RöSeNa - Hilfe');
+  constructor(private subs: SubscriptionService, seo: SeoService) {
+    seo.setTags('Hilfe', 'Hinweise und Hilfestellungen zur Verwendung der Webseite', undefined, '/help');
   }
 
   ngOnDestroy() {

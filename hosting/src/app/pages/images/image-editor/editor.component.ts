@@ -1,10 +1,8 @@
 import { FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { Subscription, of, EMPTY } from 'rxjs';
-import { tap, map, takeUntil, switchMap } from 'rxjs/operators';
-
+import { EMPTY } from 'rxjs';
+import { takeUntil, switchMap } from 'rxjs/operators';
 import { AppImage } from 'src/app/utils/interfaces';
 import { ChipsInputService } from 'src/app/services/chips-input.service';
 import { Store } from '@ngrx/store';
@@ -14,11 +12,11 @@ import { LoadImage } from '@state/images/actions/image.actions';
 import { UpdateImage, CreateImage, DeleteImage } from '@state/images/editor/actions/image.actions';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { MatDialog } from '@angular/material/dialog';
-import { Title } from '@angular/platform-browser';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
 import { CookieService } from 'ngx-cookie-service';
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 import { cloneDeep } from 'lodash-es';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-editor',
@@ -45,10 +43,9 @@ export class EditorComponent implements OnDestroy {
     private subs: SubscriptionService,
     private urlLoader: UrlLoaderService,
     private dialog: MatDialog,
-    titleService: Title,
+    seo: SeoService,
     private cookies: CookieService
   ) {
-    titleService.setTitle('RöSeNa - Bild Editor');
     this.store.dispatch(new LoadImage());
     this.store
       .select('imageEditor', 'isLoading')
@@ -73,6 +70,7 @@ export class EditorComponent implements OnDestroy {
           if (!image) {
             return;
           }
+          seo.setTags('Bild Bearbeiten', undefined, undefined, `/imges/edit/${image.id}`);
           // deep copy the image
           this.image = cloneDeep(image);
           this.imageForm = new FormGroup({

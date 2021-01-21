@@ -1,9 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, Validators, FormGroup, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormControl, Validators, FormGroup, ValidatorFn } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Subscription } from 'rxjs';
-import { tap, map, filter, take, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { cloneDeep } from 'lodash-es';
 
 import { AppEvent, AppPerson, Participant } from 'src/app/utils/interfaces';
@@ -16,10 +14,10 @@ import { LoadEvent } from '@state/events/actions/event.actions';
 import { LoadPersons, UpdateEvent, CreateEvent, DeleteEvent } from '@state/events/editor/actions/event.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { Title } from '@angular/platform-browser';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
 import { CookieService } from 'ngx-cookie-service';
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-editor',
@@ -61,10 +59,9 @@ export class EditorComponent implements OnDestroy {
     private store: Store<State>,
     private subs: SubscriptionService,
     private dialog: MatDialog,
-    titleService: Title,
+    seo: SeoService,
     private cookies: CookieService
   ) {
-    titleService.setTitle('RöSeNa - Event Editor');
     // dispatch the event to load the event that should be edited
     this.store.dispatch(new LoadEvent());
     // dispatch the event to load the persons who can be invited
@@ -78,6 +75,12 @@ export class EditorComponent implements OnDestroy {
       )
       .subscribe({
         next: (event) => {
+          seo.setTags(
+            `Bearbeiten: ${event.title}`,
+            event.description.substring(0, 30).concat('...'),
+            undefined,
+            `/events/edit/${event.id}`
+          );
           // deep copy the object
           this.event = cloneDeep(event);
           const p = new ToLocalTimeStringPipe();

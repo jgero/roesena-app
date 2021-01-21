@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 import { State } from '@state/basePages/reducers/base.reducer';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-not-found',
@@ -15,8 +15,8 @@ import { Observable } from 'rxjs';
 })
 export class NotFoundComponent {
   code: Observable<string> = this.store.select('router').pipe(map((routerState) => routerState.state.params.code));
-  constructor(private location: Location, private router: Router, titleService: Title, private store: Store<State>) {
-    titleService.setTitle('RöSeNa - Fehler');
+  constructor(private location: Location, private router: Router, seo: SeoService, private store: Store<State>) {
+    seo.setTags('Fehler', 'Ein fehler ist aufgetreten', undefined, '/error');
   }
 
   public goBack() {

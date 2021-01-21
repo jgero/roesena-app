@@ -11,8 +11,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { OverviewComponent } from './overview.component';
-import { AuthService } from 'src/app/services/auth.service';
-import { EventDALService } from 'src/app/services/DAL/event-dal.service';
 import {
   EventDalStub,
   EventCardStubComponent,

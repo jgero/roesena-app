@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UrlLoaderService } from '@services/url-loader.service';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-about',
@@ -10,8 +10,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class AboutComponent {
   $applicationURL: Observable<string>;
-  constructor(urlLoader: UrlLoaderService, titleService: Title) {
+  constructor(urlLoader: UrlLoaderService, seo: SeoService) {
     this.$applicationURL = urlLoader.getStaticRscURL('RoeSeNa_Anmeldung_Mitgliedschaft.pdf');
-    titleService.setTitle('RöSeNa - Impressum');
+    seo.setTags('Impressum', 'Impressum der Röhlinger Sechtanarren', null, '/about');
   }
 }

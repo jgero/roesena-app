@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { DoLogin } from '@state/auth/actions/auth.actions';
 import { State } from '@state/auth/reducers/auth.reducer';
-import { Title } from '@angular/platform-browser';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +20,8 @@ export class LoginComponent implements OnDestroy {
   private subs: Subscription[] = [];
   isLoading$ = this.store.select('auth', 'isLoading');
 
-  constructor(private store: Store<State>, titleService: Title) {
-    titleService.setTitle('RöSeNa - Login');
+  constructor(private store: Store<State>, seo: SeoService) {
+    seo.setTags('Login', 'Anmeldeseite der RöSeNa-App', undefined, '/auth/login');
     this.subs.push(
       // enable and disable the form while loading
       this.store.select('auth', 'isLoading').subscribe({

@@ -1,16 +1,16 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SubscriptionService } from '@services/subscription.service';
 import { Store } from '@ngrx/store';
 import { State } from '@state/events/reducers/event.reducer';
 import { LoadEvent, MarkEventAsSeen } from '@state/events/actions/event.actions';
-import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
-import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
-import { AppEvent, Participant } from '@utils/interfaces';
-import { Title } from '@angular/platform-browser';
+import { map, tap } from 'rxjs/operators';
+import { AddSearchString } from '@state/searching/actions/search.actions';
+import { Participant } from '@utils/interfaces';
 import { canEdit, canReply } from '@state/events/selectors/event.selectors';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { SeoService } from '@services/seo.service';
 
 @Component({
   selector: 'app-details',
@@ -36,6 +36,7 @@ export class DetailsComponent implements OnDestroy, OnInit {
       if (!el) {
         return;
       }
+      this.seo.setTags(el.title, el.description.substring(0, 30).concat('...'), undefined, `/events/details/${el.id}`);
       this.dataSource = new MatTableDataSource(el.participants);
       if (this.sort) {
         this.dataSource.sort = this.sort;
@@ -55,9 +56,7 @@ export class DetailsComponent implements OnDestroy, OnInit {
     })
   );
 
-  constructor(private store: Store<State>, private subs: SubscriptionService, titleService: Title) {
-    titleService.setTitle('RöSeNa - Event Details');
-  }
+  constructor(private store: Store<State>, private subs: SubscriptionService, private seo: SeoService) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadEvent());
