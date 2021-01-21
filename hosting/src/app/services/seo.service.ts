@@ -30,7 +30,7 @@ export class SeoService {
     if (description) {
       this.metaService.updateTag({ property: 'og:description', content: description });
     } else {
-      this.metaService.removeTag("property='og:description'");
+      this.metaService.removeTag('property=\'og:description\'');
     }
   }
 }
