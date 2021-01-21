@@ -10,6 +10,10 @@ export const targetSizes: ConversionTarget[] = [
   { width: 300, height: 200, dir: 'thumb', quality: 50 },
 ];
 
-export function getFilenameForTarget(target: ConversionTarget, fileName: string) {
-  return `${target.dir}@${target.width}x${target.height}_${fileName}`;
+export function getFilenameForTarget(target: ConversionTarget, id: string) {
+  return `${target.dir}@${target.width}x${target.height}_${id}`;
+}
+
+export function getFullObjectNameForTarget(target: ConversionTarget, id: string) {
+  return `${target.dir}/${target.dir}@${target.width}x${target.height}_${id}`;
 }
