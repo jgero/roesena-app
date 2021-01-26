@@ -16,6 +16,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { State } from '../reducers/article.reducer';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertMany as convertManyImages } from '@utils/converters/image-documents';
+import { UrlLoaderService } from '@services/url-loader.service';
 
 @Injectable()
 export class ArticleEffects {
@@ -48,16 +49,18 @@ export class ArticleEffects {
                   .snapshotChanges()
                   .pipe(
                     map(convertManyImages),
-                    map((images) => ({ article, image: images.length > 0 ? images[0] : null }))
+                    // load the image URL of the first image
+                    switchMap((images) => (images.length > 0 ? this.urlLoader.getImageURL(images[0].id) : of(''))),
+                    // map the article back to the observable
+                    map((imageUrl) => ({ article, imageUrl }))
                   );
               } else {
-                return of({ article, image: null });
+                return of({ article, imageUrl: '' });
               }
             }),
             // only listen until the module gets changed
             takeUntil(this.subs.unsubscribe$),
-            map(({ article, image }) => new LoadSingleArticleSuccess({ article, image })),
-            // map(({ article, image }) => new LoadSingleArticleFailure({ error: { message: 'this is a bad error' } })),
+            map(({ article, imageUrl }) => new LoadSingleArticleSuccess({ article, imageUrl })),
             catchError((error) => of(new LoadSingleArticleFailure({ error })))
           );
       } else {
@@ -72,7 +75,7 @@ export class ArticleEffects {
               content: '',
               created: new Date(),
             },
-            image: null,
+            imageUrl: '',
           })
         );
       }
@@ -82,6 +85,7 @@ export class ArticleEffects {
   constructor(
     private actions$: Actions<ArticleActions>,
     private store: Store<State>,
+    private urlLoader: UrlLoaderService,
     private firestore: AngularFirestore,
     private subs: SubscriptionService
   ) {}

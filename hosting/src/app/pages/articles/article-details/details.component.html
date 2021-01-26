@@ -1,7 +1,7 @@
 <ng-container *ngIf="article$ | async as article; else loading">
   <app-page-header [title]="article.title" [date]="article.created" [owner]="article.ownerName"></app-page-header>
   <main>
-    <app-image-card *ngIf="image$ | async as image" [data]="image"></app-image-card>
+    <img [src]="image$ | async">
     <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of article.tags" (click)="onTagClick(tag)"> {{ tag }} </mat-chip>

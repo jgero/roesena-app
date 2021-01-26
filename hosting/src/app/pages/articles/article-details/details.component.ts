@@ -28,7 +28,7 @@ export class DetailsComponent implements OnDestroy {
       }
     })
   );
-  image$ = this.store.select('article', 'image');
+  image$ = this.store.select('article', 'imageUrl');
   isLoading$ = this.store.select('article', 'isLoading');
   canEdit$ = this.store.select(canEdit);
 
