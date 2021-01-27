@@ -1,7 +1,11 @@
 <mat-progress-bar [mode]="'indeterminate'" [color]="'accent'" *ngIf="isLoading$ | async"></mat-progress-bar>
 <ng-container *ngIf="image$ | async as image">
   <main>
-    <img [src]="url$ | async" alt="Bild Detailansicht" />
+    <ng-container *ngIf="url$ | async as url">
+    <a [href]="url" target="_blank">
+      <img [src]="url" alt="Bild Detailansicht" />
+    </a>
+    </ng-container>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of image.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
     </mat-chip-list>
