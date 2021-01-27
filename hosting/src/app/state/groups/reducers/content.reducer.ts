@@ -6,7 +6,7 @@ export const contentFeatureKey = 'group';
 
 interface GroupState {
   article: AppArticle;
-  image: AppImage;
+  imageUrl: string;
 }
 
 export interface State extends fromRoot.State {
@@ -15,7 +15,7 @@ export interface State extends fromRoot.State {
 
 export const initialState: GroupState = {
   article: null,
-  image: null,
+  imageUrl: '',
 };
 
 export function reducer(state = initialState, action: ContentActions): GroupState {
@@ -24,7 +24,7 @@ export function reducer(state = initialState, action: ContentActions): GroupStat
       return { ...state, article: action.payload.article || null };
 
     case ContentActionTypes.LoadImageSuccess:
-      return { ...state, image: action.payload.image || null };
+      return { ...state, imageUrl: action.payload.imageUrl || '' };
 
     case ContentActionTypes.LoadContent:
       return initialState;

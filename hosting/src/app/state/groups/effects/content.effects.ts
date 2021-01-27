@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, withLatestFrom, switchMap, takeUntil } from 'rxjs/operators';
-import { EMPTY, of, merge } from 'rxjs';
+import { catchError, map, withLatestFrom, switchMap, takeUntil } from 'rxjs/operators';
+import { of, merge } from 'rxjs';
 import {
   ContentActions,
   ContentActionTypes,
   LoadArticleSuccess,
   LoadArtcileFailure,
-  LoadImageSuccess,
   LoadImageFailure,
+  LoadImageSuccess,
 } from '../actions/content.actions';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/content.reducer';
@@ -18,6 +18,7 @@ import 'firebase/firestore';
 import { StoreableArticle, StoreableImage } from '@utils/interfaces';
 import { convertMany as convertManyArticles } from '@utils/converters/article-documents';
 import { convertMany as convertManyImages } from '@utils/converters/image-documents';
+import { UrlLoaderService } from '@services/url-loader.service';
 
 @Injectable()
 export class ContentEffects {
@@ -47,7 +48,9 @@ export class ContentEffects {
           .snapshotChanges()
           .pipe(
             map(convertManyImages),
-            map((images) => new LoadImageSuccess({ image: images[0] })),
+            // load the image URL of the first image
+            switchMap((images) => (images.length > 0 ? this.urlLoader.getImageURL(images[0].id) : of(''))),
+            map((imageUrl) => new LoadImageSuccess({ imageUrl })),
             takeUntil(this.subs.unsubscribe$),
             catchError((error) => of(new LoadImageFailure({ error })))
           )
@@ -59,6 +62,7 @@ export class ContentEffects {
     private actions$: Actions<ContentActions>,
     private store: Store<State>,
     private subs: SubscriptionService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private urlLoader: UrlLoaderService
   ) {}
 }

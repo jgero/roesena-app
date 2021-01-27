@@ -13,7 +13,7 @@ import { tap } from 'rxjs/operators';
 })
 export class CommonComponent implements OnDestroy, OnInit {
   textData$ = this.store.select('group', 'article');
-  imageData$ = this.store.select('group', 'image');
+  imageUrl$ = this.store.select('group', 'imageUrl');
   groupName$ = this.store.select('router', 'state', 'data', 'groupName').pipe(
     tap((el) => {
       this.seo.setTags(el, `Gruppen der RöSeNa: ${el}`, undefined, `/groups/${el}`);
