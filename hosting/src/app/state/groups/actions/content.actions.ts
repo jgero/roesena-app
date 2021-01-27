@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { AppArticle, AppImage } from '@utils/interfaces';
+import { AppArticle } from '@utils/interfaces';
 
 export enum ContentActionTypes {
   LoadContent = '[common group component] Load Content',
@@ -25,7 +25,7 @@ export class LoadArtcileFailure implements Action {
 
 export class LoadImageSuccess implements Action {
   readonly type = ContentActionTypes.LoadImageSuccess;
-  constructor(public payload: { image: AppImage }) {}
+  constructor(public payload: { imageUrl: string }) {}
 }
 
 export class LoadImageFailure implements Action {

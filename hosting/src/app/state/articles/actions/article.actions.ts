@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { AppArticle, AppImage } from '@utils/interfaces';
+import { AppArticle } from '@utils/interfaces';
 
 export enum ArticleActionTypes {
   LoadSingleArticle = '[Article] Load Article',
@@ -13,7 +13,7 @@ export class LoadSingleArticle implements Action {
 }
 export class LoadSingleArticleSuccess implements Action {
   readonly type = ArticleActionTypes.LoadSingleArticleSuccess;
-  constructor(public payload: { article: AppArticle; image: AppImage }) {}
+  constructor(public payload: { article: AppArticle; imageUrl: string }) {}
 }
 export class LoadSingleArticleFailure implements Action {
   readonly type = ArticleActionTypes.LoadSingleArticleFailure;

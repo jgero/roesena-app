@@ -1,5 +1,5 @@
 import { ArticleActions, ArticleActionTypes } from '../actions/article.actions';
-import { AppArticle, AppImage } from '@utils/interfaces';
+import { AppArticle } from '@utils/interfaces';
 
 import * as fromRoot from '@state/state.module';
 
@@ -7,7 +7,7 @@ export const articleFeatureKey = 'article';
 
 export interface ArticleState {
   article: AppArticle;
-  image: AppImage;
+  imageUrl: string;
   isLoading: boolean;
 }
 
@@ -17,7 +17,7 @@ export interface State extends fromRoot.State {
 
 export const initialState: ArticleState = {
   article: null,
-  image: null,
+  imageUrl: '',
   isLoading: false,
 };
 
@@ -27,7 +27,7 @@ export function reducer(state = initialState, action: ArticleActions): ArticleSt
       return { ...state, isLoading: true };
 
     case ArticleActionTypes.LoadSingleArticleSuccess:
-      return { ...state, isLoading: false, article: action.payload.article, image: action.payload.image };
+      return { ...state, isLoading: false, article: action.payload.article, imageUrl: action.payload.imageUrl };
 
     case ArticleActionTypes.LoadSingleArticleFailure:
       return { ...state, isLoading: false };

@@ -2,15 +2,12 @@
 
 main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  grid-template-areas: 'content image' 'tags tags';
-
-  @media screen and (max-width: 600px) {
-    padding: 0 16px;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     grid-template-areas: 'image' 'content' 'tags';
+
+  @media screen and (max-width: 600px) {
+    padding: 0 16px;
   }
 }
 
@@ -19,8 +16,11 @@ main {
   justify-content: center;
 }
 
-app-image-card {
+img {
   grid-area: image;
+  padding-bottom: 2rem;
+  max-width: 100%;
+  justify-self: center;
 }
 
 app-markdown-viewer {

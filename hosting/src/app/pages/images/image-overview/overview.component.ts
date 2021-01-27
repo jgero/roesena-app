@@ -23,7 +23,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   // Math.ceil guarantees that the colums will never get wider than the specified pixel width
   get cols(): number {
-    return Math.ceil(this.hostRef.nativeElement.clientWidth / 370);
+    return Math.ceil(this.hostRef.nativeElement.clientWidth / 450);
   }
   get limit(): number {
     return this.cols * 5;
