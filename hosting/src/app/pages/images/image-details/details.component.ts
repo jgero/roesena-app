@@ -5,7 +5,7 @@ import { State } from '@state/images/reducers/image.reducer';
 import { switchMap, tap } from 'rxjs/operators';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadImage } from '@state/images/actions/image.actions';
+import { LoadImage, CopyUrlToClipboard } from '@state/images/actions/image.actions';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
 import { canEdit } from '@state/images/selectors/image.selectors';
 import { SeoService } from '@services/seo.service';
@@ -42,6 +42,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribeComponent$.next();
+  }
+
+  copyUrlToClipboard() {
+    this.store.dispatch(new CopyUrlToClipboard());
   }
 
   onTagClick(tag: string) {

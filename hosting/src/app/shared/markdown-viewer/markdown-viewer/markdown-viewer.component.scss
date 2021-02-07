@@ -4,6 +4,10 @@
   flex-direction: column;
   align-items: flex-start;
 
+  ::ng-deep img {
+    max-width: 100%;
+  }
+
   ::ng-deep table {
     th {
       text-align: left;
