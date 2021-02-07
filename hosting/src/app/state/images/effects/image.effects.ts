@@ -51,9 +51,7 @@ export class ImageEffects {
   copyUrlToClipboard$ = this.actions$.pipe(
     ofType(ImageActionTypes.CopyUrlToClipboard),
     withLatestFrom(this.store),
-    switchMap(([_action, storeState]) => {
-      return this.urlLoader.getImageURL(storeState.image.image.id, false);
-    }),
+    switchMap(([action, storeState]) => this.urlLoader.getImageURL(storeState.image.image.id, false)),
     tap((url) => {
       this.clipboard.copy(url);
       this.snackbar.open('Bild-URL wurde in die Zwischenablage kopiert', 'OK');
