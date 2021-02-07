@@ -2,14 +2,15 @@
 <ng-container *ngIf="image$ | async as image">
   <main>
     <ng-container *ngIf="url$ | async as url">
-    <a [href]="url" target="_blank">
-      <img [src]="url" alt="Bild Detailansicht" />
-    </a>
+      <a [href]="url" target="_blank">
+        <img [src]="url" alt="Bild Detailansicht" />
+      </a>
     </ng-container>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of image.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
     </mat-chip-list>
     <div class="fab-container">
+      <button mat-fab [color]="'primary'" (click)="copyUrlToClipboard()"><mat-icon>content_copy</mat-icon></button>
       <a mat-fab [color]="'primary'" *ngIf="canEdit$ | async" [routerLink]="'/images/edit/' + image.id"
         ><mat-icon>edit</mat-icon></a
       >

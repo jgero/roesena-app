@@ -5,6 +5,7 @@ export enum ImageActionTypes {
   LoadImage = '[Image] Load Image',
   LoadImageSuccess = '[Image] Load Image Success',
   LoadImageFailure = '[Image] Load Image Failure',
+  CopyUrlToClipboard = '[Image] Copy Image URL to clipboard',
 }
 
 export class LoadImage implements Action {
@@ -21,4 +22,8 @@ export class LoadImageFailure implements Action {
   constructor(public payload: { error: any }) {}
 }
 
-export type ImageActions = LoadImage | LoadImageSuccess | LoadImageFailure;
+export class CopyUrlToClipboard implements Action {
+  readonly type = ImageActionTypes.CopyUrlToClipboard;
+}
+
+export type ImageActions = LoadImage | LoadImageSuccess | LoadImageFailure | CopyUrlToClipboard;
