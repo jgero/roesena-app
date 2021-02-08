@@ -11,6 +11,21 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field>
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="chips.addSelected($event, contentFormGroup.get('tags'), tagInput)"
+        >
+          <mat-option
+            *ngFor="
+              let option of autocomplete.$existingTags
+                | async
+                | autocompleteFilter: tagInput.value:contentFormGroup.get('tags').value
+            "
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
         <mat-chip-list #tagList aria-label="tag Auswahl" formControlName="tags">
           <mat-chip
             *ngFor="let tag of contentFormGroup.get('tags').value"
@@ -20,12 +35,14 @@
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
           <input
+            #tagInput
             placeholder="Tags"
             [matChipInputFor]="tagList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="chips.addItem($event, contentFormGroup.get('tags'))"
             matTooltip="Tags nach Eingabe mit der ENTER-Taste bestätigen"
             matTooltipPosition="above"
+            [matAutocomplete]="auto"
           />
         </mat-chip-list>
       </mat-form-field>
@@ -36,8 +53,8 @@
             <textarea
               matInput
               [mat-autosize]="true"
-              [matAutosizeMinRows]="4"
-              [matAutosizeMaxRows]="10"
+              [matAutosizeMinRows]="10"
+              [matAutosizeMaxRows]="20"
               formControlName="description"
               required
             ></textarea>

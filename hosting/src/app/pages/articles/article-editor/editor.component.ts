@@ -1,4 +1,4 @@
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { ENTER, COMMA, TAB } from '@angular/cdk/keycodes';
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { takeUntil, filter } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confi
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 import { CookieService } from 'ngx-cookie-service';
 import { SeoService } from '@services/seo.service';
+import { AutocompleteService } from '@services/autocomplete.service';
 
 @Component({
   selector: 'app-editor',
@@ -22,7 +23,7 @@ import { SeoService } from '@services/seo.service';
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnDestroy {
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   article: AppArticle;
   articleForm: FormGroup;
   isLoading$ = this.store.select('articleEditor', 'isLoading');
@@ -40,7 +41,8 @@ export class EditorComponent implements OnDestroy {
     private subs: SubscriptionService,
     private dialog: MatDialog,
     seo: SeoService,
-    private cookies: CookieService
+    private cookies: CookieService,
+    public autocomplete: AutocompleteService
   ) {
     this.store.dispatch(new LoadSingleArticle({ withImage: false }));
     this.store

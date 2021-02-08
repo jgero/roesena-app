@@ -24,6 +24,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ParticipantAutocompleteFilterPipe } from './autocomplete-filter.pipe';
 import { DeleteConfirmModule } from '@shared/delete-confirm/delete-confirm.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { FiltersModule } from '@shared/filters/filters.module';
 
 @NgModule({
   declarations: [EditorComponent, ParticipantAutocompleteFilterPipe],
@@ -46,6 +47,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
+    FiltersModule,
     StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
     EffectsModule.forFeature([EventEffects]),
   ],

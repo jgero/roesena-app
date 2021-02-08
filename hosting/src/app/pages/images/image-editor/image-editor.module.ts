@@ -16,6 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FiltersModule } from '@shared/filters/filters.module';
 
 @NgModule({
   declarations: [EditorComponent],
@@ -31,6 +33,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
+    FiltersModule,
     StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer),
     EffectsModule.forFeature([ImageEffects]),
   ],

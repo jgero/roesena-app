@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup, ValidatorFn } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, TAB } from '@angular/cdk/keycodes';
 import { filter, takeUntil } from 'rxjs/operators';
 import { cloneDeep } from 'lodash-es';
 
@@ -18,6 +18,7 @@ import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confi
 import { CookieService } from 'ngx-cookie-service';
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 import { SeoService } from '@services/seo.service';
+import { AutocompleteService } from '@services/autocomplete.service';
 
 @Component({
   selector: 'app-editor',
@@ -35,7 +36,7 @@ export class EditorComponent implements OnDestroy {
   dateFormGroup: FormGroup;
   participantsFormGroup: FormGroup;
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   event: AppEvent;
   persons: AppPerson[];
   groups: string[] = [];
@@ -60,7 +61,8 @@ export class EditorComponent implements OnDestroy {
     private subs: SubscriptionService,
     private dialog: MatDialog,
     seo: SeoService,
-    private cookies: CookieService
+    private cookies: CookieService,
+    public autocomplete: AutocompleteService
   ) {
     // dispatch the event to load the event that should be edited
     this.store.dispatch(new LoadEvent());

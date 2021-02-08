@@ -1,6 +1,6 @@
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnDestroy } from '@angular/core';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { ENTER, COMMA, TAB } from '@angular/cdk/keycodes';
 import { EMPTY } from 'rxjs';
 import { takeUntil, switchMap } from 'rxjs/operators';
 import { AppImage } from 'src/app/utils/interfaces';
@@ -17,6 +17,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 import { cloneDeep } from 'lodash-es';
 import { SeoService } from '@services/seo.service';
+import { AutocompleteService } from '@services/autocomplete.service';
 
 @Component({
   selector: 'app-editor',
@@ -25,7 +26,7 @@ import { SeoService } from '@services/seo.service';
 })
 export class EditorComponent implements OnDestroy {
   isLoading$ = this.store.select('imageEditor', 'isLoading');
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   imageForm: FormGroup;
   image: AppImage;
   url: string;
@@ -44,7 +45,8 @@ export class EditorComponent implements OnDestroy {
     private urlLoader: UrlLoaderService,
     private dialog: MatDialog,
     seo: SeoService,
-    private cookies: CookieService
+    private cookies: CookieService,
+    public autocomplete: AutocompleteService
   ) {
     this.store.dispatch(new LoadImage());
     this.store
