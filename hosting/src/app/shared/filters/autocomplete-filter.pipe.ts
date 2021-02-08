@@ -5,10 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AutocompleteFilterPipe implements PipeTransform {
   transform(value: string[], substring: string, alreadySelected?: string[]): string[] {
-    //if (!substring || !value) {
-    //// if there is no substring just return the first 10 results
-    //return [];
-    //}
     // lowercase of string -> split into array -> add regex for any symbol behind every char
     //  -> join togehter -> add regex for any char in front
     const substringRegex = new RegExp(
