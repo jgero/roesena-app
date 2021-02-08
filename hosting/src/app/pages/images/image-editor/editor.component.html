@@ -25,17 +25,29 @@
     </button>
 
     <mat-form-field>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="chips.addSelected($event, imageForm.get('tags'), tagInput)">
+        <mat-option
+          *ngFor="
+            let option of autocomplete.$existingTags | async | autocompleteFilter: tagInput.value:imageForm.get('tags').value
+          "
+          [value]="option"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
       <mat-chip-list #chipList aria-label="tag Auswahl" formControlName="tags">
         <mat-chip *ngFor="let tag of imageForm.get('tags').value" (removed)="chips.removeItem(tag, imageForm.get('tags'))">
           {{ tag }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
         <input
+          #tagInput
           placeholder="Tags"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           (matChipInputTokenEnd)="chips.addItem($event, imageForm.get('tags'))"
           matTooltip="Tags nach Eingabe mit der ENTER-Taste bestätigen"
+          [matAutocomplete]="auto"
         />
       </mat-chip-list>
     </mat-form-field>

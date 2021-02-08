@@ -15,6 +15,7 @@ import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confi
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 import { CookieService } from 'ngx-cookie-service';
 import { SeoService } from '@services/seo.service';
+import { AutocompleteService } from '@services/autocomplete.service';
 
 @Component({
   selector: 'app-editor',
@@ -40,7 +41,8 @@ export class EditorComponent implements OnDestroy {
     private subs: SubscriptionService,
     private dialog: MatDialog,
     seo: SeoService,
-    private cookies: CookieService
+    private cookies: CookieService,
+    public autocomplete: AutocompleteService
   ) {
     this.store.dispatch(new LoadSingleArticle({ withImage: false }));
     this.store

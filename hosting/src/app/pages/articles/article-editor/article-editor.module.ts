@@ -24,6 +24,8 @@ import { EditorEffects } from '@state/articles/editor/effects/editor.effects';
 import { EditorComponent } from './editor.component';
 import { ArticleEditorRoutingModule } from './article-editor-routing.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FiltersModule } from '@shared/filters/filters.module';
 
 @NgModule({
   declarations: [EditorComponent],
@@ -43,6 +45,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDialogModule,
     MatTabsModule,
     MatTooltipModule,
+    MatAutocompleteModule,
+    FiltersModule,
     StoreModule.forFeature(fromEditor.editorFeatureKey, fromEditor.reducer),
     EffectsModule.forFeature([EditorEffects]),
     ArticleEditorRoutingModule,

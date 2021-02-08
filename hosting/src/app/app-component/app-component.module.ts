@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { FiltersModule } from '../shared/filters/filters.module';
 import { FooterModule } from './footer/footer.module';
 import { AppComponent } from './app.component';
 import { SearchBarComponent, SearchSheetComponent } from './search-bar/search-bar.component';
@@ -18,11 +19,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatOptionModule } from '@angular/material/core';
-import { AutocompleteFilterPipe } from './search-bar/autocomplete-filter.pipe';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AppComponent, SearchBarComponent, SearchSheetComponent, AutocompleteFilterPipe],
+  declarations: [AppComponent, SearchBarComponent, SearchSheetComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -42,6 +42,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatListModule,
     MatChipsModule,
     MatOptionModule,
+    FiltersModule,
   ],
   exports: [AppComponent],
 })
