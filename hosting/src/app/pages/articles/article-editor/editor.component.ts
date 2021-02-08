@@ -1,4 +1,4 @@
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { ENTER, COMMA, TAB } from '@angular/cdk/keycodes';
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { takeUntil, filter } from 'rxjs/operators';
@@ -22,7 +22,7 @@ import { SeoService } from '@services/seo.service';
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnDestroy {
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   article: AppArticle;
   articleForm: FormGroup;
   isLoading$ = this.store.select('articleEditor', 'isLoading');

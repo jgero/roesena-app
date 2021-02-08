@@ -1,6 +1,6 @@
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnDestroy } from '@angular/core';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { ENTER, COMMA, TAB } from '@angular/cdk/keycodes';
 import { EMPTY } from 'rxjs';
 import { takeUntil, switchMap } from 'rxjs/operators';
 import { AppImage } from 'src/app/utils/interfaces';
@@ -25,7 +25,7 @@ import { SeoService } from '@services/seo.service';
 })
 export class EditorComponent implements OnDestroy {
   isLoading$ = this.store.select('imageEditor', 'isLoading');
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   imageForm: FormGroup;
   image: AppImage;
   url: string;

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup, ValidatorFn } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, TAB } from '@angular/cdk/keycodes';
 import { filter, takeUntil } from 'rxjs/operators';
 import { cloneDeep } from 'lodash-es';
 
@@ -35,7 +35,7 @@ export class EditorComponent implements OnDestroy {
   dateFormGroup: FormGroup;
   participantsFormGroup: FormGroup;
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   event: AppEvent;
   persons: AppPerson[];
   groups: string[] = [];
