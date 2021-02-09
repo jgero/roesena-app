@@ -55,8 +55,8 @@ export class SearchEffects {
         let query: CollectionReference | Query = qFn;
         // filter by the search strings
         storeState.search.searchStrings.forEach((searchString) => (query = query.where(`tags.${searchString}`, '==', true)));
-        // limit the results
-        query = query.limit(storeState.search.limit);
+        // limit the results to something that would fit the page but at least 40
+        query = query.limit(Math.max(40, storeState.search.limit));
         // only take public events if not logged in or user ist not confirmed
         if (storeState.search.dataType === 'events' && (!storeState.user.user || !storeState.user.user.isConfirmedMember)) {
           query = query.where('participants', '==', {});
