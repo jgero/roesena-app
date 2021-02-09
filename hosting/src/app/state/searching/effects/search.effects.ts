@@ -22,6 +22,7 @@ import { convertMany as convertManyEvents } from '@utils/converters/event-docume
 import { convertMany as convertManyArticles } from '@utils/converters/article-documents';
 import { convertMany as convertManyImages } from '@utils/converters/image-documents';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AppElement } from '@utils/interfaces';
 
 @Injectable()
 export class SearchEffects {
@@ -55,14 +56,18 @@ export class SearchEffects {
         let query: CollectionReference | Query = qFn;
         // filter by the search strings
         storeState.search.searchStrings.forEach((searchString) => (query = query.where(`tags.${searchString}`, '==', true)));
-        // limit the results
-        query = query.limit(storeState.search.limit);
+        // limit the results to something that would fit the page but at least 40
+        query = query.limit(Math.max(40, storeState.search.limit));
         // only take public events if not logged in or user ist not confirmed
         if (storeState.search.dataType === 'events' && (!storeState.user.user || !storeState.user.user.isConfirmedMember)) {
           query = query.where('participants', '==', {});
         }
         return query;
       };
+      // return empty arrays when searched without any search strings
+      if (storeState.search.searchStrings.length === 0) {
+        return of(new SearchContentLoaded({ events: [], articles: [], images: [] }));
+      }
       switch (storeState.search.dataType) {
         case 'events':
           return this.firestore
@@ -71,6 +76,7 @@ export class SearchEffects {
             .pipe(
               takeUntil(this.subs.unsubscribe$),
               map(convertManyEvents),
+              map(sortByTags),
               map((events) => new SearchContentLoaded({ events, articles: [], images: [] })),
               catchError((error) => of(new SearchContentLoadFailed({ error })))
             );
@@ -81,6 +87,7 @@ export class SearchEffects {
             .pipe(
               takeUntil(this.subs.unsubscribe$),
               map(convertManyArticles),
+              map(sortByTags),
               map((articles) => new SearchContentLoaded({ events: [], articles, images: [] })),
               catchError((error) => of(new SearchContentLoadFailed({ error })))
             );
@@ -91,6 +98,7 @@ export class SearchEffects {
             .pipe(
               takeUntil(this.subs.unsubscribe$),
               map(convertManyImages),
+              map(sortByTags),
               map((images) => new SearchContentLoaded({ events: [], articles: [], images })),
               catchError((error) => of(new SearchContentLoadFailed({ error })))
             );
@@ -106,4 +114,22 @@ export class SearchEffects {
     private analytics: AngularFireAnalytics,
     private subs: SubscriptionService
   ) {}
+}
+
+function sortByTags<T extends AppElement>(originalArray: T[]): T[] {
+  return originalArray.sort((aEl, bEl) => {
+    // sort tags alphabetically and merge them afterwards
+    // the "0" case of the sorting algorithm can be ignored here because an element cannot have two identical tags
+    const tagStringA = aEl.tags.sort((a, b) => (a < b ? -1 : 1)).join('');
+    const tagStringB = bEl.tags.sort((a, b) => (a < b ? -1 : 1)).join('');
+    // compare the tag strings of the elements
+    if (tagStringA > tagStringB) {
+      return -1;
+    }
+    if (tagStringA < tagStringB) {
+      return 1;
+    }
+    // here they have identical tags
+    return 0;
+  });
 }

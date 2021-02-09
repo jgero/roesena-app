@@ -1,8 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { AutocompleteService } from 'src/app/services/autocomplete.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {
@@ -10,7 +10,6 @@ import {
   RemoveSearchString,
   RunSearch,
   SearchActionTypes,
-  InitSearch,
   ChangeDataType,
   CleanSearch,
 } from '@state/searching/actions/search.actions';
@@ -69,6 +68,8 @@ export class SearchSheetComponent {
       }
     })
   );
+  @ViewChild('chipInput')
+  chipInput: ElementRef<HTMLInputElement>;
   constructor(private bottomSheetRef: MatBottomSheet, private store: Store<State>, public autocomplete: AutocompleteService) {}
 
   onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
@@ -101,6 +102,13 @@ export class SearchSheetComponent {
   }
 
   onSearch() {
+    // if the input field is not empty on search start add the contents of the input field as search string
+    // I don't know if this makes a lot of sense because tags have to match 100% to appear in the search
+    // results but a stakeholder requested it
+    if (this.chipInput.nativeElement.value !== '') {
+      this.store.dispatch(new AddSearchString({ searchString: this.chipInput.nativeElement.value }));
+      this.chipInput.nativeElement.value = '';
+    }
     this.store.dispatch(new RunSearch());
     this.bottomSheetRef.dismiss();
   }
