@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { SubscriptionService } from '@services/subscription.service';
 import { SeoService } from '@services/seo.service';
 import { Store } from '@ngrx/store';
@@ -11,7 +11,7 @@ import { takeUntil, take } from 'rxjs/operators';
   templateUrl: './help.component.html',
   styleUrls: ['./help.component.scss'],
 })
-export class HelpComponent implements OnDestroy {
+export class HelpComponent implements OnDestroy, AfterViewInit {
   constructor(private store: Store<State>, private subs: SubscriptionService, seo: SeoService, private router: Router) {
     seo.setTags('Hilfe', 'Hinweise und Hilfestellungen zur Verwendung der Webseite', undefined, '/help');
   }

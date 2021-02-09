@@ -103,7 +103,8 @@ export class SearchSheetComponent {
 
   onSearch() {
     // if the input field is not empty on search start add the contents of the input field as search string
-    // I don't know if this makes a lot of sense because tags have to match 100% to appear in the search results but a stakeholder requested it
+    // I don't know if this makes a lot of sense because tags have to match 100% to appear in the search
+    // results but a stakeholder requested it
     if (this.chipInput.nativeElement.value !== '') {
       this.store.dispatch(new AddSearchString({ searchString: this.chipInput.nativeElement.value }));
       this.chipInput.nativeElement.value = '';
