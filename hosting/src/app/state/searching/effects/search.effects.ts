@@ -64,6 +64,10 @@ export class SearchEffects {
         }
         return query;
       };
+      // return empty arrays when searched without any search strings
+      if (storeState.search.searchStrings.length === 0) {
+        return of(new SearchContentLoaded({ events: [], articles: [], images: [] }));
+      }
       switch (storeState.search.dataType) {
         case 'events':
           return this.firestore
