@@ -19,6 +19,20 @@
       flex: 1;
       display: flex;
       align-items: flex-end;
+
+      ::ng-deep .mat-chip-list-wrapper {
+        flex-wrap: unset;
+      }
+
+      ::ng-deep .mat-chip {
+        white-space: nowrap;
+      }
+
+      .mat-chip-list {
+        overflow-x: scroll;
+        padding-bottom: 8px;
+        width: 100%;
+      }
     }
   }
 }
