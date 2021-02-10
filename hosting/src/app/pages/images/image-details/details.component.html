@@ -1,4 +1,6 @@
-<mat-progress-bar [mode]="'indeterminate'" [color]="'accent'" *ngIf="isLoading$ | async"></mat-progress-bar>
+<div class="spinnerContainer" *ngIf="isLoading$ | async">
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</div>
 <ng-container *ngIf="image$ | async as image">
   <main>
     <ng-container *ngIf="url$ | async as url">

@@ -1,5 +1,5 @@
 <mat-card>
-  <img mat-card-image [src]="$src | async" />
+  <img mat-card-image [src]="$src | async" [routerLink]="'/images/details/' + data.id" />
   <mat-card-content>
     <mat-chip-list>
       <mat-chip *ngFor="let tag of data.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
