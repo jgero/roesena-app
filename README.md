@@ -8,6 +8,8 @@ This project is built using [Angular](https://angular.io/) and [Firebase](https:
 
 Run `ng serve` to start the Angular dev server. It will serve the app on [localhost](http://localhost:4200/).
 
+Alternatively you can run the dev server in a docker container, by setting the `CONTAINER_RUNTIME` environment variable podman can be used instead of docker. The container can be started with `make`. It will start a container with the files mounted into the `/app` directory in the container and an anonymous volume for the `node_modules`. Once the bash is attached to the container the `node_modules` have to be installed manually. With `npm start` the dev server will be started with all the necessary options.
+
 ### Cloud Functions / Firestore
 
 Can be run locally using the [firebase emulator suite](https://firebase.google.com/docs/emulator-suite) with `firebase emulators:start`. To make the Angular dev server use the emulator instead of the production database set the `useEmulator` property to `true` in the [dev environment file](hosting/src/environments/environment.ts).

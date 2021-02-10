@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0",
     "build": "ng build",
     "prebuild:prod": "node ./generate-version.js",
     "build:prod": "ng build --prod",
