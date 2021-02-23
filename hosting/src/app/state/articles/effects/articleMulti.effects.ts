@@ -27,12 +27,16 @@ export class ArticleMultiEffects {
   @Effect()
   loadArticles$ = this.actions$.pipe(
     ofType(ArticleActionTypes.LoadArticlePage),
-    switchMap((action) =>
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) =>
       this.firestore
         .collection<StoreableArticle>('articles', (qFn) => {
           let query: Query | CollectionReference = qFn;
           // sort the data for pagination
           query = query.orderBy('created', 'desc');
+          if (storeState.article.pageFirst) {
+            query = query.startAt(storeState.article.pageFirst.created);
+          }
           query = query.limit(action.payload.limit);
           return query;
         })

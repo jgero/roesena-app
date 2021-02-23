@@ -16,7 +16,12 @@
     matTooltip="Neuen Artikel erstellen"
     ><mat-icon>add</mat-icon></a
   >
-  <app-paginator class="mat-elevation-z2" [pageIndex]="0" [pageSize]="limit" [length]="length$ | async"></app-paginator>
+  <app-paginator
+    class="mat-elevation-z2"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="limit"
+    [length]="length$ | async"
+  ></app-paginator>
 </ng-container>
 <ng-template #loading>
   <div class="spinnerContainer">

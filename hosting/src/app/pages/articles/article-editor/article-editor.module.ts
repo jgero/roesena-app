@@ -16,11 +16,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { StoreModule } from '@ngrx/store';
-import * as fromEditor from '@state/articles/editor/reducers/editor.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { EditorEffects } from '@state/articles/editor/effects/editor.effects';
-
 import { EditorComponent } from './editor.component';
 import { ArticleEditorRoutingModule } from './article-editor-routing.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -47,8 +42,6 @@ import { FiltersModule } from '@shared/filters/filters.module';
     MatTooltipModule,
     MatAutocompleteModule,
     FiltersModule,
-    StoreModule.forFeature(fromEditor.editorFeatureKey, fromEditor.reducer),
-    EffectsModule.forFeature([EditorEffects]),
     ArticleEditorRoutingModule,
   ],
 })

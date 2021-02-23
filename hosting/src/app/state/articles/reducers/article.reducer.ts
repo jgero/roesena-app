@@ -12,6 +12,7 @@ export interface ArticleState {
   articleAmount: number;
   isLoading: boolean;
   pageLimit: number;
+  pageIndex: number;
   pageFirst: AppArticle;
   pageLast: AppArticle;
 }
@@ -26,6 +27,7 @@ export const initialState: ArticleState = {
   articleAmount: 0,
   isLoading: false,
   pageLimit: 3,
+  pageIndex: 0,
   pageFirst: null,
   pageLast: null,
 };
@@ -57,8 +59,21 @@ export function reducer(state = initialState, action: ArticleActions | PageActio
       return { ...state, articleAmount: action.payload.amount };
     // clear articles on page action
     case PageActionTypes.PageForward:
+      return { ...state, pageIndex: state.pageIndex + 1, activePageArticles: [] };
     case PageActionTypes.PageBackwards:
-      return { ...state, activePageArticles: [] };
+      return { ...state, pageIndex: state.pageIndex - 1, activePageArticles: [] };
+    // editor
+    case ArticleActionTypes.CreateArticle:
+    case ArticleActionTypes.UpdateArticle:
+    case ArticleActionTypes.DeleteArticle:
+      return { ...state, isLoading: true };
+    case ArticleActionTypes.CreateArticleSuccess:
+    case ArticleActionTypes.CreateArticleFailure:
+    case ArticleActionTypes.UpdateArticleSuccess:
+    case ArticleActionTypes.UpdateArticleFailure:
+    case ArticleActionTypes.DeleteArticleSuccess:
+    case ArticleActionTypes.DeleteArticleFailure:
+      return { ...state, isLoading: false };
 
     default:
       return state;

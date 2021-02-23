@@ -19,6 +19,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   data$: Observable<AppArticle[]> = this.store.select('article', 'activePageArticles');
   length$: Observable<number> = this.store.select('article', 'articleAmount');
   isLoading$: Observable<boolean> = this.store.select('article', 'isLoading');
+  pageIndex$: Observable<number> = this.store.select('article', 'pageIndex');
   canCreate$: Observable<boolean> = this.store.select((state) => canCreate(state));
 
   get cols(): number {
