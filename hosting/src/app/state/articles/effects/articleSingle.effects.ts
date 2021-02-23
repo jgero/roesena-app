@@ -19,7 +19,7 @@ import { convertMany as convertManyImages } from '@utils/converters/image-docume
 import { UrlLoaderService } from '@services/url-loader.service';
 
 @Injectable()
-export class ArticleEffects {
+export class ArticleSingleEffects {
   @Effect()
   loadArticle$ = this.actions$.pipe(
     ofType(ArticleActionTypes.LoadSingleArticle),

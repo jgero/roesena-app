@@ -9,6 +9,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { canEdit } from '@state/articles/selectors/article.selectors';
 import { AddSearchString, ChangeDataType, CleanSearch } from '@state/searching/actions/search.actions';
 import { SeoService } from '@services/seo.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-detail',
@@ -16,7 +17,7 @@ import { SeoService } from '@services/seo.service';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnDestroy {
-  article$ = this.store.select('article', 'article').pipe(
+  article$ = this.store.select('article', 'activeArticle').pipe(
     tap((article) => {
       if (!!article) {
         this.seo.setTags(
@@ -28,7 +29,8 @@ export class DetailsComponent implements OnDestroy {
       }
     })
   );
-  image$ = this.store.select('article', 'imageUrl');
+  //image$ = this.store.select('article', 'imageUrl');
+  image$ = of('');
   isLoading$ = this.store.select('article', 'isLoading');
   canEdit$ = this.store.select(canEdit);
 

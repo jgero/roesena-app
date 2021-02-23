@@ -4,14 +4,15 @@ import { ArticlesRoutingModule } from './articles-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import * as fromArticle from '@state/articles/reducers/article.reducer';
-import { ArticleEffects } from '@state/articles/effects/article.effects';
+import { ArticleSingleEffects } from '@state/articles/effects/articleSingle.effects';
+import { ArticleMultiEffects } from '@state/articles/effects/articleMulti.effects';
 
 @NgModule({
   declarations: [],
   imports: [
     ArticlesRoutingModule,
     StoreModule.forFeature(fromArticle.articleFeatureKey, fromArticle.reducer),
-    EffectsModule.forFeature([ArticleEffects]),
+    EffectsModule.forFeature([ArticleSingleEffects, ArticleMultiEffects]),
   ],
 })
 export class ArticlesModule {}

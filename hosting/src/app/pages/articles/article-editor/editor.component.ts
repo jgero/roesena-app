@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { LoadSingleArticle } from '@state/articles/actions/article.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { State } from '@state/articles/editor/reducers/editor.reducer';
-import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/editor/actions/editor.actions';
+import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/actions/article.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash-es';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
@@ -61,7 +61,7 @@ export class EditorComponent implements OnDestroy {
         },
       });
     this.store
-      .select('article', 'article')
+      .select('article', 'activeArticle')
       .pipe(
         filter((article) => article !== null),
         takeUntil(this.subs.unsubscribe$)
