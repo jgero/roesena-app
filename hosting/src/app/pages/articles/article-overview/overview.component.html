@@ -1,7 +1,12 @@
 <app-page-header [title]="'Artikel'" [subtitle]="'Neues aus dem Verein'" [matIcon]="'article'"></app-page-header>
 
 <ng-container *ngIf="data$ | async as articles; else loading">
-  <mat-grid-list [cols]="cols" [rowHeight]="'300px'" [gutterSize]="'16px'" @cardFlyIn>
+  <mat-grid-list
+    [cols]="cols"
+    [rowHeight]="'300px'"
+    [gutterSize]="'16px'"
+    [@cardFlyIn]="articles.length > 0 ? articles[0].id : 'init'"
+  >
     <mat-grid-tile *ngFor="let article of articles">
       <app-article-card [data]="article"></app-article-card>
     </mat-grid-tile>

@@ -1,7 +1,7 @@
 import { trigger, transition, query, style, stagger, animate } from '@angular/animations';
 
 export const cardFlyIn = trigger('cardFlyIn', [
-  transition('void => *', [
+  transition('* => *', [
     query(
       ':enter',
       [

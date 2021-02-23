@@ -59,9 +59,9 @@ export function reducer(state = initialState, action: ArticleActions | PageActio
       return { ...state, articleAmount: action.payload.amount };
     // clear articles on page action
     case PageActionTypes.PageForward:
-      return { ...state, pageIndex: state.pageIndex + 1, activePageArticles: [] };
+      return { ...state, pageIndex: state.pageIndex + 1 };
     case PageActionTypes.PageBackwards:
-      return { ...state, pageIndex: state.pageIndex - 1, activePageArticles: [] };
+      return { ...state, pageIndex: state.pageIndex - 1 };
     // editor
     case ArticleActionTypes.CreateArticle:
     case ArticleActionTypes.UpdateArticle:
