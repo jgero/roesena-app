@@ -4,10 +4,10 @@
 $maxPageWidth: 1000px;
 
 // define palettes
-//$primary-palette: mat-palette($mat-red, 700, 600, 800);
 $primary-palette: mat-palette($mat-red, 800, 700, 900);
 $accent-palette: mat-palette($mat-indigo, 500, 400, 600);
-//$accent-palette: mat-palette($mat-blue, 700, 600, 800);
+//$primary-palette: mat-palette($mat-indigo, 500, 400, 600);
+//$accent-palette: mat-palette($mat-red, 800, 700, 900);
 $warn-palette: mat-palette($mat-red);
 
 // define colors
