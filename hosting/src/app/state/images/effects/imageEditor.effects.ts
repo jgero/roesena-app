@@ -10,7 +10,7 @@ import {
   DeleteImageSuccess,
   DeleteImageFailure,
 } from '../actions/image.actions';
-import { switchMap, map, tap, catchError, withLatestFrom, endWith, filter } from 'rxjs/operators';
+import { switchMap, map, tap, catchError, withLatestFrom } from 'rxjs/operators';
 import 'firebase/firestore';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { toStorableImage } from '@utils/converters/image-documents';
@@ -23,7 +23,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
-export class ImageEffects {
+export class ImageEditorEffects {
   @Effect()
   createImage$ = this.actions$.pipe(
     ofType(ImageActionTypes.CreateImage),

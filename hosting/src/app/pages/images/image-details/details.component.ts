@@ -5,7 +5,7 @@ import { State } from '@state/images/reducers/image.reducer';
 import { switchMap, tap } from 'rxjs/operators';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadImage, CopyUrlToClipboard } from '@state/images/actions/image.actions';
+import { LoadSingleImage, CopyUrlToClipboard } from '@state/images/actions/image.actions';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
 import { canEdit } from '@state/images/selectors/image.selectors';
 import { SeoService } from '@services/seo.service';
@@ -17,7 +17,7 @@ import { SeoService } from '@services/seo.service';
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   private id: string;
-  image$ = this.store.select('image', 'image');
+  image$ = this.store.select('image', 'activeImage');
   canEdit$ = this.store.select(canEdit);
   url$ = this.image$.pipe(
     switchMap((image) => {
@@ -37,7 +37,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadImage());
+    this.store.dispatch(new LoadSingleImage());
   }
 
   ngOnDestroy() {

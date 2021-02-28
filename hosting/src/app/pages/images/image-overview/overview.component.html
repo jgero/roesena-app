@@ -1,7 +1,12 @@
 <app-page-header [title]="'Bilder'" [subtitle]="'Die Gesichter der RöSeNa'" [matIcon]="'insert_photo'"></app-page-header>
 
 <ng-container *ngIf="data$ | async as images; else loading">
-  <mat-grid-list [cols]="cols" [rowHeight]="'420px'" [gutterSize]="'16px'" @cardFlyIn>
+  <mat-grid-list
+    [cols]="cols"
+    [rowHeight]="'420px'"
+    [gutterSize]="'16px'"
+    [@cardFlyIn]="images.length > 0 ? images[0].id : 'init'"
+  >
     <mat-grid-tile *ngFor="let image of images">
       <app-image-card [data]="image"></app-image-card>
     </mat-grid-tile>

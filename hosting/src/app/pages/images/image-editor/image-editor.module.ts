@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ImageEditorRoutingModule } from './image-editor-routing.module';
-import { StoreModule } from '@ngrx/store';
-import * as fromImage from '../../../state/images/editor/reducers/image.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { ImageEffects } from '../../../state/images/editor/effects/image.effects';
 import { EditorComponent } from './editor.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -35,8 +31,6 @@ import { FiltersModule } from '@shared/filters/filters.module';
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     FiltersModule,
-    StoreModule.forFeature(fromImage.imageFeatureKey, fromImage.reducer),
-    EffectsModule.forFeature([ImageEffects]),
   ],
 })
 export class ImageEditorModule {}
