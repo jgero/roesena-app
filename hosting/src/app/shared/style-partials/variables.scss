@@ -4,20 +4,23 @@
 $maxPageWidth: 1000px;
 
 // define palettes
-$primary-palette: mat-palette($mat-pink, 700, 600, 800);
-$accent-palette: mat-palette($mat-yellow, 700, 600, 800);
+//$primary-palette: mat-palette($mat-red, 700, 600, 800);
+$primary-palette: mat-palette($mat-red, 800, 700, 900);
+$accent-palette: mat-palette($mat-indigo, 500, 400, 600);
+//$accent-palette: mat-palette($mat-blue, 700, 600, 800);
 $warn-palette: mat-palette($mat-red);
 
 // define colors
-$primary: mat-color($primary-palette, 700);
-$accent: mat-color($accent-palette, 700);
-$warn: mat-color($warn-palette, 700);
+$primary: mat-color($primary-palette, 800);
+$accent: mat-color($accent-palette, 500);
+$warn: mat-color($warn-palette, 500);
 
 // create the theme
 $theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
 
 // get colors that have been defined by the theme
-$background: map-get($mat-light-theme-background, background);
+//$background: map-get($mat-light-theme-background, background);
+$background: grey;
 $cardBackground: map-get($mat-light-theme-background, card);
 
 // create the typography
