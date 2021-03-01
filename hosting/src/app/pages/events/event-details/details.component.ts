@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { SubscriptionService } from '@services/subscription.service';
 import { Store } from '@ngrx/store';
 import { State } from '@state/events/reducers/event.reducer';
-import { LoadEvent, MarkEventAsSeen } from '@state/events/actions/event.actions';
+import { LoadSingleEvent, MarkEventAsSeen } from '@state/events/actions/event.actions';
 import { map, tap } from 'rxjs/operators';
 import { AddSearchString } from '@state/searching/actions/search.actions';
 import { Participant } from '@utils/interfaces';
@@ -31,7 +31,7 @@ export class DetailsComponent implements OnDestroy, OnInit {
   }
   sort: MatSort;
   dataSource: MatTableDataSource<Participant>;
-  data$ = this.store.select('events', 'event').pipe(
+  data$ = this.store.select('events', 'activeEvent').pipe(
     tap((el) => {
       if (!el) {
         return;
@@ -59,7 +59,7 @@ export class DetailsComponent implements OnDestroy, OnInit {
   constructor(private store: Store<State>, private subs: SubscriptionService, private seo: SeoService) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadEvent());
+    this.store.dispatch(new LoadSingleEvent());
     this.store.dispatch(new MarkEventAsSeen());
   }
 

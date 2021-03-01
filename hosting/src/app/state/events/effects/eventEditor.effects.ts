@@ -9,10 +9,8 @@ import {
   CreateEventFailure,
   DeleteEventSuccess,
   DeleteEventFailure,
-  LoadPersonsSuccess,
-  LoadPersonsFailure,
 } from '../actions/event.actions';
-import { switchMap, map, catchError, tap, withLatestFrom, takeUntil } from 'rxjs/operators';
+import { switchMap, map, catchError, tap, withLatestFrom } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { toStorableEvent } from '@utils/converters/event-documents';
@@ -20,28 +18,26 @@ import { of, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/event.reducer';
-import { SubscriptionService } from '@services/subscription.service';
-import { convertMany } from '@utils/converters/person-documents';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
-export class EventEffects {
-  @Effect()
-  loadPersons$ = this.actions$.pipe(
-    ofType(EventActionTypes.LoadPersons),
-    switchMap(() =>
-      this.firestore
-        .collection('persons', (qFn) => qFn.where('isConfirmedMember', '==', true))
-        .snapshotChanges()
-        .pipe(
-          takeUntil(this.subs.unsubscribe$),
-          map(convertMany),
-          map((persons) => new LoadPersonsSuccess({ persons })),
-          catchError((error) => of(new LoadPersonsFailure({ error })))
-        )
-    )
-  );
+export class EventEditorEffects {
+  //@Effect()
+  //loadPersons$ = this.actions$.pipe(
+  //ofType(EventActionTypes.LoadPersons),
+  //switchMap(() =>
+  //this.firestore
+  //.collection('persons', (qFn) => qFn.where('isConfirmedMember', '==', true))
+  //.snapshotChanges()
+  //.pipe(
+  //takeUntil(this.subs.unsubscribe$),
+  //map(convertMany),
+  //map((persons) => new LoadPersonsSuccess({ persons })),
+  //catchError((error) => of(new LoadPersonsFailure({ error })))
+  //)
+  //)
+  //);
 
   @Effect()
   updateEvent$ = this.actions$.pipe(
@@ -94,7 +90,6 @@ export class EventEffects {
     private firestore: AngularFirestore,
     private analytics: AngularFireAnalytics,
     private router: Router,
-    private subs: SubscriptionService,
     private snackbar: MatSnackBar
   ) {}
 }

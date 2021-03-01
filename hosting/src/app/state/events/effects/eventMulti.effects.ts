@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, withLatestFrom, takeUntil, switchMap } from 'rxjs/operators';
-import { EMPTY, of } from 'rxjs';
-import { LoadEventsFailure, LoadEventsSuccess, EventActionTypes, EventActions } from '../actions/event.actions';
+import { catchError, map, withLatestFrom, takeUntil, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { EventActionTypes, EventActions, LoadAllEventsSuccess, LoadAllEventsFailure } from '../actions/event.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
@@ -13,10 +13,10 @@ import { Query, CollectionReference } from '@angular/fire/firestore/interfaces';
 import { AppEvent } from '@utils/interfaces';
 
 @Injectable()
-export class EventEffects {
+export class EventMultiEffects {
   @Effect()
   loadEvents$ = this.actions$.pipe(
-    ofType(EventActionTypes.LoadEvents),
+    ofType(EventActionTypes.LoadAllEvents),
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       this.firestore
@@ -46,8 +46,8 @@ export class EventEffects {
               );
             }
           }),
-          map((events) => new LoadEventsSuccess({ events })),
-          catchError((error) => of(new LoadEventsFailure({ error })))
+          map((events) => new LoadAllEventsSuccess({ events })),
+          catchError((error) => of(new LoadAllEventsFailure({ error })))
         )
     )
   );

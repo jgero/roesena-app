@@ -5,7 +5,7 @@ import { AppPerson, AppEvent } from '@utils/interfaces';
 export const selectEventState = createFeatureSelector<fromEvent.State>(fromEvent.eventFeatureKey);
 
 export const selectUser = (state: fromEvent.State) => state.user.user;
-export const selectActiveEvent = (state: fromEvent.State) => state.events.event;
+export const selectActiveEvent = (state: fromEvent.State) => state.events.activeEvent;
 
 export const canEdit = createSelector(selectUser, selectActiveEvent, (selectedUser: AppPerson, ev: AppEvent) => {
   if (!selectedUser || !ev) {

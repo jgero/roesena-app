@@ -8,10 +8,10 @@ import { AppEvent, AppPerson, Participant } from 'src/app/utils/interfaces';
 import { ChipsInputService } from 'src/app/services/chips-input.service';
 import { ToLocalTimeStringPipe } from 'src/app/shared/converters/to-local-time/to-local-time-string.pipe';
 import { Store } from '@ngrx/store';
-import { State } from '@state/events/editor/reducers/event.reducer';
+import { State } from '@state/events/reducers/event.reducer';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadEvent } from '@state/events/actions/event.actions';
-import { LoadPersons, UpdateEvent, CreateEvent, DeleteEvent } from '@state/events/editor/actions/event.actions';
+import { LoadSingleEvent } from '@state/events/actions/event.actions';
+import { UpdateEvent, CreateEvent, DeleteEvent } from '@state/events/actions/event.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
@@ -40,7 +40,7 @@ export class EditorComponent implements OnDestroy {
   event: AppEvent;
   persons: AppPerson[];
   groups: string[] = [];
-  isLoading$ = this.store.select('eventEditor', 'isLoading');
+  isLoading$ = this.store.select('events', 'isLoading');
   get canSave(): boolean {
     if (!this.contentFormGroup || !this.dateFormGroup || !this.participantsFormGroup) {
       return false;
@@ -65,12 +65,12 @@ export class EditorComponent implements OnDestroy {
     public autocomplete: AutocompleteService
   ) {
     // dispatch the event to load the event that should be edited
-    this.store.dispatch(new LoadEvent());
+    this.store.dispatch(new LoadSingleEvent());
     // dispatch the event to load the persons who can be invited
-    this.store.dispatch(new LoadPersons());
+    //this.store.dispatch(new LoadPersons());
     // init event and it's form when event is loaded
     this.store
-      .select('events', 'event')
+      .select('events', 'activeEvent')
       .pipe(
         filter((event) => event !== null),
         takeUntil(this.subs.unsubscribe$)
@@ -131,7 +131,7 @@ export class EditorComponent implements OnDestroy {
 
     // handle loading state
     this.store
-      .select('eventEditor', 'isLoading')
+      .select('events', 'isLoading')
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe({
         next: (isLoading) => {
