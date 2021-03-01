@@ -13,7 +13,7 @@ import { convertOne as convertOneArticle } from '@utils/converters/article-docum
 import { StoreableArticle, StoreableImage } from '@utils/interfaces';
 import { CollectionReference, Query } from '@angular/fire/firestore/interfaces';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { State } from '../reducers/article.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertMany as convertManyImages } from '@utils/converters/image-documents';
 import { UrlLoaderService } from '@services/url-loader.service';
@@ -68,8 +68,8 @@ export class ArticleSingleEffects {
           new LoadSingleArticleSuccess({
             article: {
               id: '',
-              ownerId: storeState.user.user.id,
-              ownerName: storeState.user.user.name,
+              ownerId: storeState.persons.user.id,
+              ownerName: storeState.persons.user.name,
               tags: [],
               title: '',
               content: '',

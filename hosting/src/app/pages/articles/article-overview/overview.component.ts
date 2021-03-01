@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SubscriptionService } from '@services/subscription.service';
 import { AppArticle } from '@utils/interfaces';
-import { State } from '@state/articles/reducers/article.reducer';
-import { canCreate } from '@state/user/selectors/user.selectors';
+import { State } from '@state/state.module';
+import { canCreate } from '@state/persons';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
 import { SeoService } from '@services/seo.service';
 import { LoadArticlePage } from '@state/articles/actions/article.actions';
@@ -16,10 +16,10 @@ import { LoadArticlePage } from '@state/articles/actions/article.actions';
   animations: [cardFlyIn],
 })
 export class OverviewComponent implements OnInit, OnDestroy {
-  data$: Observable<AppArticle[]> = this.store.select('article', 'activePageArticles');
-  length$: Observable<number> = this.store.select('article', 'articleAmount');
-  isLoading$: Observable<boolean> = this.store.select('article', 'isLoading');
-  pageIndex$: Observable<number> = this.store.select('article', 'pageIndex');
+  data$: Observable<AppArticle[]> = this.store.select('articles', 'activePageArticles');
+  length$: Observable<number> = this.store.select('articles', 'articleAmount');
+  isLoading$: Observable<boolean> = this.store.select('articles', 'isLoading');
+  pageIndex$: Observable<number> = this.store.select('articles', 'pageIndex');
   canCreate$: Observable<boolean> = this.store.select((state) => canCreate(state));
 
   get cols(): number {

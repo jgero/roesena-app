@@ -13,10 +13,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { StoreModule } from '@ngrx/store';
-import * as fromEvent from '../../../state/events/editor/reducers/event.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { EventEffects } from '../../../state/events/editor/effects/event.effects';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -48,8 +44,6 @@ import { FiltersModule } from '@shared/filters/filters.module';
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     FiltersModule,
-    StoreModule.forFeature(fromEvent.eventFeatureKey, fromEvent.reducer),
-    EffectsModule.forFeature([EventEffects]),
   ],
 })
 export class EventEditorModule {}

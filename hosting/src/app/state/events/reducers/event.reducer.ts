@@ -1,26 +1,23 @@
 import { EventActions, EventActionTypes } from '../actions/event.actions';
 import { AppEvent } from '@utils/interfaces';
-import * as fromRoot from '@state/state.module';
 
 export const eventFeatureKey = 'events';
 
-interface EventState {
+export interface State {
   activeEvent: AppEvent;
   activePageEvents: AppEvent[];
   isLoading: boolean;
+  unrespondedEvents: AppEvent[];
 }
 
-export interface State extends fromRoot.State {
-  events: EventState;
-}
-
-export const initialState: EventState = {
+export const initialState: State = {
   activeEvent: null,
   activePageEvents: [],
   isLoading: false,
+  unrespondedEvents: [],
 };
 
-export function reducer(state = initialState, action: EventActions): EventState {
+export function reducer(state = initialState, action: EventActions): State {
   switch (action.type) {
     // single event
     case EventActionTypes.LoadSingleEvent:
@@ -52,6 +49,15 @@ export function reducer(state = initialState, action: EventActions): EventState 
     case EventActionTypes.DeleteEventSuccess:
     case EventActionTypes.DeleteEventFailure:
       return { ...state, isLoading: false };
+    // responding
+    case EventActionTypes.RespondToEvent:
+      return { ...state, isLoading: true };
+    case EventActionTypes.RespondToEventSuccess:
+      return { ...state, isLoading: false };
+    case EventActionTypes.RespondToEventFailure:
+      return { ...state, isLoading: false };
+    case EventActionTypes.UpdateUnrespondedEventAmount:
+      return { ...state, unrespondedEvents: action.payload.unrespondedEvents };
 
     default:
       return state;

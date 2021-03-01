@@ -1,11 +1,9 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromEvent from '../reducers/event.reducer';
+import { createSelector } from '@ngrx/store';
+import { State } from '@state/state.module';
 import { AppPerson, AppEvent } from '@utils/interfaces';
 
-export const selectEventState = createFeatureSelector<fromEvent.State>(fromEvent.eventFeatureKey);
-
-export const selectUser = (state: fromEvent.State) => state.user.user;
-export const selectActiveEvent = (state: fromEvent.State) => state.events.activeEvent;
+export const selectUser = (state: State) => state.persons.user;
+export const selectActiveEvent = (state: State) => state.events.activeEvent;
 
 export const canEdit = createSelector(selectUser, selectActiveEvent, (selectedUser: AppPerson, ev: AppEvent) => {
   if (!selectedUser || !ev) {
@@ -26,3 +24,10 @@ export const canReply = createSelector(selectUser, selectActiveEvent, (selectedU
   }
   return ev.participants.some((paricipant) => paricipant.id === selectedUser.id);
 });
+
+export const forStartpage = (state: State) => {
+  // TODO: select startpage event here
+  return null;
+};
+
+export const unrespondedAmount = (state: State) => state.events.unrespondedEvents.length;

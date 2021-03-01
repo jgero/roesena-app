@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { State } from '@state/events/reducers/event.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadAllEvents } from '@state/events/actions/event.actions';
-import { canCreate } from '@state/user/selectors/user.selectors';
+import { LoadAllEvents } from '@state/events';
+import { canCreate } from '@state/persons';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
 import { SeoService } from '@services/seo.service';
 

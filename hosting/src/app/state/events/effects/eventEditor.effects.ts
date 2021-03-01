@@ -17,7 +17,7 @@ import { toStorableEvent } from '@utils/converters/event-documents';
 import { of, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { State } from '../reducers/event.reducer';
+import { State } from '@state/state.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 

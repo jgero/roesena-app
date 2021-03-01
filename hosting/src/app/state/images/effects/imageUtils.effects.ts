@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import { ImageActionTypes, ImageActions } from '../actions/image.actions';
 import { Store } from '@ngrx/store';
-import { State } from '../reducers/image.reducer';
+import { State } from '@state/state.module';
 import 'firebase/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -15,7 +15,7 @@ export class ImageUtilsEffects {
   copyUrlToClipboard$ = this.actions$.pipe(
     ofType(ImageActionTypes.CopyUrlToClipboard),
     withLatestFrom(this.store),
-    switchMap(([action, storeState]) => this.urlLoader.getImageURL(storeState.image.activeImage.id, false)),
+    switchMap(([action, storeState]) => this.urlLoader.getImageURL(storeState.images.activeImage.id, false)),
     tap((url) => {
       this.clipboard.copy(url);
       this.snackbar.open('Bild-URL wurde in die Zwischenablage kopiert', 'OK');

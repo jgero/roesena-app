@@ -7,7 +7,7 @@ import { ChipsInputService } from 'src/app/services/chips-input.service';
 import { Store } from '@ngrx/store';
 import { LoadSingleArticle } from '@state/articles/actions/article.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { State } from '@state/articles/reducers/article.reducer';
+import { State } from '@state/state.module';
 import { UpdateArticle, CreateArticle, DeleteArticle } from '@state/articles/actions/article.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash-es';
@@ -26,7 +26,7 @@ export class EditorComponent implements OnDestroy {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   article: AppArticle;
   articleForm: FormGroup;
-  isLoading$ = this.store.select('article', 'isLoading');
+  isLoading$ = this.store.select('articles', 'isLoading');
   get canSave(): boolean {
     if (!this.articleForm) {
       return false;
@@ -46,7 +46,7 @@ export class EditorComponent implements OnDestroy {
   ) {
     this.store.dispatch(new LoadSingleArticle({ withImage: false }));
     this.store
-      .select('article', 'isLoading')
+      .select('articles', 'isLoading')
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe({
         next: (isLoading) => {
@@ -61,7 +61,7 @@ export class EditorComponent implements OnDestroy {
         },
       });
     this.store
-      .select('article', 'activeArticle')
+      .select('articles', 'activeArticle')
       .pipe(
         filter((article) => article !== null),
         takeUntil(this.subs.unsubscribe$)

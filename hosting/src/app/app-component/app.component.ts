@@ -12,7 +12,8 @@ import { pageTransition } from '@utils/animations/page-transition';
 import { Observable, Subject } from 'rxjs';
 import { map, tap, shareReplay, takeUntil, filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { State } from '@state/basePages/reducers/base.reducer';
+import { State } from '@state/state.module';
+import { unrespondedAmount } from '@state/events';
 
 @Component({
   selector: 'app-root',
@@ -27,8 +28,8 @@ export class AppComponent implements OnDestroy {
     shareReplay()
   );
   brakpointMatches: boolean;
-  badgeContentStream$ = this.store.select('base', 'respondablesAmount').pipe(map((el) => (el === 0 ? undefined : el)));
-  user$ = this.store.select('user', 'user');
+  badgeContentStream$ = this.store.select(unrespondedAmount).pipe(map((el) => (el === 0 ? undefined : el)));
+  user$ = this.store.select('persons', 'user');
   version: string;
   destroyed$ = new Subject<boolean>();
 

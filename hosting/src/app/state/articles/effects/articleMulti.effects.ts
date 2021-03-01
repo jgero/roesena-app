@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { State } from '../reducers/article.reducer';
-import { Store, StoreRootModule } from '@ngrx/store';
+import { State } from '@state/state.module';
+import { Store } from '@ngrx/store';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 import { withLatestFrom, switchMap, map, takeUntil, catchError, filter } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { StoreableArticle } from '@utils/interfaces';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertMany } from '@utils/converters/article-documents';
 import { Query, CollectionReference } from '@angular/fire/firestore/interfaces';
-import { merge, of } from 'rxjs';
+import { of } from 'rxjs';
 import { MissingDocumentError } from '@utils/errors/missing-document-error';
 import {
   ArticleActionTypes,
@@ -34,8 +34,8 @@ export class ArticleMultiEffects {
           let query: Query | CollectionReference = qFn;
           // sort the data for pagination
           query = query.orderBy('created', 'desc');
-          if (storeState.article.pageFirst) {
-            query = query.startAt(storeState.article.pageFirst.created);
+          if (storeState.articles.pageFirst) {
+            query = query.startAt(storeState.articles.pageFirst.created);
           }
           query = query.limit(action.payload.limit);
           return query;
@@ -83,7 +83,7 @@ export class ArticleMultiEffects {
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('articles', (qFn) =>
-          qFn.orderBy('created', 'desc').startAfter(storeState.article.pageLast.created).limit(storeState.article.pageLimit)
+          qFn.orderBy('created', 'desc').startAfter(storeState.articles.pageLast.created).limit(storeState.articles.pageLimit)
         )
         .snapshotChanges()
         .pipe(
@@ -103,7 +103,10 @@ export class ArticleMultiEffects {
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('articles', (qFn) =>
-          qFn.orderBy('created', 'desc').endBefore(storeState.article.pageFirst.created).limitToLast(storeState.article.pageLimit)
+          qFn
+            .orderBy('created', 'desc')
+            .endBefore(storeState.articles.pageFirst.created)
+            .limitToLast(storeState.articles.pageLimit)
         )
         .snapshotChanges()
         .pipe(

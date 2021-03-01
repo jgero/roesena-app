@@ -59,7 +59,7 @@ export class SearchEffects {
         // limit the results to something that would fit the page but at least 40
         query = query.limit(Math.max(40, storeState.search.limit));
         // only take public events if not logged in or user ist not confirmed
-        if (storeState.search.dataType === 'events' && (!storeState.user.user || !storeState.user.user.isConfirmedMember)) {
+        if (storeState.search.dataType === 'events' && (!storeState.persons.user || !storeState.persons.user.isConfirmedMember)) {
           query = query.where('participants', '==', {});
         }
         return query;

@@ -13,7 +13,7 @@ import { SeoService } from '@services/seo.service';
 export class CalendarComponent implements OnDestroy, OnInit {
   currentDate$ = this.store.select('calendar', 'currentDate');
   days$ = this.store.select('calendar', 'days');
-  user$ = this.store.select('user', 'user');
+  user$ = this.store.select('persons', 'user');
   isLoading$ = this.store.select('calendar', 'isLoading');
 
   constructor(private store: Store<State>, private subs: SubscriptionService, seo: SeoService) {

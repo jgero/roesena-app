@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom, takeUntil } from 'rxjs/operators';
 import { ImageActionTypes, ImageActions, LoadSingleImageSuccess, LoadSingleImageFailure } from '../actions/image.actions';
 import { Store } from '@ngrx/store';
-import { State } from '../reducers/image.reducer';
+import { State } from '@state/state.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { of } from 'rxjs';
@@ -33,8 +33,8 @@ export class ImageSingleEffects {
           new LoadSingleImageSuccess({
             image: {
               id: '',
-              ownerId: storeState.user.user.id,
-              ownerName: storeState.user.user.name,
+              ownerId: storeState.persons.user.id,
+              ownerName: storeState.persons.user.name,
               tags: [],
               created: null,
             },

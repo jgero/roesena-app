@@ -15,7 +15,7 @@ import { PageActions, PageActionTypes } from '@state/pagination/actions/page.act
 import { Store } from '@ngrx/store';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { SubscriptionService } from '@services/subscription.service';
-import { State } from '../reducers/image.reducer';
+import { State } from '@state/state.module';
 import 'firebase/firestore';
 import { convertMany } from '@utils/converters/image-documents';
 import { MissingDocumentError } from '@utils/errors/missing-document-error';
@@ -69,7 +69,7 @@ export class ImageMultiEffects {
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('images', (qFn) =>
-          qFn.orderBy('created', 'desc').startAfter(storeState.image.pageLast.created).limit(storeState.image.pageLimit)
+          qFn.orderBy('created', 'desc').startAfter(storeState.images.pageLast.created).limit(storeState.images.pageLimit)
         )
         .snapshotChanges()
         .pipe(
@@ -89,7 +89,7 @@ export class ImageMultiEffects {
     switchMap(([action, storeState]) =>
       this.firestore
         .collection('images', (qFn) =>
-          qFn.orderBy('created', 'desc').endBefore(storeState.image.pageFirst.created).limitToLast(storeState.image.pageLimit)
+          qFn.orderBy('created', 'desc').endBefore(storeState.images.pageFirst.created).limitToLast(storeState.images.pageLimit)
         )
         .snapshotChanges()
         .pipe(

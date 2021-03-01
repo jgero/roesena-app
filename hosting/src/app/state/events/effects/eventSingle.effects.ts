@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, withLatestFrom, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, map, withLatestFrom, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { EventActionTypes, EventActions, LoadSingleEventSuccess, LoadSingleEventFailure } from '../actions/event.actions';
+import {
+  EventActionTypes,
+  EventActions,
+  LoadSingleEventSuccess,
+  LoadSingleEventFailure,
+  RespondToEventSuccess,
+  RespondToEventFailure,
+} from '../actions/event.actions';
 import { Store } from '@ngrx/store';
-import { State } from '../reducers/event.reducer';
+import { State } from '@state/state.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { StoreableEvent } from '@utils/interfaces';
@@ -12,6 +19,8 @@ import { SubscriptionService } from '@services/subscription.service';
 import { convertOne } from '@utils/converters/event-documents';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { PermissionDeniedError } from '@utils/errors/permission-denied-error';
+import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class EventSingleEffects {
@@ -45,8 +54,8 @@ export class EventSingleEffects {
             new LoadSingleEventSuccess({
               event: {
                 id: '',
-                ownerId: storeState.user.user.id,
-                ownerName: storeState.user.user.name,
+                ownerId: storeState.persons.user.id,
+                ownerName: storeState.persons.user.name,
                 tags: [],
                 description: '',
                 deadline: null,
@@ -69,10 +78,24 @@ export class EventSingleEffects {
       this.fns
         .httpsCallable('changeSeenMarker')({ id: storeState.router.state.params.id })
         .pipe(
-          catchError((err) => {
-            console.log(err);
-            return of(null);
-          })
+          // report to analytics
+          tap(() => this.analytics.logEvent('event_marked_seen', { event_category: 'engagement' })),
+          catchError((error) => of(new RespondToEventFailure({ error: new CloudFunctionCallError(error.error) })))
+        )
+    )
+  );
+
+  @Effect()
+  respondToEvent$ = this.actions$.pipe(
+    ofType(EventActionTypes.RespondToEvent),
+    switchMap((action) =>
+      this.fns
+        .httpsCallable('respondToEvent')({ id: action.payload.id, amount: action.payload.amount })
+        .pipe(
+          map(() => new RespondToEventSuccess()),
+          // report to analytics
+          tap(() => this.analytics.logEvent('respond_to_event', { event_category: 'engagement' })),
+          catchError((error) => of(new RespondToEventFailure({ error: new CloudFunctionCallError(error.error) })))
         )
     )
   );
@@ -82,6 +105,7 @@ export class EventSingleEffects {
     private store: Store<State>,
     private firestore: AngularFirestore,
     private subs: SubscriptionService,
-    private fns: AngularFireFunctions
+    private fns: AngularFireFunctions,
+    private analytics: AngularFireAnalytics
   ) {}
 }

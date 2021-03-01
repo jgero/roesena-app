@@ -3,8 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
-import { DoLogin } from '@state/auth/actions/auth.actions';
-import { State } from '@state/auth/reducers/auth.reducer';
+import { Login } from '@state/persons';
+import { State } from '@state/state.module';
 import { SeoService } from '@services/seo.service';
 
 @Component({
@@ -18,13 +18,13 @@ export class LoginComponent implements OnDestroy {
     password: new FormControl('', [Validators.required]),
   });
   private subs: Subscription[] = [];
-  isLoading$ = this.store.select('auth', 'isLoading');
+  isLoading$ = this.store.select('persons', 'isLoading');
 
   constructor(private store: Store<State>, seo: SeoService) {
     seo.setTags('Login', 'Anmeldeseite der RöSeNa-App', undefined, '/auth/login');
     this.subs.push(
       // enable and disable the form while loading
-      this.store.select('auth', 'isLoading').subscribe({
+      this.store.select('persons', 'isLoading').subscribe({
         next: (isLoading) => {
           if (isLoading) {
             this.loginForm.disable();
@@ -37,9 +37,7 @@ export class LoginComponent implements OnDestroy {
   }
 
   onSubmit() {
-    this.store.dispatch(
-      new DoLogin({ email: this.loginForm.get('email').value, password: this.loginForm.get('password').value })
-    );
+    this.store.dispatch(new Login({ email: this.loginForm.get('email').value, password: this.loginForm.get('password').value }));
   }
 
   ngOnDestroy() {

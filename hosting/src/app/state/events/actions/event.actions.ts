@@ -10,8 +10,12 @@ export enum EventActionTypes {
   LoadAllEvents = '[event] load events',
   LoadAllEventsSuccess = '[event] load events success',
   LoadAllEventsFailure = '[event] load events failure',
-  // seen marker
+  // user specific actions
   MarkEventAsSeen = '[event] mark event as seen',
+  RespondToEvent = '[event] respond to event',
+  RespondToEventSuccess = '[event] respond to event success',
+  RespondToEventFailure = '[event] responding to event failed',
+  UpdateUnrespondedEventAmount = '[event] update unresponded event amount',
   // event mutations
   CreateEvent = '[event] create new event',
   CreateEventSuccess = '[event] create new event success',
@@ -51,9 +55,24 @@ export class LoadAllEventsFailure implements Action {
   constructor(public payload: { error: any }) {}
 }
 
-// seen marker
+// user specific actions
 export class MarkEventAsSeen implements Action {
   readonly type = EventActionTypes.MarkEventAsSeen;
+}
+export class RespondToEvent implements Action {
+  readonly type = EventActionTypes.RespondToEvent;
+  constructor(public payload: { amount: number; id: string }) {}
+}
+export class RespondToEventSuccess implements Action {
+  readonly type = EventActionTypes.RespondToEventSuccess;
+}
+export class RespondToEventFailure implements Action {
+  readonly type = EventActionTypes.RespondToEventFailure;
+  constructor(public payload: { error: any }) {}
+}
+export class UpdateUnrespondedEventAmount implements Action {
+  readonly type = EventActionTypes.UpdateUnrespondedEventAmount;
+  constructor(public payload: { unrespondedEvents: AppEvent[] }) {}
 }
 
 // event mutations
@@ -98,6 +117,10 @@ export type EventActions =
   | LoadAllEventsSuccess
   | LoadAllEventsFailure
   | MarkEventAsSeen
+  | RespondToEvent
+  | RespondToEventSuccess
+  | RespondToEventFailure
+  | UpdateUnrespondedEventAmount
   | CreateEvent
   | CreateEventSuccess
   | CreateEventFailure

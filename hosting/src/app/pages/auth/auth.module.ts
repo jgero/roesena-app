@@ -24,11 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 
-import * as fromAuth from '@state/auth/reducers/auth.reducer';
-import { AuthEffects } from '@state/auth/effects/auth.effects';
 import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -57,8 +53,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatGridListModule,
     ConvertersModule,
     MatCardModule,
-    StoreModule.forFeature(fromAuth.authFeatureKey, fromAuth.reducer),
-    EffectsModule.forFeature([AuthEffects]),
   ],
 })
 export class AuthModule {}

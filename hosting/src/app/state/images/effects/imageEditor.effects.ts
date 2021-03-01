@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { State } from '../reducers/image.reducer';
+import { State } from '@state/state.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 

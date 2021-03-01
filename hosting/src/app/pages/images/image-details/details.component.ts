@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppImage } from '@utils/interfaces';
 import { Store } from '@ngrx/store';
-import { State } from '@state/images/reducers/image.reducer';
+import { State } from '@state/state.module';
 import { switchMap, tap } from 'rxjs/operators';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { SubscriptionService } from '@services/subscription.service';
 import { LoadSingleImage, CopyUrlToClipboard } from '@state/images/actions/image.actions';
 import { AddSearchString, CleanSearch, ChangeDataType } from '@state/searching/actions/search.actions';
-import { canEdit } from '@state/images/selectors/image.selectors';
+import { canEdit } from '@state/images';
 import { SeoService } from '@services/seo.service';
 
 @Component({
@@ -17,7 +17,7 @@ import { SeoService } from '@services/seo.service';
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   private id: string;
-  image$ = this.store.select('image', 'activeImage');
+  image$ = this.store.select('images', 'activeImage');
   canEdit$ = this.store.select(canEdit);
   url$ = this.image$.pipe(
     switchMap((image) => {
@@ -28,7 +28,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.seo.setTags('Bild Detailansicht', undefined, url, `/images/details/${this.id}`);
     })
   );
-  isLoading$ = this.store.select('image', 'isLoading');
+  isLoading$ = this.store.select('images', 'isLoading');
   constructor(
     private store: Store<State>,
     private urlLoader: UrlLoaderService,

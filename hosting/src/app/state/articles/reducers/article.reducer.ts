@@ -1,12 +1,11 @@
 import { ArticleActions, ArticleActionTypes } from '../actions/article.actions';
 import { AppArticle } from '@utils/interfaces';
 
-import * as fromRoot from '@state/state.module';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 
-export const articleFeatureKey = 'article';
+export const articleFeatureKey = 'articles';
 
-export interface ArticleState {
+export interface State {
   activeArticle: AppArticle;
   activePageArticles: AppArticle[];
   articleAmount: number;
@@ -17,11 +16,7 @@ export interface ArticleState {
   pageLast: AppArticle;
 }
 
-export interface State extends fromRoot.State {
-  article: ArticleState;
-}
-
-export const initialState: ArticleState = {
+export const initialState: State = {
   activeArticle: null,
   activePageArticles: [],
   articleAmount: 0,
@@ -32,7 +27,7 @@ export const initialState: ArticleState = {
   pageLast: null,
 };
 
-export function reducer(state = initialState, action: ArticleActions | PageActions): ArticleState {
+export function reducer(state = initialState, action: ArticleActions | PageActions): State {
   switch (action.type) {
     // single article
     case ArticleActionTypes.LoadSingleArticle:

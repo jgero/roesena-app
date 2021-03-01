@@ -1,11 +1,10 @@
 import { ImageActions, ImageActionTypes } from '../actions/image.actions';
-import * as fromRoot from '@state/state.module';
 import { AppImage } from '@utils/interfaces';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 
-export const imageFeatureKey = 'image';
+export const imageFeatureKey = 'images';
 
-export interface ImageState {
+export interface State {
   activeImage: AppImage;
   activePageImages: AppImage[];
   imageAmount: number;
@@ -16,11 +15,7 @@ export interface ImageState {
   pageLast: AppImage;
 }
 
-export interface State extends fromRoot.State {
-  image: ImageState;
-}
-
-export const initialState: ImageState = {
+export const initialState: State = {
   activeImage: null,
   activePageImages: [],
   imageAmount: 0,
@@ -31,7 +26,7 @@ export const initialState: ImageState = {
   pageLast: null,
 };
 
-export function reducer(state = initialState, action: ImageActions | PageActions): ImageState {
+export function reducer(state = initialState, action: ImageActions | PageActions): State {
   switch (action.type) {
     // single image
     case ImageActionTypes.LoadSingleImage:

@@ -5,13 +5,12 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { cloneDeep } from 'lodash-es';
 
 import { AppEvent, AppPerson, Participant } from 'src/app/utils/interfaces';
-import { ChipsInputService } from 'src/app/services/chips-input.service';
-import { ToLocalTimeStringPipe } from 'src/app/shared/converters/to-local-time/to-local-time-string.pipe';
+import { ChipsInputService } from '@services/chips-input.service';
+import { ToLocalTimeStringPipe } from '@shared/converters/to-local-time/to-local-time-string.pipe';
 import { Store } from '@ngrx/store';
-import { State } from '@state/events/reducers/event.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadSingleEvent } from '@state/events/actions/event.actions';
-import { UpdateEvent, CreateEvent, DeleteEvent } from '@state/events/actions/event.actions';
+import { UpdateEvent, CreateEvent, DeleteEvent, LoadSingleEvent } from '@state/events';
 import { MatDialog } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
@@ -113,7 +112,7 @@ export class EditorComponent implements OnDestroy {
 
     // init persons and the groups on load
     this.store
-      .select('eventEditor', 'persons')
+      .select('persons', 'persons')
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe({
         next: (persons) => {

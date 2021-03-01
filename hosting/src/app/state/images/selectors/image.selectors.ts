@@ -1,11 +1,9 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromImage from '../reducers/image.reducer';
+import { createSelector } from '@ngrx/store';
 import { AppPerson, AppImage } from '@utils/interfaces';
+import { State } from '@state/state.module';
 
-export const selectImageState = createFeatureSelector<fromImage.State>(fromImage.imageFeatureKey);
-
-export const selectUser = (state: fromImage.State) => state.user.user;
-export const selectActiveArticle = (state: fromImage.State) => state.image.activeImage;
+export const selectUser = (state: State) => state.persons.user;
+export const selectActiveArticle = (state: State) => state.images.activeImage;
 
 export const canEdit = createSelector(selectUser, selectActiveArticle, (selectedUser: AppPerson, image: AppImage) => {
   if (!selectedUser || !image) {
