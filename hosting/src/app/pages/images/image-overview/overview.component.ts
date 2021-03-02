@@ -8,6 +8,8 @@ import { LoadImages } from '@state/images/overview/actions/image.actions';
 import { canCreate } from '@state/user/selectors/user.selectors';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
 import { SeoService } from '@services/seo.service';
+import { UrlLoaderService } from '@services/url-loader.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-overview',
@@ -29,9 +31,38 @@ export class OverviewComponent implements OnInit, OnDestroy {
     return this.cols * 5;
   }
 
+  isCarouselVisible = false;
+  carouselIndex = 0;
+  carouselUrl = '';
+  openCarousel(images: AppImage[]) {
+    this.isCarouselVisible = true;
+    this.carouselIndex = 0;
+    this.loadCaruselUrl(images);
+  }
+  closeCarousel() {
+    this.isCarouselVisible = false;
+  }
+  carouselNext(images: AppImage[]) {
+    this.carouselIndex++;
+    this.loadCaruselUrl(images);
+  }
+  carouselPrevious(images: AppImage[]) {
+    this.carouselIndex--;
+    this.loadCaruselUrl(images);
+  }
+  private loadCaruselUrl(images: AppImage[]) {
+    if (images.length > this.carouselIndex) {
+      this.urlLoader
+        .getImageURL(images[this.carouselIndex].id, false)
+        .pipe(take(1))
+        .subscribe((url) => (this.carouselUrl = url));
+    }
+  }
+
   constructor(
     private store: Store<State>,
     private subs: SubscriptionService,
+    public urlLoader: UrlLoaderService,
     private hostRef: ElementRef<HTMLElement>,
     seo: SeoService
   ) {

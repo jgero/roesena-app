@@ -1,11 +1,30 @@
 <app-page-header [title]="'Bilder'" [subtitle]="'Die Gesichter der RöSeNa'" [matIcon]="'insert_photo'"></app-page-header>
 
 <ng-container *ngIf="data$ | async as images; else loading">
-  <mat-grid-list [cols]="cols" [rowHeight]="'420px'" [gutterSize]="'16px'" @cardFlyIn>
+  <button (click)="openCarousel(images)">open carousel</button>
+  <mat-grid-list
+    [cols]="cols"
+    [rowHeight]="'420px'"
+    [gutterSize]="'16px'"
+    [@cardFlyIn]="images.length > 0 ? images[0].id : 'init'"
+  >
     <mat-grid-tile *ngFor="let image of images">
       <app-image-card [data]="image"></app-image-card>
     </mat-grid-tile>
   </mat-grid-list>
+
+  <div class="carousel mat-elevation-z2" *ngIf="isCarouselVisible">
+    <button mat-fab (click)="carouselPrevious(images)" color="primary" [disabled]="carouselIndex === 0">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <img [src]="carouselUrl" alt="image carousel" />
+    <button mat-fab (click)="carouselNext(images)" color="primary" [disabled]="carouselIndex === images.length - 1">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+    <button mat-fab (click)="closeCarousel()" color="primary">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 
   <a
     mat-fab
