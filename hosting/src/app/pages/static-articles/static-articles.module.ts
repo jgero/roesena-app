@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { GroupsRoutingModule } from './groups-routing.module';
 import { GardenComponent } from './garden/garden.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -15,12 +14,13 @@ import { CommonComponent } from './common/common.component';
 import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-viewer.module';
 import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { StaticArticlesRoutingModule } from './static-articles-routing.module';
 
 @NgModule({
   declarations: [GardenComponent, CommonComponent],
   imports: [
     CommonModule,
-    GroupsRoutingModule,
+    StaticArticlesRoutingModule,
     MatToolbarModule,
     MatGridListModule,
     CardsModule,
@@ -34,4 +34,4 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MarkdownViewerModule,
   ],
 })
-export class GroupsModule {}
+export class StaticArticlesModule {}

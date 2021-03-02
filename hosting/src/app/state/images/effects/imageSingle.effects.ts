@@ -10,7 +10,6 @@ import { of } from 'rxjs';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertOne, convertMany } from '@utils/converters/image-documents';
 import { UrlLoaderService } from '@services/url-loader.service';
-import { MissingDocumentError } from '@utils/errors/missing-document-error';
 
 @Injectable()
 export class ImageSingleEffects {
@@ -25,11 +24,11 @@ export class ImageSingleEffects {
           .doc(storeState.router.state.params.id)
           .snapshotChanges()
           .pipe(
-            takeUntil(this.subs.unsubscribe$),
             map(convertOne),
             switchMap((image) =>
               this.urlLoader.getImageURL(image.id, false).pipe(map((fullUrl) => new LoadSingleImageSuccess({ image, fullUrl })))
             ),
+            takeUntil(this.subs.unsubscribe$),
             catchError((error) => of(new LoadSingleImageFailure({ error })))
           );
       } else if (action.payload?.tags) {
@@ -44,15 +43,15 @@ export class ImageSingleEffects {
           })
           .snapshotChanges()
           .pipe(
-            takeUntil(this.subs.unsubscribe$),
             map(convertMany),
             switchMap((images) =>
               images.length === 0
-                ? of(new LoadSingleImageFailure({ error: new MissingDocumentError('no image with these tags') }))
+                ? of(new LoadSingleImageSuccess({ image: null, fullUrl: '' }))
                 : this.urlLoader
                     .getImageURL(images[0].id, false)
                     .pipe(map((fullUrl) => new LoadSingleImageSuccess({ image: images[0], fullUrl })))
             ),
+            takeUntil(this.subs.unsubscribe$),
             catchError((error) => of(new LoadSingleImageFailure({ error })))
           );
       } else {

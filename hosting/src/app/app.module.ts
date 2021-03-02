@@ -12,10 +12,6 @@ import { FireModule } from './fire.module';
 import { AppComponentModule } from './app-component/app-component.module';
 import { AppComponent } from './app-component/app.component';
 import { MaterialModule } from './material.module';
-//import { StoreModule } from '@ngrx/store';
-//import * as fromBase from '@state/basePages/reducers/base.reducer';
-//import { EffectsModule } from '@ngrx/effects';
-//import { BaseEffects } from '@state/basePages/effects/base.effects';
 
 @NgModule({
   declarations: [],
@@ -30,8 +26,6 @@ import { MaterialModule } from './material.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     HammerModule,
     StateModule,
-    //StoreModule.forFeature(fromBase.baseFeatureKey, fromBase.reducer),
-    //EffectsModule.forFeature([BaseEffects]),
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

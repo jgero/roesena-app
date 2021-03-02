@@ -32,8 +32,8 @@ export const routes: Routes = [
         loadChildren: () => import('@pages/calendar/calendar.module').then((m) => m.CalendarModule),
       },
       {
-        path: 'groups',
-        loadChildren: () => import('@pages/groups/groups.module').then((m) => m.GroupsModule),
+        path: 'static-articles',
+        loadChildren: () => import('@pages/static-articles/static-articles.module').then((m) => m.StaticArticlesModule),
       },
       {
         path: 'about',
