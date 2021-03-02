@@ -44,7 +44,7 @@ export class EditorComponent implements OnDestroy {
     private cookies: CookieService,
     public autocomplete: AutocompleteService
   ) {
-    this.store.dispatch(new LoadSingleArticle({ withImage: false }));
+    this.store.dispatch(new LoadSingleArticle());
     this.store
       .select('articles', 'isLoading')
       .pipe(takeUntil(this.subs.unsubscribe$))

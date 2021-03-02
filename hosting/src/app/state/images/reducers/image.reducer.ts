@@ -6,6 +6,7 @@ export const imageFeatureKey = 'images';
 
 export interface State {
   activeImage: AppImage;
+  activeImageFullUrl: string;
   activePageImages: AppImage[];
   imageAmount: number;
   isLoading: boolean;
@@ -17,6 +18,7 @@ export interface State {
 
 export const initialState: State = {
   activeImage: null,
+  activeImageFullUrl: '',
   activePageImages: [],
   imageAmount: 0,
   isLoading: false,
@@ -30,9 +32,9 @@ export function reducer(state = initialState, action: ImageActions | PageActions
   switch (action.type) {
     // single image
     case ImageActionTypes.LoadSingleImage:
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, activeImage: null, activeImageFullUrl: '' };
     case ImageActionTypes.LoadSingleImageSuccess:
-      return { ...state, isLoading: false, activeImage: action.payload.image };
+      return { ...state, isLoading: false, activeImage: action.payload.image, activeImageFullUrl: action.payload.fullUrl };
     case ImageActionTypes.LoadSingleImageFailure:
       return { ...state, isLoading: false };
     // multiple images

@@ -29,11 +29,11 @@ export enum ArticleActionTypes {
 // load single article
 export class LoadSingleArticle implements Action {
   readonly type = ArticleActionTypes.LoadSingleArticle;
-  constructor(public payload: { withImage: boolean } = { withImage: true }) {}
+  constructor(public payload?: { tags: string[] }) {}
 }
 export class LoadSingleArticleSuccess implements Action {
   readonly type = ArticleActionTypes.LoadSingleArticleSuccess;
-  constructor(public payload: { article: AppArticle; imageUrl: string }) {}
+  constructor(public payload: { article: AppArticle }) {}
 }
 export class LoadSingleArticleFailure implements Action {
   readonly type = ArticleActionTypes.LoadSingleArticleFailure;

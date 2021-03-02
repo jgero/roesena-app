@@ -9,14 +9,12 @@ import {
   LoadSingleArticleFailure,
 } from '../actions/article.actions';
 import { Store } from '@ngrx/store';
-import { convertOne as convertOneArticle } from '@utils/converters/article-documents';
-import { StoreableArticle, StoreableImage } from '@utils/interfaces';
-import { CollectionReference, Query } from '@angular/fire/firestore/interfaces';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { convertOne as convertOneArticle, convertMany } from '@utils/converters/article-documents';
+import { StoreableArticle } from '@utils/interfaces';
+import { AngularFirestore, Query, CollectionReference } from '@angular/fire/firestore';
 import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { convertMany as convertManyImages } from '@utils/converters/image-documents';
-import { UrlLoaderService } from '@services/url-loader.service';
+import { MissingDocumentError } from '@utils/errors/missing-document-error';
 
 @Injectable()
 export class ArticleSingleEffects {
@@ -34,33 +32,30 @@ export class ArticleSingleEffects {
           .snapshotChanges()
           .pipe(
             map(convertOneArticle),
-            // then add the image
-            switchMap((article) => {
-              if (action.payload.withImage) {
-                return this.firestore
-                  .collection<StoreableImage>('images', (qFn) => {
-                    let query: CollectionReference | Query = qFn;
-                    article.tags.forEach((tag) => {
-                      query = query.where(`tags.${tag}`, '==', true);
-                    });
-                    query = query.limit(1);
-                    return query;
-                  })
-                  .snapshotChanges()
-                  .pipe(
-                    map(convertManyImages),
-                    // load the image URL of the first image
-                    switchMap((images) => (images.length > 0 ? this.urlLoader.getImageURL(images[0].id) : of(''))),
-                    // map the article back to the observable
-                    map((imageUrl) => ({ article, imageUrl }))
-                  );
-              } else {
-                return of({ article, imageUrl: '' });
-              }
-            }),
+            map((article) => new LoadSingleArticleSuccess({ article })),
+            catchError((error) => of(new LoadSingleArticleFailure({ error }))),
             // only listen until the module gets changed
+            takeUntil(this.subs.unsubscribe$)
+          );
+      } else if (action.payload?.tags) {
+        return this.firestore
+          .collection('articles', (qFn) => {
+            let query: Query | CollectionReference = qFn;
+            // filter to only take articles with the requested tags
+            action.payload.tags.forEach((tag) => (query = query.where(`tags.${tag}`, '==', true)));
+            // only take one
+            query = query.limit(1);
+            return query;
+          })
+          .snapshotChanges()
+          .pipe(
             takeUntil(this.subs.unsubscribe$),
-            map(({ article, imageUrl }) => new LoadSingleArticleSuccess({ article, imageUrl })),
+            map(convertMany),
+            map((articles) =>
+              articles.length > 0
+                ? new LoadSingleArticleSuccess({ article: articles[0] })
+                : new LoadSingleArticleFailure({ error: new MissingDocumentError('no article with these tags') })
+            ),
             catchError((error) => of(new LoadSingleArticleFailure({ error })))
           );
       } else {
@@ -75,7 +70,6 @@ export class ArticleSingleEffects {
               content: '',
               created: new Date(),
             },
-            imageUrl: '',
           })
         );
       }
@@ -85,7 +79,6 @@ export class ArticleSingleEffects {
   constructor(
     private actions$: Actions<ArticleActions>,
     private store: Store<State>,
-    private urlLoader: UrlLoaderService,
     private firestore: AngularFirestore,
     private subs: SubscriptionService
   ) {}

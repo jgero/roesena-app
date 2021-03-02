@@ -31,10 +31,11 @@ export enum ImageActionTypes {
 // load single image
 export class LoadSingleImage implements Action {
   readonly type = ImageActionTypes.LoadSingleImage;
+  constructor(public payload?: { tags: string[] }) {}
 }
 export class LoadSingleImageSuccess implements Action {
   readonly type = ImageActionTypes.LoadSingleImageSuccess;
-  constructor(public payload: { image: AppImage }) {}
+  constructor(public payload: { image: AppImage; fullUrl: string }) {}
 }
 export class LoadSingleImageFailure implements Action {
   readonly type = ImageActionTypes.LoadSingleImageFailure;

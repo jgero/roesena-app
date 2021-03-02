@@ -4,11 +4,13 @@ import { catchError, map, switchMap, withLatestFrom, takeUntil } from 'rxjs/oper
 import { ImageActionTypes, ImageActions, LoadSingleImageSuccess, LoadSingleImageFailure } from '../actions/image.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, Query, CollectionReference } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { of } from 'rxjs';
 import { SubscriptionService } from '@services/subscription.service';
-import { convertOne } from '@utils/converters/image-documents';
+import { convertOne, convertMany } from '@utils/converters/image-documents';
+import { UrlLoaderService } from '@services/url-loader.service';
+import { MissingDocumentError } from '@utils/errors/missing-document-error';
 
 @Injectable()
 export class ImageSingleEffects {
@@ -25,7 +27,32 @@ export class ImageSingleEffects {
           .pipe(
             takeUntil(this.subs.unsubscribe$),
             map(convertOne),
-            map((image) => new LoadSingleImageSuccess({ image })),
+            switchMap((image) =>
+              this.urlLoader.getImageURL(image.id, false).pipe(map((fullUrl) => new LoadSingleImageSuccess({ image, fullUrl })))
+            ),
+            catchError((error) => of(new LoadSingleImageFailure({ error })))
+          );
+      } else if (action.payload?.tags) {
+        return this.firestore
+          .collection('images', (qFn) => {
+            let query: Query | CollectionReference = qFn;
+            // filter to only take images with the requested tags
+            action.payload.tags.forEach((tag) => (query = query.where(`tags.${tag}`, '==', true)));
+            // only take one
+            query = query.limit(1);
+            return query;
+          })
+          .snapshotChanges()
+          .pipe(
+            takeUntil(this.subs.unsubscribe$),
+            map(convertMany),
+            switchMap((images) =>
+              images.length === 0
+                ? of(new LoadSingleImageFailure({ error: new MissingDocumentError('no image with these tags') }))
+                : this.urlLoader
+                    .getImageURL(images[0].id, false)
+                    .pipe(map((fullUrl) => new LoadSingleImageSuccess({ image: images[0], fullUrl })))
+            ),
             catchError((error) => of(new LoadSingleImageFailure({ error })))
           );
       } else {
@@ -38,6 +65,7 @@ export class ImageSingleEffects {
               tags: [],
               created: null,
             },
+            fullUrl: '',
           })
         );
       }
@@ -48,6 +76,7 @@ export class ImageSingleEffects {
     private actions$: Actions<ImageActions>,
     private store: Store<State>,
     private firestore: AngularFirestore,
-    private subs: SubscriptionService
+    private subs: SubscriptionService,
+    private urlLoader: UrlLoaderService
   ) {}
 }

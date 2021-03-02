@@ -1,7 +1,7 @@
+<app-page-header [title]="groupName$ | async"></app-page-header>
 <ng-container *ngIf="textData$ | async as article; else loading">
-  <app-page-header [title]="article.title" [date]="article.created" [owner]="article.ownerName"></app-page-header>
   <main>
-    <img [src]="imageUrl$ | async">
+    <img [src]="imageUrl$ | async" />
     <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
   </main>
   <div class="fab-container">
