@@ -24,14 +24,6 @@ const routes: Routes = [
           filterTags: ['Chronik', 'Kinderprinzenpaar'],
         },
       },
-      {
-        path: 'seasonal-medals',
-        component: CommonComponent,
-        data: {
-          heading: 'Saisonorden der RöSeNa',
-          filterTags: ['Chronik', 'Saisonorden'],
-        },
-      },
     ],
   },
   {
