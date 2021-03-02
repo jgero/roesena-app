@@ -68,6 +68,13 @@ export class ImageEditorEffects {
     )
   );
 
+  @Effect({ dispatch: false })
+  redirectOnSave$ = this.actions$.pipe(
+    ofType(ImageActionTypes.UpdateImageSuccess, ImageActionTypes.CreateImageSuccess),
+    // redirect to overview on save
+    tap(() => this.router.navigate(['images', 'overview']))
+  );
+
   @Effect()
   deleteImag$ = this.actions$.pipe(
     ofType(ImageActionTypes.DeleteImage),
