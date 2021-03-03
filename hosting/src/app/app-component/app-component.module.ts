@@ -12,7 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FiltersModule } from '../shared/filters/filters.module';
 import { FooterModule } from './footer/footer.module';
 import { AppComponent } from './app.component';
-import { SearchBarComponent, SearchSheetComponent } from './search-bar/search-bar.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 import { RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
@@ -22,7 +22,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AppComponent, SearchBarComponent, SearchSheetComponent],
+  declarations: [AppComponent, SearchBarComponent],
   imports: [
     CommonModule,
     RouterModule,

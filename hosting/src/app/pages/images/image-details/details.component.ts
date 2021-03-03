@@ -53,8 +53,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   fillSearchForArticles(val: AppImage): void {
-    this.store.dispatch(new CleanSearch());
-    val.tags.forEach((tag) => this.store.dispatch(new AddSearchString({ searchString: tag })));
-    this.store.dispatch(new ChangeDataType({ dataType: 'articles' }));
+    //this.store.dispatch(new CleanSearch());
+    //val.tags.forEach((tag) => this.store.dispatch(new AddSearchString({ searchString: tag })));
+    //this.store.dispatch(new ChangeDataType({ dataType: 'articles' }));
   }
 }

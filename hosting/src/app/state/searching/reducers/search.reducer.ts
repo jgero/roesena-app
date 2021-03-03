@@ -6,7 +6,7 @@ export const searchFeatureKey = 'search';
 
 export interface State {
   searchStrings: string[];
-  dataType: string;
+  dataTypes: string[];
   events: AppEvent[];
   articles: AppArticle[];
   images: AppImage[];
@@ -15,7 +15,7 @@ export interface State {
 
 export const initialState: State = {
   searchStrings: [],
-  dataType: 'events',
+  dataTypes: ['articles', 'events', 'images'],
   events: [],
   articles: [],
   images: [],
@@ -49,7 +49,7 @@ export function reducer(state = initialState, action: SearchActions): State {
     }
 
     case SearchActionTypes.ChangeDataType:
-      return { ...state, dataType: action.payload.dataType };
+      return { ...state, dataTypes: action.payload.dataTypes };
 
     case SearchActionTypes.SearchContentLoaded:
       const { articles, images, events } = action.payload;

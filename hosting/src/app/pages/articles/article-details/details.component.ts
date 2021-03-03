@@ -43,9 +43,9 @@ export class DetailsComponent implements OnDestroy {
   }
 
   fillSearchForImages(val: AppArticle): void {
-    this.store.dispatch(new CleanSearch());
-    val.tags.forEach((tag) => this.store.dispatch(new AddSearchString({ searchString: tag })));
-    this.store.dispatch(new ChangeDataType({ dataType: 'images' }));
+    //this.store.dispatch(new CleanSearch());
+    //val.tags.forEach((tag) => this.store.dispatch(new AddSearchString({ searchString: tag })));
+    //this.store.dispatch(new ChangeDataType({ dataType: 'images' }));
   }
 
   ngOnDestroy() {

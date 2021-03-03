@@ -17,7 +17,7 @@ export class CleanSearch implements Action {
 }
 export class ChangeDataType implements Action {
   readonly type = SearchActionTypes.ChangeDataType;
-  constructor(public payload: { dataType: string }) {}
+  constructor(public payload: { dataTypes: string[] }) {}
 }
 export class SearchContentLoaded implements Action {
   readonly type = SearchActionTypes.SearchContentLoaded;
