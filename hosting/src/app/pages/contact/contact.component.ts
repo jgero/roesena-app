@@ -1,10 +1,8 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { SendContactMail } from '@state/contact/actions/contact.actions';
-import { State } from '@state/contact/reducers/contact.reducer';
 import { SeoService } from '@services/seo.service';
+import { ContactService } from '@services/contact.service';
 
 @Component({
   selector: 'app-contact',
@@ -18,8 +16,8 @@ import { SeoService } from '@services/seo.service';
     ]),
   ],
 })
-export class ContactComponent implements OnInit {
-  isLoading$ = this.store.select('contact', 'isLoading');
+export class ContactComponent {
+  isLoading = false;
   contactForm = new FormGroup({
     subject: new FormControl('Problem mit der Webseite', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -41,15 +39,14 @@ export class ContactComponent implements OnInit {
     { text: 'tritt am PC auf', checked: false },
   ];
 
-  constructor(private store: Store<State>, seo: SeoService) {
+  constructor(seo: SeoService, private contactService: ContactService, private zone: NgZone) {
     seo.setTags('Kontakt', 'Seite mit einem Formular zur einfachen Kontaktaufnahme mit der RöSeNa', undefined, '/contact');
   }
 
-  ngOnInit(): void {}
-
   onSend() {
-    this.store.dispatch(
-      new SendContactMail({
+    this.isLoading = true;
+    this.contactService
+      .sendContactMail({
         comment: this.contactForm.get('comment').value,
         formData:
           this.contactForm.get('subject').value === 'Problem mit der Webseite'
@@ -58,6 +55,16 @@ export class ContactComponent implements OnInit {
         replyTo: this.contactForm.get('email').value,
         subject: this.contactForm.get('subject').value,
       })
-    );
+      .subscribe({
+        complete: () => this.cleanup(),
+        error: () => this.cleanup(),
+      });
+  }
+
+  cleanup() {
+    this.zone.run(() => {
+      this.isLoading = false;
+      this.contactForm.reset();
+    });
   }
 }

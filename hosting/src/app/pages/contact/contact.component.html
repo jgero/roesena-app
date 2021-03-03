@@ -30,7 +30,7 @@
     <textarea matInput formControlName="comment" rows="5"></textarea>
   </mat-form-field>
 
-  <mat-progress-spinner mode="indeterminate" diameter="32" *ngIf="isLoading$ | async; else sendButton"></mat-progress-spinner>
+  <mat-progress-spinner mode="indeterminate" diameter="32" *ngIf="isLoading; else sendButton"></mat-progress-spinner>
 
   <ng-template #sendButton>
     <button mat-flat-button color="primary" [disabled]="contactForm.invalid">SENDEN</button>

@@ -23,22 +23,6 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 @Injectable()
 export class EventEditorEffects {
-  //@Effect()
-  //loadPersons$ = this.actions$.pipe(
-  //ofType(EventActionTypes.LoadPersons),
-  //switchMap(() =>
-  //this.firestore
-  //.collection('persons', (qFn) => qFn.where('isConfirmedMember', '==', true))
-  //.snapshotChanges()
-  //.pipe(
-  //takeUntil(this.subs.unsubscribe$),
-  //map(convertMany),
-  //map((persons) => new LoadPersonsSuccess({ persons })),
-  //catchError((error) => of(new LoadPersonsFailure({ error })))
-  //)
-  //)
-  //);
-
   @Effect()
   updateEvent$ = this.actions$.pipe(
     ofType(EventActionTypes.UpdateEvent),
