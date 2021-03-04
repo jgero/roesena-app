@@ -45,7 +45,6 @@ export class ArticleMultiEffects {
           map(convertMany),
           // dispatch loaded event and start loading the article amount
           switchMap((articles) => [new LoadArticlePageSuccess({ articles }), new LoadArticleAmount()]),
-          //map((articles) => [new LoadArticlePageSuccess({ articles }), new LoadArticleAmount()]),
           takeUntil(this.subs.unsubscribe$),
           catchError((error) => of(new LoadArticlePageFailure({ error })))
         )

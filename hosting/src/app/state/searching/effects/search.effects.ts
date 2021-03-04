@@ -87,7 +87,7 @@ export class SearchEffects {
             map((value) => ({ [collection]: value }))
           )
       );
-      return combineLatest(...dataObservables).pipe(
+      return combineLatest(dataObservables).pipe(
         takeUntil(this.subs.unsubscribe$),
         map((dataArray) => new SearchContentLoaded(Object.assign({ events: [], articles: [], images: [] }, ...dataArray))),
         catchError((error) => of(new SearchContentLoadFailed({ error })))

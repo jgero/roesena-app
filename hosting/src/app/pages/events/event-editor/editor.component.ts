@@ -18,6 +18,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UsageHintPopupComponent } from '@shared/usage-hints/usage-hint-popup/usage-hint-popup.component';
 import { SeoService } from '@services/seo.service';
 import { AutocompleteService } from '@services/autocomplete.service';
+import { LoadPersons } from '@state/persons';
 
 @Component({
   selector: 'app-editor',
@@ -63,10 +64,10 @@ export class EditorComponent implements OnDestroy {
     private cookies: CookieService,
     public autocomplete: AutocompleteService
   ) {
-    // dispatch the event to load the event that should be edited
+    // dispatch the action to load the event that should be edited
     this.store.dispatch(new LoadSingleEvent());
     // dispatch the event to load the persons who can be invited
-    //this.store.dispatch(new LoadPersons());
+    this.store.dispatch(new LoadPersons({ limit: 400 }));
     // init event and it's form when event is loaded
     this.store
       .select('events', 'activeEvent')

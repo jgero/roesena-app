@@ -15,7 +15,6 @@ import { ROUTER_NAVIGATED } from '@ngrx/router-store';
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnDestroy, OnInit {
-  //currentDate$ = this.store.select('calendar', 'currentDate');
   currentDate$ = this.store.select('router', 'state', 'params', 'date').pipe(
     filter((dateString) => dateString !== ''),
     map((dateString) => new Date(dateString))
@@ -64,11 +63,9 @@ export class CalendarComponent implements OnDestroy, OnInit {
 
   navigateToNextMonth(currentDate: Date) {
     this.router.navigate(['calendar', new Date(currentDate.getFullYear(), currentDate.getMonth() + 1).toISOString()]);
-    //this.store.dispatch(new LoadEventsForMonth());
   }
   navigateToPreviousMonth(currentDate: Date) {
     this.router.navigate(['calendar', new Date(currentDate.getFullYear(), currentDate.getMonth() - 1).toISOString()]);
-    //this.store.dispatch(new LoadEventsForMonth());
   }
 
   getTitle(d: Date): string {

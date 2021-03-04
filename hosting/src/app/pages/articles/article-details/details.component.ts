@@ -7,7 +7,7 @@ import { LoadSingleArticle } from '@state/articles/actions/article.actions';
 import { tap } from 'rxjs/operators';
 import { SubscriptionService } from '@services/subscription.service';
 import { canEdit } from '@state/articles';
-import { AddSearchString, ChangeDataType, CleanSearch } from '@state/searching/actions/search.actions';
+import { AddSearchString } from '@state/searching/actions/search.actions';
 import { SeoService } from '@services/seo.service';
 import { of } from 'rxjs';
 
@@ -29,7 +29,6 @@ export class DetailsComponent implements OnDestroy {
       }
     })
   );
-  //image$ = this.store.select('article', 'imageUrl');
   image$ = of('');
   isLoading$ = this.store.select('articles', 'isLoading');
   canEdit$ = this.store.select(canEdit);
@@ -42,11 +41,7 @@ export class DetailsComponent implements OnDestroy {
     this.store.dispatch(new AddSearchString({ searchString: tag }));
   }
 
-  fillSearchForImages(val: AppArticle): void {
-    //this.store.dispatch(new CleanSearch());
-    //val.tags.forEach((tag) => this.store.dispatch(new AddSearchString({ searchString: tag })));
-    //this.store.dispatch(new ChangeDataType({ dataType: 'images' }));
-  }
+  fillSearchForImages(val: AppArticle): void {}
 
   ngOnDestroy() {
     this.sub.unsubscribeComponent$.next();

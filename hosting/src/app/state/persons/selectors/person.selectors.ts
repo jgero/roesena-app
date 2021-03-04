@@ -1,4 +1,3 @@
-//import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { State } from '@state/state.module';
 
 export const canCreate = (state: State) => {
