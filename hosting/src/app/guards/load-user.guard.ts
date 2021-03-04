@@ -15,10 +15,9 @@ export class LoadUserGuard implements CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.store.select('persons', 'user').pipe(
+    return this.store.select('persons', 'isUserInitialized').pipe(
       // delay until user is initialized
-      //filter((user) => user != null),
-      map(() => true)
+      filter((isInitialized) => isInitialized == true)
     );
   }
 }

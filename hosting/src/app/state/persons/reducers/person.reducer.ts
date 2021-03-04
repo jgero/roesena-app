@@ -9,6 +9,7 @@ export interface State {
   amount: number;
   persons: AppPerson[];
   user: AppPerson;
+  isUserInitialized: boolean;
   limit: number;
   pageIndex: number;
   pageFirst: AppPerson;
@@ -20,6 +21,7 @@ export const initialState: State = {
   amount: 0,
   persons: [],
   user: null,
+  isUserInitialized: false,
   limit: 3,
   pageIndex: 1,
   pageFirst: null,
@@ -62,7 +64,7 @@ export function reducer(state = initialState, action: PersonActions | PageAction
     case PersonActionTypes.LoadUser:
       return state;
     case PersonActionTypes.LoadUserSuccess:
-      return { ...state, user: action.payload.user };
+      return { ...state, user: action.payload.user, isUserInitialized: true };
     case PersonActionTypes.LoadUserFailure:
       return { ...state, user: null };
     // user is reset when logged out
