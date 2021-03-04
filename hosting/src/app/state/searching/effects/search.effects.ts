@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import { withLatestFrom, tap, switchMap, mergeMap, takeUntil, map, catchError } from 'rxjs/operators';
+import { withLatestFrom, tap, switchMap, takeUntil, map, catchError } from 'rxjs/operators';
 import {
   SearchActionTypes,
   SearchActions,
@@ -14,7 +14,7 @@ import {
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { Router } from '@angular/router';
-import { of, merge } from 'rxjs';
+import { of, merge, combineLatest } from 'rxjs';
 import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { SubscriptionService } from '@services/subscription.service';
@@ -35,7 +35,7 @@ export class SearchEffects {
         ...(storeState.router.state.params.searchStrings.split(',') as string[]).map((searchString) =>
           of(new AddSearchString({ searchString }))
         ),
-        of(new ChangeDataType({ dataType: storeState.router.state.params.type })),
+        of(new ChangeDataType({ dataTypes: storeState.router.state.params.type.split(',') })),
         of(new RunSearch())
       )
     )
@@ -46,20 +46,20 @@ export class SearchEffects {
     ofType(SearchActionTypes.RunSearch),
     withLatestFrom(this.store),
     tap(([action, storeState]) => {
-      this.router.navigate(['search', storeState.search.dataType, storeState.search.searchStrings.join(',')]);
+      this.router.navigate(['search', storeState.search.dataTypes.join(','), storeState.search.searchStrings.join(',')]);
     }),
     // report to analytics
     tap(() => this.analytics.logEvent('search', { event_category: 'engagement' })),
     switchMap(([action, storeState]) => {
       // applies query
-      const queryBuilder = (qFn: CollectionReference) => {
+      const queryBuilder = (qFn: CollectionReference, collection: string) => {
         let query: CollectionReference | Query = qFn;
         // filter by the search strings
         storeState.search.searchStrings.forEach((searchString) => (query = query.where(`tags.${searchString}`, '==', true)));
         // limit the results to something that would fit the page but at least 40
-        query = query.limit(Math.max(40, storeState.search.limit));
+        query = query.limit(Math.round(40 / storeState.search.dataTypes.length));
         // only take public events if not logged in or user ist not confirmed
-        if (storeState.search.dataType === 'events' && (!storeState.user.user || !storeState.user.user.isConfirmedMember)) {
+        if (collection === 'events' && (!storeState.persons.user || !storeState.persons.user.isConfirmedMember)) {
           query = query.where('participants', '==', {});
         }
         return query;
@@ -68,41 +68,30 @@ export class SearchEffects {
       if (storeState.search.searchStrings.length === 0) {
         return of(new SearchContentLoaded({ events: [], articles: [], images: [] }));
       }
-      switch (storeState.search.dataType) {
-        case 'events':
-          return this.firestore
-            .collection('events', queryBuilder)
-            .snapshotChanges()
-            .pipe(
-              takeUntil(this.subs.unsubscribe$),
-              map(convertManyEvents),
-              map(sortByTags),
-              map((events) => new SearchContentLoaded({ events, articles: [], images: [] })),
-              catchError((error) => of(new SearchContentLoadFailed({ error })))
-            );
-        case 'articles':
-          return this.firestore
-            .collection('articles', queryBuilder)
-            .snapshotChanges()
-            .pipe(
-              takeUntil(this.subs.unsubscribe$),
-              map(convertManyArticles),
-              map(sortByTags),
-              map((articles) => new SearchContentLoaded({ events: [], articles, images: [] })),
-              catchError((error) => of(new SearchContentLoadFailed({ error })))
-            );
-        case 'images':
-          return this.firestore
-            .collection('images', queryBuilder)
-            .snapshotChanges()
-            .pipe(
-              takeUntil(this.subs.unsubscribe$),
-              map(convertManyImages),
-              map(sortByTags),
-              map((images) => new SearchContentLoaded({ events: [], articles: [], images })),
-              catchError((error) => of(new SearchContentLoadFailed({ error })))
-            );
-      }
+      const dataObservables = storeState.search.dataTypes.map((collection) =>
+        this.firestore
+          .collection(collection, (qFn) => queryBuilder(qFn, collection))
+          .snapshotChanges()
+          .pipe(
+            map((data) => {
+              switch (collection) {
+                case 'events':
+                  return convertManyEvents(data as any);
+                case 'articles':
+                  return convertManyArticles(data as any);
+                case 'images':
+                  return convertManyImages(data as any);
+              }
+            }),
+            map(sortByTags),
+            map((value) => ({ [collection]: value }))
+          )
+      );
+      return combineLatest(dataObservables).pipe(
+        takeUntil(this.subs.unsubscribe$),
+        map((dataArray) => new SearchContentLoaded(Object.assign({ events: [], articles: [], images: [] }, ...dataArray))),
+        catchError((error) => of(new SearchContentLoadFailed({ error })))
+      );
     })
   );
 

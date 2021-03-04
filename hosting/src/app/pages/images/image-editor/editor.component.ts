@@ -6,10 +6,10 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 import { AppImage } from 'src/app/utils/interfaces';
 import { ChipsInputService } from 'src/app/services/chips-input.service';
 import { Store } from '@ngrx/store';
-import { State } from '@state/images/editor/reducers/image.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadImage } from '@state/images/actions/image.actions';
-import { UpdateImage, CreateImage, DeleteImage } from '@state/images/editor/actions/image.actions';
+import { LoadSingleImage } from '@state/images/actions/image.actions';
+import { UpdateImage, CreateImage, DeleteImage } from '@state/images/actions/image.actions';
 import { UrlLoaderService } from '@services/url-loader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmPopupComponent } from '@shared/delete-confirm/delete-confirm-popup/delete-confirm-popup.component';
@@ -25,7 +25,7 @@ import { AutocompleteService } from '@services/autocomplete.service';
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnDestroy {
-  isLoading$ = this.store.select('imageEditor', 'isLoading');
+  isLoading$ = this.store.select('images', 'isLoading');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   imageForm: FormGroup;
   image: AppImage;
@@ -48,9 +48,9 @@ export class EditorComponent implements OnDestroy {
     private cookies: CookieService,
     public autocomplete: AutocompleteService
   ) {
-    this.store.dispatch(new LoadImage());
+    this.store.dispatch(new LoadSingleImage());
     this.store
-      .select('imageEditor', 'isLoading')
+      .select('images', 'isLoading')
       .pipe(takeUntil(subs.unsubscribe$))
       .subscribe({
         next: (isLoading) => {
@@ -65,7 +65,7 @@ export class EditorComponent implements OnDestroy {
         },
       });
     this.store
-      .select('image', 'image')
+      .select('images', 'activeImage')
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe({
         next: (image) => {
@@ -82,7 +82,7 @@ export class EditorComponent implements OnDestroy {
         },
       });
     this.store
-      .select('image', 'image')
+      .select('images', 'activeImage')
       .pipe(
         takeUntil(this.subs.unsubscribe$),
         switchMap((image) => (image && image.id ? this.urlLoader.getImageURL(image.id) : EMPTY))
@@ -126,7 +126,7 @@ export class EditorComponent implements OnDestroy {
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe((result) => {
         if (result) {
-          this.store.dispatch(new DeleteImage());
+          this.store.dispatch(new DeleteImage({ image: this.image }));
         }
       });
   }

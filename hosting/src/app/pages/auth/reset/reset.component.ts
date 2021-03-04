@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { State } from '@state/auth/reducers/auth.reducer';
-import { DoReset, DoChangePasswordWithCode } from '@state/auth/actions/auth.actions';
+import { State } from '@state/state.module';
+import { Reset, ChangePasswordWithCode } from '@state/persons';
 import { SeoService } from '@services/seo.service';
 
 @Component({
@@ -31,11 +31,11 @@ export class ResetComponent {
   }
 
   onResetSubmit() {
-    this.store.dispatch(new DoReset({ email: this.resetForm.get('email').value }));
+    this.store.dispatch(new Reset({ email: this.resetForm.get('email').value }));
   }
 
   onNewPasswordSubmit() {
     this.loading = true;
-    this.store.dispatch(new DoChangePasswordWithCode({ password: this.newPasswordForm.get('password').value }));
+    this.store.dispatch(new ChangePasswordWithCode({ password: this.newPasswordForm.get('password').value }));
   }
 }

@@ -23,12 +23,12 @@
           <mat-expansion-panel-header>
             <mat-panel-title>Gruppen</mat-panel-title>
           </mat-expansion-panel-header>
-          <a mat-list-item routerLink="/groups/brandjoggala">Brandjoggala</a>
-          <a mat-list-item routerLink="/groups/garden">Garden</a>
-          <a mat-list-item routerLink="/groups/maennerballett">Männerballett</a>
-          <a mat-list-item routerLink="/groups/roehling-stones">Röhling Stones</a>
-          <a mat-list-item routerLink="/groups/sechtafeger">Sechtafeger</a>
-          <a mat-list-item routerLink="/groups/wildes-heer">Das Wilde Heer</a>
+          <a mat-list-item routerLink="/static-articles/groups/brandjoggala">Brandjoggala</a>
+          <a mat-list-item routerLink="/static-articles/groups/garden">Garden</a>
+          <a mat-list-item routerLink="/static-articles/groups/maennerballett">Männerballett</a>
+          <a mat-list-item routerLink="/static-articles/groups/roehling-stones">Röhling Stones</a>
+          <a mat-list-item routerLink="/static-articles/groups/sechtafeger">Sechtafeger</a>
+          <a mat-list-item routerLink="/static-articles/groups/wildes-heer">Das Wilde Heer</a>
         </mat-expansion-panel>
 
         <mat-expansion-panel>
@@ -66,12 +66,18 @@
     <a mat-button routerLink="/images/overview">Bilder</a>
     <button mat-button [matMenuTriggerFor]="groupsMenu">Gruppen</button>
     <mat-menu #groupsMenu="matMenu" xPosition="after">
-      <a mat-menu-item routerLink="/groups/brandjoggala">Brandjoggala</a>
-      <a mat-menu-item routerLink="/groups/garden">Garden</a>
-      <a mat-menu-item routerLink="/groups/maennerballett">Männerballett</a>
-      <a mat-menu-item routerLink="/groups/roehling-stones">Röhling Stones</a>
-      <a mat-menu-item routerLink="/groups/sechtafeger">Sechtafeger</a>
-      <a mat-menu-item routerLink="/groups/wildes-heer">Das Wilde Heer</a>
+      <a mat-menu-item routerLink="/static-articles/groups/brandjoggala">Brandjoggala</a>
+      <a mat-menu-item routerLink="/static-articles/groups/garden">Garden</a>
+      <a mat-menu-item routerLink="/static-articles/groups/maennerballett">Männerballett</a>
+      <a mat-menu-item routerLink="/static-articles/groups/roehling-stones">Röhling Stones</a>
+      <a mat-menu-item routerLink="/static-articles/groups/sechtafeger">Sechtafeger</a>
+      <a mat-menu-item routerLink="/static-articles/groups/wildes-heer">Das Wilde Heer</a>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="archiveMenu">Archiv</button>
+    <mat-menu #archiveMenu="matMenu" xPosition="after">
+      <a mat-menu-item routerLink="/static-articles/archive/royals">Prinzenpaare</a>
+      <a mat-menu-item routerLink="/static-articles/archive/mini-royals">Kinderprinzenpaare</a>
+      <a mat-menu-item routerLink="/search/images/Saisonorden">Saisonorden</a>
     </mat-menu>
     <div class="spacer"></div>
     <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Account Menü">

@@ -5,9 +5,9 @@ import { map, withLatestFrom, take, takeUntil } from 'rxjs/operators';
 
 import { AppEvent } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
-import { State } from '@state/auth/my-events/reducers/events.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadEvents, EventsActions, RespondToEvent, EventsActionTypes } from '@state/auth/my-events/actions/events.actions';
+import { RespondToEvent, EventActionTypes, LoadAllEvents, EventActions } from '@state/events';
 import { Actions, ofType } from '@ngrx/effects';
 import { SeoService } from '@services/seo.service';
 
@@ -22,8 +22,8 @@ interface AppEventWithForm extends AppEvent {
   styleUrls: ['./my-events.component.scss'],
 })
 export class MyEventsComponent implements OnInit, OnDestroy {
-  data$: Observable<AppEventWithForm[]> = this.store.select('myEvents', 'events').pipe(
-    withLatestFrom(this.store.select('user', 'user')),
+  data$: Observable<AppEventWithForm[]> = this.store.select('events', 'unrespondedEvents').pipe(
+    withLatestFrom(this.store.select('persons', 'user')),
     map(([events, user]) => {
       return events.map((event) => {
         const participant = event.participants.find((p) => p.id === user.id);
@@ -48,7 +48,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<State>,
-    private actions$: Actions<EventsActions>,
+    private actions$: Actions<EventActions>,
     private subs: SubscriptionService,
     private hostRef: ElementRef<HTMLElement>,
     seo: SeoService
@@ -62,17 +62,15 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new LoadEvents());
+    this.store.dispatch(new LoadAllEvents());
   }
-
-  hasUnseenChanges(ev: AppEvent) {}
 
   onSubmit(eventId: string, amount: string, form: FormGroup) {
     form.disable();
     this.store.dispatch(new RespondToEvent({ amount: parseInt(amount, 10), id: eventId }));
     this.actions$
       .pipe(
-        ofType(EventsActionTypes.RespondToEventSuccess, EventsActionTypes.RespondToEventFailure),
+        ofType(EventActionTypes.RespondToEventSuccess, EventActionTypes.RespondToEventFailure),
         take(1),
         takeUntil(this.subs.unsubscribe$)
       )

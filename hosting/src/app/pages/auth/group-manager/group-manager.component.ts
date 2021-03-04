@@ -3,15 +3,9 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 import { AppPerson } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
-import { State } from '@state/auth/group-manager/reducers/person.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import {
-  AddGroup,
-  DeletePerson,
-  LoadPersons,
-  RemoveGroup,
-  ConfirmPerson,
-} from '@state/auth/group-manager/actions/person.actions';
+import { AddGroup, DeletePerson, LoadPersons, RemoveGroup, ConfirmPerson } from '@state/persons';
 import { ChipsInputService } from '@services/chips-input.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -33,9 +27,9 @@ import { SeoService } from '@services/seo.service';
   ],
 })
 export class GroupManagerComponent implements OnInit, OnDestroy {
-  length$ = this.store.select('person', 'length');
-  persons$ = this.store.select('person', 'persons');
-  isLoading$ = this.store.select('person', 'loadingAction');
+  length$ = this.store.select('persons', 'amount');
+  persons$ = this.store.select('persons', 'persons');
+  isLoading$ = this.store.select('persons', 'isLoading');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   columnsToDisplay = ['name', 'actions'];
   expandedElement: AppPerson | null;

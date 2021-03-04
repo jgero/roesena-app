@@ -1,8 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@state/auth/reducers/auth.reducer';
-import { DoLogout, DoChangeName } from '@state/auth/actions/auth.actions';
-import { DeletePerson } from '@state/auth/group-manager/actions/person.actions';
+import { State } from '@state/state.module';
+import { Logout, ChangeName, DeletePerson } from '@state/persons';
 import { SubscriptionService } from '@services/subscription.service';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
@@ -14,8 +13,8 @@ import { SeoService } from '@services/seo.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnDestroy {
-  isLoading$ = this.store.select('auth', 'isLoading');
-  user$ = this.store.select('user', 'user');
+  isLoading$ = this.store.select('persons', 'isLoading');
+  user$ = this.store.select('persons', 'user');
 
   constructor(private store: Store<State>, private subs: SubscriptionService, seo: SeoService, private dialog: MatDialog) {
     seo.setTags('Profil', 'Dein Profil der RöSeNa-App', undefined, '/auth/profile');
@@ -34,12 +33,12 @@ export class ProfileComponent implements OnDestroy {
   }
 
   onUpdateNameSubmit(inputElement: HTMLInputElement, id: string) {
-    this.store.dispatch(new DoChangeName({ newName: inputElement.value, id }));
+    this.store.dispatch(new ChangeName({ newName: inputElement.value, id }));
     inputElement.value = '';
   }
 
   logout() {
-    this.store.dispatch(new DoLogout());
+    this.store.dispatch(new Logout());
   }
 
   ngOnDestroy() {

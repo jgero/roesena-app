@@ -31,6 +31,7 @@ export interface Participant {
 
 export interface AppImage extends AppElement {
   created: Date;
+  // should contain urls for thumb an full image here
 }
 
 export interface AppArticle extends AppElement {

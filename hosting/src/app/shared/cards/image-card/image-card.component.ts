@@ -18,7 +18,7 @@ export class ImageCardComponent implements OnInit {
 
   $src: Observable<string | null>;
   canEdit$ = this.store
-    .select('user', 'user')
+    .select('persons', 'user')
     .pipe(map((user) => user && (user.groups.includes('admin') || (this.data && this.data.id === user.id))));
 
   constructor(private store: Store<State>, private urlLoader: UrlLoaderService) {}

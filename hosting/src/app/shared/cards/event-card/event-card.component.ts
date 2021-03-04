@@ -17,7 +17,7 @@ export class EventCardComponent implements OnInit {
   data: AppEvent;
 
   canEdit$ = this.store
-    .select('user', 'user')
+    .select('persons', 'user')
     .pipe(map((user) => user && (user.groups.includes('admin') || (this.data && this.data.id === user.id))));
   unseen$: Observable<number>;
   status$: Observable<string>;
@@ -25,7 +25,7 @@ export class EventCardComponent implements OnInit {
   constructor(private store: Store<State>) {}
 
   ngOnInit() {
-    this.unseen$ = this.store.select('user', 'user').pipe(
+    this.unseen$ = this.store.select('persons', 'user').pipe(
       map((user) => {
         const part = this.data.participants.find((p) => p.id === user.id);
         if (!part) {
@@ -34,7 +34,7 @@ export class EventCardComponent implements OnInit {
         return part.hasUnseenChanges ? 1 : null;
       })
     );
-    this.status$ = this.store.select('user', 'user').pipe(
+    this.status$ = this.store.select('persons', 'user').pipe(
       map((user) => {
         const part = this.data.participants.find((p) => p.id === user.id);
         if (!part) {

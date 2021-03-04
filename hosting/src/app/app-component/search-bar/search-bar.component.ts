@@ -1,22 +1,16 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { AutocompleteService } from 'src/app/services/autocomplete.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {
   AddSearchString,
   RemoveSearchString,
   RunSearch,
-  SearchActionTypes,
-  ChangeDataType,
   CleanSearch,
+  ChangeDataType,
 } from '@state/searching/actions/search.actions';
 import { State } from '@state/state.module';
-import { Actions, ofType } from '@ngrx/effects';
-import { MatRadioChange } from '@angular/material/radio';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-bar',
@@ -24,53 +18,16 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent {
-  get isOpen(): boolean {
-    return !!this.bottomSheet._openedBottomSheetRef;
-  }
-
-  constructor(private bottomSheet: MatBottomSheet, actions$: Actions, private store: Store<State>) {
-    actions$.pipe(ofType(SearchActionTypes.AddSearchString, SearchActionTypes.RemoveSearchString)).subscribe({
-      next: () => {
-        if (!this.isOpen) {
-          this.bottomSheet.open(SearchSheetComponent);
-        }
-      },
-    });
-  }
-
-  toggleSheet() {
-    if (this.isOpen) {
-      this.bottomSheet.dismiss();
-    } else {
-      this.bottomSheet.open(SearchSheetComponent);
-    }
-  }
-}
-
-@Component({
-  selector: 'app-search-sheet',
-  templateUrl: 'search-sheet.html',
-  styleUrls: ['./search-sheet.scss'],
-})
-export class SearchSheetComponent {
+  isOpen = false;
   searchStrings$: Observable<string[]> = this.store.select('search', 'searchStrings');
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  options = ['Events', 'Artikel', 'Bilder'];
-  selectedOption$ = this.store.select('search', 'dataType').pipe(
-    map((dataType) => {
-      switch (dataType) {
-        case 'events':
-          return 'Events';
-        case 'articles':
-          return 'Artikel';
-        case 'images':
-          return 'Bilder';
-      }
-    })
-  );
   @ViewChild('chipInput')
   chipInput: ElementRef<HTMLInputElement>;
-  constructor(private bottomSheetRef: MatBottomSheet, private store: Store<State>, public autocomplete: AutocompleteService) {}
+
+  constructor(private store: Store<State>, public autocomplete: AutocompleteService) {}
+
+  toggleSearch() {
+    this.isOpen = !this.isOpen;
+  }
 
   onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
     input.value = '';
@@ -85,35 +42,13 @@ export class SearchSheetComponent {
     this.store.dispatch(new CleanSearch());
   }
 
-  onRadioChange(event: MatRadioChange) {
-    let dataType: string;
-    switch (event.value) {
-      case 'Events':
-        dataType = 'events';
-        break;
-      case 'Artikel':
-        dataType = 'articles';
-        break;
-      case 'Bilder':
-        dataType = 'images';
-        break;
-    }
-    this.store.dispatch(new ChangeDataType({ dataType }));
-  }
-
   onSearch() {
-    // if the input field is not empty on search start add the contents of the input field as search string
-    // I don't know if this makes a lot of sense because tags have to match 100% to appear in the search
-    // results but a stakeholder requested it
+    this.store.dispatch(new ChangeDataType({ dataTypes: ['articles', 'events', 'images'] }));
     if (this.chipInput.nativeElement.value !== '') {
       this.store.dispatch(new AddSearchString({ searchString: this.chipInput.nativeElement.value }));
       this.chipInput.nativeElement.value = '';
     }
     this.store.dispatch(new RunSearch());
-    this.bottomSheetRef.dismiss();
-  }
-
-  onClose() {
-    this.bottomSheetRef.dismiss();
+    this.isOpen = false;
   }
 }

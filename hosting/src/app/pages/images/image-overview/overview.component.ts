@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppImage } from '@utils/interfaces';
 import { Store } from '@ngrx/store';
-import { State } from '@state/images/overview/reducers/image.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { LoadImages } from '@state/images/overview/actions/image.actions';
-import { canCreate } from '@state/user/selectors/user.selectors';
+import { LoadImagePage } from '@state/images/actions/image.actions';
+import { canCreate } from '@state/persons';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
 import { SeoService } from '@services/seo.service';
 
@@ -16,10 +16,10 @@ import { SeoService } from '@services/seo.service';
   animations: [cardFlyIn],
 })
 export class OverviewComponent implements OnInit, OnDestroy {
-  data$: Observable<AppImage[]> = this.store.select('imageOverview', 'images');
-  length$: Observable<number> = this.store.select('imageOverview', 'length');
+  data$: Observable<AppImage[]> = this.store.select('images', 'activePageImages');
+  length$: Observable<number> = this.store.select('images', 'imageAmount');
   canCreate$: Observable<boolean> = this.store.select(canCreate);
-  isLoading$ = this.store.select('imageOverview', 'isLoading');
+  isLoading$ = this.store.select('images', 'isLoading');
 
   // Math.ceil guarantees that the colums will never get wider than the specified pixel width
   get cols(): number {
@@ -39,7 +39,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new LoadImages({ limit: this.limit }));
+    this.store.dispatch(new LoadImagePage({ limit: this.limit }));
   }
 
   ngOnDestroy() {

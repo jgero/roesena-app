@@ -16,7 +16,7 @@ export class UnauthenticatedGuard implements CanActivate {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return (
       this.store
-        .select('user', 'user')
+        .select('persons', 'user')
         // not sure if this actually works, because iif is very strange
         .pipe(switchMap((user) => iif(() => user === null, of(true), of(this.router.parseUrl('/auth/profile')))))
     );

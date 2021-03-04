@@ -1,11 +1,9 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromArticle from '../reducers/article.reducer';
+import { createSelector } from '@ngrx/store';
 import { AppPerson, AppArticle } from '@utils/interfaces';
+import { State } from '@state/state.module';
 
-export const selectArticleState = createFeatureSelector<fromArticle.State>(fromArticle.articleFeatureKey);
-
-export const selectUser = (state: fromArticle.State) => state.user.user;
-export const selectActiveArticle = (state: fromArticle.State) => state.article.article;
+export const selectUser = (state: State) => state.persons.user;
+export const selectActiveArticle = (state: State) => state.articles.activeArticle;
 
 export const canEdit = createSelector(selectUser, selectActiveArticle, (selectedUser: AppPerson, article: AppArticle) => {
   if (!selectedUser || !article) {
@@ -19,3 +17,8 @@ export const canEdit = createSelector(selectUser, selectActiveArticle, (selected
   }
   return false;
 });
+
+export const forStartpage = (state: State) => {
+  // TODO: select startpage article here
+  return null;
+};

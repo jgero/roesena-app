@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { GroupManagerRoutingModule } from './group-manager-routing.module';
-import { StoreModule } from '@ngrx/store';
-import * as fromPerson from '@state/auth/group-manager/reducers/person.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { PersonEffects } from '@state/auth/group-manager/effects/person.effects';
 import { GroupManagerComponent } from './group-manager.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -43,8 +39,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatChipsModule,
     MatProgressBarModule,
     PaginatorModule,
-    StoreModule.forFeature(fromPerson.personFeatureKey, fromPerson.reducer),
-    EffectsModule.forFeature([PersonEffects]),
   ],
 })
 export class GroupManagerModule {}

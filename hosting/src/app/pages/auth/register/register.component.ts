@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { State } from '@state/auth/reducers/auth.reducer';
-import { DoRegister } from '@state/auth/actions/auth.actions';
+import { State } from '@state/state.module';
+import { Register } from '@state/persons';
 import { SeoService } from '@services/seo.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class RegisterComponent implements OnDestroy {
     seo.setTags('registrieren', 'Registriere dich in der RöSeNa-App', undefined, '/auth/register');
     this.subs.push(
       // enable and disable the form while loading
-      this.store.select('auth', 'isLoading').subscribe({
+      this.store.select('persons', 'isLoading').subscribe({
         next: (isLoading) => {
           if (isLoading) {
             this.registerForm.disable();
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnDestroy {
 
   onSubmit() {
     this.store.dispatch(
-      new DoRegister({
+      new Register({
         email: this.registerForm.get('email').value,
         password: this.registerForm.get('password').value,
       })
