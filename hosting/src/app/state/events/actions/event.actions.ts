@@ -26,6 +26,10 @@ export enum EventActionTypes {
   DeleteEvent = '[event] delete event',
   DeleteEventSuccess = '[event] delete event success',
   DeleteEventFailure = '[event] delete event failure',
+  // calendar
+  LoadEventsForMonth = '[event] load events on the selected month',
+  LoadEventsForMonthSuccess = '[event] load events on the selected month success',
+  LoadEventsForMonthFailure = '[event] load events on the selected month failure',
 }
 
 // single event
@@ -109,6 +113,19 @@ export class DeleteEventFailure implements Action {
   constructor(public payload: { error: any }) {}
 }
 
+// calendar
+export class LoadEventsForMonth implements Action {
+  readonly type = EventActionTypes.LoadEventsForMonth;
+}
+export class LoadEventsForMonthSuccess implements Action {
+  readonly type = EventActionTypes.LoadEventsForMonthSuccess;
+  constructor(public payload: { days: AppEvent[][] }) {}
+}
+export class LoadEventsForMonthFailure implements Action {
+  readonly type = EventActionTypes.LoadEventsForMonthFailure;
+  constructor(public payload: { error: any }) {}
+}
+
 export type EventActions =
   | LoadSingleEvent
   | LoadSingleEventSuccess
@@ -129,4 +146,7 @@ export type EventActions =
   | UpdateEventFailure
   | DeleteEvent
   | DeleteEventSuccess
-  | DeleteEventFailure;
+  | DeleteEventFailure
+  | LoadEventsForMonth
+  | LoadEventsForMonthSuccess
+  | LoadEventsForMonthFailure;

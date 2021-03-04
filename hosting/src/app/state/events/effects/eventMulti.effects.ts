@@ -8,6 +8,8 @@ import {
   LoadAllEventsSuccess,
   LoadAllEventsFailure,
   UpdateUnrespondedEventAmount,
+  LoadEventsForMonthSuccess,
+  LoadEventsForMonthFailure,
 } from '../actions/event.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -93,6 +95,54 @@ export class EventMultiEffects {
       }
     }),
     map((unresponded) => new UpdateUnrespondedEventAmount({ unrespondedEvents: unresponded }))
+  );
+
+  @Effect()
+  loadEventsFoMonth$ = this.actions$.pipe(
+    ofType(EventActionTypes.LoadEventsForMonth),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) =>
+      this.firestore
+        .collection('events', (qFn) => {
+          let query: Query | CollectionReference = qFn;
+          // get date from router path
+          const paramDate = new Date(storeState.router.state.params.date);
+          // start date after first day of paramDate month
+          query = query.where('startDate', '>=', new Date(paramDate.getFullYear(), paramDate.getMonth(), 1));
+          // start date before last day of paramDate month
+          query = query.where('startDate', '<=', new Date(paramDate.getFullYear(), paramDate.getMonth() + 1, 0));
+          // only public events if not logged in or not confirmed
+          const user = storeState.persons.user;
+          if (!user || !user.isConfirmedMember) {
+            query = query.where('participants', '==', {});
+          }
+          return query;
+        })
+        .snapshotChanges()
+        .pipe(
+          takeUntil(this.subs.unsubscribe$),
+          map(convertMany),
+          map((events) => {
+            const currentDate = new Date(storeState.router.state.params.date);
+            const value: AppEvent[][] = new Array(
+              new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
+            ).fill([]);
+            const days = value.map((_, index) => {
+              const eventsForDay: AppEvent[] = [];
+              const startDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 0, 0).getTime();
+              const endDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1, 24, 0).getTime();
+              events.forEach((event) => {
+                if (event.date.getTime() <= endDay && event.date.getTime() >= startDay) {
+                  eventsForDay.push(event);
+                }
+              });
+              return eventsForDay;
+            });
+            return new LoadEventsForMonthSuccess({ days });
+          }),
+          catchError((error) => of(new LoadEventsForMonthFailure({ error })))
+        )
+    )
   );
 
   constructor(

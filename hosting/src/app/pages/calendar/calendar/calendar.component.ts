@@ -1,9 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@state/calendar/reducers/event.reducer';
+import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { GoNextMonth, GoPreviousMonth, LoadEvents } from '@state/calendar/actions/event.actions';
 import { SeoService } from '@services/seo.service';
+import { LoadEventsForMonth, EventActions } from '@state/events';
+import { Router } from '@angular/router';
+import { map, filter, takeUntil } from 'rxjs/operators';
+import { Actions, ofType } from '@ngrx/effects';
+import { ROUTER_NAVIGATED } from '@ngrx/router-store';
 
 @Component({
   selector: 'app-calendar',
@@ -11,17 +15,38 @@ import { SeoService } from '@services/seo.service';
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnDestroy, OnInit {
-  currentDate$ = this.store.select('calendar', 'currentDate');
-  days$ = this.store.select('calendar', 'days');
+  //currentDate$ = this.store.select('calendar', 'currentDate');
+  currentDate$ = this.store.select('router', 'state', 'params', 'date').pipe(
+    filter((dateString) => dateString !== ''),
+    map((dateString) => new Date(dateString))
+  );
+  days$ = this.store.select('events', 'activeMonth');
   user$ = this.store.select('persons', 'user');
-  isLoading$ = this.store.select('calendar', 'isLoading');
+  isLoading$ = this.store.select('events', 'isLoading');
 
-  constructor(private store: Store<State>, private subs: SubscriptionService, seo: SeoService) {
+  constructor(
+    private store: Store<State>,
+    private subs: SubscriptionService,
+    seo: SeoService,
+    private router: Router,
+    private actions$: Actions<EventActions>
+  ) {
     seo.setTags('Kalender', 'Kalernder der Events der RöSeNa', undefined, '/calendar');
   }
 
   ngOnInit() {
-    this.store.dispatch(new LoadEvents());
+    // dispatch loading once manually because oninit happens after ROUTER_NAVIGATED in initial arrival
+    this.store.dispatch(new LoadEventsForMonth());
+    // component init only happens on first arrival on the calendar route
+    // this means when navigating between months action on ROUTER_NAVIGATED is necessary
+    this.actions$
+      .pipe(
+        ofType(ROUTER_NAVIGATED),
+        // unsubscribe when component is destroyed
+        takeUntil(this.subs.unsubscribe$)
+      )
+      // load when new route is loaded
+      .subscribe(() => this.store.dispatch(new LoadEventsForMonth()));
   }
 
   ngOnDestroy() {
@@ -37,11 +62,13 @@ export class CalendarComponent implements OnDestroy, OnInit {
     return new Array(offset).fill(null);
   }
 
-  navigateToNextMonth() {
-    this.store.dispatch(new GoNextMonth());
+  navigateToNextMonth(currentDate: Date) {
+    this.router.navigate(['calendar', new Date(currentDate.getFullYear(), currentDate.getMonth() + 1).toISOString()]);
+    //this.store.dispatch(new LoadEventsForMonth());
   }
-  navigateToPreviousMonth() {
-    this.store.dispatch(new GoPreviousMonth());
+  navigateToPreviousMonth(currentDate: Date) {
+    this.router.navigate(['calendar', new Date(currentDate.getFullYear(), currentDate.getMonth() - 1).toISOString()]);
+    //this.store.dispatch(new LoadEventsForMonth());
   }
 
   getTitle(d: Date): string {
