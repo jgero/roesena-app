@@ -1,57 +1,85 @@
-<div class="row">
-  <figure>
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-    <figcaption class="red">
-      <b>Garde</b><br />
-      Tanzgruppe
-    </figcaption>
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-  </figure>
+<header>
+  <ng-container *ngFor="let tile of images$ | async; let i = index">
+    <ng-container *ngIf="getRowStyle(i); else middle">
+      <figure>
+        <figcaption>
+          <b>{{ tile.heading }}</b
+          ><br />
+          {{ tile.subheading }}
+          <a *ngIf="tile.pageLink !== ''" [routerLink]="tile.pageLink">click</a>
+        </figcaption>
+        <img [src]="tile.imageUrls[0]" />
+        <img [src]="tile.imageUrls[1]" />
+      </figure>
+    </ng-container>
+    <ng-template #middle>
+      <figure>
+        <img [src]="tile.imageUrls[0]" />
+        <figcaption>
+          <b>{{ tile.heading }}</b
+          ><br />
+          {{ tile.subheading }}
+        </figcaption>
+        <img [src]="tile.imageUrls[1]" />
+      </figure>
+    </ng-template>
+  </ng-container>
+</header>
 
-  <figure>
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-    <figcaption>
-      <b>Garde</b><br />
-      Tanzgruppe
-    </figcaption>
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-  </figure>
-</div>
-<div class="row">
-  <figure>
-    <figcaption>
-      <b>Garde</b><br />
-      Tanzgruppe
-    </figcaption>
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-  </figure>
+<!--<div class="row">-->
+<!--<figure class="red">-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--<figcaption>-->
+<!--<b>Garde</b><br />-->
+<!--Tanzgruppe-->
+<!--</figcaption>-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--</figure>-->
 
-  <figure>
-    <figcaption>
-      <b>Garde</b><br />
-      Tanzgruppe
-    </figcaption>
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
-    />
-  </figure>
-</div>
+<!--<figure>-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--<figcaption>-->
+<!--<b>Garde</b><br />-->
+<!--Tanzgruppe-->
+<!--</figcaption>-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--</figure>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<figure>-->
+<!--<figcaption>-->
+<!--<b>Garde</b><br />-->
+<!--Tanzgruppe-->
+<!--</figcaption>-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--</figure>-->
+
+<!--<figure>-->
+<!--<figcaption>-->
+<!--<b>Garde</b><br />-->
+<!--Tanzgruppe-->
+<!--</figcaption>-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--<img-->
+<!--src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"-->
+<!--/>-->
+<!--</figure>-->
+<!--</div>-->
 
 <!--<div class="title">-->
 <!--<h1>Röhlinger<br />Sechtanarren</h1>-->
