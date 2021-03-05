@@ -1,39 +1,94 @@
-<div class="title">
-  <h1>Röhlinger<br />Sechtanarren</h1>
-  <h2>e.V.1970</h2>
-  <img src="../../../../assets/icons/startpage-logo.webp" alt="logo-background" />
+<div class="row">
+  <figure>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+    <figcaption class="red">
+      <b>Garde</b><br />
+      Tanzgruppe
+    </figcaption>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+  </figure>
+
+  <figure>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+    <figcaption>
+      <b>Garde</b><br />
+      Tanzgruppe
+    </figcaption>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+  </figure>
+</div>
+<div class="row">
+  <figure>
+    <figcaption>
+      <b>Garde</b><br />
+      Tanzgruppe
+    </figcaption>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+  </figure>
+
+  <figure>
+    <figcaption>
+      <b>Garde</b><br />
+      Tanzgruppe
+    </figcaption>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/sechta-narren.appspot.com/o/full%2Ffull%40800x550_MCrKbKaw99rFQPdDTXr4?alt=media&token=0d197e21-de92-418c-a94a-25fb6a2edd72"
+    />
+  </figure>
 </div>
 
-<div class="stripes">
-  <div class="stripe blue"></div>
-  <div class="stripe red"></div>
-  <div class="stripe yellow"></div>
-</div>
+<!--<div class="title">-->
+<!--<h1>Röhlinger<br />Sechtanarren</h1>-->
+<!--<h2>e.V.1970</h2>-->
+<!--<img src="../../../../assets/icons/startpage-logo.webp" alt="logo-background" />-->
+<!--</div>-->
 
-<figure>
-  <figcaption>
-    <h2>News</h2>
-    <a mat-flat-button [color]="'accent'" [routerLink]="'/articles/overview'">MEHR ANZEIGEN</a>
-  </figcaption>
-  <mat-divider></mat-divider>
-  <ng-container *ngIf="article$ | async as article">
-    <h3>{{ article.title }}</h3>
-    <p class="subtitle">{{ article.ownerName }} - {{ article.created | toLocalDateString }}</p>
-    <app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>
-    <a mat-button [color]="'primary'" [routerLink]="'/articles/details/' + article.id">MEHR</a>
-  </ng-container>
-</figure>
+<!--<div class="stripes">-->
+<!--<div class="stripe blue"></div>-->
+<!--<div class="stripe red"></div>-->
+<!--<div class="stripe yellow"></div>-->
+<!--</div>-->
 
-<figure>
-  <figcaption>
-    <h2>Events</h2>
-    <a mat-flat-button [color]="'accent'" [routerLink]="'/events/overview'">MEHR ANZEIGEN</a>
-  </figcaption>
-  <mat-divider></mat-divider>
-  <ng-container *ngIf="event$ | async as ev">
-    <h3>{{ ev.title }}</h3>
-    <p class="subtitle">{{ ev.ownerName }} - {{ ev.date | toLocalDateString }}</p>
-    <app-markdown-viewer [markdownText]="ev.description"></app-markdown-viewer>
-    <a mat-button [color]="'primary'" [routerLink]="'/events/details/' + ev.id">MEHR</a>
-  </ng-container>
-</figure>
+<!--<figure>-->
+<!--<figcaption>-->
+<!--<h2>News</h2>-->
+<!--<a mat-flat-button [color]="'accent'" [routerLink]="'/articles/overview'">MEHR ANZEIGEN</a>-->
+<!--</figcaption>-->
+<!--<mat-divider></mat-divider>-->
+<!--<ng-container *ngIf="article$ | async as article">-->
+<!--<h3>{{ article.title }}</h3>-->
+<!--<p class="subtitle">{{ article.ownerName }} - {{ article.created | toLocalDateString }}</p>-->
+<!--<app-markdown-viewer [markdownText]="article.content"></app-markdown-viewer>-->
+<!--<a mat-button [color]="'primary'" [routerLink]="'/articles/details/' + article.id">MEHR</a>-->
+<!--</ng-container>-->
+<!--</figure>-->
+
+<!--<figure>-->
+<!--<figcaption>-->
+<!--<h2>Events</h2>-->
+<!--<a mat-flat-button [color]="'accent'" [routerLink]="'/events/overview'">MEHR ANZEIGEN</a>-->
+<!--</figcaption>-->
+<!--<mat-divider></mat-divider>-->
+<!--<ng-container *ngIf="event$ | async as ev">-->
+<!--<h3>{{ ev.title }}</h3>-->
+<!--<p class="subtitle">{{ ev.ownerName }} - {{ ev.date | toLocalDateString }}</p>-->
+<!--<app-markdown-viewer [markdownText]="ev.description"></app-markdown-viewer>-->
+<!--<a mat-button [color]="'primary'" [routerLink]="'/events/details/' + ev.id">MEHR</a>-->
+<!--</ng-container>-->
+<!--</figure>-->

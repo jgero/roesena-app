@@ -25,10 +25,12 @@
 
 .home {
   font-size: 20px;
+  font-weight:bold;
 }
 
 .outletContainer {
-  width: min(1000px, 100%);
+  //width: min(1000px, 100%);
+  width: 100%;
   flex: 1;
   min-height: 90vh;
 }
