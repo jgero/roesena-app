@@ -1,5 +1,8 @@
+@import "../shared/style-partials/variables.scss";
+
 :host {
   min-height: 100%;
+  background-color: $background-color;
 
   @media screen and (min-width: 601px) {
     display: flex;

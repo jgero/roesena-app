@@ -64,6 +64,7 @@ $accent-collection: (
         A700 : #000000,
     )
 );
+$background-color: #F0F1FA;
 
 // size constants
 $maxPageWidth: 1000px;
@@ -80,6 +81,10 @@ $warn: mat-color($warn-palette, 500);
 
 // create the theme
 $theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
+// Insert custom background color
+$background: map-get($theme, background);
+$background: map_merge($background, (background: $background-color));
+$theme: map_merge($theme, (background: $background));
 
 // get colors that have been defined by the theme
 $background: map-get($mat-light-theme-background, background);
