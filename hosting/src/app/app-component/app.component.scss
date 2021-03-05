@@ -35,6 +35,11 @@
   min-height: 90vh;
 }
 
+.mat-drawer-content {
+  // needed to avoid "value changed after view was checked" error on startpage
+  width: 100%;
+}
+
 .mat-drawer-container {
   height: calc(100% - 56px);
   z-index: 1;

@@ -1,32 +1,61 @@
 @import '../../shared/style-partials/variables.scss';
 
+:host {
+  display: block;
+  width: 100%;
+  // overflow needs to be hidden because tile size is calculated by vw
+  // and this does not calculate the scrollbar
+  overflow-x: hidden;
+}
+
 header {
   display: flex;
   flex-wrap: wrap;
-  // overflow needs to be hidden because tile size is calculated by vw
-  // and this does not calculate the scrollbar
-  //overflow-x: hidden;
+  // overlap 25px to the right beyond the scrollbar
+  // 25px may be a lot, but it is to be sure it covers the width of the scrollbars of all browsers
+  margin-right: -25px;
+  $tileSize: calc(100vw / 6);
+
+  &.wide {
+    img,
+    figcaption {
+      $tileSize: calc(100vw / 6);
+      height: $tileSize;
+      width: $tileSize;
+    }
+  }
+
+  &.medium {
+    img,
+    figcaption {
+      $tileSize: calc(100vw / 4);
+      height: $tileSize;
+      width: $tileSize;
+    }
+  }
+
+  &.narrow {
+    img,
+    figcaption {
+      $tileSize: calc(100vw / 2);
+      height: $tileSize;
+      width: $tileSize;
+    }
+  }
 
   figure {
     margin: 0;
     display: flex;
     background-color: map-get($primary-collection, 100);
 
+    // the first tile is accent color instead of primary
     &:nth-child(1) {
       background-color: map-get($accent-collection, 100);
-      color: map-get(map-get($accent-collection, contrast), 100);
 
-    figcaption {
-      background-color: map-get($accent-collection, 500);
-      color: map-get(map-get($accent-collection, contrast), 500);
-    }
-    }
-
-    img,
-    figcaption {
-      $tileSize: calc(100vw / 6.1);
-      height: $tileSize;
-      width: $tileSize;
+      figcaption {
+        background-color: map-get($accent-collection, 500);
+        color: map-get(map-get($accent-collection, contrast), 500);
+      }
     }
 
     img {

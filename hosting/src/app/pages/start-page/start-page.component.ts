@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { State } from '@state/state.module';
 import { Store } from '@ngrx/store';
 import { SubscriptionService } from '@services/subscription.service';
@@ -17,9 +17,33 @@ export class StartPageComponent implements OnInit, OnDestroy {
   event$ = this.store.select(eventForStartpage);
   article$ = this.store.select(articleForStartpage);
 
-  public readonly tilesPerRow = 2;
+  get tilesPerRow(): number {
+    if (this.hostRef.nativeElement.clientWidth > 600) {
+      return 2;
+    }
+    return 1;
+  }
 
-  constructor(private store: Store<State>, private subs: SubscriptionService, seo: SeoService) {
+  get hasTwoImagesPerTile(): boolean {
+    return this.hostRef.nativeElement.clientWidth > 1000;
+  }
+
+  get tileGridSize(): string {
+    if (this.tilesPerRow === 1 && !this.hasTwoImagesPerTile) {
+      return 'narrow';
+    } else if (this.tilesPerRow === 2 && !this.hasTwoImagesPerTile) {
+      return 'medium';
+    } else {
+      return 'wide';
+    }
+  }
+
+  constructor(
+    private store: Store<State>,
+    private subs: SubscriptionService,
+    seo: SeoService,
+    private hostRef: ElementRef<HTMLElement>
+  ) {
     seo.setTags(undefined, 'Webseite der Röhlinger Sechtanarren', undefined, '/');
   }
 
@@ -28,7 +52,11 @@ export class StartPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new LoadStartPage({ tileAmount: 4 }));
+    if (this.tileGridSize === 'narrow') {
+      this.store.dispatch(new LoadStartPage({ tileAmount: this.tilesPerRow * 3 }));
+    } else {
+      this.store.dispatch(new LoadStartPage({ tileAmount: this.tilesPerRow * 2 }));
+    }
     //this.store.dispatch(new LoadArticlePage({ limit: 1 }));
     //this.store.dispatch(new LoadAllEvents());
   }
