@@ -55,7 +55,7 @@ const STARTPAGE_TILE_OPTIONS = [
     filterTags: ['Röhling Stones'],
     pageLink: '/static-articles/groups/roehling-stones',
   },
-  //{ heading: 'Das Technik Team', subheading: 'lorem ipsum dolor', filterTags: ['Technik'], pageLink: '' },
+  // { heading: 'Das Technik Team', subheading: 'lorem ipsum dolor', filterTags: ['Technik'], pageLink: '' },
   { heading: 'Die Minigarde', subheading: 'Garde', filterTags: ['Minigarde'], pageLink: '' },
   { heading: 'Die Kindergarde', subheading: 'Garde', filterTags: ['Kindergarde'], pageLink: '' },
   { heading: 'Die Jungendgarde', subheading: 'Garde', filterTags: ['Jugendgarde'], pageLink: '' },
