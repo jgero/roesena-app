@@ -1,5 +1,5 @@
 import { ImageActions, ImageActionTypes } from '../actions/image.actions';
-import { AppImage } from '@utils/interfaces';
+import { AppImage, TileElement } from '@utils/interfaces';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 
 export const imageFeatureKey = 'images';
@@ -9,6 +9,7 @@ export interface State {
   activeImageFullUrl: string;
   activePageImages: AppImage[];
   imageAmount: number;
+  startpageTiles: TileElement[];
   isLoading: boolean;
   pageLimit: number;
   pageIndex: number;
@@ -21,6 +22,7 @@ export const initialState: State = {
   activeImageFullUrl: '',
   activePageImages: [],
   imageAmount: 0,
+  startpageTiles: [],
   isLoading: false,
   pageLimit: 3,
   pageIndex: 0,
@@ -49,6 +51,13 @@ export function reducer(state = initialState, action: ImageActions | PageActions
         pageLast: action.payload.images[action.payload.images.length - 1] || null,
       };
     case ImageActionTypes.LoadImagePageFailure:
+      return { ...state, isLoading: false };
+    // starpage
+    case ImageActionTypes.LoadStartPage:
+      return { ...state, isLoading: true };
+    case ImageActionTypes.LoadStartPageSuccess:
+      return { ...state, isLoading: false, startpageTiles: action.payload.tiles };
+    case ImageActionTypes.LoadStartPage:
       return { ...state, isLoading: false };
     // image amount
     case ImageActionTypes.LoadImageAmountSuccess:

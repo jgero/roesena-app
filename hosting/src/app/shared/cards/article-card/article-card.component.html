@@ -1,19 +1,34 @@
-<mat-card>
-  <mat-card-title> {{ data.title }} </mat-card-title>
-  <mat-card-subtitle>
-    <div>{{ data.created | toLocalDateString }}</div>
-    <div>{{ data.ownerName }}</div>
-  </mat-card-subtitle>
-  <mat-card-content>
-    <div class="content-preview">
-      <app-markdown-viewer [markdownText]="data.content"></app-markdown-viewer>
-    </div>
+<article class="mat-elevation-z1" *ngIf="!isMinimal; else minimal">
+  <div class="buttons">
+    <a mat-icon-button *ngIf="canEdit$ | async" [routerLink]="'/articles/edit/' + data.id"><mat-icon>edit</mat-icon></a>
+    <a mat-icon-button [routerLink]="'/articles/details/' + data.id" class="mat-elevation-z1"
+      ><mat-icon>auto_stories</mat-icon></a
+    >
+  </div>
+  <h2>{{ data.title }}</h2>
+  <h3>
+    <time [attr.datetime]="data.created">{{ data.created | toLocalDateString }}</time> - {{ data.ownerName }}
+  </h3>
+  <app-markdown-viewer [markdownText]="data.content"></app-markdown-viewer>
+  <div class="strut"></div>
+  <div class="chipWrapper">
     <mat-chip-list>
       <mat-chip *ngFor="let tag of data.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
     </mat-chip-list>
-  </mat-card-content>
-  <mat-card-actions>
-    <a mat-button [routerLink]="'/articles/details/' + data.id">MEHR</a>
-    <a mat-icon-button *ngIf="canEdit$ | async" [routerLink]="'/articles/edit/' + data.id"><mat-icon>edit</mat-icon></a>
-  </mat-card-actions>
-</mat-card>
+  </div>
+</article>
+
+<ng-template #minimal>
+  <article class="mat-elevation-z1 minimal">
+    <h2>{{ data.title }}</h2>
+    <h3>
+      <time [attr.datetime]="data.created">{{ data.created | toLocalDateString }}</time> <br />
+      {{ data.ownerName }}
+    </h3>
+    <app-markdown-viewer [markdownText]="data.content"></app-markdown-viewer>
+    <div class="strut"></div>
+    <div class="detailButtonWrapper">
+      <a mat-icon-button [routerLink]="'/articles/details/' + data.id"><mat-icon>expand_more</mat-icon></a>
+    </div>
+  </article>
+</ng-template>

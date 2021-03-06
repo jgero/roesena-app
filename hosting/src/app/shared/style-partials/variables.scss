@@ -1,20 +1,90 @@
 @import '~@angular/material/theming';
 
+$primary-collection: (
+    50 : #e0e1e7,
+    100 : #b3b5c3,
+    200 : #80849b,
+    300 : #4d5372,
+    400 : #262e54,
+    500 : #000936,
+    600 : #000830,
+    700 : #000629,
+    800 : #000522,
+    900 : #000216,
+    A100 : #5656ff,
+    A200 : #2323ff,
+    A400 : #0000ef,
+    A700 : #0000d5,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+$accent-collection: (
+    50 : #ffe5e7,
+    100 : #ffbec2,
+    200 : #ff9399,
+    300 : #ff6770,
+    400 : #ff4752,
+    500 : #ff2633,
+    600 : #ff222e,
+    700 : #ff1c27,
+    800 : #ff1720,
+    900 : #ff0d14,
+    A100 : #ffffff,
+    A200 : #fff6f7,
+    A400 : #ffc3c5,
+    A700 : #ffaaac,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+$background-color: #F0F1FA;
+
 // size constants
 $maxPageWidth: 1000px;
 
 // define palettes
-$primary-palette: mat-palette($mat-pink, 700, 600, 800);
-$accent-palette: mat-palette($mat-yellow, 700, 600, 800);
-$warn-palette: mat-palette($mat-red);
+$primary-palette: mat-palette($primary-collection, 500, 400, 600);
+$accent-palette: mat-palette($accent-collection, 500, 400, 600);
+$warn-palette: mat-palette($accent-collection, 800, 700, 900);
 
 // define colors
-$primary: mat-color($primary-palette, 700);
-$accent: mat-color($accent-palette, 700);
-$warn: mat-color($warn-palette, 700);
+$primary: mat-color($primary-palette, 500);
+$accent: mat-color($accent-palette, 500);
+$warn: mat-color($warn-palette, 500);
 
 // create the theme
 $theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
+// Insert custom background color
+$background: map-get($theme, background);
+$background: map_merge($background, (background: $background-color));
+$theme: map_merge($theme, (background: $background));
 
 // get colors that have been defined by the theme
 $background: map-get($mat-light-theme-background, background);

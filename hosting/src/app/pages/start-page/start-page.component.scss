@@ -1,132 +1,126 @@
+@import '../../shared/style-partials/variables.scss';
+
 :host {
-  $spacing: 3rem;
-
-  box-sizing: border-box;
-  display: grid;
+  display: flex;
   width: 100%;
-  min-height: 500px;
-  padding: 0 $spacing;
-  padding-bottom: $spacing;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-areas: 'title' '.' '.';
-
-  @media screen and (min-width: 1400px) {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: 'title stripes' '. .';
-  }
-  row-gap: $spacing;
-  column-gap: $spacing;
+  flex-direction: column;
+  align-items: center;
+  // overflow needs to be hidden because tile size is calculated by vw
+  // and this does not calculate the scrollbar
+  overflow-x: hidden;
 }
 
-.title {
-  position: relative;
-  grid-area: title;
-
-  @media screen and (min-width: 1400px) {
-    clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
-  }
-  @media screen and (min-width: 601px) {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  overflow: hidden;
+header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-wrap: wrap;
+  // overlap 25px to the right beyond the scrollbar
+  // 25px may be a lot, but it is to be sure it covers the width of the scrollbars of all browsers
+  margin-right: -25px;
+  $tileSize: calc(100vw / 6);
+
+  &.wide {
+    img,
+    figcaption {
+      $tileSize: calc(100vw / 6);
+      height: $tileSize;
+      width: $tileSize;
+    }
+  }
+
+  &.medium {
+    img,
+    figcaption {
+      $tileSize: calc(100vw / 4);
+      height: $tileSize;
+      width: $tileSize;
+    }
+  }
+
+  &.narrow {
+    img,
+    figcaption {
+      $tileSize: calc(100vw / 2);
+      height: $tileSize;
+      width: $tileSize;
+    }
+  }
 
   h1 {
-    margin-block-end: 0em;
-    font-size: 2.5rem;
-    line-height: 2.5rem;
+    font-size: 1.4rem;
+    line-height: 1em;
+    margin-left: -1em;
+    font-weight: bold;
 
-    @media screen and (min-width: 1400px) {
-      font-size: 4rem;
-      line-height: 4rem;
+    span {
+      font-size: 1rem;
+      font-weight: normal;
     }
   }
-
-  h2 {
-    font-size: 1.5rem;
-    line-height: 1rem;
-    opacity: 0.5;
-  }
-
-  img {
-    position: absolute;
-    width: 100%;
-    opacity: 0.1;
-    transform: rotate(10deg);
-  }
-}
-
-.stripes {
-  overflow: hidden;
-  position: relative;
-  grid-area: stripes;
-  @media screen and (max-width: 1399px) {
-    display: none;
-  }
-
-  .stripe {
-    position: absolute;
-    top: -50%;
-    width: 3rem;
-    height: 200%;
-    transform: rotate(40deg);
-
-    &.blue {
-      background-color: #d4e9fd;
-      left: 30%;
-    }
-
-    &.red {
-      background-color: #ffb9d4;
-      left: 40%;
-    }
-
-    &.yellow {
-      background-color: #ffedc1;
-      left: 50%;
-    }
-  }
-}
-
-figure {
-  margin: 0;
-
-  figcaption {
+  figure.logo figcaption {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-
-    h2 {
-      font-size: 1.5rem;
-    }
-
-    & > * {
-      margin: 0;
-    }
   }
 
-  h3 {
-    font-size: 1.5rem;
+  figure {
     margin: 0;
-    margin-top: 1em;
-  }
+    display: flex;
+    background-color: map-get($primary-collection, 100);
 
-  .subtitle {
-    opacity: 0.5;
-  }
+    &.logo {
+      background-color: map-get($primary-collection, 500);
+    }
 
-  app-markdown-viewer {
-    max-height: 200px;
-    overflow: hidden;
+    &:nth-child(even) {
+      background-color: map-get($accent-collection, 100);
+
+      figcaption {
+        background-color: map-get($accent-collection, 500);
+        color: map-get(map-get($accent-collection, contrast), 500);
+      }
+    }
+
+    &:not(.logo) img {
+      object-fit: cover;
+      filter: grayscale(1);
+      mix-blend-mode: multiply;
+    }
+
+    figcaption {
+      padding: 1rem;
+      box-sizing: border-box;
+      background-color: map-get($primary-collection, 500);
+      color: map-get(map-get($primary-collection, contrast), 500);
+      position: relative;
+
+      a {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+      }
+    }
   }
+}
+
+main {
+  width: 100%;
+  max-width: $maxPageWidth;
 
   a {
-    transform: translateX(-16px);
+    margin-left: 1rem;
+    margin-top: 1rem;
+  }
+
+  & > div {
+    margin-top: 3rem;
+  }
+  & > div:nth-child(1) {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .selectionWrapper {
+    display: flex;
+    justify-content: space-between;
   }
 }

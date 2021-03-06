@@ -1,5 +1,8 @@
+@import "../shared/style-partials/variables.scss";
+
 :host {
   min-height: 100%;
+  background-color: $background-color;
 
   @media screen and (min-width: 601px) {
     display: flex;
@@ -25,12 +28,19 @@
 
 .home {
   font-size: 20px;
+  font-weight:bold;
 }
 
 .outletContainer {
-  width: min(1000px, 100%);
+  //width: min(1000px, 100%);
+  width: 100%;
   flex: 1;
   min-height: 90vh;
+}
+
+.mat-drawer-content {
+  // needed to avoid "value changed after view was checked" error on startpage
+  width: 100%;
 }
 
 .mat-drawer-container {

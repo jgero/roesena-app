@@ -14,6 +14,10 @@ export enum ArticleActionTypes {
   LoadArticleAmount = '[article] load amount of articles in the database',
   LoadArticleAmountSuccess = '[article] load amount of articles in the database success',
   LoadArticleAmountFailure = '[article] load amount of articles in the database failure',
+  // load articles for overveiw page
+  LoadArticleSelection = '[article] load article selection',
+  LoadArticleSelectionSuccess = '[article] load article selection success',
+  LoadArticleSelectionFailure = '[article] load article selection failure',
   // article mutation operations
   CreateArticle = '[article] create a new article',
   CreateArticleSuccess = '[article] create a new article success',
@@ -67,6 +71,20 @@ export class LoadArticleAmountFailure implements Action {
   constructor(public payload: { error: any }) {}
 }
 
+// load  article selection
+export class LoadArticleSelection implements Action {
+  readonly type = ArticleActionTypes.LoadArticleSelection;
+  constructor(public payload?: { tags: string[]; limit: number }) {}
+}
+export class LoadArticleSelectionSuccess implements Action {
+  readonly type = ArticleActionTypes.LoadArticleSelectionSuccess;
+  constructor(public payload: { articles: AppArticle[] }) {}
+}
+export class LoadArticleSelectionFailure implements Action {
+  readonly type = ArticleActionTypes.LoadArticleSelectionFailure;
+  constructor(public payload: { error: any }) {}
+}
+
 // article mutation operations
 export class CreateArticle implements Action {
   readonly type = ArticleActionTypes.CreateArticle;
@@ -112,6 +130,9 @@ export type ArticleActions =
   | LoadArticleAmount
   | LoadArticleAmountSuccess
   | LoadArticleAmountFailure
+  | LoadArticleSelection
+  | LoadArticleSelectionSuccess
+  | LoadArticleSelectionFailure
   | CreateArticle
   | CreateArticleSuccess
   | CreateArticleFailure

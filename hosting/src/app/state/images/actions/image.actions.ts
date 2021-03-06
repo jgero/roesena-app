@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { AppImage } from '@utils/interfaces';
+import { AppImage, TileElement } from '@utils/interfaces';
 
 export enum ImageActionTypes {
   // load single image
@@ -10,6 +10,10 @@ export enum ImageActionTypes {
   LoadImagePage = '[image] load images for an entire page',
   LoadImagePageSuccess = '[image] load images for an entire page success',
   LoadImagePageFailure = '[image] load images for an entire page failure',
+  // load images for start page
+  LoadStartPage = '[image] load images for the startpage',
+  LoadStartPageSuccess = '[image] load images for the startpage success',
+  LoadStartPageFailure = '[image] load images for the startpage failure',
   // load amout of images in the system
   LoadImageAmount = '[image] load amount of images in the database',
   LoadImageAmountSuccess = '[image] load amount of images in the database success',
@@ -53,6 +57,20 @@ export class LoadImagePageSuccess implements Action {
 }
 export class LoadImagePageFailure implements Action {
   readonly type = ImageActionTypes.LoadImagePageFailure;
+  constructor(public payload: { error: any }) {}
+}
+
+// load images for startpage
+export class LoadStartPage implements Action {
+  readonly type = ImageActionTypes.LoadStartPage;
+  constructor(public payload: { tileAmount: number }) {}
+}
+export class LoadStartPageSuccess implements Action {
+  readonly type = ImageActionTypes.LoadStartPageSuccess;
+  constructor(public payload: { tiles: TileElement[] }) {}
+}
+export class LoadStartPageFailure implements Action {
+  readonly type = ImageActionTypes.LoadStartPageFailure;
   constructor(public payload: { error: any }) {}
 }
 
@@ -116,6 +134,9 @@ export type ImageActions =
   | LoadImagePage
   | LoadImagePageSuccess
   | LoadImagePageFailure
+  | LoadStartPage
+  | LoadStartPageSuccess
+  | LoadStartPageFailure
   | LoadImageAmount
   | LoadImageAmountSuccess
   | LoadImageAmountFailure

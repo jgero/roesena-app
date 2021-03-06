@@ -1,46 +1,56 @@
 @import '../../style-partials/variables.scss';
 
-:host {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
+article {
+  margin: 1rem;
+  padding: 1rem;
+  background-color: $cardBackground;
+  max-width: 25rem;
+  position: relative;
+}
 
-  ::ng-deep.mat-badge.hide-text .mat-badge-content {
-    color: transparent;
-  }
+.buttons {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+}
 
-  .mat-card {
-    height: calc(100% - 36px);
-    width: calc(100% - 36px);
-    display: flex;
-    flex-direction: column;
-    background-color: rgba($color: #ffffff, $alpha: 0.5);
-  }
+h2,
+h3 {
+  padding-right: 5rem;
+}
 
-  .mat-card-content {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+h2 {
+  margin: 0;
+  line-height: 1rem;
+  margin-bottom: 0.3em;
+}
 
-    .content-preview {
-      flex: 1 1 auto;
-      overflow: hidden;
-      margin-bottom: 8px;
-      position: relative;
+h3 {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  margin-bottom: 1em;
+  line-height: 1em;
+}
 
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        display: block;
-        height: 40px;
-        background-image: linear-gradient(to top, $cardBackground, transparent);
-      }
-    }
+.chipWrapper {
+  background-color: $accent;
+  margin: 1em -1rem -1rem -1rem;
+  padding: 1rem;
+}
+
+app-markdown-viewer {
+  overflow: hidden;
+  max-height: 10rem;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: block;
+    height: 40px;
+    background-image: linear-gradient(to top, $cardBackground, transparent);
   }
 }
