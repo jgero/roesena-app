@@ -24,46 +24,46 @@ import { MissingDocumentError } from '@utils/errors/missing-document-error';
 import { UrlLoaderService } from '@services/url-loader.service';
 
 const STARTPAGE_TILE_OPTIONS = [
-  { heading: 'Der Elferrat', subheading: 'lorem ipsum dolor', filterTags: ['Elferrat'], pageLink: '' },
+  { heading: 'Der Elferrat', subheading: '', filterTags: ['Elferrat'], pageLink: '' },
   {
     heading: 'Die Sechtafeger',
-    subheading: 'lorem ipsum dolor',
+    subheading: 'Kostümgruppe',
     filterTags: ['Sechtafeger'],
     pageLink: '/static-articles/groups/sechtafeger',
   },
   {
     heading: 'Die Brandjoggala',
-    subheading: 'lorem ipsum dolor',
+    subheading: 'Maskengruppe',
     filterTags: ['Brandjoggala'],
     pageLink: '/static-articles/groups/brandjoggala',
   },
   {
     heading: 'Das Wilde Heer',
-    subheading: 'lorem ipsum dolor',
+    subheading: 'Maskengruppe',
     filterTags: ['Das Wilde Heer'],
     pageLink: '/static-articles/groups/wildes-heer',
   },
   {
     heading: 'Das Männerballett',
-    subheading: 'lorem ipsum dolor',
+    subheading: 'Tanzgruppe',
     filterTags: ['Männerballett'],
     pageLink: '/static-articles/groups/maennerballett',
   },
   {
     heading: 'Die Röhling Stones',
-    subheading: 'lorem ipsum dolor',
+    subheading: 'Guggenmusik',
     filterTags: ['Röhling Stones'],
     pageLink: '/static-articles/groups/roehling-stones',
   },
   //{ heading: 'Das Technik Team', subheading: 'lorem ipsum dolor', filterTags: ['Technik'], pageLink: '' },
-  { heading: 'Die Minigarde', subheading: 'lorem ipsum dolor', filterTags: ['Minigarde'], pageLink: '' },
-  { heading: 'Die Kindergarde', subheading: 'lorem ipsum dolor', filterTags: ['Kindergarde'], pageLink: '' },
-  { heading: 'Die Jungendgarde', subheading: 'lorem ipsum dolor', filterTags: ['Jugendgarde'], pageLink: '' },
-  { heading: 'Die Prinzengarde', subheading: 'lorem ipsum dolor', filterTags: ['Prinzengarde'], pageLink: '' },
-  { heading: 'Die Erste Garde', subheading: 'lorem ipsum dolor', filterTags: ['Erste Garde'], pageLink: '' },
-  { heading: 'Die Büttenredner', subheading: 'lorem ipsum dolor', filterTags: ['Bütt'], pageLink: '' },
-  { heading: 'Die Prinzenpaare', subheading: 'lorem ipsum dolor', filterTags: ['Prinzenpaar'], pageLink: '' },
-  { heading: 'Die Kinderprinzenpaare', subheading: 'lorem ipsum dolor', filterTags: ['Kinderprinzenpaar'], pageLink: '' },
+  { heading: 'Die Minigarde', subheading: 'Garde', filterTags: ['Minigarde'], pageLink: '' },
+  { heading: 'Die Kindergarde', subheading: 'Garde', filterTags: ['Kindergarde'], pageLink: '' },
+  { heading: 'Die Jungendgarde', subheading: 'Garde', filterTags: ['Jugendgarde'], pageLink: '' },
+  { heading: 'Die Prinzengarde', subheading: 'Garde', filterTags: ['Prinzengarde'], pageLink: '' },
+  { heading: 'Die Erste Garde', subheading: 'Garde', filterTags: ['Erste Garde'], pageLink: '' },
+  { heading: 'Die Büttenredner', subheading: 'Sprechbeiträge', filterTags: ['Bütt'], pageLink: '' },
+  { heading: 'Die Prinzenpaare', subheading: '', filterTags: ['Prinzenpaar'], pageLink: '' },
+  { heading: 'Die Kinderprinzenpaare', subheading: '', filterTags: ['Kinderprinzenpaar'], pageLink: '' },
 ];
 
 @Injectable()

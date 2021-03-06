@@ -55,6 +55,8 @@ export class StartPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.tileGridSize === 'narrow') {
       this.store.dispatch(new LoadStartPage({ tileAmount: this.tilesPerRow * 3 }));
+    } else if (this.tileGridSize === 'medium') {
+      this.store.dispatch(new LoadStartPage({ tileAmount: this.tilesPerRow * 2 - 1 }));
     } else {
       this.store.dispatch(new LoadStartPage({ tileAmount: this.tilesPerRow * 2 }));
     }

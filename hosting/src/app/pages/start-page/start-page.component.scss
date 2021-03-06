@@ -18,8 +18,6 @@ header {
   margin-right: -25px;
   $tileSize: calc(100vw / 6);
 
-  // TODO: set header size here directly so content shift is not as much as when letting the container expand when the images load in
-
   &.wide {
     img,
     figcaption {
@@ -47,13 +45,32 @@ header {
     }
   }
 
+  h1 {
+    font-size: 1.4rem;
+    line-height: 1em;
+    margin-left: -1em;
+    font-weight: bold;
+
+    span {
+      font-size: 1rem;
+      font-weight: normal;
+    }
+  }
+  figure.logo figcaption {
+    display: flex;
+    align-items: center;
+  }
+
   figure {
     margin: 0;
     display: flex;
     background-color: map-get($primary-collection, 100);
 
-    // the first tile is accent color instead of primary
-    &:nth-child(1) {
+    &.logo {
+      background-color: map-get($primary-collection, 500);
+    }
+
+    &:nth-child(even) {
       background-color: map-get($accent-collection, 100);
 
       figcaption {
@@ -62,7 +79,7 @@ header {
       }
     }
 
-    img {
+    &:not(.logo) img {
       object-fit: cover;
       filter: grayscale(1);
       mix-blend-mode: multiply;
@@ -73,6 +90,13 @@ header {
       box-sizing: border-box;
       background-color: map-get($primary-collection, 500);
       color: map-get(map-get($primary-collection, contrast), 500);
+      position: relative;
+
+      a {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+      }
     }
   }
 }
@@ -92,6 +116,7 @@ main {
   & > div:nth-child(1) {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .selectionWrapper {

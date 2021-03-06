@@ -1,26 +1,39 @@
 <header [class]="tileGridSize">
+  <figure class="logo">
+    <img src="../../../assets/icons/startpage-logo.webp" alt="logo" />
+    <figcaption>
+      <h1>
+        RÖHLINGER <br />
+        SECHTANARREN <br />
+        <span>e.V. 1970</span>
+      </h1>
+    </figcaption>
+  </figure>
   <ng-container *ngFor="let tile of images$ | async; let i = index">
-    <ng-container *ngIf="getRowStyle(i); else middle">
+    <ng-container *ngIf="getRowStyle(i); else alternate">
       <figure>
+        <img [src]="tile.imageUrls[0]" />
         <figcaption>
           <b>{{ tile.heading }}</b
           ><br />
           {{ tile.subheading }}
-          <a *ngIf="tile.pageLink !== ''" [routerLink]="tile.pageLink">click</a>
+          <a mat-icon-button *ngIf="tile.pageLink !== ''" [routerLink]="tile.pageLink"><mat-icon>launch</mat-icon></a>
         </figcaption>
-        <img [src]="tile.imageUrls[0]" />
         <img *ngIf="hasTwoImagesPerTile" [src]="tile.imageUrls[1]" />
       </figure>
     </ng-container>
-    <ng-template #middle>
+    <ng-template #alternate>
       <figure>
-        <img [src]="tile.imageUrls[0]" />
+        <!--this alternate tile setup only has one image because it has to compensate for-->
+        <!--the tile the logo and heading tage up-->
+        <!--<img *ngIf="hasTwoImagesPerTile" [src]="tile.imageUrls[1]" />-->
         <figcaption>
           <b>{{ tile.heading }}</b
           ><br />
           {{ tile.subheading }}
+          <a mat-icon-button *ngIf="tile.pageLink !== ''" [routerLink]="tile.pageLink"><mat-icon>launch</mat-icon></a>
         </figcaption>
-        <img *ngIf="hasTwoImagesPerTile" [src]="tile.imageUrls[1]" />
+        <img [src]="tile.imageUrls[0]" />
       </figure>
     </ng-template>
   </ng-container>
@@ -39,7 +52,7 @@
         ><mat-icon>arrow_forward</mat-icon><span>EVENTS</span></a
       >
       <app-event-card *ngIf="event$ | async as event; else noEvent" [data]="event"></app-event-card>
-      <ng-template #noEvent><p>Zur Zeit gibt es keine anstehende Termine.</p></ng-template>
+      <ng-template #noEvent><p>Zur Zeit gibt es keine anstehenden Termine.</p></ng-template>
     </div>
   </div>
   <div>
