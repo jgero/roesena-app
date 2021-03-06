@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { SubscriptionService } from '@services/subscription.service';
 import { SeoService } from '@services/seo.service';
 import { forStartpage as eventForStartpage, LoadAllEvents } from '@state/events';
-import { forStartpage as articleForStartpage, LoadArticlePage } from '@state/articles';
+import { LoadSingleArticle } from '@state/articles';
 import { LoadStartPage } from '@state/images';
 
 @Component({
@@ -15,7 +15,7 @@ import { LoadStartPage } from '@state/images';
 export class StartPageComponent implements OnInit, OnDestroy {
   images$ = this.store.select('images', 'startpageTiles');
   event$ = this.store.select(eventForStartpage);
-  article$ = this.store.select(articleForStartpage);
+  article$ = this.store.select('articles', 'activeArticle');
 
   get tilesPerRow(): number {
     if (this.hostRef.nativeElement.clientWidth > 600) {
@@ -57,8 +57,8 @@ export class StartPageComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch(new LoadStartPage({ tileAmount: this.tilesPerRow * 2 }));
     }
-    //this.store.dispatch(new LoadArticlePage({ limit: 1 }));
-    //this.store.dispatch(new LoadAllEvents());
+    this.store.dispatch(new LoadSingleArticle({ tags: ['Startseite'] }));
+    this.store.dispatch(new LoadAllEvents());
   }
 
   ngOnDestroy() {

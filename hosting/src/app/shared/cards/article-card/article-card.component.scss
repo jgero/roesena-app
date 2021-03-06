@@ -1,41 +1,55 @@
 @import '../../style-partials/variables.scss';
 
-:host {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
+article {
+  margin: 1rem;
+  padding: 1rem;
+  background-color: $cardBackground;
+  max-width: 25rem;
+  position: relative;
+}
 
-  .mat-card {
-    height: calc(100% - 36px);
-    width: calc(100% - 36px);
-    display: flex;
-    flex-direction: column;
-  }
+.buttons {
+  position: absolute;
+  top: .5rem;
+  right: 1rem;
+}
 
-  .mat-card-content {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+h2, h3 {
+  padding-right: 5rem;
+}
 
-    .content-preview {
-      flex: 1 1 auto;
-      overflow: hidden;
-      margin-bottom: 8px;
-      position: relative;
+h2 {
+  margin: 0;
+  line-height: 1rem;
+  margin-bottom: 0.3em;
+}
 
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        display: block;
-        height: 40px;
-        background-image: linear-gradient(to top, $cardBackground, transparent);
-      }
-    }
+h3 {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  margin-bottom: 1em;
+  line-height: 1em;
+}
+
+.chipWrapper {
+  background-color: $accent;
+  margin: 1em -1rem -1rem -1rem;
+  padding: 1rem;
+}
+
+app-markdown-viewer {
+  overflow: hidden;
+  max-height: 10rem;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: block;
+    height: 40px;
+    background-image: linear-gradient(to top, $cardBackground, transparent);
   }
 }

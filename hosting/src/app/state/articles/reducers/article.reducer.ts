@@ -8,6 +8,7 @@ export const articleFeatureKey = 'articles';
 export interface State {
   activeArticle: AppArticle;
   activePageArticles: AppArticle[];
+  activeArticleSelection: AppArticle[];
   articleAmount: number;
   isLoading: boolean;
   pageLimit: number;
@@ -19,6 +20,7 @@ export interface State {
 export const initialState: State = {
   activeArticle: null,
   activePageArticles: [],
+  activeArticleSelection: [],
   articleAmount: 0,
   isLoading: false,
   pageLimit: 3,
@@ -52,6 +54,13 @@ export function reducer(state = initialState, action: ArticleActions | PageActio
     // article amount
     case ArticleActionTypes.LoadArticleAmountSuccess:
       return { ...state, articleAmount: action.payload.amount };
+    // article selection
+    case ArticleActionTypes.LoadArticleSelection:
+      return { ...state, isLoading: true };
+    case ArticleActionTypes.LoadArticleSelectionSuccess:
+      return { ...state, isLoading: false, activeArticleSelection: action.payload.articles };
+    case ArticleActionTypes.LoadArticleSelectionFailure:
+      return { ...state, isLoading: false };
     // clear articles on page action
     case PageActionTypes.PageForward:
       return { ...state, pageIndex: state.pageIndex + 1 };

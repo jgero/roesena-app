@@ -26,8 +26,7 @@ export const canReply = createSelector(selectUser, selectActiveEvent, (selectedU
 });
 
 export const forStartpage = (state: State) => {
-  // TODO: select startpage event here
-  return null;
+  return state.events.activePageEvents.length > 0 ? state.events.activePageEvents[0] : null;
 };
 
 export const unrespondedAmount = (state: State) => state.events.unrespondedEvents.length;
