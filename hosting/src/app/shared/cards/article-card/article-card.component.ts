@@ -14,6 +14,8 @@ import { AddSearchString } from '@state/searching/actions/search.actions';
 export class ArticleCardComponent {
   @Input()
   data: AppArticle;
+  @Input()
+  isMinimal = false;
 
   canEdit$ = this.store
     .select('persons', 'user')

@@ -20,7 +20,10 @@ import {
   LoadArticleAmount,
   ArticleActions,
   LoadArticlePageSuccess,
+  LoadArticleSelectionSuccess,
+  LoadArticleSelectionFailure,
 } from '../actions/article.actions';
+import { sortByTags } from '@utils/converters/sort-by-tags';
 
 @Injectable()
 export class ArticleMultiEffects {
@@ -113,6 +116,29 @@ export class ArticleMultiEffects {
           map(convertMany),
           map((articles) => new LoadArticlePageSuccess({ articles })),
           catchError((error) => of(new LoadArticlePageFailure({ error })))
+        )
+    )
+  );
+
+  @Effect()
+  articleSelection$ = this.actions$.pipe(
+    ofType(ArticleActionTypes.LoadArticleSelection),
+    switchMap((action) =>
+      this.firestore
+        .collection('articles', (qFn) => {
+          let query: CollectionReference | Query = qFn;
+          // filter by the search strings
+          action.payload.tags.forEach((searchString) => (query = query.where(`tags.${searchString}`, '==', true)));
+          return query;
+        })
+        .snapshotChanges()
+        .pipe(
+          takeUntil(this.subs.unsubscribe$),
+          map(convertMany),
+          map(sortByTags),
+          map((articles) => articles.slice(0, action.payload.limit)),
+          map((articles) => new LoadArticleSelectionSuccess({ articles })),
+          catchError((error) => of(new LoadArticleSelectionFailure({ error })))
         )
     )
   );

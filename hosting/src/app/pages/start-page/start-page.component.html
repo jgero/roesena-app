@@ -29,13 +29,25 @@
 <main>
   <div>
     <div class="column">
-      <a mat-stroked-button [color]="'primary'"><mat-icon>arrow_forward</mat-icon><span>NEWS</span></a>
+      <a mat-stroked-button [color]="'primary'" [routerLink]="'/articles/overview'"
+        ><mat-icon>arrow_forward</mat-icon><span>ARTIKEL</span></a
+      >
       <app-article-card *ngIf="article$ | async as article" [data]="article"></app-article-card>
     </div>
     <div class="column">
-      <a mat-stroked-button [color]="'primary'"><mat-icon>arrow_forward</mat-icon><span>EVENTS</span></a>
+      <a mat-stroked-button [color]="'primary'" [routerLink]="'/events/overview'"
+        ><mat-icon>arrow_forward</mat-icon><span>EVENTS</span></a
+      >
       <app-event-card *ngIf="event$ | async as event; else noEvent" [data]="event"></app-event-card>
       <ng-template #noEvent><p>Zur Zeit gibt es keine anstehende Termine.</p></ng-template>
+    </div>
+  </div>
+  <div>
+    <a mat-stroked-button [color]="'primary'" [routerLink]="'/articles/overview'"
+      ><mat-icon>arrow_forward</mat-icon><span>NEWS</span></a
+    >
+    <div class="selectionWrapper">
+      <app-article-card *ngFor="let article of articleSelection$ | async" [data]="article" [isMinimal]="true"></app-article-card>
     </div>
   </div>
 </main>

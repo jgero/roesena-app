@@ -1,42 +1,25 @@
 @import '../../style-partials/variables.scss';
 
 article {
+  background-color: $cardBackground;
   margin: 1rem;
   padding: 1rem;
-  background-color: $cardBackground;
-  max-width: 25rem;
-  position: relative;
+  max-height: 15rem;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
-
-.buttons {
-  position: absolute;
-  top: .5rem;
-  right: 1rem;
-}
-
-h2, h3 {
-  padding-right: 5rem;
-}
-
 h2 {
   margin: 0;
   line-height: 1rem;
   margin-bottom: 0.3em;
 }
-
 h3 {
   font-size: 0.8rem;
-  opacity: 0.5;
   margin-bottom: 1em;
   line-height: 1em;
 }
-
-.chipWrapper {
-  background-color: $accent;
-  margin: 1em -1rem -1rem -1rem;
-  padding: 1rem;
-}
-
 app-markdown-viewer {
   overflow: hidden;
   max-height: 10rem;
@@ -51,5 +34,54 @@ app-markdown-viewer {
     display: block;
     height: 40px;
     background-image: linear-gradient(to top, $cardBackground, transparent);
+  }
+}
+.strut {
+  flex: 1;
+}
+.chipWrapper {
+  background-color: $accent;
+  margin: 1em -1rem -1rem -1rem;
+  padding: 1rem;
+}
+.buttons {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+}
+.detailButtonWrapper {
+  margin: 0 -1rem -1rem -1rem;
+  display: flex;
+  justify-content: center;
+}
+
+article:not(.minimal) {
+  max-width: 25rem;
+  position: relative;
+
+  h2,
+  h3 {
+    padding-right: 5rem;
+  }
+  h3 {
+    opacity: 0.5;
+  }
+}
+
+article.minimal {
+  max-width: 10rem;
+  h2,
+  h3 {
+    background-color: $accent;
+  }
+  h2 {
+    padding: 1rem 1rem 0 1rem;
+    margin: -1rem -1rem 0 -1rem;
+    color: map-get($accent-palette, A100);
+  }
+  h3 {
+    padding: 0.3rem 1rem 1rem 1rem;
+    margin: 0 -1rem 1rem -1rem;
+    color: map-get($accent-palette, A200);
   }
 }

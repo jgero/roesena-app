@@ -81,14 +81,21 @@ main {
   width: 100%;
   max-width: $maxPageWidth;
 
+  a {
+    margin-left: 1rem;
+    margin-top: 1rem;
+  }
+
   & > div {
     margin-top: 3rem;
+  }
+  & > div:nth-child(1) {
     display: flex;
     justify-content: space-between;
   }
 
-  .column > * {
-    margin-left: 1rem;
-    margin-top: 1rem;
+  .selectionWrapper {
+    display: flex;
+    justify-content: space-between;
   }
 }
