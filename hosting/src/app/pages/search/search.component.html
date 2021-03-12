@@ -1,23 +1,71 @@
-<app-page-header [title]="'Suchergebnisse'" [matIcon]="'search'"></app-page-header>
-
-<ng-container
-  *ngIf="(articles$ | async).length > 0 || (images$ | async).length > 0 || (events$ | async).length > 0; else noResults"
->
-  <mat-grid-list [cols]="cols" [rowHeight]="rowHeight$ | async" [gutterSize]="'16px'" @cardFlyIn>
-    <mat-grid-tile *ngFor="let article of articles$ | async">
-      <app-article-card [data]="article"></app-article-card>
-    </mat-grid-tile>
-    <mat-grid-tile *ngFor="let image of images$ | async">
-      <app-image-card [data]="image"></app-image-card>
-    </mat-grid-tile>
-    <mat-grid-tile *ngFor="let event of events$ | async">
-      <app-event-card [data]="event"></app-event-card>
-    </mat-grid-tile>
-  </mat-grid-list>
-</ng-container>
-
-<ng-template #noResults>
-  <h2>Keine Treffer</h2>
-  <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>
-  <a href="/help#Suche" color="primary" mat-flat-button aria-label="Hilfe">HILFE</a>
-</ng-template>
+<header>
+  <h1 class="mat-display-2">Suchergebnisse</h1>
+  <div>
+    <div class="formFields">
+      <mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAddTag($event, chipInput)">
+          <mat-option
+            *ngFor="
+              let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value:(searchStrings$ | async)
+            "
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-chip-list #chipList>
+          <button mat-button matPrefix mat-icon-button aria-label="Filtern" (click)="onSearch()">
+            <mat-icon>filter_alt</mat-icon>
+          </button>
+          <mat-chip *ngFor="let item of searchStrings$ | async" (removed)="onRemoveTag(item)">
+            {{ item }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
+          <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClearSearch()">
+            <mat-icon>cleaning_services</mat-icon>
+          </button>
+        </mat-chip-list>
+      </mat-form-field>
+      <div class="checkboxes">
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isArticlesChecked">Artikel</mat-checkbox>
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isImagesChecked">Bilder</mat-checkbox>
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isEventsChecked">Events</mat-checkbox>
+      </div>
+    </div>
+    <p>
+      Die Tags helfen bei der Suche schneller genau das zu finden, was man sucht. <br /><br />
+      Je genauer die Tags angegeben sind, desto besser die Suchergebnisse.
+    </p>
+  </div>
+</header>
+<main [class.single]="(searchTypeAmount$ | async) === 1">
+  <ng-container *ngIf="(searchTypeAmount$ | async) === 1; then singleType; else multipleTypes"></ng-container>
+  <ng-template #singleType>
+    <app-article-card *ngFor="let article of articles$ | async" [data]="article"></app-article-card>
+    <app-image-card *ngFor="let image of images$ | async" [data]="image"></app-image-card>
+    <app-event-card *ngFor="let event of events$ | async" [data]="event"></app-event-card>
+  </ng-template>
+  <ng-template #multipleTypes>
+    <section *ngIf="articles$ | async as articles">
+      <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('articles')">
+        <mat-icon>arrow_forward</mat-icon><span>ARTIKEL</span>
+      </button>
+      <div>
+        <app-article-card *ngFor="let article of articles" [data]="article"></app-article-card>
+      </div>
+    </section>
+    <section *ngIf="images$ | async as images">
+      <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('images')">
+        <mat-icon>arrow_forward</mat-icon><span>BILDER</span>
+      </button>
+      <app-image-card *ngFor="let image of images" [data]="image"></app-image-card>
+    </section>
+    <section *ngIf="events$ | async as events">
+      <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('events')">
+        <mat-icon>arrow_forward</mat-icon><span>EVENTS</span>
+      </button>
+      <app-event-card *ngFor="let event of events" [data]="event"></app-event-card>
+    </section>
+  </ng-template>
+</main>

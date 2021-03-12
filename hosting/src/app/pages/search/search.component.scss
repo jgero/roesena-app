@@ -1,7 +1,61 @@
+@import '../../shared/style-partials/variables.scss';
+
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > * {
+    max-width: $maxPageWidth;
+    width: 100%;
+  }
 }
 
-.mat-grid-list {
-  margin: 0 16px;
+header {
+  margin-top: 10vh;
+
+  h1 {
+    margin: 0 0 1rem 0;
+  }
+  p {
+    text-align: right;
+    padding-left: 1rem;
+  }
+
+  & > div {
+    display: flex;
+    & > :nth-child(1) {
+      flex: 4;
+    }
+    & > :nth-child(2) {
+      flex: 1;
+    }
+
+    .checkboxes mat-checkbox {
+      margin-right: 2rem;
+    }
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+
+  &.single {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  section {
+    & > div {
+      display: flex;
+      margin: 0 -1rem;
+      justify-content: space-between;
+    }
+  }
 }
