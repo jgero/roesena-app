@@ -3,15 +3,14 @@
 :host {
   max-width: $maxCardWidth + 2rem;
   width: 100%;
+  min-width: 20rem;
 }
 
 figure {
   display: block;
   position: relative;
   margin: 1rem;
-  width: 100%;
   max-width: $maxCardWidth;
-  box-sizing: content-box;
 
   img {
     width: 100%;

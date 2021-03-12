@@ -23,7 +23,7 @@
           </mat-chip>
           <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
           <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClearSearch()">
-            <mat-icon>cleaning_services</mat-icon>
+            <mat-icon>delete</mat-icon>
           </button>
         </mat-chip-list>
       </mat-form-field>
@@ -39,11 +39,7 @@
         <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isEventsChecked">Events</mat-checkbox>
       </div>
     </div>
-    <p>
-      <mat-icon [color]="'primary'">info</mat-icon> <br />
-      Die Tags helfen bei der Suche schneller genau das zu finden, was man sucht. <br /><br />
-      Je genauer die Tags angegeben sind, desto besser die Suchergebnisse.
-    </p>
+    <div class="strut"></div>
   </div>
 </header>
 
