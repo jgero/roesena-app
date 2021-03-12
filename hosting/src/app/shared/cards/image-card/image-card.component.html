@@ -1,12 +1,17 @@
-<mat-card>
+<figure>
   <img mat-card-image [src]="$src | async" [routerLink]="'/images/details/' + data.id" />
-  <mat-card-content>
-    <mat-chip-list>
-      <mat-chip *ngFor="let tag of data.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
-    </mat-chip-list>
-  </mat-card-content>
-  <mat-card-actions>
-    <a mat-button [routerLink]="'/images/details/' + data.id">MEHR</a>
-    <a mat-icon-button *ngIf="canEdit$ | async" [routerLink]="'/images/edit/' + data.id"><mat-icon>edit</mat-icon></a>
-  </mat-card-actions>
-</mat-card>
+  <div class="buttonBox">
+    <a mat-icon-button class="mat-elevation-z1" [routerLink]="'/images/details/' + data.id"><mat-icon>open_in_full</mat-icon></a>
+    <button mat-icon-button class="mat-elevation-z1"><mat-icon>view_carousel</mat-icon></button>
+  </div>
+</figure>
+<!--<mat-card-content>-->
+<!--<mat-chip-list>-->
+<!--<mat-chip *ngFor="let tag of data.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>-->
+<!--</mat-chip-list>-->
+<!--</mat-card-content>-->
+<!--<mat-card-actions>-->
+<!--<a mat-button [routerLink]="'/images/details/' + data.id">MEHR</a>-->
+<!--<a mat-icon-button *ngIf="canEdit$ | async" [routerLink]="'/images/edit/' + data.id"><mat-icon>edit</mat-icon></a>-->
+<!--</mat-card-actions>-->
+<!--</mat-card>-->

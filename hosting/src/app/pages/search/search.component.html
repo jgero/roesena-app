@@ -34,38 +34,91 @@
       </div>
     </div>
     <p>
+      <mat-icon [color]="'primary'">info</mat-icon> <br />
       Die Tags helfen bei der Suche schneller genau das zu finden, was man sucht. <br /><br />
       Je genauer die Tags angegeben sind, desto besser die Suchergebnisse.
     </p>
   </div>
 </header>
-<main [class.single]="(searchTypeAmount$ | async) === 1">
-  <ng-container *ngIf="(searchTypeAmount$ | async) === 1; then singleType; else multipleTypes"></ng-container>
-  <ng-template #singleType>
-    <app-article-card *ngFor="let article of articles$ | async" [data]="article"></app-article-card>
-    <app-image-card *ngFor="let image of images$ | async" [data]="image"></app-image-card>
-    <app-event-card *ngFor="let event of events$ | async" [data]="event"></app-event-card>
-  </ng-template>
-  <ng-template #multipleTypes>
-    <section *ngIf="articles$ | async as articles">
-      <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('articles')">
-        <mat-icon>arrow_forward</mat-icon><span>ARTIKEL</span>
-      </button>
-      <div>
-        <app-article-card *ngFor="let article of articles" [data]="article"></app-article-card>
-      </div>
-    </section>
-    <section *ngIf="images$ | async as images">
-      <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('images')">
-        <mat-icon>arrow_forward</mat-icon><span>BILDER</span>
-      </button>
-      <app-image-card *ngFor="let image of images" [data]="image"></app-image-card>
-    </section>
-    <section *ngIf="events$ | async as events">
-      <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('events')">
-        <mat-icon>arrow_forward</mat-icon><span>EVENTS</span>
-      </button>
-      <app-event-card *ngFor="let event of events" [data]="event"></app-event-card>
-    </section>
-  </ng-template>
-</main>
+
+<ng-container *ngIf="(articles$ | async).length + (images$ | async).length + (events$ | async).length > 30">
+  <h2><mat-icon [color]="'accent'">info</mat-icon> Viele Treffer</h2>
+  <div>
+    <p>
+      Zu den von dir verwendeten Such-Parametern scheint es sehr viele Einträge im System zu geben. Aus technischen Gründen wird
+      die Anzahl an Suchergebnissen begrenzt, es kann also sein dass nicht alle Inhalte die zu diesen Such-Parametern passen
+      angezeigt werden.
+    </p>
+    <p>
+      <strong>Füge deiner Suche mehr Tags (Schlagworte) hinzu</strong>, damit die Suche spezifischer wird und du somit auch genau
+      das findest was du suchst.
+    </p>
+  </div>
+  <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
+</ng-container>
+
+<ng-container
+  *ngIf="(articles$ | async).length > 0 || (images$ | async).length > 0 || (events$ | async).length > 0; else noResults"
+>
+  <main [class.single]="(searchTypeAmount$ | async) === 1">
+    <ng-container *ngIf="(searchTypeAmount$ | async) === 1; then singleType; else multipleTypes"></ng-container>
+
+    <!-- when only a single type is selected just dump them in the main -->
+    <ng-template #singleType>
+      <app-article-card *ngFor="let article of articles$ | async" [data]="article"></app-article-card>
+      <app-image-card *ngFor="let image of images$ | async" [data]="image"></app-image-card>
+      <app-event-card *ngFor="let event of events$ | async" [data]="event"></app-event-card>
+    </ng-template>
+
+    <!-- when multiple types are selected show a pretty row layout -->
+    <ng-template #multipleTypes>
+      <ng-container *ngIf="articles$ | async as articles">
+        <section *ngIf="articles.length > 0">
+          <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('articles')">
+            <mat-icon>arrow_forward</mat-icon><span>ARTIKEL</span>
+          </button>
+          <div>
+            <app-article-card *ngFor="let article of articles" [data]="article"></app-article-card>
+            <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('articles')">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div>
+        </section>
+      </ng-container>
+      <ng-container *ngIf="images$ | async as images">
+        <section *ngIf="images.length > 0">
+          <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('images')">
+            <mat-icon>arrow_forward</mat-icon><span>BILDER</span>
+          </button>
+          <div>
+            <app-image-card *ngFor="let image of images" [data]="image"></app-image-card>
+            <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('images')">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div>
+        </section>
+      </ng-container>
+      <ng-container *ngIf="events$ | async as events">
+        <section *ngIf="events.length > 0">
+          <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('events')">
+            <mat-icon>arrow_forward</mat-icon><span>EVENTS</span>
+          </button>
+          <div>
+            <app-event-card *ngFor="let event of events" [data]="event"></app-event-card>
+            <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('events')">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div>
+        </section>
+      </ng-container>
+    </ng-template>
+  </main>
+</ng-container>
+
+<ng-template #noResults>
+  <h2>Keine Treffer</h2>
+  <div>
+    <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>
+  </div>
+  <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
+</ng-template>

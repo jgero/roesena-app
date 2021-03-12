@@ -11,6 +11,18 @@
   }
 }
 
+p {
+  max-width: 40rem;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  mat-icon {
+    margin-right: 1rem;
+  }
+}
+
 header {
   margin-top: 10vh;
 
@@ -56,6 +68,7 @@ main {
       display: flex;
       margin: 0 -1rem;
       justify-content: space-between;
+      align-items: center;
     }
   }
 }

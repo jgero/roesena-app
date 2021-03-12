@@ -1,38 +1,33 @@
-:host {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
+@import "../../style-partials/variables.scss";
 
-  .mat-card {
-    // height: calc(100% - 36px);
-    width: calc(100% - 36px);
-    display: flex;
+:host {
+  max-width: $maxCardWidth + 2rem;
+  width: 100%;
+}
+
+figure {
+  display: block;
+  position: relative;
+  margin: 1rem;
+  width: 100%;
+  max-width: $maxCardWidth;
+  box-sizing: content-box;
+
+  img {
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .buttonBox {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    display:flex;
     flex-direction: column;
 
-    img {
-      cursor: pointer;
-    }
-
-    .mat-card-content {
-      flex: 1;
-      display: flex;
-      align-items: flex-end;
-
-      ::ng-deep .mat-chip-list-wrapper {
-        flex-wrap: unset;
-      }
-
-      ::ng-deep .mat-chip {
-        white-space: nowrap;
-      }
-
-      .mat-chip-list {
-        overflow-x: scroll;
-        padding-bottom: 8px;
-        width: 100%;
-      }
+    a, button {
+      background-color: $cardBackground;
+      margin-bottom: .5rem;
     }
   }
 }
