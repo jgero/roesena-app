@@ -27,6 +27,12 @@ import { sortByTags } from '@utils/converters/sort-by-tags';
 @Injectable()
 export class SearchEffects {
   @Effect()
+  searchOnTagChange$ = this.actions$.pipe(
+    ofType(SearchActionTypes.AddSearchString, SearchActionTypes.RemoveSearchString),
+    map(() => new RunSearch())
+  );
+
+  @Effect()
   initSearch$ = this.actions$.pipe(
     ofType(SearchActionTypes.InitSearch),
     withLatestFrom(this.store),

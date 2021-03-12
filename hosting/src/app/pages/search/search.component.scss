@@ -25,6 +25,7 @@ h2 {
 
 header {
   margin-top: 10vh;
+  margin-bottom: 1rem;
 
   h1 {
     margin: 0 0 1rem 0;
@@ -43,6 +44,13 @@ header {
       flex: 1;
     }
 
+    .proposals {
+      margin-bottom: 1rem;
+      & > span {
+        font-size: 0.7rem;
+        opacity: 0.6;
+      }
+    }
     .checkboxes mat-checkbox {
       margin-right: 2rem;
     }

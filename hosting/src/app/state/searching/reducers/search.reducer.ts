@@ -31,9 +31,16 @@ export function reducer(state = initialState, action: SearchActions): State {
 
     case SearchActionTypes.AddSearchString: {
       const value = action.payload.searchString.trim();
-      const searchStrings = [...state.searchStrings];
-      // add if searchString matches regex and it's not already in the array
-      if (new RegExp('^[0-9a-zA-ZäöüÄÖÜß -]+$').test(value) && !searchStrings.includes(value)) {
+      let searchStrings = [...state.searchStrings];
+
+      const numberRegex = new RegExp('^[0-9]{4}$');
+      // if the new search string is a number and the selection already has a number tag
+      if (numberRegex.test(value) && searchStrings.some((el) => numberRegex.test(el))) {
+        const yearTagIndex = searchStrings.findIndex((el) => numberRegex.test(el));
+        searchStrings.splice(yearTagIndex, 1);
+        searchStrings.push(value);
+      } else if (new RegExp('^[0-9a-zA-ZäöüÄÖÜß -]+$').test(value) && !searchStrings.includes(value)) {
+        // add if searchString matches regex and it's not already in the array
         searchStrings.push(value);
       }
       return { ...state, searchStrings };

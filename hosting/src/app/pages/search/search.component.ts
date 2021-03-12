@@ -15,6 +15,7 @@ import { cardFlyIn } from '@utils/animations/card-fly-in';
 import { SeoService } from '@services/seo.service';
 import { AutocompleteService } from '@services/autocomplete.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { tagProposals } from '@state/searching/selectors/search.selectors';
 
 @Component({
   selector: 'app-search',
@@ -37,6 +38,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }),
     map((el) => el.length)
   );
+  tagProposals$ = this.store.select(tagProposals);
   isArticlesChecked = false;
   isImagesChecked = false;
   isEventsChecked = false;
@@ -77,6 +79,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
     input.value = '';
     this.store.dispatch(new AddSearchString({ searchString: event.option.value }));
+  }
+
+  onAddProposal(tag: string) {
+    this.store.dispatch(new AddSearchString({ searchString: tag }));
   }
 
   onRemoveTag(searchString: string) {

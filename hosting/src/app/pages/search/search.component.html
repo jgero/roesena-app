@@ -27,6 +27,12 @@
           </button>
         </mat-chip-list>
       </mat-form-field>
+      <div class="proposals">
+        <span>Vorschläge</span>
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of tagProposals$ | async" (click)="onAddProposal(tag)">{{ tag }}</mat-chip>
+        </mat-chip-list>
+      </div>
       <div class="checkboxes">
         <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isArticlesChecked">Artikel</mat-checkbox>
         <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isImagesChecked">Bilder</mat-checkbox>
