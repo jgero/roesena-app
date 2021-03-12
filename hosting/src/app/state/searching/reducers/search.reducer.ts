@@ -10,16 +10,14 @@ export interface State {
   events: AppEvent[];
   articles: AppArticle[];
   images: AppImage[];
-  limit: number;
 }
 
 export const initialState: State = {
   searchStrings: [],
-  dataTypes: ['articles', 'events', 'images'],
+  dataTypes: [],
   events: [],
   articles: [],
   images: [],
-  limit: 3,
 };
 
 export function reducer(state = initialState, action: SearchActions): State {
@@ -27,7 +25,7 @@ export function reducer(state = initialState, action: SearchActions): State {
     case SearchActionTypes.CleanSearch:
       return { ...state, searchStrings: [] };
     case SearchActionTypes.InitSearch:
-      return { ...state, limit: action.payload.limit };
+      return { ...state, searchStrings: action.payload.tags, dataTypes: action.payload.types };
 
     case SearchActionTypes.AddSearchString: {
       const value = action.payload.searchString.trim();

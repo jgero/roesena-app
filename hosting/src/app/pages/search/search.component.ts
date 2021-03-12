@@ -8,14 +8,17 @@ import {
   InitSearch,
   RemoveSearchString,
   RunSearch,
+  SearchActions,
 } from '@state/searching/actions/search.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { map, takeUntil, tap, take, withLatestFrom, filter } from 'rxjs/operators';
 import { cardFlyIn } from '@utils/animations/card-fly-in';
 import { SeoService } from '@services/seo.service';
 import { AutocompleteService } from '@services/autocomplete.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { tagProposals } from '@state/searching/selectors/search.selectors';
+import { ROUTER_NAVIGATED } from '@ngrx/router-store';
+import { ofType, Actions } from '@ngrx/effects';
 
 @Component({
   selector: 'app-search',
@@ -42,12 +45,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   isArticlesChecked = false;
   isImagesChecked = false;
   isEventsChecked = false;
-  get cols(): number {
-    return Math.ceil(this.hostRef.nativeElement.clientWidth / 370);
-  }
-  get limit(): number {
-    return this.cols * 5;
-  }
   @ViewChild('chipInput')
   chipInput: ElementRef<HTMLInputElement>;
 
@@ -56,7 +53,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private subs: SubscriptionService,
     private hostRef: ElementRef<HTMLElement>,
     seo: SeoService,
-    public autocomplete: AutocompleteService
+    public autocomplete: AutocompleteService,
+    private actions$: Actions<SearchActions>
   ) {
     this.store.pipe(takeUntil(this.subs.unsubscribe$)).subscribe((state) => {
       seo.setTags(
@@ -69,7 +67,48 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new InitSearch({ limit: this.limit }));
+    // initialize when landing on the search page
+    this.store.pipe(take(1)).subscribe((state) => {
+      const tags: string[] = state.router.state.params.searchStrings.split(',');
+      const types: string[] = state.router.state.params.type.split(',');
+      this.store.dispatch(
+        new InitSearch({
+          types,
+          tags,
+        })
+      );
+    });
+    // react on route changes
+    this.actions$
+      .pipe(
+        ofType(ROUTER_NAVIGATED),
+        withLatestFrom(this.store),
+        takeUntil(this.subs.unsubscribe$),
+        // only act when there are differences between route and search config to avoid infinite loops
+        filter(([action, store]) => {
+          const searchTags = store.search.searchStrings;
+          const searchTypes = store.search.dataTypes;
+          const tags: string[] = store.router.state.params.searchStrings.split(',');
+          const types: string[] = store.router.state.params.type.split(',');
+          if (searchTypes.length === types.length && searchTags.length === tags.length) {
+            if (tags.every((tag) => searchTags.includes(tag)) && types.every((t) => searchTypes.includes(t))) {
+              return false;
+            }
+          }
+          return true;
+        })
+      )
+      .subscribe(([action, store]) => {
+        const tags: string[] = store.router.state.params.searchStrings.split(',');
+        const types: string[] = store.router.state.params.type.split(',');
+        // only dispatch if there are differences
+        this.store.dispatch(
+          new InitSearch({
+            types,
+            tags,
+          })
+        );
+      });
   }
 
   ngOnDestroy() {

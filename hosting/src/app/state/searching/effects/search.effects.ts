@@ -10,6 +10,7 @@ import {
   SearchContentLoaded,
   ChangeDataType,
   SearchContentLoadFailed,
+  CleanSearch,
 } from '../actions/search.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
@@ -35,16 +36,7 @@ export class SearchEffects {
   @Effect()
   initSearch$ = this.actions$.pipe(
     ofType(SearchActionTypes.InitSearch),
-    withLatestFrom(this.store),
-    switchMap(([action, storeState]) =>
-      merge(
-        ...(storeState.router.state.params.searchStrings.split(',') as string[]).map((searchString) =>
-          of(new AddSearchString({ searchString }))
-        ),
-        of(new ChangeDataType({ dataTypes: storeState.router.state.params.type.split(',') })),
-        of(new RunSearch())
-      )
-    )
+    map(() => new RunSearch())
   );
 
   @Effect()
