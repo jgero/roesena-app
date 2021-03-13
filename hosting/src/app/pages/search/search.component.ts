@@ -130,9 +130,15 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   onCheckboxChange() {
     const dataTypes: string[] = [];
-    if (this.isArticlesChecked) dataTypes.push('articles');
-    if (this.isImagesChecked) dataTypes.push('images');
-    if (this.isEventsChecked) dataTypes.push('events');
+    if (this.isArticlesChecked) {
+      dataTypes.push('articles');
+    }
+    if (this.isImagesChecked) {
+      dataTypes.push('images');
+    }
+    if (this.isEventsChecked) {
+      dataTypes.push('events');
+    }
     this.store.dispatch(new ChangeDataType({ dataTypes }));
     this.store.dispatch(new RunSearch());
   }

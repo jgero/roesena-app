@@ -29,7 +29,7 @@ export function reducer(state = initialState, action: SearchActions): State {
 
     case SearchActionTypes.AddSearchString: {
       const value = action.payload.searchString.trim();
-      let searchStrings = [...state.searchStrings];
+      const searchStrings = [...state.searchStrings];
 
       const numberRegex = new RegExp('^[0-9]{4}$');
       // if the new search string is a number and the selection already has a number tag

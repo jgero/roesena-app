@@ -20,7 +20,7 @@ export class AutocompleteFilterPipe implements PipeTransform {
         // map the diff changes to only the amout of the removed chars from the search string to the tag per change
         .map(({ val, diff }) => ({ val, diff: diff.map((diffEl: any) => (diffEl.removed ? diffEl.count : 0)) }))
         // add up the amout of the removed chars from all changes in the diff
-        .map(({ val, diff }) => ({ val, diff: diff.reduce((a, b) => a + b) }))
+        .map(({ val, diff }: { val: string; diff: number[] }) => ({ val, diff: diff.reduce((a, b) => a + b) }))
         // sort the elements by diff distance
         .sort((a, b) => a.diff - b.diff)
         // only keep the value
