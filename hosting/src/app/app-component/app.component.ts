@@ -32,6 +32,7 @@ export class AppComponent implements OnDestroy {
   user$ = this.store.select('persons', 'user');
   version: string;
   destroyed$ = new Subject<boolean>();
+  readonly searchLink = `/search/images/Prunksitzung,${new Date().getFullYear() - 1}`;
 
   @ViewChild('drawer')
   private sidenav: MatDrawer;

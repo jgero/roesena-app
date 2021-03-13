@@ -10,16 +10,14 @@ export interface State {
   events: AppEvent[];
   articles: AppArticle[];
   images: AppImage[];
-  limit: number;
 }
 
 export const initialState: State = {
   searchStrings: [],
-  dataTypes: ['articles', 'events', 'images'],
+  dataTypes: [],
   events: [],
   articles: [],
   images: [],
-  limit: 3,
 };
 
 export function reducer(state = initialState, action: SearchActions): State {
@@ -27,13 +25,20 @@ export function reducer(state = initialState, action: SearchActions): State {
     case SearchActionTypes.CleanSearch:
       return { ...state, searchStrings: [] };
     case SearchActionTypes.InitSearch:
-      return { ...state, limit: action.payload.limit };
+      return { ...state, searchStrings: action.payload.tags, dataTypes: action.payload.types };
 
     case SearchActionTypes.AddSearchString: {
       const value = action.payload.searchString.trim();
       const searchStrings = [...state.searchStrings];
-      // add if searchString matches regex and it's not already in the array
-      if (new RegExp('^[0-9a-zA-ZäöüÄÖÜß -]+$').test(value) && !searchStrings.includes(value)) {
+
+      const numberRegex = new RegExp('^[0-9]{4}$');
+      // if the new search string is a number and the selection already has a number tag
+      if (numberRegex.test(value) && searchStrings.some((el) => numberRegex.test(el))) {
+        const yearTagIndex = searchStrings.findIndex((el) => numberRegex.test(el));
+        searchStrings.splice(yearTagIndex, 1);
+        searchStrings.push(value);
+      } else if (new RegExp('^[0-9a-zA-ZäöüÄÖÜß -]+$').test(value) && !searchStrings.includes(value)) {
+        // add if searchString matches regex and it's not already in the array
         searchStrings.push(value);
       }
       return { ...state, searchStrings };

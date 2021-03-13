@@ -10,6 +10,7 @@ import {
   SearchContentLoaded,
   ChangeDataType,
   SearchContentLoadFailed,
+  CleanSearch,
 } from '../actions/search.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
@@ -27,18 +28,15 @@ import { sortByTags } from '@utils/converters/sort-by-tags';
 @Injectable()
 export class SearchEffects {
   @Effect()
+  searchOnTagChange$ = this.actions$.pipe(
+    ofType(SearchActionTypes.AddSearchString, SearchActionTypes.RemoveSearchString),
+    map(() => new RunSearch())
+  );
+
+  @Effect()
   initSearch$ = this.actions$.pipe(
     ofType(SearchActionTypes.InitSearch),
-    withLatestFrom(this.store),
-    switchMap(([action, storeState]) =>
-      merge(
-        ...(storeState.router.state.params.searchStrings.split(',') as string[]).map((searchString) =>
-          of(new AddSearchString({ searchString }))
-        ),
-        of(new ChangeDataType({ dataTypes: storeState.router.state.params.type.split(',') })),
-        of(new RunSearch())
-      )
-    )
+    map(() => new RunSearch())
   );
 
   @Effect()
@@ -56,8 +54,8 @@ export class SearchEffects {
         let query: CollectionReference | Query = qFn;
         // filter by the search strings
         storeState.search.searchStrings.forEach((searchString) => (query = query.where(`tags.${searchString}`, '==', true)));
-        // limit the results to something that would fit the page but at least 40
-        query = query.limit(Math.round(40 / storeState.search.dataTypes.length));
+        // if there are multiple data types limit the searches to 2 elements
+        query = query.limit(storeState.search.dataTypes.length === 1 ? 40 : 2);
         // only take public events if not logged in or user ist not confirmed
         if (collection === 'events' && (!storeState.persons.user || !storeState.persons.user.isConfirmedMember)) {
           query = query.where('participants', '==', {});

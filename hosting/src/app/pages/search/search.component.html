@@ -1,23 +1,126 @@
-<app-page-header [title]="'Suchergebnisse'" [matIcon]="'search'"></app-page-header>
+<header>
+  <h1 class="mat-display-2">Suchergebnisse</h1>
+  <div>
+    <div class="formFields">
+      <mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAddTag($event, chipInput)">
+          <mat-option
+            *ngFor="
+              let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value:(searchStrings$ | async)
+            "
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-chip-list #chipList>
+          <button mat-button matPrefix mat-icon-button aria-label="Filtern" (click)="onSearch()">
+            <mat-icon>filter_alt</mat-icon>
+          </button>
+          <mat-chip *ngFor="let item of searchStrings$ | async" (removed)="onRemoveTag(item)">
+            {{ item }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
+          <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClearSearch()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-chip-list>
+      </mat-form-field>
+      <div class="proposals">
+        <span>Vorschläge</span>
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of tagProposals$ | async" (click)="onAddProposal(tag)">{{ tag }}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="checkboxes">
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isArticlesChecked">Artikel</mat-checkbox>
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isImagesChecked">Bilder</mat-checkbox>
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isEventsChecked">Events</mat-checkbox>
+      </div>
+    </div>
+    <div class="strut"></div>
+  </div>
+</header>
+
+<ng-container *ngIf="(articles$ | async).length + (images$ | async).length + (events$ | async).length > 30">
+  <h2><mat-icon [color]="'accent'">info</mat-icon> Viele Treffer</h2>
+  <div>
+    <p>
+      Zu den von dir verwendeten Such-Parametern scheint es sehr viele Einträge im System zu geben. Aus technischen Gründen wird
+      die Anzahl an Suchergebnissen begrenzt, es kann also sein dass nicht alle Inhalte die zu diesen Such-Parametern passen
+      angezeigt werden.
+    </p>
+    <p>
+      <strong>Füge deiner Suche mehr Tags (Schlagworte) hinzu</strong>, damit die Suche spezifischer wird und du somit auch genau
+      das findest was du suchst.
+    </p>
+  </div>
+  <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
+</ng-container>
 
 <ng-container
   *ngIf="(articles$ | async).length > 0 || (images$ | async).length > 0 || (events$ | async).length > 0; else noResults"
 >
-  <mat-grid-list [cols]="cols" [rowHeight]="rowHeight$ | async" [gutterSize]="'16px'" @cardFlyIn>
-    <mat-grid-tile *ngFor="let article of articles$ | async">
-      <app-article-card [data]="article"></app-article-card>
-    </mat-grid-tile>
-    <mat-grid-tile *ngFor="let image of images$ | async">
-      <app-image-card [data]="image"></app-image-card>
-    </mat-grid-tile>
-    <mat-grid-tile *ngFor="let event of events$ | async">
-      <app-event-card [data]="event"></app-event-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <main [class.single]="(searchTypeAmount$ | async) === 1">
+    <ng-container *ngIf="(searchTypeAmount$ | async) === 1; then singleType; else multipleTypes"></ng-container>
+
+    <!-- when only a single type is selected just dump them in the main -->
+    <ng-template #singleType>
+      <app-article-card *ngFor="let article of articles$ | async" [data]="article"></app-article-card>
+      <app-image-card *ngFor="let image of images$ | async" [data]="image"></app-image-card>
+      <app-event-card *ngFor="let event of events$ | async" [data]="event"></app-event-card>
+    </ng-template>
+
+    <!-- when multiple types are selected show a pretty row layout -->
+    <ng-template #multipleTypes>
+      <ng-container *ngIf="articles$ | async as articles">
+        <section *ngIf="articles.length > 0">
+          <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('articles')">
+            <mat-icon>arrow_forward</mat-icon><span>ARTIKEL</span>
+          </button>
+          <div>
+            <app-article-card *ngFor="let article of articles" [data]="article"></app-article-card>
+            <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('articles')">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div>
+        </section>
+      </ng-container>
+      <ng-container *ngIf="images$ | async as images">
+        <section *ngIf="images.length > 0">
+          <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('images')">
+            <mat-icon>arrow_forward</mat-icon><span>BILDER</span>
+          </button>
+          <div>
+            <app-image-card *ngFor="let image of images" [data]="image"></app-image-card>
+            <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('images')">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div>
+        </section>
+      </ng-container>
+      <ng-container *ngIf="events$ | async as events">
+        <section *ngIf="events.length > 0">
+          <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('events')">
+            <mat-icon>arrow_forward</mat-icon><span>EVENTS</span>
+          </button>
+          <div>
+            <app-event-card *ngFor="let event of events" [data]="event"></app-event-card>
+            <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('events')">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div>
+        </section>
+      </ng-container>
+    </ng-template>
+  </main>
 </ng-container>
 
 <ng-template #noResults>
   <h2>Keine Treffer</h2>
-  <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>
-  <a href="/help#Suche" color="primary" mat-flat-button aria-label="Hilfe">HILFE</a>
+  <div>
+    <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>
+  </div>
+  <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
 </ng-template>

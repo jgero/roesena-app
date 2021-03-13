@@ -13,7 +13,7 @@ build-dev-frontend:
 # keep node_modules in anonymous volume
 # attach shell to container on startup
 .PHONY: run-dev-frontend
-run-dev-frontend:
+run-dev-frontend: build-dev-frontend
 	$(CONTAINER_RUNTIME) run \
 		-v $(PWD)/hosting/:/app/ \
 		-v node_modules:/app/node_modules \

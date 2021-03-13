@@ -32,7 +32,7 @@ export class RunSearch implements Action {
 }
 export class InitSearch implements Action {
   readonly type = SearchActionTypes.InitSearch;
-  constructor(public payload: { limit: number }) {}
+  constructor(public payload: { tags: string[]; types: string[] }) {}
 }
 
 export class AddSearchString implements Action {
