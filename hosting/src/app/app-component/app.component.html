@@ -9,7 +9,9 @@
     </button>
     <a class="home" mat-button routerLink="/">RöSeNa</a>
     <div class="spacer"></div>
-    <app-search-bar></app-search-bar>
+    <a mat-icon-button aria-label="Suche" [routerLink]="searchLink">
+      <mat-icon>search</mat-icon>
+    </a>
   </mat-toolbar>
   <mat-sidenav-container class="sidenav-container" (swipeleft)="closeNav()">
     <mat-sidenav #drawer class="sidenav" [attr.role]="'dialog'" [mode]="'over'" [opened]="false">
@@ -93,7 +95,9 @@
         <a mat-menu-item routerLink="/auth/register">Registrieren</a>
       </ng-template>
     </mat-menu>
-    <app-search-bar></app-search-bar>
+    <a mat-icon-button aria-label="Suche" [routerLink]="searchLink">
+      <mat-icon>search</mat-icon>
+    </a>
   </mat-toolbar>
   <ng-container *ngTemplateOutlet="animatedOutlet"></ng-container>
 </ng-template>
