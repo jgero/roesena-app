@@ -5,8 +5,9 @@ functions/lib
 # dependencies
 node_modules
 
-# IDE - VSCode
+# IDE
 .vscode
+.vim
 
 # misc
 /.sass-cache
