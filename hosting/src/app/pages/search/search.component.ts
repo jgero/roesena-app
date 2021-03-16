@@ -19,6 +19,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { tagProposals } from '@state/searching/selectors/search.selectors';
 import { ROUTER_NAVIGATED } from '@ngrx/router-store';
 import { ofType, Actions } from '@ngrx/effects';
+import { maxResultsPerPage } from '@state/searching/reducers/search.reducer';
 
 @Component({
   selector: 'app-search',
@@ -45,13 +46,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   isArticlesChecked = false;
   isImagesChecked = false;
   isEventsChecked = false;
+  readonly limit = maxResultsPerPage;
   @ViewChild('chipInput')
   chipInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private store: Store<State>,
     private subs: SubscriptionService,
-    private hostRef: ElementRef<HTMLElement>,
     seo: SeoService,
     public autocomplete: AutocompleteService,
     private actions$: Actions<SearchActions>

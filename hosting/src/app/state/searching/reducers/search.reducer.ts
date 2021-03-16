@@ -1,6 +1,7 @@
 import { SearchActions, SearchActionTypes } from '../actions/search.actions';
 import { AppArticle, AppImage, AppEvent } from '@utils/interfaces';
-import { Store } from '@ngrx/store';
+
+export const maxResultsPerPage = 15;
 
 export const searchFeatureKey = 'search';
 

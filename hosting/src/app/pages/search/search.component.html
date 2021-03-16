@@ -43,7 +43,7 @@
   </div>
 </header>
 
-<ng-container *ngIf="(articles$ | async).length + (images$ | async).length + (events$ | async).length > 30">
+<ng-container *ngIf="(articles$ | async).length + (images$ | async).length + (events$ | async).length === limit">
   <h2><mat-icon [color]="'accent'">info</mat-icon> Viele Treffer</h2>
   <div>
     <p>
