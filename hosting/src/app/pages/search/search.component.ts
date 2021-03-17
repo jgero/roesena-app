@@ -29,6 +29,8 @@ import { maxResultsPerPage } from '@state/searching/reducers/search.reducer';
 })
 export class SearchComponent implements OnInit, OnDestroy {
   searchStrings$ = this.store.select('search', 'searchStrings');
+  pageIndex$ = this.store.select('search', 'pageIndex');
+  length$ = this.store.select('search', 'searchLength');
   events$ = this.store.select('search', 'events');
   images$ = this.store.select('search', 'images');
   articles$ = this.store.select('search', 'articles');
@@ -70,7 +72,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // initialize when landing on the search page
     this.store.pipe(take(1)).subscribe((state) => {
-      const tags: string[] = state.router.state.params.searchStrings.split(',');
+      const tags: string[] = state.router.state.params.searchStrings ? state.router.state.params.searchStrings.split(',') : [];
       const types: string[] = state.router.state.params.type.split(',');
       this.store.dispatch(
         new InitSearch({
@@ -89,7 +91,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         filter(([action, store]) => {
           const searchTags = store.search.searchStrings;
           const searchTypes = store.search.dataTypes;
-          const tags: string[] = store.router.state.params.searchStrings.split(',');
+          const tags: string[] = store.router.state.params.searchStrings
+            ? store.router.state.params.searchStrings.split(',')
+            : [];
           const types: string[] = store.router.state.params.type.split(',');
           if (searchTypes.length === types.length && searchTags.length === tags.length) {
             if (tags.every((tag) => searchTags.includes(tag)) && types.every((t) => searchTypes.includes(t))) {

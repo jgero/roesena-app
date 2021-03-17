@@ -14,6 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { PaginatorModule } from '@shared/paginator/paginator.module';
 
 @NgModule({
   declarations: [SearchComponent],
@@ -30,6 +31,7 @@ import { FormsModule } from '@angular/forms';
     MatAutocompleteModule,
     MatIconModule,
     MatCheckboxModule,
+    PaginatorModule,
     FormsModule,
   ],
 })
