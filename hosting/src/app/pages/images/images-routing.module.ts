@@ -4,8 +4,6 @@ import { LoggedInGuard } from '@guards/logged-in.guard';
 import { HasImageEditorLoadedGuard } from '@guards/has-image-editor-loaded.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'overview', pathMatch: 'full' },
-  { path: 'overview', loadChildren: () => import('./image-overview/image-overview.module').then((m) => m.ImageOverviewModule) },
   { path: 'details', loadChildren: () => import('./image-details/image-details.module').then((m) => m.ImageDetailsModule) },
   {
     path: 'edit',

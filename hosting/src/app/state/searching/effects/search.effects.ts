@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
 import { withLatestFrom, tap, switchMap, takeUntil, map } from 'rxjs/operators';
-import { SearchActionTypes, SearchActions, RunSearch, SearchContentLoadFailed } from '../actions/search.actions';
+import {
+  SearchActionTypes,
+  SearchActions,
+  RunSearch,
+  SearchContentLoadFailed,
+  SearchContentLoaded,
+} from '../actions/search.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { Router } from '@angular/router';
@@ -103,11 +109,7 @@ export class SearchEffects {
       }
       if (storeState.search.dataTypes.length > 1) {
         // query with multiple data types and no tag is not supported
-        return of(
-          new SearchContentLoadFailed({
-            error: new Error('Suche mit mehreren Datentypen und ohne Suchbegriff ist nicht unterstützt'),
-          })
-        );
+        return of(new SearchContentLoaded({ articles: [], events: [], images: [] }));
       }
       // only the case of one data type without search string remains
       switch (storeState.search.dataTypes[0]) {

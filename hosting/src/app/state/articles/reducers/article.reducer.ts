@@ -7,26 +7,26 @@ export const articleFeatureKey = 'articles';
 
 export interface State {
   activeArticle: AppArticle;
-  activePageArticles: AppArticle[];
+  //activePageArticles: AppArticle[];
   activeArticleSelection: AppArticle[];
-  articleAmount: number;
+  //articleAmount: number;
   isLoading: boolean;
-  pageLimit: number;
-  pageIndex: number;
-  pageFirst: AppArticle;
-  pageLast: AppArticle;
+  //pageLimit: number;
+  //pageIndex: number;
+  //pageFirst: AppArticle;
+  //pageLast: AppArticle;
 }
 
 export const initialState: State = {
   activeArticle: null,
-  activePageArticles: [],
+  //activePageArticles: [],
   activeArticleSelection: [],
-  articleAmount: 0,
+  //articleAmount: 0,
   isLoading: false,
-  pageLimit: 3,
-  pageIndex: 0,
-  pageFirst: null,
-  pageLast: null,
+  //pageLimit: 3,
+  //pageIndex: 0,
+  //pageFirst: null,
+  //pageLast: null,
 };
 
 export function reducer(state = initialState, action: ArticleActions | PageActions): State {
@@ -39,21 +39,21 @@ export function reducer(state = initialState, action: ArticleActions | PageActio
     case ArticleActionTypes.LoadSingleArticleFailure:
       return { ...state, isLoading: false };
     // multiple articles
-    case ArticleActionTypes.LoadArticlePage:
-      return { ...state, isLoading: true, pageLimit: action.payload.limit };
-    case ArticleActionTypes.LoadArticlePageSuccess:
-      return {
-        ...state,
-        isLoading: false,
-        activePageArticles: action.payload.articles || null,
-        pageFirst: action.payload.articles[0] || null,
-        pageLast: action.payload.articles[action.payload.articles.length - 1] || null,
-      };
-    case ArticleActionTypes.LoadArticlePageFailure:
-      return { ...state, isLoading: false };
-    // article amount
-    case ArticleActionTypes.LoadArticleAmountSuccess:
-      return { ...state, articleAmount: action.payload.amount };
+    //case ArticleActionTypes.LoadArticlePage:
+    //return { ...state, isLoading: true, pageLimit: action.payload.limit };
+    //case ArticleActionTypes.LoadArticlePageSuccess:
+    //return {
+    //...state,
+    //isLoading: false,
+    //activePageArticles: action.payload.articles || null,
+    //pageFirst: action.payload.articles[0] || null,
+    //pageLast: action.payload.articles[action.payload.articles.length - 1] || null,
+    //};
+    //case ArticleActionTypes.LoadArticlePageFailure:
+    //return { ...state, isLoading: false };
+    //// article amount
+    //case ArticleActionTypes.LoadArticleAmountSuccess:
+    //return { ...state, articleAmount: action.payload.amount };
     // article selection
     case ArticleActionTypes.LoadArticleSelection:
       return { ...state, isLoading: true };
@@ -62,10 +62,10 @@ export function reducer(state = initialState, action: ArticleActions | PageActio
     case ArticleActionTypes.LoadArticleSelectionFailure:
       return { ...state, isLoading: false };
     // clear articles on page action
-    case PageActionTypes.PageForward:
-      return { ...state, pageIndex: state.pageIndex + 1 };
-    case PageActionTypes.PageBackwards:
-      return { ...state, pageIndex: state.pageIndex - 1 };
+    //case PageActionTypes.PageForward:
+    //return { ...state, pageIndex: state.pageIndex + 1 };
+    //case PageActionTypes.PageBackwards:
+    //return { ...state, pageIndex: state.pageIndex - 1 };
     // editor
     case ArticleActionTypes.CreateArticle:
     case ArticleActionTypes.UpdateArticle:

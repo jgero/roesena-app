@@ -4,8 +4,6 @@ import { LoggedInGuard } from '@guards/logged-in.guard';
 import { HasEventEditorLoadedGuard } from '@guards/has-event-editor-loaded.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'overview', pathMatch: 'full' },
-  { path: 'overview', loadChildren: () => import('./event-overview/event-overview.module').then((e) => e.EventOverviewModule) },
   { path: 'details', loadChildren: () => import('./event-details/event-details.module').then((e) => e.EventDetailsModule) },
   {
     path: 'edit',

@@ -6,9 +6,9 @@ import { SearchContentLoaded, SearchContentLoadFailed, SearchLengthLoaded } from
 import { convertMany as convertManyEvents } from '@utils/converters/event-documents';
 import { convertMany as convertManyArticles } from '@utils/converters/article-documents';
 import { convertMany as convertManyImages } from '@utils/converters/image-documents';
-import { map, takeUntil, catchError, switchMap } from 'rxjs/operators';
+import { map, takeUntil, catchError, switchMap, tap } from 'rxjs/operators';
 import { sortByTags } from '@utils/converters/sort-by-tags';
-import { StoreableArticle, AppArticle, AppElement, AppImage } from '@utils/interfaces';
+import { StoreableArticle, AppArticle, AppElement, AppImage, StoreableEvent, StoreableImage } from '@utils/interfaces';
 import { PageDirection } from './directionEnum';
 import { MissingDocumentError } from '@utils/errors/missing-document-error';
 
@@ -26,7 +26,7 @@ export function getDataObservableForSearchTags(
     // if there are multiple data types limit the searches to 2 elements
     query = query.limit(dataTypes.length === 1 ? maxResultsPerPage : 2);
     // only take public events if not logged in or user ist not confirmed
-    if (collection === 'events' && isConfirmedMember) {
+    if (collection === 'events' && !isConfirmedMember) {
       query = query.where('participants', '==', {});
     }
     return query;
@@ -136,7 +136,7 @@ export function getDataObservableForImagePage(
       ),
 
     firestore
-      .collection<StoreableArticle>('images', (qFn) => {
+      .collection<StoreableImage>('images', (qFn) => {
         let query: Query | CollectionReference = qFn;
         // sort the data for pagination
         query = query.orderBy('created', 'desc');
@@ -167,23 +167,21 @@ export function getDataObservableForImagePage(
 }
 
 export function getDataObservableForEventsPage(firestore: AngularFirestore, isConfirmedMember: boolean): Observable<Action> {
-  return merge(
-    firestore
-      .collection<StoreableArticle>('events', (qFn) => {
-        let query: Query | CollectionReference = qFn;
-        if (!isConfirmedMember) {
-          query = query.where('participants', '==', {});
-        }
-        return query;
-      })
-      .snapshotChanges()
-      .pipe(
-        map(convertManyImages),
-        switchMap((images) => [
-          new SearchContentLoaded({ events: [], articles: [], images }),
-          new SearchLengthLoaded({ amount: images.length }),
-        ]),
-        catchError((error) => of(new SearchContentLoadFailed({ error })))
-      )
-  );
+  return firestore
+    .collection<StoreableEvent>('events', (qFn) => {
+      let query: Query | CollectionReference = qFn;
+      if (!isConfirmedMember) {
+        query = query.where('participants', '==', {});
+      }
+      return query;
+    })
+    .snapshotChanges()
+    .pipe(
+      map(convertManyEvents),
+      switchMap((events) => [
+        new SearchContentLoaded({ events, articles: [], images: [] }),
+        new SearchLengthLoaded({ amount: events.length }),
+      ]),
+      catchError((error) => of(new SearchContentLoadFailed({ error })))
+    );
 }

@@ -7,27 +7,15 @@ export const imageFeatureKey = 'images';
 export interface State {
   activeImage: AppImage;
   activeImageFullUrl: string;
-  activePageImages: AppImage[];
-  imageAmount: number;
   startpageTiles: TileElement[];
   isLoading: boolean;
-  pageLimit: number;
-  pageIndex: number;
-  pageFirst: AppImage;
-  pageLast: AppImage;
 }
 
 export const initialState: State = {
   activeImage: null,
   activeImageFullUrl: '',
-  activePageImages: [],
-  imageAmount: 0,
   startpageTiles: [],
   isLoading: false,
-  pageLimit: 3,
-  pageIndex: 0,
-  pageFirst: null,
-  pageLast: null,
 };
 
 export function reducer(state = initialState, action: ImageActions | PageActions): State {
@@ -39,19 +27,6 @@ export function reducer(state = initialState, action: ImageActions | PageActions
       return { ...state, isLoading: false, activeImage: action.payload.image, activeImageFullUrl: action.payload.fullUrl };
     case ImageActionTypes.LoadSingleImageFailure:
       return { ...state, isLoading: false };
-    // multiple images
-    case ImageActionTypes.LoadImagePage:
-      return { ...state, isLoading: true, pageLimit: action.payload.limit };
-    case ImageActionTypes.LoadImagePageSuccess:
-      return {
-        ...state,
-        isLoading: false,
-        activePageImages: action.payload.images || null,
-        pageFirst: action.payload.images[0] || null,
-        pageLast: action.payload.images[action.payload.images.length - 1] || null,
-      };
-    case ImageActionTypes.LoadImagePageFailure:
-      return { ...state, isLoading: false };
     // starpage
     case ImageActionTypes.LoadStartPage:
       return { ...state, isLoading: true };
@@ -59,14 +34,6 @@ export function reducer(state = initialState, action: ImageActions | PageActions
       return { ...state, isLoading: false, startpageTiles: action.payload.tiles };
     case ImageActionTypes.LoadStartPage:
       return { ...state, isLoading: false };
-    // image amount
-    case ImageActionTypes.LoadImageAmountSuccess:
-      return { ...state, imageAmount: action.payload.amount };
-    // clear images on page action
-    case PageActionTypes.PageForward:
-      return { ...state, pageIndex: state.pageIndex + 1 };
-    case PageActionTypes.PageBackwards:
-      return { ...state, pageIndex: state.pageIndex - 1 };
     // editor
     case ImageActionTypes.CreateImage:
     case ImageActionTypes.UpdateImage:

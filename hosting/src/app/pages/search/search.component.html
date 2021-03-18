@@ -1,5 +1,5 @@
 <header>
-  <h1 class="mat-display-2">Suchergebnisse</h1>
+  <h1 class="mat-display-2">{{ heading }}</h1>
   <div>
     <div class="formFields">
       <mat-form-field>
@@ -127,7 +127,13 @@
 <ng-template #noResults>
   <h2>Keine Treffer</h2>
   <div>
-    <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>
+    <!-- a search with no search tags and multiple data types is not supported -->
+    <p *ngIf="(searchStrings$ | async).length === 0 && (searchTypeAmount$ | async) > 1; else noMatches">
+      Eine Suche nach verschiedenen Inhalten ohne Suchbegriffe wird nicht unterstützt.
+    </p>
+    <ng-template #noMatches>
+      <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>
+    </ng-template>
   </div>
   <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
 </ng-template>

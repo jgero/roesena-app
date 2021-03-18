@@ -40,6 +40,21 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.isArticlesChecked = !!types.includes('articles');
         this.isImagesChecked = !!types.includes('images');
         this.isEventsChecked = !!types.includes('events');
+        if (types.length > 1) {
+          this.heading = 'Suchergebnisse';
+        } else {
+          switch (types[0]) {
+            case 'events':
+              this.heading = 'Events';
+              break;
+            case 'articles':
+              this.heading = 'Artikel';
+              break;
+            case 'images':
+              this.heading = 'Bilder';
+              break;
+          }
+        }
       });
     }),
     map((el) => el.length)
@@ -48,6 +63,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   isArticlesChecked = false;
   isImagesChecked = false;
   isEventsChecked = false;
+  heading = 'Suchergebnisse';
   readonly limit = maxResultsPerPage;
   @ViewChild('chipInput')
   chipInput: ElementRef<HTMLInputElement>;
@@ -74,6 +90,27 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.store.pipe(take(1)).subscribe((state) => {
       const tags: string[] = state.router.state.params.searchStrings ? state.router.state.params.searchStrings.split(',') : [];
       const types: string[] = state.router.state.params.type.split(',');
+      // init checkbox state
+      this.isEventsChecked = types.includes('events');
+      this.isArticlesChecked = types.includes('articles');
+      this.isImagesChecked = types.includes('images');
+      // init heading
+      if (types.length > 1) {
+        this.heading = 'Suchergebnisse';
+      } else {
+        switch (types[0]) {
+          case 'events':
+            this.heading = 'Events';
+            break;
+          case 'articles':
+            this.heading = 'Artikel';
+            break;
+          case 'images':
+            this.heading = 'Bilder';
+            break;
+        }
+      }
+      // init search
       this.store.dispatch(
         new InitSearch({
           types,
@@ -95,7 +132,9 @@ export class SearchComponent implements OnInit, OnDestroy {
             ? store.router.state.params.searchStrings.split(',')
             : [];
           const types: string[] = store.router.state.params.type.split(',');
+          // if types and tags have the same length
           if (searchTypes.length === types.length && searchTags.length === tags.length) {
+            // if all tag and types are the same
             if (tags.every((tag) => searchTags.includes(tag)) && types.every((t) => searchTypes.includes(t))) {
               return false;
             }

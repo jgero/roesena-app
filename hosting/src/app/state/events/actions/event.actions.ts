@@ -6,10 +6,6 @@ export enum EventActionTypes {
   LoadSingleEvent = '[event] load event',
   LoadSingleEventSuccess = '[event] load event success',
   LoadSingleEventFailure = '[event] load event failure',
-  // event page
-  LoadAllEvents = '[event] load events',
-  LoadAllEventsSuccess = '[event] load events success',
-  LoadAllEventsFailure = '[event] load events failure',
   // user specific actions
   MarkEventAsSeen = '[event] mark event as seen',
   RespondToEvent = '[event] respond to event',
@@ -43,19 +39,6 @@ export class LoadSingleEventSuccess implements Action {
 }
 export class LoadSingleEventFailure implements Action {
   readonly type = EventActionTypes.LoadSingleEventFailure;
-  constructor(public payload: { error: any }) {}
-}
-
-// event page
-export class LoadAllEvents implements Action {
-  readonly type = EventActionTypes.LoadAllEvents;
-}
-export class LoadAllEventsSuccess implements Action {
-  readonly type = EventActionTypes.LoadAllEventsSuccess;
-  constructor(public payload: { events: AppEvent[] }) {}
-}
-export class LoadAllEventsFailure implements Action {
-  readonly type = EventActionTypes.LoadAllEventsFailure;
   constructor(public payload: { error: any }) {}
 }
 
@@ -130,9 +113,6 @@ export type EventActions =
   | LoadSingleEvent
   | LoadSingleEventSuccess
   | LoadSingleEventFailure
-  | LoadAllEvents
-  | LoadAllEventsSuccess
-  | LoadAllEventsFailure
   | MarkEventAsSeen
   | RespondToEvent
   | RespondToEventSuccess

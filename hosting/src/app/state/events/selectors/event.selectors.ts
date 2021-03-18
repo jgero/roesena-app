@@ -25,8 +25,8 @@ export const canReply = createSelector(selectUser, selectActiveEvent, (selectedU
   return ev.participants.some((paricipant) => paricipant.id === selectedUser.id);
 });
 
-export const forStartpage = (state: State) => {
-  return state.events.activePageEvents.length > 0 ? state.events.activePageEvents[0] : null;
-};
+//export const forStartpage = (state: State) => {
+//return state.events.activePageEvents.length > 0 ? state.events.activePageEvents[0] : null;
+//};
 
 export const unrespondedAmount = (state: State) => state.events.unrespondedEvents.length;

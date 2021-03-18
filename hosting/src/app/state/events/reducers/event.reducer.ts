@@ -6,7 +6,6 @@ export const eventFeatureKey = 'events';
 export interface State {
   activeEvent: AppEvent;
   activeMonth: AppEvent[][];
-  activePageEvents: AppEvent[];
   isLoading: boolean;
   unrespondedEvents: AppEvent[];
 }
@@ -14,7 +13,6 @@ export interface State {
 export const initialState: State = {
   activeEvent: null,
   activeMonth: [],
-  activePageEvents: [],
   isLoading: false,
   unrespondedEvents: [],
 };
@@ -27,17 +25,6 @@ export function reducer(state = initialState, action: EventActions): State {
     case EventActionTypes.LoadSingleEventSuccess:
       return { ...state, isLoading: false, activeEvent: action.payload.event };
     case EventActionTypes.LoadSingleEventFailure:
-      return { ...state, isLoading: false };
-    // multiple events
-    case EventActionTypes.LoadAllEvents:
-      return { ...state, isLoading: true };
-    case EventActionTypes.LoadAllEventsSuccess:
-      return {
-        ...state,
-        isLoading: false,
-        activePageEvents: action.payload.events || null,
-      };
-    case EventActionTypes.LoadAllEventsFailure:
       return { ...state, isLoading: false };
     // editor
     case EventActionTypes.CreateEvent:
