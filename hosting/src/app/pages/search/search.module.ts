@@ -19,9 +19,10 @@ import { HeaderComponent } from './header/header.component';
 import { HintsComponent } from './hints/hints.component';
 import { SingleTypeComponent } from './single-type/single-type.component';
 import { MultiTypeComponent } from './multi-type/multi-type.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
-  declarations: [SearchComponent, HeaderComponent, HintsComponent, SingleTypeComponent, MultiTypeComponent],
+  declarations: [SearchComponent, HeaderComponent, HintsComponent, SingleTypeComponent, MultiTypeComponent, CarouselComponent],
   imports: [
     CommonModule,
     SearchRoutingModule,

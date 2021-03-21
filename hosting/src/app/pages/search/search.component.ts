@@ -7,6 +7,7 @@ import { map, takeUntil, take, withLatestFrom, filter } from 'rxjs/operators';
 import { SeoService } from '@services/seo.service';
 import { ROUTER_NAVIGATED } from '@ngrx/router-store';
 import { ofType, Actions } from '@ngrx/effects';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -15,6 +16,8 @@ import { ofType, Actions } from '@ngrx/effects';
 })
 export class SearchComponent implements OnInit, OnDestroy {
   isSingleType$ = this.store.select('search', 'dataTypes').pipe(map((el) => el.length === 1));
+
+  openCarouselWithId$ = new Subject<string>();
 
   constructor(
     private store: Store<State>,
@@ -80,6 +83,10 @@ export class SearchComponent implements OnInit, OnDestroy {
           })
         );
       });
+  }
+
+  onImageClick(id: string) {
+    this.openCarouselWithId$.next(id);
   }
 
   ngOnDestroy() {

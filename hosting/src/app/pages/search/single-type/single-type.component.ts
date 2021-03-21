@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { State } from '@state/state.module';
 import { Store } from '@ngrx/store';
 import { maxResultsPerPage } from '@state/searching/reducers/search.reducer';
@@ -18,5 +18,12 @@ export class SingleTypeComponent {
   articles$ = this.store.select('search', 'articles');
   readonly limit = maxResultsPerPage;
 
+  @Output()
+  onImageClick = new EventEmitter<string>();
+
   constructor(private store: Store<State>) {}
+
+  handleClick(id: string) {
+    this.onImageClick.emit(id);
+  }
 }
