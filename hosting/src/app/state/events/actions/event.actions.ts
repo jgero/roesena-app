@@ -6,6 +6,10 @@ export enum EventActionTypes {
   LoadSingleEvent = '[event] load event',
   LoadSingleEventSuccess = '[event] load event success',
   LoadSingleEventFailure = '[event] load event failure',
+  // upcoming events
+  LoadUpcomingEvents = '[event] load upcomin events',
+  LoadUpcomingEventsSuccess = '[event] load upcoming events success',
+  LoadUpcomingEventsFailure = '[event] load upcoming events failure',
   // user specific actions
   MarkEventAsSeen = '[event] mark event as seen',
   RespondToEvent = '[event] respond to event',
@@ -39,6 +43,18 @@ export class LoadSingleEventSuccess implements Action {
 }
 export class LoadSingleEventFailure implements Action {
   readonly type = EventActionTypes.LoadSingleEventFailure;
+  constructor(public payload: { error: any }) {}
+}
+// upcoming events
+export class LoadUpcomingEvents implements Action {
+  readonly type = EventActionTypes.LoadUpcomingEvents;
+}
+export class LoadUpcomingEventsSuccess implements Action {
+  readonly type = EventActionTypes.LoadUpcomingEventsSuccess;
+  constructor(public payload: { events: AppEvent[] }) {}
+}
+export class LoadUpcomingEventsFailure implements Action {
+  readonly type = EventActionTypes.LoadUpcomingEventsFailure;
   constructor(public payload: { error: any }) {}
 }
 
@@ -113,6 +129,9 @@ export type EventActions =
   | LoadSingleEvent
   | LoadSingleEventSuccess
   | LoadSingleEventFailure
+  | LoadUpcomingEvents
+  | LoadUpcomingEventsSuccess
+  | LoadUpcomingEventsFailure
   | MarkEventAsSeen
   | RespondToEvent
   | RespondToEventSuccess

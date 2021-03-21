@@ -3,10 +3,10 @@ import { State } from '@state/state.module';
 import { Store } from '@ngrx/store';
 import { SubscriptionService } from '@services/subscription.service';
 import { SeoService } from '@services/seo.service';
-//import { forStartpage as eventForStartpage, LoadAllEvents } from '@state/events';
+import { forStartpage as eventForStartpage } from '@state/events';
 import { LoadSingleArticle, LoadArticleSelection } from '@state/articles';
 import { LoadStartPage } from '@state/images';
-import { of } from 'rxjs';
+import { LoadUpcomingEvents } from '@state/events';
 
 @Component({
   selector: 'app-start-page',
@@ -15,8 +15,7 @@ import { of } from 'rxjs';
 })
 export class StartPageComponent implements OnInit, OnDestroy {
   images$ = this.store.select('images', 'startpageTiles');
-  //event$ = this.store.select(eventForStartpage);
-  event$ = of([]);
+  event$ = this.store.select(eventForStartpage);
   article$ = this.store.select('articles', 'activeArticle');
   articleSelection$ = this.store.select('articles', 'activeArticleSelection');
 
@@ -64,7 +63,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(new LoadSingleArticle({ tags: ['Startseite'] }));
     this.store.dispatch(new LoadArticleSelection({ tags: ['News'], limit: 4 }));
-    //this.store.dispatch(new LoadAllEvents());
+    this.store.dispatch(new LoadUpcomingEvents());
   }
 
   ngOnDestroy() {
