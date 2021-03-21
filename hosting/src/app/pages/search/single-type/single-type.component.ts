@@ -19,13 +19,13 @@ export class SingleTypeComponent {
   readonly limit = maxResultsPerPage;
 
   @Output()
-  onImageClick = new EventEmitter<string>();
+  imageClick = new EventEmitter<string>();
 
   constructor(private store: Store<State>) {}
 
   handleClick(id: string) {
     if (window.innerWidth > 600) {
-      this.onImageClick.emit(id);
+      this.imageClick.emit(id);
     }
   }
 }

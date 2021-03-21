@@ -23,10 +23,10 @@ export class CarouselComponent implements OnInit {
   }
 
   get hasNext(): boolean {
-    return this.carouselIndex != this.imageIds.length - 1;
+    return this.carouselIndex !== this.imageIds.length - 1;
   }
   get hasPrevious(): boolean {
-    return this.carouselIndex != 0;
+    return this.carouselIndex !== 0;
   }
   @Input()
   openCarouselWithId: Observable<string>;

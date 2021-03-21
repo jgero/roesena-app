@@ -25,7 +25,7 @@
 </ng-container>
 
 <!-- search has n results -->
-<ng-container *ngIf="(hasNoResults$ | async) && !(isSearchInvalid$ | async)">
+<ng-container *ngIf="(hasNoResults$ | async) && (isSearchInvalid$ | async) === false">
   <h2><mat-icon [color]="'accent'">info</mat-icon> Keine Treffer</h2>
   <div>
     <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>

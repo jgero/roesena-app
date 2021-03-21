@@ -87,86 +87,6 @@ const STARTPAGE_TILE_OPTIONS = [
 
 @Injectable()
 export class ImageMultiEffects {
-  //@Effect()
-  //loadImages$ = this.actions$.pipe(
-  //ofType(ImageActionTypes.LoadImagePage),
-  //switchMap((action) =>
-  //this.firestore
-  //.collection('images', (qFn) => qFn.orderBy('created', 'desc').limit(action.payload.limit))
-  //.snapshotChanges()
-  //.pipe(
-  //map(convertMany),
-  //// dispatch loaded event and start loading the image amount
-  //switchMap((images) => [new LoadImagePageSuccess({ images }), new LoadImageAmount()]),
-  //takeUntil(this.subs.unsubscribe$),
-  //catchError((error) => of(new LoadImagePageFailure({ error })))
-  //)
-  //)
-  //);
-
-  //@Effect()
-  //loadImageAmount$ = this.actions$.pipe(
-  //ofType(ImageActionTypes.LoadImageAmount),
-  //switchMap(() =>
-  //this.firestore
-  //.collection('meta')
-  //.doc('images')
-  //.snapshotChanges()
-  //.pipe(
-  //map((doc) => {
-  //// if there is no connection an empty document is returned
-  //if (doc.payload.exists) {
-  //return new LoadImageAmountSuccess({ amount: (doc.payload.data() as any).amount });
-  //} else {
-  //return new LoadImageAmountFailure({ error: new MissingDocumentError('Document meta/images does not exist') });
-  //}
-  //}),
-  //takeUntil(this.subs.unsubscribe$),
-  //catchError((error) => of(new LoadImageAmountFailure({ error })))
-  //)
-  //)
-  //);
-
-  //@Effect()
-  //pageForward$ = this.actions$.pipe(
-  //ofType(PageActionTypes.PageForward),
-  //withLatestFrom(this.store),
-  //filter(([action, storeState]) => storeState.router.state.url.includes('images/overview')),
-  //switchMap(([action, storeState]) =>
-  //this.firestore
-  //.collection('images', (qFn) =>
-  //qFn.orderBy('created', 'desc').startAfter(storeState.images.pageLast.created).limit(storeState.images.pageLimit)
-  //)
-  //.snapshotChanges()
-  //.pipe(
-  //takeUntil(this.subs.unsubscribe$),
-  //map(convertMany),
-  //map((images) => new LoadImagePageSuccess({ images })),
-  //catchError((error) => of(new LoadImagePageFailure({ error })))
-  //)
-  //)
-  //);
-
-  //@Effect()
-  //pageBackwards$ = this.actions$.pipe(
-  //ofType(PageActionTypes.PageBackwards),
-  //withLatestFrom(this.store),
-  //filter(([action, storeState]) => storeState.router.state.url.includes('images/overview')),
-  //switchMap(([action, storeState]) =>
-  //this.firestore
-  //.collection('images', (qFn) =>
-  //qFn.orderBy('created', 'desc').endBefore(storeState.images.pageFirst.created).limitToLast(storeState.images.pageLimit)
-  //)
-  //.snapshotChanges()
-  //.pipe(
-  //takeUntil(this.subs.unsubscribe$),
-  //map(convertMany),
-  //map((images) => new LoadImagePageSuccess({ images })),
-  //catchError((error) => of(new LoadImagePageFailure({ error })))
-  //)
-  //)
-  //);
-
   @Effect()
   loadStartpage$ = this.actions$.pipe(
     ofType(ImageActionTypes.LoadStartPage),
@@ -215,7 +135,7 @@ export class ImageMultiEffects {
               }))
             )
         )
-      )
+      ).pipe(takeUntil(this.subs.unsubscribe$))
     ),
     map((data) => new LoadStartPageSuccess({ tiles: data })),
     catchError((error) => of(new LoadStartPageFailure({ error })))
@@ -223,7 +143,6 @@ export class ImageMultiEffects {
 
   constructor(
     private actions$: Actions<ImageActions | PageActions>,
-    private store: Store<State>,
     private firestore: AngularFirestore,
     private subs: SubscriptionService,
     private urlLoader: UrlLoaderService

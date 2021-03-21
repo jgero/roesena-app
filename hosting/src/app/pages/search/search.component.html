@@ -7,7 +7,7 @@
 
   <!-- when only a single type is selected just dump them in the main -->
   <ng-template #singleType>
-    <app-single-type (onImageClick)="onImageClick($event)"></app-single-type>
+    <app-single-type (imageClick)="onImageClick($event)"></app-single-type>
   </ng-template>
 
   <!-- when multiple types are selected show a pretty row layout -->

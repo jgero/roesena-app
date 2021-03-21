@@ -7,7 +7,7 @@ import { AppEvent } from 'src/app/utils/interfaces';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
-import { RespondToEvent, EventActionTypes, EventActions } from '@state/events';
+import { RespondToEvent, EventActionTypes, EventActions, LoadUpcomingEvents } from '@state/events';
 import { Actions, ofType } from '@ngrx/effects';
 import { SeoService } from '@services/seo.service';
 
@@ -62,7 +62,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    //this.store.dispatch(new LoadAllEvents());
+    this.store.dispatch(new LoadUpcomingEvents());
   }
 
   onSubmit(eventId: string, amount: string, form: FormGroup) {
