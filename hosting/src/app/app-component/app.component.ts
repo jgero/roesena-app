@@ -14,6 +14,7 @@ import { map, tap, shareReplay, takeUntil, filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { State } from '@state/state.module';
 import { unrespondedAmount } from '@state/events';
+import { canCreate } from '@state/persons';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent implements OnDestroy {
   brakpointMatches: boolean;
   badgeContentStream$ = this.store.select(unrespondedAmount).pipe(map((el) => (el === 0 ? undefined : el)));
   user$ = this.store.select('persons', 'user');
+  canCreate$ = this.store.select(canCreate);
   version: string;
   destroyed$ = new Subject<boolean>();
   readonly searchLink = `/search/images/Prunksitzung,${new Date().getFullYear() - 1}`;

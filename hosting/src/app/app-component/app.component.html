@@ -64,6 +64,11 @@
             <a mat-list-item routerLink="/auth/register">Registrieren</a>
           </ng-template>
         </mat-expansion-panel>
+        <ng-container *ngIf="canCreate$ | async">
+          <a mat-list-item routerLink="/images/edit"><mat-icon>add</mat-icon> Bild</a>
+          <a mat-list-item routerLink="/articles/edit"><mat-icon>add</mat-icon> Artikel</a>
+          <a mat-list-item routerLink="/events/edit"><mat-icon>add</mat-icon> Event</a>
+        </ng-container>
       </mat-nav-list>
     </mat-sidenav>
     <!-- the id is only needed for the scroll restoration workaround -->
@@ -100,6 +105,11 @@
       <a mat-menu-item routerLink="/search/images/Saisonorden">Saisonorden</a>
       <a mat-menu-item routerLink="/search/articles,images/LWK,Ehrung">LWK-Orden</a>
     </mat-menu>
+    <ng-container *ngIf="canCreate$ | async">
+      <a mat-button routerLink="/images/edit"><mat-icon>add</mat-icon> Bild</a>
+      <a mat-button routerLink="/articles/edit"><mat-icon>add</mat-icon> Artikel</a>
+      <a mat-button routerLink="/events/edit"><mat-icon>add</mat-icon> Event</a>
+    </ng-container>
     <div class="spacer"></div>
     <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Account Menü">
       <mat-icon [matBadge]="badgeContentStream$ | async" matBadgeColor="accent">account_circle</mat-icon>
