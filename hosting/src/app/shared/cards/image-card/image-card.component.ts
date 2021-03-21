@@ -6,6 +6,7 @@ import { UrlLoaderService } from '@services/url-loader.service';
 import { AppImage } from '@utils/interfaces';
 import { State } from '@state/state.module';
 import { AddSearchString } from '@state/searching/actions/search.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-image-card',
@@ -20,8 +21,17 @@ export class ImageCardComponent implements OnInit {
   canEdit$ = this.store
     .select('persons', 'user')
     .pipe(map((user) => user && (user.groups.includes('admin') || (this.data && this.data.id === user.id))));
+  get isHandheld(): boolean {
+    return window.innerWidth < 600;
+  }
 
-  constructor(private store: Store<State>, private urlLoader: UrlLoaderService) {}
+  constructor(private store: Store<State>, private urlLoader: UrlLoaderService, private router: Router) {}
+
+  onImageClick() {
+    if (this.isHandheld) {
+      this.router.navigate(['images', 'details', this.data.id]);
+    }
+  }
 
   onTagClick(tag: string) {
     this.store.dispatch(new AddSearchString({ searchString: tag }));

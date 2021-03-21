@@ -1,6 +1,9 @@
 <figure>
-  <img mat-card-image [src]="$src | async" />
-  <div class="buttonBox">
+  <img mat-card-image [src]="$src | async" (click)="onImageClick()" />
+  <div class="buttonBox" *ngIf="!isHandheld">
     <a mat-icon-button class="mat-elevation-z1" [routerLink]="'/images/details/' + data.id"><mat-icon>open_in_full</mat-icon></a>
+    <a *ngIf="canEdit$ | async" mat-icon-button class="mat-elevation-z1" [routerLink]="'/images/edit/' + data.id"
+      ><mat-icon>edit</mat-icon></a
+    >
   </div>
 </figure>
