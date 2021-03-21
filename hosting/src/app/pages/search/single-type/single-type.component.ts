@@ -24,6 +24,8 @@ export class SingleTypeComponent {
   constructor(private store: Store<State>) {}
 
   handleClick(id: string) {
-    this.onImageClick.emit(id);
+    if (window.innerWidth > 600) {
+      this.onImageClick.emit(id);
+    }
   }
 }

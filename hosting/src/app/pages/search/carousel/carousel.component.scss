@@ -12,6 +12,12 @@ div {
   figure {
     position: relative;
     margin: 0;
+    flex: 1 1;
+    max-width: 800px;
+
+    img {
+      max-width: 100%;
+    }
 
     button {
       position: absolute;
