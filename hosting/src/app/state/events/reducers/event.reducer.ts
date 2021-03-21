@@ -4,17 +4,17 @@ import { AppEvent } from '@utils/interfaces';
 export const eventFeatureKey = 'events';
 
 export interface State {
+  upcomingEvents: AppEvent[];
   activeEvent: AppEvent;
   activeMonth: AppEvent[][];
-  activePageEvents: AppEvent[];
   isLoading: boolean;
   unrespondedEvents: AppEvent[];
 }
 
 export const initialState: State = {
+  upcomingEvents: [],
   activeEvent: null,
   activeMonth: [],
-  activePageEvents: [],
   isLoading: false,
   unrespondedEvents: [],
 };
@@ -28,16 +28,12 @@ export function reducer(state = initialState, action: EventActions): State {
       return { ...state, isLoading: false, activeEvent: action.payload.event };
     case EventActionTypes.LoadSingleEventFailure:
       return { ...state, isLoading: false };
-    // multiple events
-    case EventActionTypes.LoadAllEvents:
+    // upcoming events
+    case EventActionTypes.LoadUpcomingEvents:
       return { ...state, isLoading: true };
-    case EventActionTypes.LoadAllEventsSuccess:
-      return {
-        ...state,
-        isLoading: false,
-        activePageEvents: action.payload.events || null,
-      };
-    case EventActionTypes.LoadAllEventsFailure:
+    case EventActionTypes.LoadUpcomingEventsSuccess:
+      return { ...state, isLoading: false, upcomingEvents: action.payload.events };
+    case EventActionTypes.LoadSingleEventFailure:
       return { ...state, isLoading: false };
     // editor
     case EventActionTypes.CreateEvent:

@@ -2,17 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, withLatestFrom, switchMap, takeUntil, filter, tap } from 'rxjs/operators';
 import { of, combineLatest } from 'rxjs';
-import {
-  ImageActionTypes,
-  ImageActions,
-  LoadImagePageSuccess,
-  LoadImagePageFailure,
-  LoadImageAmountSuccess,
-  LoadImageAmountFailure,
-  LoadImageAmount,
-  LoadStartPageFailure,
-  LoadStartPageSuccess,
-} from '../actions/image.actions';
+import { ImageActionTypes, ImageActions, LoadStartPageFailure, LoadStartPageSuccess } from '../actions/image.actions';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 import { Store } from '@ngrx/store';
 import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
@@ -55,101 +45,50 @@ const STARTPAGE_TILE_OPTIONS = [
     filterTags: ['Röhling Stones'],
     pageLink: '/static-articles/groups/roehling-stones',
   },
-  // { heading: 'Das Technik Team', subheading: 'lorem ipsum dolor', filterTags: ['Technik'], pageLink: '' },
-  { heading: 'Die Minigarde', subheading: 'Garde', filterTags: ['Minigarde'], pageLink: '' },
-  { heading: 'Die Kindergarde', subheading: 'Garde', filterTags: ['Kindergarde'], pageLink: '' },
-  { heading: 'Die Jungendgarde', subheading: 'Garde', filterTags: ['Jugendgarde'], pageLink: '' },
-  { heading: 'Die Prinzengarde', subheading: 'Garde', filterTags: ['Prinzengarde'], pageLink: '' },
-  { heading: 'Die Erste Garde', subheading: 'Garde', filterTags: ['Erste Garde'], pageLink: '' },
-  { heading: 'Die Büttenredner', subheading: 'Sprechbeiträge', filterTags: ['Bütt'], pageLink: '' },
-  { heading: 'Die Prinzenpaare', subheading: '', filterTags: ['Prinzenpaar'], pageLink: '' },
-  { heading: 'Die Kinderprinzenpaare', subheading: '', filterTags: ['Kinderprinzenpaar'], pageLink: '' },
+  {
+    heading: 'Die Minigarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Minigarde'],
+    pageLink: '/static-articles/groups/garden/minigarde',
+  },
+  {
+    heading: 'Die Kindergarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Kindergarde'],
+    pageLink: '/static-articles/groups/garden/kindergarde',
+  },
+  {
+    heading: 'Die Jungendgarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Jugendgarde'],
+    pageLink: '/static-articles/groups/garden/jugendgarde',
+  },
+  {
+    heading: 'Die Prinzengarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Prinzengarde'],
+    pageLink: '/static-articles/groups/garden/prinzengarde',
+  },
+  {
+    heading: 'Die Erste Garde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Erste Garde'],
+    pageLink: '/static-articles/groups/garden/erste-garde',
+  },
+  { heading: 'Die Büttenredner', subheading: 'Sprechbeiträge', filterTags: ['Bütt'], pageLink: '/search/images/Bütt' },
+  { heading: 'Die Prinzenpaare', subheading: '', filterTags: ['Prinzenpaar'], pageLink: '/static-articles/archive/royals' },
+  {
+    heading: 'Die Kinderprinzenpaare',
+    subheading: '',
+    filterTags: ['Kinderprinzenpaar'],
+    pageLink: '/static-articles/archive/mini-royals',
+  },
 ];
 
 @Injectable()
 export class ImageMultiEffects {
   @Effect()
-  loadImages$ = this.actions$.pipe(
-    ofType(ImageActionTypes.LoadImagePage),
-    switchMap((action) =>
-      this.firestore
-        .collection('images', (qFn) => qFn.orderBy('created', 'desc').limit(action.payload.limit))
-        .snapshotChanges()
-        .pipe(
-          map(convertMany),
-          // dispatch loaded event and start loading the image amount
-          switchMap((images) => [new LoadImagePageSuccess({ images }), new LoadImageAmount()]),
-          takeUntil(this.subs.unsubscribe$),
-          catchError((error) => of(new LoadImagePageFailure({ error })))
-        )
-    )
-  );
-
-  @Effect()
-  loadImageAmount$ = this.actions$.pipe(
-    ofType(ImageActionTypes.LoadImageAmount),
-    switchMap(() =>
-      this.firestore
-        .collection('meta')
-        .doc('images')
-        .snapshotChanges()
-        .pipe(
-          map((doc) => {
-            // if there is no connection an empty document is returned
-            if (doc.payload.exists) {
-              return new LoadImageAmountSuccess({ amount: (doc.payload.data() as any).amount });
-            } else {
-              return new LoadImageAmountFailure({ error: new MissingDocumentError('Document meta/images does not exist') });
-            }
-          }),
-          takeUntil(this.subs.unsubscribe$),
-          catchError((error) => of(new LoadImageAmountFailure({ error })))
-        )
-    )
-  );
-
-  @Effect()
-  pageForward$ = this.actions$.pipe(
-    ofType(PageActionTypes.PageForward),
-    withLatestFrom(this.store),
-    filter(([action, storeState]) => storeState.router.state.url.includes('images/overview')),
-    switchMap(([action, storeState]) =>
-      this.firestore
-        .collection('images', (qFn) =>
-          qFn.orderBy('created', 'desc').startAfter(storeState.images.pageLast.created).limit(storeState.images.pageLimit)
-        )
-        .snapshotChanges()
-        .pipe(
-          takeUntil(this.subs.unsubscribe$),
-          map(convertMany),
-          map((images) => new LoadImagePageSuccess({ images })),
-          catchError((error) => of(new LoadImagePageFailure({ error })))
-        )
-    )
-  );
-
-  @Effect()
-  pageBackwards$ = this.actions$.pipe(
-    ofType(PageActionTypes.PageBackwards),
-    withLatestFrom(this.store),
-    filter(([action, storeState]) => storeState.router.state.url.includes('images/overview')),
-    switchMap(([action, storeState]) =>
-      this.firestore
-        .collection('images', (qFn) =>
-          qFn.orderBy('created', 'desc').endBefore(storeState.images.pageFirst.created).limitToLast(storeState.images.pageLimit)
-        )
-        .snapshotChanges()
-        .pipe(
-          takeUntil(this.subs.unsubscribe$),
-          map(convertMany),
-          map((images) => new LoadImagePageSuccess({ images })),
-          catchError((error) => of(new LoadImagePageFailure({ error })))
-        )
-    )
-  );
-
-  @Effect()
-  loadStartpage = this.actions$.pipe(
+  loadStartpage$ = this.actions$.pipe(
     ofType(ImageActionTypes.LoadStartPage),
     // randomly select some groups from the list of options
     map((action) => {
@@ -196,7 +135,7 @@ export class ImageMultiEffects {
               }))
             )
         )
-      )
+      ).pipe(takeUntil(this.subs.unsubscribe$))
     ),
     map((data) => new LoadStartPageSuccess({ tiles: data })),
     catchError((error) => of(new LoadStartPageFailure({ error })))
@@ -204,7 +143,6 @@ export class ImageMultiEffects {
 
   constructor(
     private actions$: Actions<ImageActions | PageActions>,
-    private store: Store<State>,
     private firestore: AngularFirestore,
     private subs: SubscriptionService,
     private urlLoader: UrlLoaderService

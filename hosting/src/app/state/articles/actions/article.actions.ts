@@ -7,14 +7,6 @@ export enum ArticleActionTypes {
   LoadSingleArticleSuccess = '[article] load article success',
   LoadSingleArticleFailure = '[article] load article failure',
   // load articles for overveiw page
-  LoadArticlePage = '[article] load articles for an entire page',
-  LoadArticlePageSuccess = '[article] load articles for an entire page success',
-  LoadArticlePageFailure = '[article] load articles for an entire page failure',
-  // load amout of articles in the system
-  LoadArticleAmount = '[article] load amount of articles in the database',
-  LoadArticleAmountSuccess = '[article] load amount of articles in the database success',
-  LoadArticleAmountFailure = '[article] load amount of articles in the database failure',
-  // load articles for overveiw page
   LoadArticleSelection = '[article] load article selection',
   LoadArticleSelectionSuccess = '[article] load article selection success',
   LoadArticleSelectionFailure = '[article] load article selection failure',
@@ -41,33 +33,6 @@ export class LoadSingleArticleSuccess implements Action {
 }
 export class LoadSingleArticleFailure implements Action {
   readonly type = ArticleActionTypes.LoadSingleArticleFailure;
-  constructor(public payload: { error: any }) {}
-}
-
-// load articles for overveiw page
-export class LoadArticlePage implements Action {
-  readonly type = ArticleActionTypes.LoadArticlePage;
-  constructor(public payload: { limit: number }) {}
-}
-export class LoadArticlePageSuccess implements Action {
-  readonly type = ArticleActionTypes.LoadArticlePageSuccess;
-  constructor(public payload: { articles: AppArticle[] }) {}
-}
-export class LoadArticlePageFailure implements Action {
-  readonly type = ArticleActionTypes.LoadArticlePageFailure;
-  constructor(public payload: { error: any }) {}
-}
-
-// load amount of articles in the database
-export class LoadArticleAmount implements Action {
-  readonly type = ArticleActionTypes.LoadArticleAmount;
-}
-export class LoadArticleAmountSuccess implements Action {
-  readonly type = ArticleActionTypes.LoadArticleAmountSuccess;
-  constructor(public payload: { amount: number }) {}
-}
-export class LoadArticleAmountFailure implements Action {
-  readonly type = ArticleActionTypes.LoadArticleAmountFailure;
   constructor(public payload: { error: any }) {}
 }
 
@@ -124,12 +89,6 @@ export type ArticleActions =
   | LoadSingleArticle
   | LoadSingleArticleSuccess
   | LoadSingleArticleFailure
-  | LoadArticlePage
-  | LoadArticlePageSuccess
-  | LoadArticlePageFailure
-  | LoadArticleAmount
-  | LoadArticleAmountSuccess
-  | LoadArticleAmountFailure
   | LoadArticleSelection
   | LoadArticleSelectionSuccess
   | LoadArticleSelectionFailure

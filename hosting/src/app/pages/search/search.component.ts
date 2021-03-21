@@ -1,59 +1,28 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
-import {
-  AddSearchString,
-  ChangeDataType,
-  CleanSearch,
-  InitSearch,
-  RemoveSearchString,
-  RunSearch,
-  SearchActions,
-} from '@state/searching/actions/search.actions';
+import { InitSearch, SearchActions } from '@state/searching/actions/search.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { map, takeUntil, tap, take, withLatestFrom, filter } from 'rxjs/operators';
-import { cardFlyIn } from '@utils/animations/card-fly-in';
+import { map, takeUntil, take, withLatestFrom, filter } from 'rxjs/operators';
 import { SeoService } from '@services/seo.service';
-import { AutocompleteService } from '@services/autocomplete.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { tagProposals } from '@state/searching/selectors/search.selectors';
 import { ROUTER_NAVIGATED } from '@ngrx/router-store';
 import { ofType, Actions } from '@ngrx/effects';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  animations: [cardFlyIn],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  searchStrings$ = this.store.select('search', 'searchStrings');
-  events$ = this.store.select('search', 'events');
-  images$ = this.store.select('search', 'images');
-  articles$ = this.store.select('search', 'articles');
-  searchTypeAmount$ = this.store.select('search', 'dataTypes').pipe(
-    tap((types) => {
-      setTimeout(() => {
-        this.isArticlesChecked = !!types.includes('articles');
-        this.isImagesChecked = !!types.includes('images');
-        this.isEventsChecked = !!types.includes('events');
-      });
-    }),
-    map((el) => el.length)
-  );
-  tagProposals$ = this.store.select(tagProposals);
-  isArticlesChecked = false;
-  isImagesChecked = false;
-  isEventsChecked = false;
-  @ViewChild('chipInput')
-  chipInput: ElementRef<HTMLInputElement>;
+  isSingleType$ = this.store.select('search', 'dataTypes').pipe(map((el) => el.length === 1));
+
+  openCarouselWithId$ = new Subject<string>();
 
   constructor(
     private store: Store<State>,
     private subs: SubscriptionService,
-    private hostRef: ElementRef<HTMLElement>,
     seo: SeoService,
-    public autocomplete: AutocompleteService,
     private actions$: Actions<SearchActions>
   ) {
     this.store.pipe(takeUntil(this.subs.unsubscribe$)).subscribe((state) => {
@@ -69,8 +38,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // initialize when landing on the search page
     this.store.pipe(take(1)).subscribe((state) => {
-      const tags: string[] = state.router.state.params.searchStrings.split(',');
+      const tags: string[] = state.router.state.params.searchStrings ? state.router.state.params.searchStrings.split(',') : [];
       const types: string[] = state.router.state.params.type.split(',');
+      // init search
       this.store.dispatch(
         new InitSearch({
           types,
@@ -88,9 +58,13 @@ export class SearchComponent implements OnInit, OnDestroy {
         filter(([action, store]) => {
           const searchTags = store.search.searchStrings;
           const searchTypes = store.search.dataTypes;
-          const tags: string[] = store.router.state.params.searchStrings.split(',');
+          const tags: string[] = store.router.state.params.searchStrings
+            ? store.router.state.params.searchStrings.split(',')
+            : [];
           const types: string[] = store.router.state.params.type.split(',');
+          // if types and tags have the same length
           if (searchTypes.length === types.length && searchTags.length === tags.length) {
+            // if all tag and types are the same
             if (tags.every((tag) => searchTags.includes(tag)) && types.every((t) => searchTypes.includes(t))) {
               return false;
             }
@@ -111,52 +85,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       });
   }
 
+  onImageClick(id: string) {
+    this.openCarouselWithId$.next(id);
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribeComponent$.next();
-  }
-
-  onAddTag(event: MatAutocompleteSelectedEvent, input: HTMLInputElement) {
-    input.value = '';
-    this.store.dispatch(new AddSearchString({ searchString: event.option.value }));
-  }
-
-  onAddProposal(tag: string) {
-    this.store.dispatch(new AddSearchString({ searchString: tag }));
-  }
-
-  onRemoveTag(searchString: string) {
-    this.store.dispatch(new RemoveSearchString({ searchString }));
-  }
-
-  onCheckboxChange() {
-    const dataTypes: string[] = [];
-    if (this.isArticlesChecked) {
-      dataTypes.push('articles');
-    }
-    if (this.isImagesChecked) {
-      dataTypes.push('images');
-    }
-    if (this.isEventsChecked) {
-      dataTypes.push('events');
-    }
-    this.store.dispatch(new ChangeDataType({ dataTypes }));
-    this.store.dispatch(new RunSearch());
-  }
-
-  swtichToSingleType(type: string) {
-    this.store.dispatch(new ChangeDataType({ dataTypes: [type] }));
-    this.store.dispatch(new RunSearch());
-  }
-
-  onClearSearch() {
-    this.store.dispatch(new CleanSearch());
-  }
-
-  onSearch() {
-    if (this.chipInput.nativeElement.value !== '') {
-      this.store.dispatch(new AddSearchString({ searchString: this.chipInput.nativeElement.value }));
-      this.chipInput.nativeElement.value = '';
-    }
-    this.store.dispatch(new RunSearch());
   }
 }

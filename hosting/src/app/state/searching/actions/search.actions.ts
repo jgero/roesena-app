@@ -9,6 +9,7 @@ export enum SearchActionTypes {
   ChangeDataType = '[search component] change data type',
   RunSearch = '[search component] run search',
   SearchContentLoaded = '[search component] content loaded',
+  SearchLengthLoaded = '[search component] content length loaded',
   SearchContentLoadFailed = '[search component] loading content failed',
 }
 
@@ -22,6 +23,10 @@ export class ChangeDataType implements Action {
 export class SearchContentLoaded implements Action {
   readonly type = SearchActionTypes.SearchContentLoaded;
   constructor(public payload: { articles: AppArticle[]; images: AppImage[]; events: AppEvent[] }) {}
+}
+export class SearchLengthLoaded implements Action {
+  readonly type = SearchActionTypes.SearchLengthLoaded;
+  constructor(public payload: { amount: number }) {}
 }
 export class SearchContentLoadFailed implements Action {
   readonly type = SearchActionTypes.SearchContentLoadFailed;
@@ -50,6 +55,7 @@ export type SearchActions =
   | RemoveSearchString
   | InitSearch
   | SearchContentLoaded
+  | SearchLengthLoaded
   | SearchContentLoadFailed
   | ChangeDataType
   | CleanSearch;

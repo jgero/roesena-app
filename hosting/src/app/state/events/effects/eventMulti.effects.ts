@@ -5,11 +5,11 @@ import { of } from 'rxjs';
 import {
   EventActionTypes,
   EventActions,
-  LoadAllEventsSuccess,
-  LoadAllEventsFailure,
   UpdateUnrespondedEventAmount,
   LoadEventsForMonthSuccess,
   LoadEventsForMonthFailure,
+  LoadUpcomingEventsSuccess,
+  LoadUpcomingEventsFailure,
 } from '../actions/event.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
 export class EventMultiEffects {
   @Effect()
   loadEvents$ = this.actions$.pipe(
-    ofType(EventActionTypes.LoadAllEvents),
+    ofType(EventActionTypes.LoadUpcomingEvents),
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       this.firestore
@@ -56,15 +56,15 @@ export class EventMultiEffects {
               );
             }
           }),
-          map((events) => new LoadAllEventsSuccess({ events })),
-          catchError((error) => of(new LoadAllEventsFailure({ error })))
+          map((events) => new LoadUpcomingEventsSuccess({ events })),
+          catchError((error) => of(new LoadUpcomingEventsFailure({ error })))
         )
     )
   );
 
   @Effect()
   checkForUnrespondedEvents$ = this.actions$.pipe(
-    ofType(EventActionTypes.LoadAllEventsSuccess),
+    ofType(EventActionTypes.LoadUpcomingEventsSuccess),
     withLatestFrom(this.store),
     map(([action, storeState]) => {
       const user = storeState.persons.user;

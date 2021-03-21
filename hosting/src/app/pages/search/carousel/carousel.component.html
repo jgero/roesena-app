@@ -1,0 +1,14 @@
+<div class="carousel mat-elevation-z2" *ngIf="isCarouselVisible | async">
+  <button mat-fab (click)="carouselPrevious()" color="accent" [disabled]="!hasPrevious">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>
+  <figure>
+    <img [src]="carouselUrl" alt="image carousel" />
+    <button class="close" mat-fab (click)="onCloseCarousel()" color="accent">
+      <mat-icon>close</mat-icon>
+    </button>
+  </figure>
+  <button mat-fab (click)="carouselNext()" color="accent" [disabled]="!hasNext">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>

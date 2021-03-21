@@ -1,29 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import { withLatestFrom, tap, switchMap, takeUntil, map, catchError } from 'rxjs/operators';
+import { withLatestFrom, tap, switchMap, takeUntil, map } from 'rxjs/operators';
 import {
   SearchActionTypes,
   SearchActions,
-  AddSearchString,
   RunSearch,
-  SearchContentLoaded,
-  ChangeDataType,
   SearchContentLoadFailed,
-  CleanSearch,
+  SearchContentLoaded,
 } from '../actions/search.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { Router } from '@angular/router';
-import { of, merge, combineLatest } from 'rxjs';
-import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { SubscriptionService } from '@services/subscription.service';
-import { convertMany as convertManyEvents } from '@utils/converters/event-documents';
-import { convertMany as convertManyArticles } from '@utils/converters/article-documents';
-import { convertMany as convertManyImages } from '@utils/converters/image-documents';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { sortByTags } from '@utils/converters/sort-by-tags';
+import {
+  getDataObservableForSearchTags,
+  getDataObservableForArticlePage,
+  getDataObservableForEventsPage,
+  getDataObservableForImagePage,
+} from './dataFetchingObservables';
+import { of } from 'rxjs';
+import { PageDirection } from './directionEnum';
+import { PageActionTypes } from '@state/pagination/actions/page.actions';
+
+// VERY IMPORANT TO SAVE MUCH FRUSTRATION
+// the takeUntil with unsubscribe has to be put in the pipe of the data observables and not directly on the effects
+// if you put them on the effect it will unsubscribe from the effect and the page only works on the first visit.....
 
 @Injectable()
 export class SearchEffects {
@@ -40,56 +45,85 @@ export class SearchEffects {
   );
 
   @Effect()
+  nextPage$ = this.actions$.pipe(
+    ofType(PageActionTypes.PageForward),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) => {
+      switch (storeState.search.dataTypes[0]) {
+        case 'articles':
+          return getDataObservableForArticlePage(
+            storeState.search.articles[storeState.search.articles.length - 1],
+            this.firestore,
+            PageDirection.FORWARDS
+          ).pipe(takeUntil(this.subs.unsubscribe$));
+        case 'images':
+          return getDataObservableForImagePage(
+            storeState.search.images[storeState.search.images.length - 1],
+            this.firestore,
+            PageDirection.FORWARDS
+          ).pipe(takeUntil(this.subs.unsubscribe$));
+      }
+    })
+  );
+
+  @Effect()
+  previousPage$ = this.actions$.pipe(
+    ofType(PageActionTypes.PageBackwards),
+    withLatestFrom(this.store),
+    switchMap(([action, storeState]) => {
+      switch (storeState.search.dataTypes[0]) {
+        case 'articles':
+          return getDataObservableForArticlePage(storeState.search.articles[0], this.firestore, PageDirection.BACKWARDS).pipe(
+            takeUntil(this.subs.unsubscribe$)
+          );
+        case 'images':
+          return getDataObservableForImagePage(storeState.search.images[0], this.firestore, PageDirection.BACKWARDS).pipe(
+            takeUntil(this.subs.unsubscribe$)
+          );
+      }
+    })
+  );
+
+  @Effect()
   runSearch$ = this.actions$.pipe(
     ofType(SearchActionTypes.RunSearch),
     withLatestFrom(this.store),
     tap(([action, storeState]) => {
-      this.router.navigate(['search', storeState.search.dataTypes.join(','), storeState.search.searchStrings.join(',')]);
+      if (storeState.search.searchStrings.length > 0) {
+        this.router.navigate(['search', storeState.search.dataTypes.join(','), storeState.search.searchStrings.join(',')]);
+      } else {
+        this.router.navigate(['search', storeState.search.dataTypes.join(',')]);
+      }
     }),
     // report to analytics
     tap(() => this.analytics.logEvent('search', { event_category: 'engagement' })),
     switchMap(([action, storeState]) => {
-      // applies query
-      const queryBuilder = (qFn: CollectionReference, collection: string) => {
-        let query: CollectionReference | Query = qFn;
-        // filter by the search strings
-        storeState.search.searchStrings.forEach((searchString) => (query = query.where(`tags.${searchString}`, '==', true)));
-        // if there are multiple data types limit the searches to 2 elements
-        query = query.limit(storeState.search.dataTypes.length === 1 ? 40 : 2);
-        // only take public events if not logged in or user ist not confirmed
-        if (collection === 'events' && (!storeState.persons.user || !storeState.persons.user.isConfirmedMember)) {
-          query = query.where('participants', '==', {});
-        }
-        return query;
-      };
-      // return empty arrays when searched without any search strings
-      if (storeState.search.searchStrings.length === 0) {
-        return of(new SearchContentLoaded({ events: [], articles: [], images: [] }));
+      if (storeState.search.searchStrings.length > 0) {
+        // if there are search strings run filter query
+        return getDataObservableForSearchTags(
+          storeState.search.searchStrings,
+          storeState.search.dataTypes,
+          !!storeState.persons.user?.isConfirmedMember,
+          this.firestore
+        ).pipe(takeUntil(this.subs.unsubscribe$));
       }
-      const dataObservables = storeState.search.dataTypes.map((collection) =>
-        this.firestore
-          .collection(collection, (qFn) => queryBuilder(qFn, collection))
-          .snapshotChanges()
-          .pipe(
-            map((data) => {
-              switch (collection) {
-                case 'events':
-                  return convertManyEvents(data as any);
-                case 'articles':
-                  return convertManyArticles(data as any);
-                case 'images':
-                  return convertManyImages(data as any);
-              }
-            }),
-            map(sortByTags),
-            map((value) => ({ [collection]: value }))
-          )
-      );
-      return combineLatest(dataObservables).pipe(
-        takeUntil(this.subs.unsubscribe$),
-        map((dataArray) => new SearchContentLoaded(Object.assign({ events: [], articles: [], images: [] }, ...dataArray))),
-        catchError((error) => of(new SearchContentLoadFailed({ error })))
-      );
+      if (storeState.search.dataTypes.length > 1) {
+        // query with multiple data types and no tag is not supported
+        return of(new SearchContentLoaded({ articles: [], events: [], images: [] }));
+      }
+      // only the case of one data type without search string remains
+      switch (storeState.search.dataTypes[0]) {
+        case 'articles':
+          return getDataObservableForArticlePage(null, this.firestore, PageDirection.INIT).pipe(
+            takeUntil(this.subs.unsubscribe$)
+          );
+        case 'images':
+          return getDataObservableForImagePage(null, this.firestore, PageDirection.INIT).pipe(takeUntil(this.subs.unsubscribe$));
+        case 'events':
+          return getDataObservableForEventsPage(this.firestore, !!storeState.persons.user?.isConfirmedMember).pipe(
+            takeUntil(this.subs.unsubscribe$)
+          );
+      }
     })
   );
 

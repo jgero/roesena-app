@@ -1,6 +1,8 @@
 import { SearchActions, SearchActionTypes } from '../actions/search.actions';
 import { AppArticle, AppImage, AppEvent } from '@utils/interfaces';
-import { Store } from '@ngrx/store';
+import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
+
+export const maxResultsPerPage = 15;
 
 export const searchFeatureKey = 'search';
 
@@ -10,6 +12,8 @@ export interface State {
   events: AppEvent[];
   articles: AppArticle[];
   images: AppImage[];
+  pageIndex: number;
+  searchLength: number;
 }
 
 export const initialState: State = {
@@ -18,9 +22,11 @@ export const initialState: State = {
   events: [],
   articles: [],
   images: [],
+  pageIndex: 0,
+  searchLength: 0,
 };
 
-export function reducer(state = initialState, action: SearchActions): State {
+export function reducer(state = initialState, action: SearchActions | PageActions): State {
   switch (action.type) {
     case SearchActionTypes.CleanSearch:
       return { ...state, searchStrings: [] };
@@ -54,7 +60,7 @@ export function reducer(state = initialState, action: SearchActions): State {
     }
 
     case SearchActionTypes.ChangeDataType:
-      return { ...state, dataTypes: action.payload.dataTypes };
+      return { ...state, dataTypes: action.payload.dataTypes, pageIndex: 0, searchLength: 0 };
 
     case SearchActionTypes.SearchContentLoaded:
       const { articles, images, events } = action.payload;
@@ -62,6 +68,13 @@ export function reducer(state = initialState, action: SearchActions): State {
 
     case SearchActionTypes.SearchContentLoadFailed:
       return { ...state, articles: [], images: [], events: [] };
+
+    case PageActionTypes.PageForward:
+      return { ...state, pageIndex: state.pageIndex + 1 };
+    case PageActionTypes.PageBackwards:
+      return { ...state, pageIndex: state.pageIndex - 1 };
+    case SearchActionTypes.SearchLengthLoaded:
+      return { ...state, searchLength: action.payload.amount };
 
     default:
       return state;

@@ -6,10 +6,10 @@ export enum EventActionTypes {
   LoadSingleEvent = '[event] load event',
   LoadSingleEventSuccess = '[event] load event success',
   LoadSingleEventFailure = '[event] load event failure',
-  // event page
-  LoadAllEvents = '[event] load events',
-  LoadAllEventsSuccess = '[event] load events success',
-  LoadAllEventsFailure = '[event] load events failure',
+  // upcoming events
+  LoadUpcomingEvents = '[event] load upcomin events',
+  LoadUpcomingEventsSuccess = '[event] load upcoming events success',
+  LoadUpcomingEventsFailure = '[event] load upcoming events failure',
   // user specific actions
   MarkEventAsSeen = '[event] mark event as seen',
   RespondToEvent = '[event] respond to event',
@@ -45,17 +45,16 @@ export class LoadSingleEventFailure implements Action {
   readonly type = EventActionTypes.LoadSingleEventFailure;
   constructor(public payload: { error: any }) {}
 }
-
-// event page
-export class LoadAllEvents implements Action {
-  readonly type = EventActionTypes.LoadAllEvents;
+// upcoming events
+export class LoadUpcomingEvents implements Action {
+  readonly type = EventActionTypes.LoadUpcomingEvents;
 }
-export class LoadAllEventsSuccess implements Action {
-  readonly type = EventActionTypes.LoadAllEventsSuccess;
+export class LoadUpcomingEventsSuccess implements Action {
+  readonly type = EventActionTypes.LoadUpcomingEventsSuccess;
   constructor(public payload: { events: AppEvent[] }) {}
 }
-export class LoadAllEventsFailure implements Action {
-  readonly type = EventActionTypes.LoadAllEventsFailure;
+export class LoadUpcomingEventsFailure implements Action {
+  readonly type = EventActionTypes.LoadUpcomingEventsFailure;
   constructor(public payload: { error: any }) {}
 }
 
@@ -130,9 +129,9 @@ export type EventActions =
   | LoadSingleEvent
   | LoadSingleEventSuccess
   | LoadSingleEventFailure
-  | LoadAllEvents
-  | LoadAllEventsSuccess
-  | LoadAllEventsFailure
+  | LoadUpcomingEvents
+  | LoadUpcomingEventsSuccess
+  | LoadUpcomingEventsFailure
   | MarkEventAsSeen
   | RespondToEvent
   | RespondToEventSuccess

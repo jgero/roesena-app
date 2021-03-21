@@ -1,0 +1,39 @@
+<ng-container *ngIf="articles$ | async as articles">
+  <section *ngIf="articles.length > 0">
+    <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('articles')">
+      <mat-icon>arrow_forward</mat-icon><span>ARTIKEL</span>
+    </button>
+    <div>
+      <app-article-card *ngFor="let article of articles" [data]="article"></app-article-card>
+      <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('articles')">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    </div>
+  </section>
+</ng-container>
+<ng-container *ngIf="images$ | async as images">
+  <section *ngIf="images.length > 0">
+    <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('images')">
+      <mat-icon>arrow_forward</mat-icon><span>BILDER</span>
+    </button>
+    <div>
+      <app-image-card *ngFor="let image of images" [data]="image"></app-image-card>
+      <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('images')">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    </div>
+  </section>
+</ng-container>
+<ng-container *ngIf="events$ | async as events">
+  <section *ngIf="events.length > 0">
+    <button mat-stroked-button [color]="'primary'" (click)="swtichToSingleType('events')">
+      <mat-icon>arrow_forward</mat-icon><span>EVENTS</span>
+    </button>
+    <div>
+      <app-event-card *ngFor="let event of events" [data]="event"></app-event-card>
+      <button mat-icon-button [color]="'primary'" (click)="swtichToSingleType('events')">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    </div>
+  </section>
+</ng-container>

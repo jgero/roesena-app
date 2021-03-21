@@ -1,0 +1,34 @@
+<!-- if search results and the query limit is the same -->
+<ng-container *ngIf="isSearchLimited$ | async">
+  <h2><mat-icon [color]="'accent'">info</mat-icon> Viele Treffer</h2>
+  <div>
+    <p>
+      Zu den von dir verwendeten Such-Parametern scheint es sehr viele Einträge im System zu geben. Aus technischen Gründen wird
+      die Anzahl an Suchergebnissen begrenzt, es kann also sein dass nicht alle Inhalte die zu diesen Such-Parametern passen
+      angezeigt werden.
+    </p>
+    <p>
+      <strong>Füge deiner Suche mehr Tags (Schlagworte) hinzu</strong>, damit die Suche spezifischer wird und du somit auch genau
+      das findest was du suchst.
+    </p>
+  </div>
+  <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
+</ng-container>
+
+<!-- a search with no search tags and multiple data types is not supported -->
+<ng-container *ngIf="isSearchInvalid$ | async">
+  <h2><mat-icon [color]="'accent'">info</mat-icon> Ungültige Suche</h2>
+  <div>
+    <p>Eine Suche nach verschiedenen Inhalten ohne Suchbegriffe wird nicht unterstützt.</p>
+  </div>
+  <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
+</ng-container>
+
+<!-- search has n results -->
+<ng-container *ngIf="(hasNoResults$ | async) && (isSearchInvalid$ | async) === false">
+  <h2><mat-icon [color]="'accent'">info</mat-icon> Keine Treffer</h2>
+  <div>
+    <p>Zu den von dir verwendeten Such-Parametern gibt es keine Einträge im System.</p>
+  </div>
+  <a href="/help#Suche" color="accent" mat-flat-button aria-label="Hilfe">HILFE</a>
+</ng-container>
