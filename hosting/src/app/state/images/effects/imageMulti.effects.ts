@@ -45,15 +45,44 @@ const STARTPAGE_TILE_OPTIONS = [
     filterTags: ['Röhling Stones'],
     pageLink: '/static-articles/groups/roehling-stones',
   },
-  // { heading: 'Das Technik Team', subheading: 'lorem ipsum dolor', filterTags: ['Technik'], pageLink: '' },
-  { heading: 'Die Minigarde', subheading: 'Garde', filterTags: ['Minigarde'], pageLink: '' },
-  { heading: 'Die Kindergarde', subheading: 'Garde', filterTags: ['Kindergarde'], pageLink: '' },
-  { heading: 'Die Jungendgarde', subheading: 'Garde', filterTags: ['Jugendgarde'], pageLink: '' },
-  { heading: 'Die Prinzengarde', subheading: 'Garde', filterTags: ['Prinzengarde'], pageLink: '' },
-  { heading: 'Die Erste Garde', subheading: 'Garde', filterTags: ['Erste Garde'], pageLink: '' },
-  { heading: 'Die Büttenredner', subheading: 'Sprechbeiträge', filterTags: ['Bütt'], pageLink: '' },
-  { heading: 'Die Prinzenpaare', subheading: '', filterTags: ['Prinzenpaar'], pageLink: '' },
-  { heading: 'Die Kinderprinzenpaare', subheading: '', filterTags: ['Kinderprinzenpaar'], pageLink: '' },
+  {
+    heading: 'Die Minigarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Minigarde'],
+    pageLink: '/static-articles/groups/garden/minigarde',
+  },
+  {
+    heading: 'Die Kindergarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Kindergarde'],
+    pageLink: '/static-articles/groups/garden/kindergarde',
+  },
+  {
+    heading: 'Die Jungendgarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Jugendgarde'],
+    pageLink: '/static-articles/groups/garden/jugendgarde',
+  },
+  {
+    heading: 'Die Prinzengarde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Prinzengarde'],
+    pageLink: '/static-articles/groups/garden/prinzengarde',
+  },
+  {
+    heading: 'Die Erste Garde',
+    subheading: 'Tanzgruppe',
+    filterTags: ['Erste Garde'],
+    pageLink: '/static-articles/groups/garden/erste-garde',
+  },
+  { heading: 'Die Büttenredner', subheading: 'Sprechbeiträge', filterTags: ['Bütt'], pageLink: '/search/images/Bütt' },
+  { heading: 'Die Prinzenpaare', subheading: '', filterTags: ['Prinzenpaar'], pageLink: '/static-articles/archive/royals' },
+  {
+    heading: 'Die Kinderprinzenpaare',
+    subheading: '',
+    filterTags: ['Kinderprinzenpaar'],
+    pageLink: '/static-articles/archive/mini-royals',
+  },
 ];
 
 @Injectable()
