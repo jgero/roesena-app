@@ -6,6 +6,27 @@ import { CommonComponent } from './common/common.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'garden' },
   {
+    path: 'about-us',
+    children: [
+      {
+        path: 'presidency',
+        component: CommonComponent,
+        data: {
+          heading: 'Präsidium der RöSeNa',
+          filterTags: ['Präsidium'],
+        },
+      },
+      {
+        path: 'schlager',
+        component: CommonComponent,
+        data: {
+          heading: 'Schlager der RöSeNa',
+          filterTags: ['Schlager', 'Lied'],
+        },
+      },
+    ],
+  },
+  {
     path: 'archive',
     children: [
       {

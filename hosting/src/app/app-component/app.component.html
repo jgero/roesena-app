@@ -20,6 +20,15 @@
 
         <mat-expansion-panel mat-list-item>
           <mat-expansion-panel-header>
+            <mat-panel-title>Über uns</mat-panel-title>
+          </mat-expansion-panel-header>
+          <a mat-list-item routerLink="/static-articles/about-us/presidency">Präsidium</a>
+          <a mat-list-item routerLink="/search/articles/Programm,Prunksitzung">Programm</a>
+          <a mat-list-item routerLink="/static-articles/about-us/schlager">Schlager</a>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel mat-list-item>
+          <mat-expansion-panel-header>
             <mat-panel-title>Gruppen</mat-panel-title>
           </mat-expansion-panel-header>
           <a mat-list-item routerLink="/static-articles/groups/brandjoggala">Brandjoggala</a>
@@ -28,6 +37,15 @@
           <a mat-list-item routerLink="/static-articles/groups/roehling-stones">Röhling Stones</a>
           <a mat-list-item routerLink="/static-articles/groups/sechtafeger">Sechtafeger</a>
           <a mat-list-item routerLink="/static-articles/groups/wildes-heer">Das Wilde Heer</a>
+        </mat-expansion-panel>
+        <mat-expansion-panel mat-list-item>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Archiv</mat-panel-title>
+          </mat-expansion-panel-header>
+          <a mat-list-item routerlink="/static-articles/archive/royals">Prinzenpaare</a>
+          <a mat-list-item routerlink="/static-articles/archive/mini-royals">Kinderprinzenpaare</a>
+          <a mat-list-item routerLink="/search/images/Saisonorden">Saisonorden</a>
+          <a mat-list-item routerLink="/search/articles,images/LWK,Ehrung">LWK-Orden</a>
         </mat-expansion-panel>
 
         <mat-expansion-panel>
@@ -60,6 +78,12 @@
   <mat-toolbar color="primary">
     <a class="home" mat-button routerLink="/">RöSeNa</a>
     <a mat-button routerLink="/search/events">Events</a>
+    <button mat-button [matMenuTriggerFor]="usMenu">Über uns</button>
+    <mat-menu #usMenu="matMenu" xPosition="after">
+      <a mat-menu-item routerLink="/static-articles/about-us/presidency">Präsidium</a>
+      <a mat-menu-item routerLink="/search/articles/Programm,Prunksitzung">Programm</a>
+      <a mat-menu-item routerLink="/static-articles/about-us/schlager">Schlager</a>
+    </mat-menu>
     <button mat-button [matMenuTriggerFor]="groupsMenu">Gruppen</button>
     <mat-menu #groupsMenu="matMenu" xPosition="after">
       <a mat-menu-item routerLink="/static-articles/groups/brandjoggala">Brandjoggala</a>
@@ -74,6 +98,7 @@
       <a mat-menu-item routerLink="/static-articles/archive/royals">Prinzenpaare</a>
       <a mat-menu-item routerLink="/static-articles/archive/mini-royals">Kinderprinzenpaare</a>
       <a mat-menu-item routerLink="/search/images/Saisonorden">Saisonorden</a>
+      <a mat-menu-item routerLink="/search/articles,images/LWK,Ehrung">LWK-Orden</a>
     </mat-menu>
     <div class="spacer"></div>
     <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Account Menü">
