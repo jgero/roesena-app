@@ -1,7 +1,6 @@
 <figure>
-  <img mat-card-image [src]="$src | async" [routerLink]="'/images/details/' + data.id" />
+  <img mat-card-image [src]="$src | async" />
   <div class="buttonBox">
     <a mat-icon-button class="mat-elevation-z1" [routerLink]="'/images/details/' + data.id"><mat-icon>open_in_full</mat-icon></a>
-    <button mat-icon-button class="mat-elevation-z1"><mat-icon>view_carousel</mat-icon></button>
   </div>
 </figure>

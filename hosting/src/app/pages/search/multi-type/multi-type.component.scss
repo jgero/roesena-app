@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  section {
+    & > div {
+      display: flex;
+      margin: 0 -1rem;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+    }
+  }
+}

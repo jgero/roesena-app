@@ -1,0 +1,44 @@
+<header>
+  <h1 class="mat-display-2">{{ heading }}</h1>
+  <div>
+    <div class="formFields">
+      <mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAddTag($event, chipInput)">
+          <mat-option
+            *ngFor="
+              let option of autocomplete.$existingTags | async | autocompleteFilter: chipInput.value:(searchStrings$ | async)
+            "
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-chip-list #chipList>
+          <button mat-button matPrefix mat-icon-button aria-label="Filtern" (click)="onSearch()">
+            <mat-icon>filter_alt</mat-icon>
+          </button>
+          <mat-chip *ngFor="let item of searchStrings$ | async" (removed)="onRemoveTag(item)">
+            {{ item }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input #chipInput placeholder="Suchbegriffe" [matChipInputFor]="chipList" [matAutocomplete]="auto" />
+          <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClearSearch()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-chip-list>
+      </mat-form-field>
+      <div class="proposals">
+        <span>Vorschläge</span>
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of tagProposals$ | async" (click)="onAddProposal(tag)">{{ tag }}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="checkboxes">
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isArticlesChecked">Artikel</mat-checkbox>
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isImagesChecked">Bilder</mat-checkbox>
+        <mat-checkbox [color]="'primary'" (change)="onCheckboxChange()" [(ngModel)]="isEventsChecked">Events</mat-checkbox>
+      </div>
+    </div>
+    <div class="strut"></div>
+  </div>
+</header>

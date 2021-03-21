@@ -15,9 +15,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
+import { HeaderComponent } from './header/header.component';
+import { HintsComponent } from './hints/hints.component';
+import { SingleTypeComponent } from './single-type/single-type.component';
+import { MultiTypeComponent } from './multi-type/multi-type.component';
 
 @NgModule({
-  declarations: [SearchComponent],
+  declarations: [SearchComponent, HeaderComponent, HintsComponent, SingleTypeComponent, MultiTypeComponent],
   imports: [
     CommonModule,
     SearchRoutingModule,
