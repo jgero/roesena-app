@@ -3,24 +3,14 @@
 </div>
 <ng-container *ngIf="image$ | async as image">
   <main>
+    <a mat-fab [color]="'accent'" *ngIf="canEdit$ | async" [routerLink]="'/images/edit/' + image.id"><mat-icon>edit</mat-icon></a>
     <ng-container *ngIf="url$ | async as url">
-      <a [href]="url" target="_blank">
-        <img [src]="url" alt="Bild Detailansicht" />
-      </a>
+      <img [src]="url" [alt]="image.tags.join(',')" (click)="copyUrlToClipboard()" />
     </ng-container>
+    <span>Hochgeladen von {{ image.ownerName }} am {{ image.created | toLocalDateString }}</span>
+    <h2>Nach ähnlichen Bildern suchen:</h2>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of image.tags" (click)="onTagClick(tag)">{{ tag }}</mat-chip>
+      <mat-chip *ngFor="let tag of image.tags" [routerLink]="'/search/images/' + tag">{{ tag }}</mat-chip>
     </mat-chip-list>
-    <div class="fab-container">
-      <button mat-fab [color]="'primary'" (click)="copyUrlToClipboard()"><mat-icon>content_copy</mat-icon></button>
-      <a mat-fab [color]="'primary'" *ngIf="canEdit$ | async" [routerLink]="'/images/edit/' + image.id"
-        ><mat-icon>edit</mat-icon></a
-      >
-      <button mat-fab [color]="'primary'" (click)="fillSearchForArticles(image)"><mat-icon>description</mat-icon></button>
-    </div>
   </main>
-  <mat-toolbar class="footer">
-    <div class="spacer"></div>
-    <div>{{ image.ownerName }}</div>
-  </mat-toolbar>
 </ng-container>
