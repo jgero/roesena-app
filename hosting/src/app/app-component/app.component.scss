@@ -14,7 +14,7 @@
 .mat-toolbar {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 999;
 }
 
 .logo {
@@ -32,7 +32,6 @@
 }
 
 .outletContainer {
-  //width: min(1000px, 100%);
   width: 100%;
   flex: 1;
   min-height: 90vh;

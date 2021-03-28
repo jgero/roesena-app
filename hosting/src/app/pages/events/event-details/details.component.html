@@ -1,10 +1,9 @@
 <ng-container *ngIf="data$ | async as event; else loading">
-  <app-page-header [title]="event.title" [date]="event.date" [owner]="event.ownerName"></app-page-header>
   <main>
+    <h1 class="mat-display-2">
+      {{ event.title }} <br /><span>{{ event.ownerName }} - {{ event.date | toLocalDateString }}</span>
+    </h1>
     <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
-    <mat-chip-list>
-      <mat-chip *ngFor="let tag of event.tags" (click)="onTagClick(tag)"> {{ tag }} </mat-chip>
-    </mat-chip-list>
 
     <div class="table-container mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort matSortActive="amount" matSortDirection="desc">
@@ -32,6 +31,9 @@
         <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
       </table>
     </div>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of event.tags" [routerLink]="'/search/articles,events,images/' + tag"> {{ tag }} </mat-chip>
+    </mat-chip-list>
   </main>
 
   <div class="fab-container">

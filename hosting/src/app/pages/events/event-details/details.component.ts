@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { LoadSingleEvent, MarkEventAsSeen } from '@state/events/actions/event.actions';
 import { map, tap } from 'rxjs/operators';
-import { AddSearchString } from '@state/searching/actions/search.actions';
 import { Participant } from '@utils/interfaces';
 import { canEdit, canReply } from '@state/events';
 import { MatSort } from '@angular/material/sort';
@@ -61,10 +60,6 @@ export class DetailsComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.store.dispatch(new LoadSingleEvent());
     this.store.dispatch(new MarkEventAsSeen());
-  }
-
-  onTagClick(tag: string) {
-    this.store.dispatch(new AddSearchString({ searchString: tag }));
   }
 
   ngOnDestroy() {
