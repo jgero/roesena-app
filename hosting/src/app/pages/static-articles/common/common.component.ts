@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
 import { SeoService } from '@services/seo.service';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { LoadSingleImage } from '@state/images';
 import { LoadSingleArticle } from '@state/articles';
 
@@ -14,6 +14,10 @@ import { LoadSingleArticle } from '@state/articles';
 })
 export class CommonComponent implements OnDestroy, OnInit {
   textData$ = this.store.select('articles', 'activeArticle');
+  searchLinkTags$ = this.textData$.pipe(
+    map((article) => article.tags.filter((tag) => tag !== 'Gruppenseite')),
+    map((tags) => tags.join(','))
+  );
   imageUrl$ = this.store.select('images', 'activeImageFullUrl');
   externalPageLink$ = this.store.select('router', 'state', 'data', 'additionalLink');
   heading$ = this.store.select('router', 'state', 'data', 'heading');

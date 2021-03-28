@@ -1,42 +1,88 @@
 @import '../../../shared/style-partials/variables.scss';
 
-main {
-  display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    grid-template-areas: 'image' 'content' 'tags';
-
-  @media screen and (max-width: 600px) {
-    padding: 0 16px;
-  }
-}
-
-.spinnerContainer {
+:host {
   display: flex;
-  margin-top: 16px;
-  justify-content: center;
-}
-
-img {
-  grid-area: image;
-  padding-bottom: 2rem;
-  max-width: 100%;
-  justify-self: center;
-}
-
-app-markdown-viewer {
-  grid-area: content;
-}
-
-.fab-container {
-  position: sticky;
-  z-index: 1;
-  bottom: 16px;
-  display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   align-items: center;
 
-  a {
-    margin: 8px;
+  & > * {
+    max-width: $maxPageWidth;
+  }
+
+  h1 {
+    margin-top: 10vh;
+    margin-bottom: 3rem;
+    width: 100%;
+  }
+
+  main {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-column-gap: 3rem;
+    grid-template-rows: auto auto;
+    grid-row-gap: 3rem;
+    grid-template-areas: 'image image' 'content tags';
+  }
+
+  img {
+    width: 100%;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    height: min-content;
+    position: sticky;
+    top: 10vh;
+
+    div {
+      margin-top: 0.4rem;
+      a {
+        margin-left: 0.4rem;
+      }
+    }
   }
 }
+
+//main {
+//display: grid;
+//grid-template-columns: 1fr;
+//grid-template-rows: auto;
+//grid-template-areas: 'image' 'content' 'tags';
+
+//@media screen and (max-width: 600px) {
+//padding: 0 16px;
+//}
+//}
+
+//.spinnerContainer {
+//display: flex;
+//margin-top: 16px;
+//justify-content: center;
+//}
+
+//img {
+//grid-area: image;
+//padding-bottom: 2rem;
+//max-width: 100%;
+//justify-self: center;
+//}
+
+//app-markdown-viewer {
+//grid-area: content;
+//}
+
+//.fab-container {
+//position: sticky;
+//z-index: 1;
+//bottom: 16px;
+//display: flex;
+//justify-content: flex-end;
+//align-items: center;
+
+//a {
+//margin: 8px;
+//}
+//}
