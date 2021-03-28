@@ -5,7 +5,6 @@ import { ContactRoutingModule } from './contact-routing.module';
 import { ContactComponent } from './contact.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
@@ -19,7 +18,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormsModule,
     ReactiveFormsModule,
     ContactRoutingModule,
-    HeadingsModule,
     MatButtonModule,
     MatRadioModule,
     MatTooltipModule,

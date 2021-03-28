@@ -25,7 +25,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 
-import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
@@ -45,7 +44,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatBadgeModule,
     MatChipsModule,
     MatCheckboxModule,
-    HeadingsModule,
     MatProgressBarModule,
     MatDialogModule,
     MatTooltipModule,

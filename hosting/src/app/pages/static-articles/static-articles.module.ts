@@ -12,7 +12,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonComponent } from './common/common.component';
 import { MarkdownViewerModule } from 'src/app/shared/markdown-viewer/markdown-viewer.module';
-import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StaticArticlesRoutingModule } from './static-articles-routing.module';
 
@@ -28,7 +27,6 @@ import { StaticArticlesRoutingModule } from './static-articles-routing.module';
     MatButtonModule,
     MatIconModule,
     MatTableModule,
-    HeadingsModule,
     MatChipsModule,
     MatProgressSpinnerModule,
     MarkdownViewerModule,

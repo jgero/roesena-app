@@ -12,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ConvertersModule } from '@shared/converters/converters.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -26,7 +25,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatBadgeModule,
     MatInputModule,
-    HeadingsModule,
     MatTableModule,
     ReactiveFormsModule,
     MatTooltipModule,

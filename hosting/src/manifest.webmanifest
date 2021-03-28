@@ -1,7 +1,7 @@
 {
   "name": "RöSeNa",
   "short_name": "RöSeNa",
-  "theme_color": "#c2185b",
+  "theme_color": "#000936",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

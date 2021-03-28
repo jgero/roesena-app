@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom, takeUntil } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom, takeUntil, tap } from 'rxjs/operators';
 import { ImageActionTypes, ImageActions, LoadSingleImageSuccess, LoadSingleImageFailure } from '../actions/image.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
@@ -18,20 +18,7 @@ export class ImageSingleEffects {
     ofType(ImageActionTypes.LoadSingleImage),
     withLatestFrom(this.store),
     switchMap(([action, storeState]) => {
-      if (storeState.router.state.params.id) {
-        return this.firestore
-          .collection('images')
-          .doc(storeState.router.state.params.id)
-          .snapshotChanges()
-          .pipe(
-            map(convertOne),
-            switchMap((image) =>
-              this.urlLoader.getImageURL(image.id, false).pipe(map((fullUrl) => new LoadSingleImageSuccess({ image, fullUrl })))
-            ),
-            takeUntil(this.subs.unsubscribe$),
-            catchError((error) => of(new LoadSingleImageFailure({ error })))
-          );
-      } else if (action.payload?.tags) {
+      if (action.payload?.tags) {
         return this.firestore
           .collection('images', (qFn) => {
             let query: Query | CollectionReference = qFn;
@@ -50,6 +37,19 @@ export class ImageSingleEffects {
                 : this.urlLoader
                     .getImageURL(images[0].id, false)
                     .pipe(map((fullUrl) => new LoadSingleImageSuccess({ image: images[0], fullUrl })))
+            ),
+            takeUntil(this.subs.unsubscribe$),
+            catchError((error) => of(new LoadSingleImageFailure({ error })))
+          );
+      } else if (storeState.router.state.params.id) {
+        return this.firestore
+          .collection('images')
+          .doc(storeState.router.state.params.id)
+          .snapshotChanges()
+          .pipe(
+            map(convertOne),
+            switchMap((image) =>
+              this.urlLoader.getImageURL(image.id, false).pipe(map((fullUrl) => new LoadSingleImageSuccess({ image, fullUrl })))
             ),
             takeUntil(this.subs.unsubscribe$),
             catchError((error) => of(new LoadSingleImageFailure({ error })))
