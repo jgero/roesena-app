@@ -13,7 +13,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PaginatorModule } from '@shared/paginator/paginator.module';
-import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatTableModule } from '@angular/material/table';
 import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
 import { DeleteConfirmModule } from '@shared/delete-confirm/delete-confirm.module';
@@ -26,7 +25,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     FormsModule,
     ReactiveFormsModule,
     GroupManagerRoutingModule,
-    HeadingsModule,
     DeleteConfirmModule,
     MatToolbarModule,
     MatInputModule,

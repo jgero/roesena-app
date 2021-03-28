@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { SearchRoutingModule } from './search-routing.module';
 import { SearchComponent } from './search.component';
-import { HeadingsModule } from '@shared/headings/headings.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CardsModule } from '@shared/cards/cards.module';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +25,6 @@ import { CarouselComponent } from './carousel/carousel.component';
   imports: [
     CommonModule,
     SearchRoutingModule,
-    HeadingsModule,
     MatGridListModule,
     MatButtonModule,
     CardsModule,

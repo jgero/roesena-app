@@ -19,7 +19,7 @@ export class MarkdownViewerComponent implements OnInit {
 
   ngOnInit() {
     // override link rendering to be able to add the target="_blank"
-    this.markdownService.renderer.link = (href: string, _title: string, text: string) => {
+    this.markdownService.renderer.link = (href: string, title: string, text: string) => {
       const sanitizedText = this.sanitizer.sanitize(SecurityContext.HTML, text);
       const sanitizedHref = this.sanitizer.sanitize(SecurityContext.URL, href);
       return `<a href="${sanitizedHref}" ${sanitizedHref.startsWith('http') ? 'target="_blank"' : ''}>${sanitizedText}</a>`;

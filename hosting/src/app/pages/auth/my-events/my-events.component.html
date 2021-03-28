@@ -1,8 +1,4 @@
-<app-page-header
-  [title]="'Meine Events'"
-  [subtitle]="'Termine die meine Rückmeldung erfordern'"
-  [matIcon]="'event'"
-></app-page-header>
+<h1 class="mat-display-2">Meine Events</h1>
 
 <table mat-table *ngIf="data$ | async as events" [dataSource]="events" class="mat-elevation-z4">
   <ng-container matColumnDef="title">
