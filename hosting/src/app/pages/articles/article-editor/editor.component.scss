@@ -1,8 +1,15 @@
 @import '../../../shared/style-partials/variables.scss';
 
 :host {
-  display: block;
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+
+  & > * {
+    max-width: $maxPageWidth;
+    width: 100%;
+  }
 }
 
 :host > h1 {
