@@ -72,7 +72,7 @@ export class ImageEditorEffects {
   redirectOnSave$ = this.actions$.pipe(
     ofType(ImageActionTypes.UpdateImageSuccess, ImageActionTypes.CreateImageSuccess),
     // redirect to overview on save
-    tap(() => this.router.navigate(['images', 'overview']))
+    tap(() => this.router.navigate(['search', 'images']))
   );
 
   @Effect()

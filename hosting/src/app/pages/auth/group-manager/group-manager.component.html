@@ -1,6 +1,6 @@
 <h1 class="map-display-2">Gruppen-Manager</h1>
 
-<main class="mat-elevation-z8">
+<main>
   <table mat-table *ngIf="persons$ | async as persons; else loading" [dataSource]="persons" multiTemplateDataRows>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>

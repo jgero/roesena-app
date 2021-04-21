@@ -2,6 +2,18 @@
 
 $icon-size: 38px;
 
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+
+  & > * {
+    max-width: $maxPageWidth;
+    width: 100%;
+  }
+}
+
 main {
   display: grid;
   grid-template-columns: 32px auto max-content;

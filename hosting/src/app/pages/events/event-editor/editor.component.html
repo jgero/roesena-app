@@ -126,7 +126,7 @@
       </mat-chip-list>
 
       <mat-form-field>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addPerson($event.option.value)">
+        <mat-autocomplete #autoPersons="matAutocomplete" (optionSelected)="addPerson($event.option.value)">
           <mat-option
             *ngFor="
               let person of persons
@@ -146,7 +146,7 @@
             #participantInput
             placeholder="Teilnehmer"
             [matChipInputFor]="participantList"
-            [matAutocomplete]="auto"
+            [matAutocomplete]="autoPersons"
             matTooltip="Nur Personen aus der Dropdown-Liste können hinzugefügt werden"
             matTooltipPosition="above"
           />
