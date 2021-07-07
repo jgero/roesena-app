@@ -15,7 +15,7 @@ build-dev-frontend:
 .PHONY: run-dev-frontend
 run-dev-frontend: build-dev-frontend
 	$(CONTAINER_RUNTIME) run \
-		-v $(PWD)/hosting/:/app/ \
+		-v $(PWD)/hosting/:/app/:z \
 		-v node_modules:/app/node_modules \
 		-p 4200:4200 \
 		-it \
