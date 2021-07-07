@@ -78,8 +78,8 @@ export class EventMultiEffects {
           // if there are no participants or deadline is already over event does not count
           return false;
         }
-        if (!ev.participants.find((participant) => participant.id === user.id && participant.amount >= 0)) {
-          // if user is NOT participant and has NOT responded already event does not count
+        if (ev.participants.find((participant) => participant.id === user.id && participant.amount >= 0)) {
+          // if user is participant and has already responded the event does not count
           return false;
         }
         // otherwise event counts
