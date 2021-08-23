@@ -29,4 +29,12 @@ export const forStartpage = (state: State) => {
   return state.events.upcomingEvents.length > 0 ? state.events.upcomingEvents[0] : null;
 };
 
-export const unrespondedAmount = (state: State) => state.events.unrespondedEvents.length;
+export const unrespondedAmount = (state: State) => {
+	const unresponded = state.events.respondableEvents.filter((ev) => {
+		if (ev.participants.find((participant) => participant.id === state.persons.user.id && participant.amount >= 0)) {
+		  // if user is participant and has already responded the event does not count
+		  return false;
+		}
+	})
+	return unresponded.length
+};

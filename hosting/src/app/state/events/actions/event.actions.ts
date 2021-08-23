@@ -15,7 +15,7 @@ export enum EventActionTypes {
   RespondToEvent = '[event] respond to event',
   RespondToEventSuccess = '[event] respond to event success',
   RespondToEventFailure = '[event] responding to event failed',
-  UpdateUnrespondedEventAmount = '[event] update unresponded event amount',
+  UpdateRespondableEventAmount = '[event] update respondable event amount',
   // event mutations
   CreateEvent = '[event] create new event',
   CreateEventSuccess = '[event] create new event success',
@@ -73,9 +73,9 @@ export class RespondToEventFailure implements Action {
   readonly type = EventActionTypes.RespondToEventFailure;
   constructor(public payload: { error: any }) {}
 }
-export class UpdateUnrespondedEventAmount implements Action {
-  readonly type = EventActionTypes.UpdateUnrespondedEventAmount;
-  constructor(public payload: { unrespondedEvents: AppEvent[] }) {}
+export class UpdateRespondableEventAmount implements Action {
+  readonly type = EventActionTypes.UpdateRespondableEventAmount;
+  constructor(public payload: { respondableEvents: AppEvent[] }) {}
 }
 
 // event mutations
@@ -136,7 +136,7 @@ export type EventActions =
   | RespondToEvent
   | RespondToEventSuccess
   | RespondToEventFailure
-  | UpdateUnrespondedEventAmount
+  | UpdateRespondableEventAmount
   | CreateEvent
   | CreateEventSuccess
   | CreateEventFailure
