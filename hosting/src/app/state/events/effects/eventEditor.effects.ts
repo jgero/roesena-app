@@ -58,7 +58,7 @@ export class EventEditorEffects {
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       from(this.firestore.collection('events').doc(storeState.router.state.params.id).delete()).pipe(
-        tap(() => this.router.navigate(['events', 'overview'])),
+        tap(() => this.router.navigate(['search', 'events'])),
         map(() => new DeleteEventSuccess()),
         // report to analytics
         tap(() => this.analytics.logEvent('update_event', { event_category: 'engagement' })),

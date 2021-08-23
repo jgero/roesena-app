@@ -57,7 +57,7 @@ export class ArticleEditorEffects {
     ofType(ArticleActionTypes.DeleteArticle),
     switchMap((action) =>
       from(this.firestore.collection('articles').doc(action.payload.article.id).delete()).pipe(
-        tap(() => this.router.navigate(['articles', 'overview'])),
+        tap(() => this.router.navigate(['search', 'articles'])),
         map(() => new DeleteArticleSuccess()),
         tap(() => this.snackbar.open('Gelöscht')),
         // report to analytics

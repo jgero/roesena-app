@@ -8,7 +8,7 @@ export interface State {
   activeEvent: AppEvent;
   activeMonth: AppEvent[][];
   isLoading: boolean;
-  unrespondedEvents: AppEvent[];
+  respondableEvents: AppEvent[];
 }
 
 export const initialState: State = {
@@ -16,7 +16,7 @@ export const initialState: State = {
   activeEvent: null,
   activeMonth: [],
   isLoading: false,
-  unrespondedEvents: [],
+  respondableEvents: [],
 };
 
 export function reducer(state = initialState, action: EventActions): State {
@@ -54,8 +54,8 @@ export function reducer(state = initialState, action: EventActions): State {
       return { ...state, isLoading: false };
     case EventActionTypes.RespondToEventFailure:
       return { ...state, isLoading: false };
-    case EventActionTypes.UpdateUnrespondedEventAmount:
-      return { ...state, unrespondedEvents: action.payload.unrespondedEvents };
+    case EventActionTypes.UpdateRespondableEventAmount:
+      return { ...state, respondableEvents: action.payload.respondableEvents };
     // calendar
     case EventActionTypes.LoadEventsForMonth:
       return { ...state, isLoading: true };

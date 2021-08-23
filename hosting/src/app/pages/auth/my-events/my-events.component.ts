@@ -22,7 +22,7 @@ interface AppEventWithForm extends AppEvent {
   styleUrls: ['./my-events.component.scss'],
 })
 export class MyEventsComponent implements OnInit, OnDestroy {
-  data$: Observable<AppEventWithForm[]> = this.store.select('events', 'unrespondedEvents').pipe(
+  data$: Observable<AppEventWithForm[]> = this.store.select('events', 'respondableEvents').pipe(
     withLatestFrom(this.store.select('persons', 'user')),
     map(([events, user]) => {
       return events.map((event) => {
