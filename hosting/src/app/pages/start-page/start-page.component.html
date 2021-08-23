@@ -42,13 +42,13 @@
 <main>
   <div>
     <div class="column">
-      <a mat-stroked-button [color]="'primary'" [routerLink]="'/articles/overview'"
+      <a mat-stroked-button [color]="'primary'" [routerLink]="'/search/articles'"
         ><mat-icon>arrow_forward</mat-icon><span>ARTIKEL</span></a
       >
       <app-article-card *ngIf="article$ | async as article" [data]="article"></app-article-card>
     </div>
     <div class="column">
-      <a mat-stroked-button [color]="'primary'" [routerLink]="'/events/overview'"
+      <a mat-stroked-button [color]="'primary'" [routerLink]="'/search/events'"
         ><mat-icon>arrow_forward</mat-icon><span>EVENTS</span></a
       >
       <app-event-card *ngIf="event$ | async as event; else noEvent" [data]="event"></app-event-card>
@@ -56,7 +56,7 @@
     </div>
   </div>
   <div>
-    <a mat-stroked-button [color]="'primary'" [routerLink]="'/articles/overview'"
+    <a mat-stroked-button [color]="'primary'" [routerLink]="'/search/articles'"
       ><mat-icon>arrow_forward</mat-icon><span>NEWS</span></a
     >
     <div class="selectionWrapper">

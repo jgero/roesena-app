@@ -81,7 +81,7 @@ export class ImageEditorEffects {
     withLatestFrom(this.store),
     switchMap(([action, storeState]) =>
       from(this.firestore.collection('images').doc(storeState.router.state.params.id).delete()).pipe(
-        tap(() => this.router.navigate(['images', 'overview'])),
+        tap(() => this.router.navigate(['search', 'images'])),
         map(() => new DeleteImageSuccess()),
         // report to analytics
         tap(() => this.analytics.logEvent('update_image', { event_category: 'engagement' })),
