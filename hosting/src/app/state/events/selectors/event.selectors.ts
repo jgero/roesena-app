@@ -30,11 +30,11 @@ export const forStartpage = (state: State) => {
 };
 
 export const unrespondedAmount = (state: State) => {
-	const unresponded = state.events.respondableEvents.filter((ev) => {
-		if (ev.participants.find((participant) => participant.id === state.persons.user.id && participant.amount >= 0)) {
-		  // if user is participant and has already responded the event does not count
-		  return false;
-		}
-	})
-	return unresponded.length
+    const unresponded = state.events.respondableEvents.filter((ev) => {
+        if (ev.participants.find((participant) => participant.id === state.persons.user.id && participant.amount >= 0)) {
+          // if user is participant and has already responded the event does not count
+          return false;
+        }
+    });
+    return unresponded.length;
 };

@@ -73,23 +73,23 @@ export class EventMultiEffects {
         // if user is not confirmed or there are no events, return
         return {respondable: [], user};
       }
-	  return { respondable: events.filter((ev) => {
-		  if (ev.participants.length === 0 || ev.deadline < new Date()) {
-			  // if there are no participants or deadline is already over event does not count
-			  return false;
-		  }
-		  // otherwise event counts
-		  return true;
-	  }), user };
+      return { respondable: events.filter((ev) => {
+          if (ev.participants.length === 0 || ev.deadline < new Date()) {
+              // if there are no participants or deadline is already over event does not count
+              return false;
+          }
+          // otherwise event counts
+          return true;
+      }), user };
     }),
     tap(({ respondable, user }) => {
-		const unresponded = respondable.filter((ev) => {
-			if (ev.participants.find((participant) => participant.id === user.id && participant.amount >= 0)) {
-			  // if user is participant and has already responded the event does not count
-			  return false;
-			}
-		})
-      if (unresponded.length > 0) {
+        const unresponded = respondable.filter((ev) => {
+            if (ev.participants.find((participant) => participant.id === user.id && participant.amount >= 0)) {
+              // if user is participant and has already responded the event does not count
+              return false;
+            }
+        });
+        if (unresponded.length > 0) {
         this.snackbar
           .open(`Unbeantwortete Termine: ${unresponded.length}`, 'ANTWORTEN', { duration: undefined })
           .onAction()
