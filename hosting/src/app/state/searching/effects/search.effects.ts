@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import { withLatestFrom, tap, switchMap, takeUntil, map } from 'rxjs/operators';
+import { withLatestFrom, tap, switchMap, takeUntil, map, filter } from 'rxjs/operators';
 import {
   SearchActionTypes,
   SearchActions,
@@ -48,6 +48,7 @@ export class SearchEffects {
   nextPage$ = this.actions$.pipe(
     ofType(PageActionTypes.PageForward),
     withLatestFrom(this.store),
+    filter(([action, storeState]) => storeState.router.state.url.includes('search/')),
     switchMap(([action, storeState]) => {
       switch (storeState.search.dataTypes[0]) {
         case 'articles':
@@ -70,6 +71,7 @@ export class SearchEffects {
   previousPage$ = this.actions$.pipe(
     ofType(PageActionTypes.PageBackwards),
     withLatestFrom(this.store),
+    filter(([action, storeState]) => storeState.router.state.url.includes('search/')),
     switchMap(([action, storeState]) => {
       switch (storeState.search.dataTypes[0]) {
         case 'articles':

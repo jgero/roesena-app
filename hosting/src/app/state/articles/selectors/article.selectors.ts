@@ -17,8 +17,3 @@ export const canEdit = createSelector(selectUser, selectActiveArticle, (selected
   }
   return false;
 });
-
-export const forStartpage = (state: State) => {
-  // TODO: select startpage article here
-  return null;
-};

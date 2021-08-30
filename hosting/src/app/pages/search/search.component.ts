@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // initialize when landing on the search page
     this.store.pipe(take(1)).subscribe((state) => {
       const tags: string[] = state.router.state.params.searchStrings ? state.router.state.params.searchStrings.split(',') : [];
-      const types: string[] = state.router.state.params.type.split(',');
+      const types: string[] = state.router.state.params.type.split(',') || [];
       // init search
       this.store.dispatch(
         new InitSearch({

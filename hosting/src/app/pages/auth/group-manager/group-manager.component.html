@@ -53,7 +53,7 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="person-detail-row"></tr>
   </table>
 
-  <app-paginator [pageSize]="limit" [pageIndex]="0" [length]="length$ | async"></app-paginator>
+  <app-paginator [pageSize]="limit" [pageIndex]="pageIndex$ | async" [length]="length$ | async"></app-paginator>
 </main>
 
 <ng-template #loading>
