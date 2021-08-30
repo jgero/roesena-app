@@ -55,7 +55,8 @@ export function reducer(state = initialState, action: PersonActions | PageAction
       return { ...state, isLoading: false };
 
     case PersonActionTypes.LoadPersons:
-      return { ...state, limit: action.payload.limit, isLoading: true };
+	  // reset page index here to always start on page 0
+      return { ...state, limit: action.payload.limit, isLoading: true, pageIndex: 0 };
     case PersonActionTypes.LoadPersonsSuccess:
       return {
         ...state,
