@@ -30,6 +30,7 @@ export class GroupManagerComponent implements OnInit, OnDestroy {
   length$ = this.store.select('persons', 'amount');
   persons$ = this.store.select('persons', 'persons');
   isLoading$ = this.store.select('persons', 'isLoading');
+  pageIndex$ = this.store.select('persons', 'pageIndex');
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   columnsToDisplay = ['name', 'actions'];
   expandedElement: AppPerson | null;

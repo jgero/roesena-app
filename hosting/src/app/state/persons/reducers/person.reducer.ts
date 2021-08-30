@@ -23,7 +23,7 @@ export const initialState: State = {
   user: null,
   isUserInitialized: false,
   limit: 3,
-  pageIndex: 1,
+  pageIndex: 0,
   pageFirst: null,
   pageLast: null,
 };
@@ -57,7 +57,13 @@ export function reducer(state = initialState, action: PersonActions | PageAction
     case PersonActionTypes.LoadPersons:
       return { ...state, limit: action.payload.limit, isLoading: true };
     case PersonActionTypes.LoadPersonsSuccess:
-      return { ...state, isLoading: false, persons: action.payload.persons };
+      return {
+        ...state,
+		isLoading: false,
+        persons: action.payload.persons,
+        pageFirst: action.payload.persons[0] || null,
+        pageLast: action.payload.persons[action.payload.persons.length - 1] || null,
+      };
     case PersonActionTypes.LoadPersonsFailure:
       return { ...state, isLoading: false, persons: [] };
 
@@ -70,14 +76,6 @@ export function reducer(state = initialState, action: PersonActions | PageAction
     // user is reset when logged out
     case PersonActionTypes.LogoutSuccess:
       return { ...state, user: null, isLoading: null };
-
-    case PersonActionTypes.LoadPersonsSuccess:
-      return {
-        ...state,
-        persons: action.payload.persons,
-        pageFirst: action.payload.persons[0] || null,
-        pageLast: action.payload.persons[action.payload.persons.length - 1] || null,
-      };
 
     case PersonActionTypes.LoadPersonAmountSuccess:
       return { ...state, amount: action.payload.amount };
