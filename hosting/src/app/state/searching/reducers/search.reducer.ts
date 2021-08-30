@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: SearchActions | PageAction
     case SearchActionTypes.CleanSearch:
       return { ...state, searchStrings: [] };
     case SearchActionTypes.InitSearch:
-	  // always start pagination on page 0
+      // always start pagination on page 0
       return { ...state, searchStrings: action.payload.tags, dataTypes: action.payload.types, pageIndex: 0 };
 
     case SearchActionTypes.AddSearchString: {

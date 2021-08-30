@@ -55,12 +55,12 @@ export function reducer(state = initialState, action: PersonActions | PageAction
       return { ...state, isLoading: false };
 
     case PersonActionTypes.LoadPersons:
-	  // reset page index here to always start on page 0
+      // reset page index here to always start on page 0
       return { ...state, limit: action.payload.limit, isLoading: true, pageIndex: 0 };
     case PersonActionTypes.LoadPersonsSuccess:
       return {
         ...state,
-		isLoading: false,
+        isLoading: false,
         persons: action.payload.persons,
         pageFirst: action.payload.persons[0] || null,
         pageLast: action.payload.persons[action.payload.persons.length - 1] || null,
