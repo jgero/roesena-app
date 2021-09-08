@@ -17,6 +17,7 @@
     <mat-sidenav #drawer class="sidenav" [attr.role]="'dialog'" [mode]="'over'" [opened]="false">
       <mat-nav-list>
         <a mat-list-item routerLink="/search/events">Events</a>
+        <a mat-list-item routerLink="/calendar">Kalender</a>
 
         <mat-expansion-panel mat-list-item>
           <mat-expansion-panel-header>
@@ -64,6 +65,7 @@
             <a mat-list-item routerLink="/auth/register">Registrieren</a>
           </ng-template>
         </mat-expansion-panel>
+
         <ng-container *ngIf="canCreate$ | async">
           <a mat-list-item routerLink="/images/edit"><mat-icon>add</mat-icon> Bild</a>
           <a mat-list-item routerLink="/articles/edit"><mat-icon>add</mat-icon> Artikel</a>
@@ -105,6 +107,7 @@
       <a mat-menu-item routerLink="/search/images/Saisonorden">Saisonorden</a>
       <a mat-menu-item routerLink="/search/articles,images/LWK,Ehrung">LWK-Orden</a>
     </mat-menu>
+    <a mat-button routerLink="/calendar">Kalender</a>
     <ng-container *ngIf="canCreate$ | async">
       <a mat-button routerLink="/images/edit"><mat-icon>add</mat-icon> Bild</a>
       <a mat-button routerLink="/articles/edit"><mat-icon>add</mat-icon> Artikel</a>
