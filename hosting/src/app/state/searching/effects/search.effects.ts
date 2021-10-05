@@ -126,7 +126,6 @@ export class SearchEffects {
             // additional filtering to get rid of events the current user is not invited to
             // in the search view
             map(action => {
-                console.log(action);
                 if (!action.payload.events) {
                     return action;
                 }
