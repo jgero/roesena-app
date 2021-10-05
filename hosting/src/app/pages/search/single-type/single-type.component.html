@@ -2,7 +2,7 @@
 <app-image-card *ngFor="let image of images$ | async" [data]="image" (click)="handleClick(image.id)"></app-image-card>
 <app-event-card *ngFor="let event of events$ | async" [data]="event"></app-event-card>
 <app-paginator
-  *ngIf="(searchStrings$ | async)?.length === 0"
+  *ngIf="(searchStrings$ | async)?.length === 0 && (events$ | async)?.length === 0"
   class="mat-elevation-z2"
   [pageIndex]="pageIndex$ | async"
   [pageSize]="limit"
