@@ -7,6 +7,7 @@ import { SubscriptionService } from '@services/subscription.service';
 import { canEdit } from '@state/articles';
 import { SeoService } from '@services/seo.service';
 import { LoadSingleImage } from '@state/images';
+import { UTILITY_TAGS } from '@shared/constants';
 
 @Component({
   selector: 'app-detail',
@@ -17,7 +18,7 @@ export class DetailsComponent implements OnDestroy {
   article$ = this.store.select('articles', 'activeArticle').pipe(
     tap((article) => {
       if (!!article) {
-        this.store.dispatch(new LoadSingleImage({ tags: article.tags }));
+        this.store.dispatch(new LoadSingleImage({ tags: article.tags.filter((tag) => !UTILITY_TAGS.includes(tag)) }));
         this.seo.setTags(
           article.title,
           article.content.substring(0, 30).concat('...'),
@@ -28,7 +29,7 @@ export class DetailsComponent implements OnDestroy {
     })
   );
   searchLinkTags$ = this.article$.pipe(
-    map((article) => article.tags.filter((tag) => tag !== 'Gruppenseite')),
+    map((article) => article.tags.filter((tag) => !UTILITY_TAGS.includes(tag))),
     map((tags) => tags.join(','))
   );
   imageUrl$ = this.store.select('images', 'activeImageFullUrl');

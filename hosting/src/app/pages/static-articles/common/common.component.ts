@@ -6,6 +6,7 @@ import { SeoService } from '@services/seo.service';
 import { take, map } from 'rxjs/operators';
 import { LoadSingleImage } from '@state/images';
 import { LoadSingleArticle } from '@state/articles';
+import { UTILITY_TAGS } from '@shared/constants';
 
 @Component({
   selector: 'app-common',
@@ -15,7 +16,7 @@ import { LoadSingleArticle } from '@state/articles';
 export class CommonComponent implements OnDestroy, OnInit {
   textData$ = this.store.select('articles', 'activeArticle');
   searchLinkTags$ = this.textData$.pipe(
-    map((article) => article.tags.filter((tag) => tag !== 'Gruppenseite')),
+    map((article) => article.tags.filter((tag) => !UTILITY_TAGS.includes(tag))),
     map((tags) => tags.join(','))
   );
   imageUrl$ = this.store.select('images', 'activeImageFullUrl');
