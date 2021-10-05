@@ -13,6 +13,7 @@
   </form>
   <ng-template #newPassword>
     <form [formGroup]="newPasswordForm" (ngSubmit)="onNewPasswordSubmit()" *ngIf="!loading; else loadingSpinner">
+      <p>Bitte jetzt ein neues Passwort eingeben und bestätigen:</p>
       <mat-form-field [style.grid-area]="'input'">
         <mat-label>Passwort</mat-label>
         <input matInput formControlName="password" type="password" />
