@@ -123,6 +123,18 @@ export class SearchEffects {
           return getDataObservableForImagePage(null, this.firestore, PageDirection.INIT).pipe(takeUntil(this.subs.unsubscribe$));
         case 'events':
           return getDataObservableForEventsPage(this.firestore, !!storeState.persons.user?.isConfirmedMember).pipe(
+            // additional filtering to get rid of events the current user is not invited to
+            // in the search view
+            map(action => {
+                console.log(action);
+                if (!action.payload.events) {
+                    return action;
+                }
+                action.payload.events = action.payload.events.filter(
+                    (ev) => ev.participants.length === 0 || ev.participants.findIndex((el) => el.id === storeState.persons.user?.id) > -1
+                );
+                return action;
+            }),
             takeUntil(this.subs.unsubscribe$)
           );
       }
