@@ -125,14 +125,14 @@ export class SearchEffects {
           return getDataObservableForEventsPage(this.firestore, !!storeState.persons.user?.isConfirmedMember).pipe(
             // additional filtering to get rid of events the current user is not invited to
             // in the search view
-            map((action: { payload: any, type: string } ) => {
-                if (!action.payload.events) {
-                    return action;
+            map((evAction: { payload: any, type: string } ) => {
+                if (!evAction.payload.events) {
+                    return evAction;
                 }
-                action.payload.events = action.payload.events.filter(
+                evAction.payload.events = evAction.payload.events.filter(
                     (ev) => ev.participants.length === 0 || ev.participants.findIndex((el) => el.id === storeState.persons.user?.id) > -1
                 );
-                return action;
+                return evAction;
             }),
             takeUntil(this.subs.unsubscribe$)
           );
