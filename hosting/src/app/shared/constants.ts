@@ -1,5 +1,5 @@
 export const UTILITY_TAGS = [
-	"Gruppenseite",
-	"Startseite",
-	"News"
+    'Gruppenseite',
+    'Startseite',
+    'News'
 ];
