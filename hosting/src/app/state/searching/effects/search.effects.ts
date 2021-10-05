@@ -125,7 +125,7 @@ export class SearchEffects {
           return getDataObservableForEventsPage(this.firestore, !!storeState.persons.user?.isConfirmedMember).pipe(
             // additional filtering to get rid of events the current user is not invited to
             // in the search view
-            map(action => {
+            map((action: { payload: any, type: string } ) => {
                 if (!action.payload.events) {
                     return action;
                 }
