@@ -17,7 +17,7 @@ import { SeoService } from '@services/seo.service';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnDestroy, OnInit {
-  displayedColumns = ['name', 'amount'];
+  displayedColumns = ['name', 'hasUnseenChanges', 'amount'];
   canEdit$ = this.store.select(canEdit);
   canReply$: Observable<boolean> = this.store.select(canReply);
   isLoading$ = this.store.select('events', 'isLoading');

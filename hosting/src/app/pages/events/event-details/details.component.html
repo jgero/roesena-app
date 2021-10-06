@@ -10,14 +10,23 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let paricipant">{{ paricipant.name }}</td>
+            <td mat-cell *matCellDef="let participant">{{ participant.name }}</td>
           <td mat-footer-cell *matFooterCellDef>gesamt:</td>
+        </ng-container>
+
+        <!-- has unseen changes column -->
+        <ng-container matColumnDef="hasUnseenChanges">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let participant" class="seenCell">
+              <mat-icon *ngIf="!participant.hasUnseenChanges">visibility</mat-icon>
+            </td>
+          <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <!-- Amount Column -->
         <ng-container matColumnDef="amount">
           <th mat-header-cell mat-sort-header *matHeaderCellDef>Anzahl</th>
-          <td mat-cell *matCellDef="let paricipant">{{ paricipant.amount >= 0 ? paricipant.amount : '' }}</td>
+          <td mat-cell *matCellDef="let participant">{{ participant.amount >= 0 ? participant.amount : '' }}</td>
           <td mat-footer-cell *matFooterCellDef>{{ amountAccumulated$ | async }}</td>
         </ng-container>
 
