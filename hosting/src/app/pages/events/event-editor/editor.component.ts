@@ -128,7 +128,7 @@ export class EditorComponent implements OnDestroy {
             });
           });
           // also add the special group 'alle' to target everyone
-		  this.groups.push('alle');
+          this.groups.push('alle');
         },
       });
 
