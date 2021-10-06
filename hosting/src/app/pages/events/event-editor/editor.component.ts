@@ -117,6 +117,7 @@ export class EditorComponent implements OnDestroy {
       .pipe(takeUntil(this.subs.unsubscribe$))
       .subscribe({
         next: (persons) => {
+          this.groups = [];
           // deep copy the object
           this.persons = cloneDeep(persons);
           persons.forEach((person) => {
@@ -126,6 +127,8 @@ export class EditorComponent implements OnDestroy {
               }
             });
           });
+          // also add the special group 'alle' to target everyone
+		  this.groups.push('alle');
         },
       });
 
@@ -156,9 +159,9 @@ export class EditorComponent implements OnDestroy {
 
   onAddGroup(group: string) {
     const formEl = this.participantsFormGroup.get('participants');
-    // search for all persons that are in the group
+    // search for all persons that are in the group or add everyone if 'alle' was clicked
     this.persons
-      .filter((person) => person.groups.includes(group))
+      .filter((person) => person.groups.includes(group) || group === 'alle')
       .forEach((person) => {
         const { id, name } = person;
         // add the person if it is not already a participant
@@ -171,9 +174,9 @@ export class EditorComponent implements OnDestroy {
 
   onRemoveGroup(group: string) {
     const formEl = this.participantsFormGroup.get('participants');
-    // search for all persons that are in the group
+    // search for all persons that are in the group or remove everyone if 'alle' was clicked
     this.persons
-      .filter((person) => person.groups.includes(group))
+      .filter((person) => person.groups.includes(group) || group === 'alle')
       .forEach((person) => {
         // remove the person if it is a participant
         if ((formEl.value as Participant[]).find((el) => el.id === person.id)) {
