@@ -3,11 +3,11 @@ import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { PersonActionTypes, PersonActions, LoadUserSuccess, LoadUserFailure } from '../actions/person.actions';
-import { AngularFirestore } from '@angular/fire/firestore';
-import 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import undefined from 'firebase/compat/firestore';
 import { convertOne } from '@utils/converters/person-documents';
 import { StoreablePerson } from '@utils/interfaces';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable()
 export class PersonSingleEffects {

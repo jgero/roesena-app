@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../../style-partials/variables.scss';
 
 :host {
@@ -12,7 +13,7 @@
   }
 
   ::ng-deep a {
-    color: mat-color($primary-palette, A700);
+    color: mat.get-color-from-palette($primary-palette, A700);
     text-decoration: none;
     position: relative;
 
@@ -21,7 +22,7 @@
       position: absolute;
       width: 100%;
       height: 2px;
-      background-color: mat-color($primary-palette, A700);
+      background-color: mat.get-color-from-palette($primary-palette, A700);
       left: 0;
       bottom: 0;
     }

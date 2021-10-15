@@ -12,12 +12,12 @@ import {
   LoadUpcomingEventsFailure,
 } from '../actions/event.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { AngularFirestore } from '@angular/fire/firestore';
-import 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import undefined from 'firebase/compat/firestore';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { convertMany } from '@utils/converters/event-documents';
-import { Query, CollectionReference } from '@angular/fire/firestore/interfaces';
+import { Query, CollectionReference } from '@angular/fire/compat/firestore/interfaces';
 import { AppEvent } from '@utils/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';

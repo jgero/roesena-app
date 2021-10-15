@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { StartPageComponent } from './start-page.component';
 import { EventDALService } from 'src/app/services/DAL/event-dal.service';
@@ -17,7 +17,7 @@ describe('StartPageComponent', () => {
   const eventDalStub = new EventDalStub();
   const articleDalStub = new ArticleDalStub();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatButtonModule, RouterTestingModule],
       declarations: [StartPageComponent, ArticleCardStubComponent, EventCardStubComponent],

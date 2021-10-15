@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -43,7 +43,7 @@ describe('Event-DetailsComponent', () => {
   const eventsStub = new EventDalStub();
   const personStub = { markEventAsSeen: of(null) };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatToolbarModule,

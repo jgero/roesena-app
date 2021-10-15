@@ -1,5 +1,5 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { GardenComponent } from './garden.component';
@@ -9,7 +9,7 @@ describe('GardenComponent', () => {
   let component: GardenComponent;
   let fixture: ComponentFixture<GardenComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(testingRoutes), MatTabsModule],
       declarations: [GardenComponent],

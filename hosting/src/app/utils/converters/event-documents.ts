@@ -1,8 +1,8 @@
 import { AppEvent, StoreableEvent } from '@utils/interfaces';
-import * as fbs from 'firebase/app';
+import * as fbs from 'firebase/compat/app';
 import { arrayToMap, mapToArray } from './map-array-general';
 import { participantArrayToMap, participantMapToArray } from './participants';
-import { Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/firestore/interfaces';
+import { Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/compat/firestore/interfaces';
 
 export function toStorableEvent(app: AppEvent): StoreableEvent {
   const { title, description, ownerId, ownerName, date } = app;

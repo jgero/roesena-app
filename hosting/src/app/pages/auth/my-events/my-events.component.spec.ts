@@ -1,7 +1,7 @@
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Subscription, of } from 'rxjs';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -28,7 +28,7 @@ describe('MyEventsComponent', () => {
   const eventStub = new EventDalStub();
   const personStub = jasmine.createSpyObj('PersonDalService', { respondToEvent: of(true) });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,

@@ -1,4 +1,4 @@
-import * as fbs from 'firebase/app';
+import * as fbs from 'firebase/compat/app';
 
 export interface AppElement {
   id: string;

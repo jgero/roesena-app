@@ -12,15 +12,15 @@ import {
 } from '../actions/event.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
-import { AngularFirestore } from '@angular/fire/firestore';
-import 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import undefined from 'firebase/compat/firestore';
 import { StoreableEvent } from '@utils/interfaces';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertOne } from '@utils/converters/event-documents';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { PermissionDeniedError } from '@utils/errors/permission-denied-error';
 import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 
 @Injectable()
 export class EventSingleEffects {

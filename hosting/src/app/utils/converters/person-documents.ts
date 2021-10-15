@@ -1,5 +1,5 @@
 import { AppPerson, StoreablePerson } from '@utils/interfaces';
-import { Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/firestore/interfaces';
+import { Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/compat/firestore/interfaces';
 import { arrayToMap, mapToArray } from './map-array-general';
 
 export function toStorablePerson(app: AppPerson): StoreablePerson {

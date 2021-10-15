@@ -11,16 +11,16 @@ import {
   DeleteImageFailure,
 } from '../actions/image.actions';
 import { switchMap, map, tap, catchError, withLatestFrom } from 'rxjs/operators';
-import 'firebase/firestore';
-import { AngularFirestore } from '@angular/fire/firestore';
+import undefined from 'firebase/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { toStorableImage } from '@utils/converters/image-documents';
 import { Router } from '@angular/router';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 
 @Injectable()
 export class ImageEditorEffects {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EditorComponent } from './editor.component';
 import { AuthServiceStub, MarkdownPreviewStubComponent, testingRoutes } from 'src/app/testing';
@@ -43,7 +43,7 @@ describe('Articles-EditorComponent', () => {
   };
   const articleStub = new ArticleDalStub();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,

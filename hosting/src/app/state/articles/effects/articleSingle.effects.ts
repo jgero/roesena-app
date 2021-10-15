@@ -11,7 +11,7 @@ import {
 import { Store } from '@ngrx/store';
 import { convertOne as convertOneArticle, convertMany } from '@utils/converters/article-documents';
 import { StoreableArticle } from '@utils/interfaces';
-import { AngularFirestore, Query, CollectionReference } from '@angular/fire/firestore';
+import { AngularFirestore, Query, CollectionReference } from '@angular/fire/compat/firestore';
 import { State } from '@state/state.module';
 import { SubscriptionService } from '@services/subscription.service';
 import { MissingDocumentError } from '@utils/errors/missing-document-error';

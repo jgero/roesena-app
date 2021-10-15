@@ -1,4 +1,4 @@
-import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
+import { AngularFirestore, CollectionReference, Query } from '@angular/fire/compat/firestore';
 import { Observable, of, combineLatest, merge } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { maxResultsPerPage } from '../reducers/search.reducer';

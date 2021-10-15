@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DayComponent } from './day.component';
 import { ElementRef } from '@angular/core';
@@ -24,7 +24,7 @@ describe('DayComponent', () => {
 
   const authStub = { $user: new BehaviorSubject(null) };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,

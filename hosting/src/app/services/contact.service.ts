@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AngularFireFunctions } from '@angular/fire/functions';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { ContactMailData } from '@utils/interfaces/contact-mail-data';
 import { tap, catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';

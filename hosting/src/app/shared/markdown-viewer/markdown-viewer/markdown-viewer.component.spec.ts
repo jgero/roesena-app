@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MarkdownViewerComponent } from './markdown-viewer.component';
 import { MarkdownService } from 'ngx-markdown';
@@ -9,7 +9,7 @@ describe('MarkdownViewerComponent', () => {
 
   const markdownSpy = jasmine.createSpyObj('MarkdownService', ['compile']);
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MarkdownViewerComponent],
       providers: [{ provide: MarkdownService, useValue: markdownSpy }],

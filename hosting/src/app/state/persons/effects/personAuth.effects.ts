@@ -20,17 +20,17 @@ import {
   RegisterFailure,
   LoadUser,
 } from '../actions/person.actions';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { BrowserService } from '@services/browser.service';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-import 'firebase/firestore';
+import undefined from 'firebase/compat/firestore';
 import { State } from '@state/state.module';
 import { Store } from '@ngrx/store';
 import { StoreablePerson } from '@utils/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { SubscriptionService } from '@services/subscription.service';
 import { CodeInvalidError } from '@utils/errors/code-invalid-error';
 import { InvalidEmailError } from '@utils/errors/invalid-email-error';
@@ -40,7 +40,7 @@ import { WrongPasswordError } from '@utils/errors/wrong-password-error';
 import { EmailAlreadyInUseError } from '@utils/errors/email-already-in-use-error';
 import { OperationNotAllowedError } from '@utils/errors/operation-not-allowed-error';
 import { WeakPasswordError } from '@utils/errors/weak-password-error';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
 
 @Injectable()

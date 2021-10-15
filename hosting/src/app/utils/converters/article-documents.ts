@@ -1,7 +1,7 @@
 import { arrayToMap, mapToArray } from './map-array-general';
-import { DocumentSnapshot, QueryDocumentSnapshot, DocumentChangeAction, Action } from '@angular/fire/firestore/interfaces';
+import { DocumentSnapshot, QueryDocumentSnapshot, DocumentChangeAction, Action } from '@angular/fire/compat/firestore/interfaces';
 import { StoreableArticle, AppArticle } from '@utils/interfaces';
-import * as fbs from 'firebase/app';
+import * as fbs from 'firebase/compat/app';
 
 export function toStorableArticle(app: AppArticle): StoreableArticle {
   const { title, content, ownerId, ownerName } = app;
