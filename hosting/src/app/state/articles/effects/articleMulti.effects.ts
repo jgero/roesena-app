@@ -3,7 +3,6 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { PageActions } from '@state/pagination/actions/page.actions';
 import { switchMap, map, takeUntil, catchError } from 'rxjs/operators';
-import undefined from 'firebase/compat/firestore';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertMany } from '@utils/converters/article-documents';
 import { Query, CollectionReference } from '@angular/fire/compat/firestore/interfaces';

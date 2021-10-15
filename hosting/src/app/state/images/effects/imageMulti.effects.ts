@@ -8,7 +8,6 @@ import { Store } from '@ngrx/store';
 import { AngularFirestore, CollectionReference, Query } from '@angular/fire/compat/firestore';
 import { SubscriptionService } from '@services/subscription.service';
 import { State } from '@state/state.module';
-import undefined from 'firebase/compat/firestore';
 import { convertMany } from '@utils/converters/image-documents';
 import { MissingDocumentError } from '@utils/errors/missing-document-error';
 import { UrlLoaderService } from '@services/url-loader.service';

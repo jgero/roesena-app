@@ -8,7 +8,7 @@ import { convertMany as convertManyArticles } from '@utils/converters/article-do
 import { convertMany as convertManyImages } from '@utils/converters/image-documents';
 import { map, takeUntil, catchError, switchMap, tap } from 'rxjs/operators';
 import { sortByTags } from '@utils/converters/sort-by-tags';
-import { StoreableArticle, AppArticle, AppElement, AppImage, StoreableEvent, StoreableImage } from '@utils/interfaces';
+import { StoreableArticle, AppArticle, AppElement, AppImage, StoreableEvent, StoreableImage, AppEvent } from '@utils/interfaces';
 import { PageDirection } from './directionEnum';
 import { MissingDocumentError } from '@utils/errors/missing-document-error';
 
@@ -43,11 +43,12 @@ export function getDataObservableForSearchTags(
         map((data) => {
           switch (collection) {
             case 'events':
-              return convertManyEvents(data as any);
+              return convertManyEvents(data as any) as AppEvent[];
             case 'articles':
-              return convertManyArticles(data as any);
+              return convertManyArticles(data as any) as AppArticle[];
             case 'images':
-              return convertManyImages(data as any);
+			default:
+              return convertManyImages(data as any) as AppImage[];
           }
         }),
         map(sortByTags),
@@ -71,7 +72,7 @@ export function getDataObservableForArticlePage(
       .doc('articles')
       .snapshotChanges()
       .pipe(
-        map((doc) => {
+        map((doc, a) => {
           // if there is no connection an empty document is returned
           if (doc.payload.exists) {
             return new SearchLengthLoaded({ amount: (doc.payload.data() as any).amount });

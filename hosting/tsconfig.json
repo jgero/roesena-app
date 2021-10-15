@@ -19,7 +19,13 @@
       "@pages/*": ["src/app/pages/*"],
       "@guards/*": ["src/app/guards/*"],
       "@services/*": ["src/app/services/*"],
-      "@shared/*": ["src/app/shared/*"]
+      "@shared/*": ["src/app/shared/*"],
+		"rxjs": [
+		  "node_modules/rxjs"
+		],
+		"rxjs/*": [
+		  "node_modules/rxjs/*"
+		]
     }
   },
   "angularCompilerOptions": {

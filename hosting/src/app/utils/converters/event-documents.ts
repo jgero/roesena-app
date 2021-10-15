@@ -1,8 +1,8 @@
 import { AppEvent, StoreableEvent } from '@utils/interfaces';
-import * as fbs from 'firebase/compat/app';
 import { arrayToMap, mapToArray } from './map-array-general';
 import { participantArrayToMap, participantMapToArray } from './participants';
 import { Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/compat/firestore/interfaces';
+import { Timestamp } from '@angular/fire/firestore'
 
 export function toStorableEvent(app: AppEvent): StoreableEvent {
   const { title, description, ownerId, ownerName, date } = app;
@@ -11,9 +11,9 @@ export function toStorableEvent(app: AppEvent): StoreableEvent {
     description,
     ownerId,
     ownerName,
-    startDate: fbs.firestore.Timestamp.fromDate(app.date),
+    startDate: Timestamp.fromDate(app.date),
     tags: arrayToMap(app.tags),
-    deadline: app.deadline ? fbs.firestore.Timestamp.fromDate(app.deadline) : null,
+    deadline: app.deadline ? Timestamp.fromDate(app.deadline) : null,
     participants: participantArrayToMap(app.participants),
   };
 }

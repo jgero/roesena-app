@@ -35,6 +35,7 @@
     "@ngrx/store-devtools": "^12.5.0",
     "diff": "^5.0.0",
     "firebase": "^9.1.0",
+    "hammerjs": "^2.0.8",
     "lodash-es": "^4.17.15",
     "ngx-cookie-service": "^12.0.3",
     "ngx-markdown": "^12.0.1",

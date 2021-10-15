@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
-import undefined from 'firebase/compat/storage';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 

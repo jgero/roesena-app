@@ -5,7 +5,6 @@ import { ImageActionTypes, ImageActions, LoadSingleImageSuccess, LoadSingleImage
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { AngularFirestore, Query, CollectionReference } from '@angular/fire/compat/firestore';
-import undefined from 'firebase/compat/firestore';
 import { of } from 'rxjs';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertOne, convertMany } from '@utils/converters/image-documents';

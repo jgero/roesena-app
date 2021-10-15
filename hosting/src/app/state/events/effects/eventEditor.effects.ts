@@ -12,7 +12,6 @@ import {
 } from '../actions/event.actions';
 import { switchMap, map, catchError, tap, withLatestFrom } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import undefined from 'firebase/compat/firestore';
 import { toStorableEvent } from '@utils/converters/event-documents';
 import { of, from } from 'rxjs';
 import { Router } from '@angular/router';

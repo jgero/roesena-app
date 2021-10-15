@@ -13,7 +13,6 @@ import {
   ArticleActions,
 } from '../actions/article.actions';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import undefined from 'firebase/compat/firestore';
 import { toStorableArticle } from '@utils/converters/article-documents';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';

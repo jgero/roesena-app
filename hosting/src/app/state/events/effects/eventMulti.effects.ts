@@ -13,7 +13,6 @@ import {
 } from '../actions/event.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import undefined from 'firebase/compat/firestore';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { convertMany } from '@utils/converters/event-documents';

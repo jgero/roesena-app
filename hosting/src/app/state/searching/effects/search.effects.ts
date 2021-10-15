@@ -13,7 +13,6 @@ import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import undefined from 'firebase/compat/firestore';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import {

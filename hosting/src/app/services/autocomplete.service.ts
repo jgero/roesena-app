@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import undefined from 'firebase/compat/firestore';
 import { map } from 'rxjs/operators';
 
 @Injectable({

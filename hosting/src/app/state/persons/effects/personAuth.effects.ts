@@ -25,7 +25,6 @@ import { Router } from '@angular/router';
 import { BrowserService } from '@services/browser.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-import undefined from 'firebase/compat/firestore';
 import { State } from '@state/state.module';
 import { Store } from '@ngrx/store';
 import { StoreablePerson } from '@utils/interfaces';

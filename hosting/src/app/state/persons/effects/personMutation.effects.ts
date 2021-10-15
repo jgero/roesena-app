@@ -21,7 +21,6 @@ import {
 } from '../actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
 import { AngularFirestore, CollectionReference, Query } from '@angular/fire/compat/firestore';
-import undefined from 'firebase/compat/firestore';
 import { convertMany, toStorablePerson } from '@utils/converters/person-documents';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';

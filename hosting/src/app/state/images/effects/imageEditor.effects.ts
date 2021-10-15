@@ -11,7 +11,6 @@ import {
   DeleteImageFailure,
 } from '../actions/image.actions';
 import { switchMap, map, tap, catchError, withLatestFrom } from 'rxjs/operators';
-import undefined from 'firebase/compat/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { toStorableImage } from '@utils/converters/image-documents';
 import { Router } from '@angular/router';
