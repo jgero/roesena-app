@@ -55,7 +55,7 @@ app-markdown-viewer {
 }
 
 article:not(.minimal) {
-  width: $maxCardWidth;
+  width: min(27rem, calc(100vw - 2rem));
   position: relative;
 
   h2,
