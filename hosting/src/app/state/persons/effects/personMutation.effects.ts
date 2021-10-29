@@ -20,15 +20,14 @@ import {
   ConfirmPersonFailure,
 } from '../actions/person.actions';
 import { SubscriptionService } from '@services/subscription.service';
-import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
-import 'firebase/firestore';
+import { AngularFirestore, CollectionReference, Query } from '@angular/fire/compat/firestore';
 import { convertMany, toStorablePerson } from '@utils/converters/person-documents';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { CloudFunctionCallError } from '@utils/errors/cloud-function-call-error';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()

@@ -4,8 +4,7 @@ import { catchError, map, switchMap, withLatestFrom, takeUntil, tap } from 'rxjs
 import { ImageActionTypes, ImageActions, LoadSingleImageSuccess, LoadSingleImageFailure } from '../actions/image.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
-import { AngularFirestore, Query, CollectionReference } from '@angular/fire/firestore';
-import 'firebase/firestore';
+import { AngularFirestore, Query, CollectionReference } from '@angular/fire/compat/firestore';
 import { of } from 'rxjs';
 import { SubscriptionService } from '@services/subscription.service';
 import { convertOne, convertMany } from '@utils/converters/image-documents';

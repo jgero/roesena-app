@@ -1,4 +1,4 @@
-import * as fbs from 'firebase/app';
+import { Timestamp } from '@angular/fire/firestore';
 
 export interface AppElement {
   id: string;
@@ -43,7 +43,7 @@ export interface AppArticle extends AppElement {
 export interface StoreableArticle {
   ownerId: string;
   ownerName: string;
-  created: fbs.firestore.Timestamp;
+  created: Timestamp;
   title: string;
   content: string;
   tags: { [key: string]: boolean };
@@ -60,15 +60,15 @@ export interface StoreableEvent {
   ownerName: string;
   title: string;
   description: string;
-  startDate: fbs.firestore.Timestamp;
+  startDate: Timestamp;
   tags: { [key: string]: boolean };
-  deadline: fbs.firestore.Timestamp;
+  deadline: Timestamp;
   participants: { [key: string]: { amount: number; name: string; hasUnseenChanges: boolean | null } };
 }
 
 export interface StoreableImage {
   ownerId: string;
   ownerName: string;
-  created: fbs.firestore.Timestamp;
+  created: Timestamp;
   tags: { [key: string]: boolean };
 }

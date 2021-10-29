@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AboutComponent } from './about.component';
 import { ImageDalService } from 'src/app/services/DAL/image-dal.service';
@@ -14,7 +14,7 @@ describe('AboutComponent', () => {
 
   const imageDalStub = new ImageDalStub();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatToolbarModule, MatListModule, MatIconModule, MatButtonModule],
       declarations: [AboutComponent],

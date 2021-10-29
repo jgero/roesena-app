@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { SwUpdate } from '@angular/service-worker';
 import { BrowserService } from '@services/browser.service';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Router } from '@angular/router';
 
 interface ErrorAction extends Action {

@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import "../../../shared/style-partials/variables.scss";
 
 :host {
@@ -18,7 +18,7 @@
 }
 
 .mat-stepper-horizontal {
-  background-color: mat-color(mat-palette($mat-grey, 50));
+  background-color: mat.get-color-from-palette(mat.define-palette(mat.$grey-palette, 50));
 }
 
 .contentStep,

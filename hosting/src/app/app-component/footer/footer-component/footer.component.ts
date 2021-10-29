@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BrowserService } from '@services/browser.service';
 import { CookieService } from 'ngx-cookie-service';

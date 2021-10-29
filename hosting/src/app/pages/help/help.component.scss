@@ -1,3 +1,4 @@
+@use "sass:math";
 @import '../../shared/style-partials/variables.scss';
 
 $icon-size: 38px;
@@ -82,7 +83,7 @@ div.num {
     text-align: center;
     vertical-align: middle;
     color: white;
-    border-radius: $icon-size / 2;
+	border-radius: math.div($icon-size, 2);
     font-size: $icon-size * 0.7;
   }
 }

@@ -1,12 +1,13 @@
+@use '~@angular/material' as mat;
 @import './app/shared/style-partials/variables.scss';
 // apply the theme
-@include angular-material-theme($theme);
+@include mat.all-component-themes($theme);
 // apply the typography
 @media screen and (max-width: 600px) {
-  @include mat-base-typography($mobile-typography);
+  @include mat.typography-hierarchy($mobile-typography);
 }
 @media screen and (min-width: 601px) {
-  @include mat-base-typography($desktop-typography);
+  @include mat.typography-hierarchy($desktop-typography);
 }
 
 html,

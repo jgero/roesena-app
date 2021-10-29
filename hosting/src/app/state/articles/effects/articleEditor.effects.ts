@@ -12,12 +12,11 @@ import {
   ArticleActionTypes,
   ArticleActions,
 } from '../actions/article.actions';
-import { AngularFirestore } from '@angular/fire/firestore';
-import 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { toStorableArticle } from '@utils/converters/article-documents';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 
 @Injectable()
 export class ArticleEditorEffects {

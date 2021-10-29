@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire/compat';
 import {
   AngularFireAnalyticsModule,
   CONFIG,
@@ -8,10 +8,10 @@ import {
   DEBUG_MODE,
   ScreenTrackingService,
   UserTrackingService,
-} from '@angular/fire/analytics';
-import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore';
-import { AngularFireFunctionsModule, REGION } from '@angular/fire/functions';
-import { AngularFireStorageModule } from '@angular/fire/storage';
+} from '@angular/fire/compat/analytics';
+import { AngularFirestoreModule, SETTINGS } from '@angular/fire/compat/firestore';
+import { AngularFireFunctionsModule, REGION } from '@angular/fire/compat/functions';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from 'src/environments/environment';
 
 @NgModule({

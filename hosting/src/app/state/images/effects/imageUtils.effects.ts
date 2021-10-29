@@ -4,7 +4,6 @@ import { switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import { ImageActionTypes, ImageActions } from '../actions/image.actions';
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
-import 'firebase/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { UrlLoaderService } from '@services/url-loader.service';

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MarkdownPreviewComponent } from './markdown-preview.component';
 import { MarkdownViewerStubComponent } from 'src/app/testing';
@@ -9,7 +9,7 @@ describe('MarkdownPreviewComponent', () => {
   let component: MarkdownPreviewComponent;
   let fixture: ComponentFixture<MarkdownPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatButtonModule, MatIconModule],
       declarations: [MarkdownPreviewComponent, MarkdownViewerStubComponent],

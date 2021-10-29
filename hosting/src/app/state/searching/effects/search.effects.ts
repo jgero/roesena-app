@@ -12,10 +12,9 @@ import {
 import { Store } from '@ngrx/store';
 import { State } from '@state/state.module';
 import { Router } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/firestore';
-import 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { SubscriptionService } from '@services/subscription.service';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import {
   getDataObservableForSearchTags,
   getDataObservableForArticlePage,

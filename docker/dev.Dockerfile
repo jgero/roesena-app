@@ -1,4 +1,4 @@
-FROM docker.io/node:10
+FROM docker.io/node:12
 
 # setup workdir
 RUN mkdir /app

@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +25,7 @@ describe('CommonComponent', () => {
   const imageStub = new ImageDalStub();
   const articleStub = new ArticleDalStub();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatToolbarModule, MatButtonModule, MatIconModule, RouterTestingModule],
       declarations: [CommonComponent, ImageCardStubComponent, MarkdownViewerStubComponent],

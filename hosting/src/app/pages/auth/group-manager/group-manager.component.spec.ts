@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GroupManagerComponent } from './group-manager.component';
 import { PersonDalStub, testingRoutes } from 'src/app/testing';
@@ -33,7 +33,7 @@ describe('GroupManagerComponent', () => {
   };
   const authStub = { $user: new BehaviorSubject(null) };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
