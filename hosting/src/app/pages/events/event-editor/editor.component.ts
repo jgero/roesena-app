@@ -279,10 +279,11 @@ export class EditorComponent implements OnDestroy {
     };
   }
 
-  addPerson(person: AppPerson) {
+  addPerson(person: AppPerson, inputEl: HTMLInputElement) {
     const { id, name } = person;
     const formEl = this.participantsFormGroup.get('participants');
     formEl.setValue([...(formEl.value as Participant[]), { id, amount: -1, name, hasUnseenChanges: true }]);
+	inputEl.value = '';
     formEl.markAsDirty();
   }
 

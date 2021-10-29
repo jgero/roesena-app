@@ -127,7 +127,8 @@
       </mat-chip-list>
 
       <mat-form-field>
-        <mat-autocomplete autoActiveFirstOption #autoPersons="matAutocomplete" (optionSelected)="addPerson($event.option.value)">
+        <mat-autocomplete autoActiveFirstOption #autoPersons="matAutocomplete"
+					(optionSelected)="addPerson($event.option.value, participantInput)">
           <mat-option
             *ngFor="
               let person of persons
