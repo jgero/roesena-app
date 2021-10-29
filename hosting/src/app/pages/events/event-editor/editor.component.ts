@@ -283,7 +283,7 @@ export class EditorComponent implements OnDestroy {
     const { id, name } = person;
     const formEl = this.participantsFormGroup.get('participants');
     formEl.setValue([...(formEl.value as Participant[]), { id, amount: -1, name, hasUnseenChanges: true }]);
-	inputEl.value = '';
+    inputEl.value = '';
     formEl.markAsDirty();
   }
 
