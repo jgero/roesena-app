@@ -47,7 +47,7 @@ export function getDataObservableForSearchTags(
             case 'articles':
               return convertManyArticles(data as any) as AppArticle[];
             case 'images':
-			default:
+            default:
               return convertManyImages(data as any) as AppImage[];
           }
         }),

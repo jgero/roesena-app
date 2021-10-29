@@ -1,4 +1,4 @@
-import { Timestamp } from '@angular/fire/firestore'
+import { Timestamp } from '@angular/fire/firestore';
 
 export interface AppElement {
   id: string;
@@ -43,7 +43,7 @@ export interface AppArticle extends AppElement {
 export interface StoreableArticle {
   ownerId: string;
   ownerName: string;
-  created: Timestamp,
+  created: Timestamp;
   title: string;
   content: string;
   tags: { [key: string]: boolean };

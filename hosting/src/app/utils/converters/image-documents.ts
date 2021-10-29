@@ -1,7 +1,7 @@
 import { arrayToMap, mapToArray } from './map-array-general';
 import { AppImage, StoreableImage } from '@utils/interfaces';
 import { DocumentSnapshot, Action, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/compat/firestore/interfaces';
-import { Timestamp } from '@angular/fire/firestore'
+import { Timestamp } from '@angular/fire/firestore';
 
 export function toStorableImage(app: AppImage): StoreableImage {
   const { ownerId, ownerName } = app;

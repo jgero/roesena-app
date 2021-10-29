@@ -2,7 +2,7 @@ import { AppEvent, StoreableEvent } from '@utils/interfaces';
 import { arrayToMap, mapToArray } from './map-array-general';
 import { participantArrayToMap, participantMapToArray } from './participants';
 import { Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/compat/firestore/interfaces';
-import { Timestamp } from '@angular/fire/firestore'
+import { Timestamp } from '@angular/fire/firestore';
 
 export function toStorableEvent(app: AppEvent): StoreableEvent {
   const { title, description, ownerId, ownerName, date } = app;
