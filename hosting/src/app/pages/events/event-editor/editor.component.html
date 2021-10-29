@@ -36,10 +36,11 @@
           </mat-chip>
           <input
             #tagInput
+            #tagTrigger="matAutocompleteTrigger"
             placeholder="Tags"
             [matChipInputFor]="tagList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="chips.addItem($event, contentFormGroup.get('tags'))"
+            (matChipInputTokenEnd)="chips.addItem($event, contentFormGroup.get('tags'), tagTrigger)"
             matTooltip="Tags nach Eingabe mit der ENTER-Taste bestätigen"
             matTooltipPosition="above"
             [matAutocomplete]="auto"
@@ -126,7 +127,7 @@
       </mat-chip-list>
 
       <mat-form-field>
-        <mat-autocomplete #autoPersons="matAutocomplete" (optionSelected)="addPerson($event.option.value)">
+        <mat-autocomplete autoActiveFirstOption #autoPersons="matAutocomplete" (optionSelected)="addPerson($event.option.value)">
           <mat-option
             *ngFor="
               let person of persons

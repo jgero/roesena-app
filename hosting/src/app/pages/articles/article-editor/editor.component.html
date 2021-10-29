@@ -25,10 +25,11 @@
       </mat-chip>
       <input
         #tagInput
+        #tagTrigger="matAutocompleteTrigger"
         placeholder="Tags"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="chips.addItem($event, articleForm.get('tags'))"
+        (matChipInputTokenEnd)="chips.addItem($event, articleForm.get('tags'), tagTrigger)"
         matTooltip="Tags nach Eingabe mit der ENTER-Taste bestätigen"
         matTooltipPosition="above"
         [matAutocomplete]="auto"
