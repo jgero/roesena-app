@@ -4,8 +4,6 @@ article {
   background-color: $cardBackground;
   margin: 1rem;
   padding: 1rem;
-  max-height: 17rem;
-  height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -23,7 +21,7 @@ h3 {
 }
 app-markdown-viewer {
   overflow: hidden;
-  max-height: 10rem;
+  height: 7rem;
   position: relative;
 
   &::after {
@@ -57,7 +55,7 @@ app-markdown-viewer {
 }
 
 article:not(.minimal) {
-  max-width: $maxCardWidth;
+  width: $maxCardWidth;
   position: relative;
 
   h2,
