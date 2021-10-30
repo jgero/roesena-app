@@ -5,7 +5,7 @@
     </h1>
     <app-markdown-viewer [markdownText]="event.description"></app-markdown-viewer>
 
-    <div class="table-container mat-elevation-z8">
+    <div class="table-container mat-elevation-z8" *ngIf="event.participants.length > 0">
       <table mat-table [dataSource]="dataSource" matSort matSortActive="amount" matSortDirection="desc">
         <!-- Name Column -->
         <ng-container matColumnDef="name">
