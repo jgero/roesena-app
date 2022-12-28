@@ -49,4 +49,4 @@ jobs:
       - name: Deploy to Firebase
         run: firebase deploy --project sechta-narren
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "$HOME"/s.json
+         GOOGLE_APPLICATION_CREDENTIALS: $HOME/s.json
