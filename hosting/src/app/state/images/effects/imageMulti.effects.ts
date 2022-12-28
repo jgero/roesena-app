@@ -39,10 +39,10 @@ const STARTPAGE_TILE_OPTIONS = [
     pageLink: '/static-articles/groups/maennerballett',
   },
   {
-    heading: 'Die Röhling Stones',
-    subheading: 'Guggenmusik',
-    filterTags: ['Röhling Stones'],
-    pageLink: '/static-articles/groups/roehling-stones',
+    heading: 'Die Liashang Grabsler',
+    subheading: 'Kostümgruppe',
+    filterTags: ['Liashang Grabsler'],
+    pageLink: '/static-articles/groups/liashang-grablser',
   },
   {
     heading: 'Die Minigarde',

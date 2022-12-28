@@ -102,12 +102,11 @@ const routes: Routes = [
         data: { heading: 'Das Männerballett', filterTags: ['Gruppenseite', 'Männerballett'] },
       },
       {
-        path: 'roehling-stones',
+        path: 'liashang-grabsler',
         component: CommonComponent,
         data: {
-          heading: 'Die Röhling Stones',
-          filterTags: ['Gruppenseite', 'Röhling Stones'],
-          additionalLink: 'http://www.roehling-stones.de',
+          heading: 'Die Liashang Grabsler',
+          filterTags: ['Gruppenseite', 'Liashang Grabsler']
         },
       },
       {
