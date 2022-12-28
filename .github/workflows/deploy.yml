@@ -47,6 +47,6 @@ jobs:
           SERVICE_ACCOUNT: ${{secrets.SERVICE_ACCOUNT}}
 
       - name: Deploy to Firebase
-        run: firebase deploy --non-interactive --project sechta-narren
+        run: firebase deploy --non-interactive --only hosting --project sechta-narren
         env:
           GOOGLE_APPLICATION_CREDENTIALS: "./s.json"
