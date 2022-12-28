@@ -40,8 +40,16 @@ jobs:
       - name: Install firebase-tools globaly
         run: npm install -g firebase-tools
 
+      - name: test
+        run: |
+          echo "asdf" >> "$GITHUB_ACTION_PATH/s.json"
+          cat "$GITHUB_ACTION_PATH/s.json"
+          echo $TEST_VAR
+        env:
+          TEST_VAR: $GITHUB_ACTION_PATH/s.json
+
       - name: authenticate
-        run: echo "$SERVICE_ACCOUNT" >> "$HOME"/s.json
+        run: echo "$SERVICE_ACCOUNT" >> "$GITHUB_ACTION_PATH/s.json"
         shell: bash
         env:
           SERVICE_ACCOUNT: ${{secrets.SERVICE_ACCOUNT}}
@@ -49,4 +57,4 @@ jobs:
       - name: Deploy to Firebase
         run: firebase deploy --non-interactive --project sechta-narren
         env:
-         GOOGLE_APPLICATION_CREDENTIALS: $HOME/s.json
+         GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_ACTION_PATH/s.json
