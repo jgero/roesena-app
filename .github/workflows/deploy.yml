@@ -40,7 +40,13 @@ jobs:
       - name: Install firebase-tools globaly
         run: npm install -g firebase-tools
 
-      - name: Deploy to Firebase
-        run: firebase deploy --token $FIREBASE_TOKEN --project sechta-narren
+      - name: authenticate
+        run: echo "$SERVICE_ACCOUNT" >> "$HOME"/s.json
+        shell: bash
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          SERVICE_ACCOUNT: ${{secrets.SERVICE_ACCOUNT}}
+
+      - name: Deploy to Firebase
+        run: firebase deploy --project sechta-narren
+        env:
+         GOOGLE_APPLICATION_CREDENTIALS: $HOME/s.json
