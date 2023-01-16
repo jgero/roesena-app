@@ -2,7 +2,7 @@ import { SearchActions, SearchActionTypes } from '../actions/search.actions';
 import { AppArticle, AppImage, AppEvent } from '@utils/interfaces';
 import { PageActions, PageActionTypes } from '@state/pagination/actions/page.actions';
 
-export const maxResultsPerPage = 15;
+export const maxResultsPerPage = 30;
 
 export const searchFeatureKey = 'search';
 
