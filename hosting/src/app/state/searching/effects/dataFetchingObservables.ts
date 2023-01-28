@@ -179,7 +179,8 @@ export function getDataObservableForEventsPage(firestore: AngularFirestore, isCo
     .snapshotChanges()
     .pipe(
       map(convertManyEvents),
-      map(events => events.sort((eva, evb) => eva.date < evb.date ? 1 : -1)),
+      map(events => events.sort((eva, evb) => eva.date > evb.date ? 1 : -1)),
+      map(events => events.filter(event => event.date > new Date())),
       switchMap((events) => [
         new SearchContentLoaded({ events, articles: [], images: [] }),
         new SearchLengthLoaded({ amount: events.length }),
