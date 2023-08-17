@@ -31,3 +31,6 @@ testem.log
 
 # emulator runtime config
 .runtimeconfig.json
+
+# downloaded content
+downloader/bin
